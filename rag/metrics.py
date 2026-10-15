@@ -30,6 +30,6 @@ def summarize(ranks, ks=(1, 3, 5)):
         return {"n_queries": 0}
     summary = {"n_queries": n}
     for k in ks:
-        summary[f"hit@{k}"] = sum(1 for r in ranks if r is not None and r <= k) / n
-    summary["mrr"] = sum(1 / r for r in ranks if r) / n
+        summary[f"hit@{k}"] = sum(1 for r in ranks if r is not None and r <= k) / n #type:ignore
+    summary["mrr"] = sum(1 / r for r in ranks if r) / n #type:ignore
     return summary

@@ -1,0 +1,48 @@
+"""Source registry for the knowledge base. Only these four documents are used."""
+
+SOURCES = {
+    "RC": {
+        "file": "EN_Flood-Preparedness-Checklist.pdf",
+        "title": "Flood Preparedness Checklist",
+        "publisher": "American Red Cross",
+        "date": "2022-09-01 (Version 1, per the document)",
+        "lang": "en",
+        "jurisdiction": "US",
+        "short": "American Red Cross, Flood Preparedness Checklist (2022)",
+        "ocr_pages": [1, 2],
+        "note": "Text layer is nearly empty (bullets only). Provenance is checked against OCR of the page images.",
+    },
+    "FALC": {
+        "file": "Pluie_et_inondation_FALC_1.pdf",
+        "title": "Pluie et inondation (version FALC, facile à lire et à comprendre)",
+        "publisher": "French Ministry of Ecological Transition, adapted by Com'access",
+        "date": "not stated, refers to the 2023 floods",
+        "lang": "fr",
+        "jurisdiction": "FR",
+        "short": "Pluie et inondation, version FALC (Ministère français, adaptation Com'access)",
+        "ocr_pages": [8, 10],
+        "note": "Pages 8 and 10 are government posters stored as images. Provenance for them is checked against OCR.",
+    },
+    "P2055": {
+        "file": "fema_p-2055_post-disaster_buildingsafety_evaluation_2019.pdf",
+        "title": "Post-disaster Building Safety Evaluation Guidance (FEMA P-2055)",
+        "publisher": "FEMA, prepared by the Applied Technology Council",
+        "date": "2019-11",
+        "lang": "en",
+        "jurisdiction": "US",
+        "short": "FEMA P-2055, Post-disaster Building Safety Evaluation Guidance (2019)",
+        "ocr_pages": [],
+        "note": "Written for building safety evaluators and officials. Page numbers below are PDF page numbers.",
+    },
+    "P2055-2": {
+        "file": "fema_rsl_cordoning-earthquake-damaged-buildings_042025.pdf",
+        "title": "Recommendations for Cordoning Earthquake-Damaged Buildings (FEMA P-2055-2)",
+        "publisher": "FEMA, prepared by the Applied Technology Council",
+        "date": "2023-09 (second issuance 2025-04, per the document)",
+        "lang": "en",
+        "jurisdiction": "US",
+        "short": "FEMA P-2055-2, Recommendations for Cordoning Earthquake-Damaged Buildings (2023, 2nd issuance 2025)",
+        "ocr_pages": [],
+        "note": "Earthquake focus. Page numbers below are PDF page numbers.",
+    },
+}
