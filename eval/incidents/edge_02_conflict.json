@@ -1,0 +1,19 @@
+{
+  "id": "edge_02_conflict",
+  "text": "Flooding on the main road, water is rising quickly.",
+  "output_language": "en",
+  "image": "edge_02_conflict.jpg",
+  "image_note": "Deliberately mismatched: use a photo that clearly shows smoke or fire and no flood water, so the image contradicts the report.",
+  "designed_to_test": "Conflict between the report and the image. The system must show the conflict and not resolve it.",
+  "expected": {
+    "incident_type": "flood",
+    "language": "en",
+    "rag_topic": "flood",
+    "severity_acceptable": ["moderate", "high", "undetermined"]
+  },
+  "manual_checks": [
+    "Vision consistent_with_report is 'no' or 'partly'",
+    "Risk conflicts_between_sources is not empty",
+    "Report shows both the reported and the observed side without picking a winner"
+  ]
+}

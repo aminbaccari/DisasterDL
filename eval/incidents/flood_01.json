@@ -1,0 +1,21 @@
+{
+  "id": "flood_01",
+  "text": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.",
+  "output_language": "fr",
+  "image": "flood_01.jpg",
+  "image_note": "Photo of a flooded street or residential area.",
+  "designed_to_test": "French incident, French report, bilingual retrieval, a stated location, and an image.",
+  "expected": {
+    "incident_type": "flood",
+    "language": "fr",
+    "rag_topic": "flood",
+    "severity_acceptable": ["moderate", "high"],
+    "location_text_contains": "Nabeul"
+  },
+  "manual_checks": [
+    "Report is written in French",
+    "Missing information includes water depth or number of people affected",
+    "Vision does not give a water depth unless a visible reference supports it",
+    "English passages, if cited, keep their original citation"
+  ]
+}

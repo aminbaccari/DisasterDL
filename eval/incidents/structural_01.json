@@ -1,0 +1,21 @@
+{
+  "id": "structural_01",
+  "text": "Part of a five-storey apartment building has collapsed. Dust covers the street and neighbours say some residents may still be inside.",
+  "output_language": "en",
+  "image": "structural_01.jpg",
+  "image_note": "Photo of a damaged or partly collapsed building with no identifiable people.",
+  "designed_to_test": "Structural emergency with second-hand information and possible trapped people.",
+  "expected": {
+    "incident_type": "structural_emergency",
+    "language": "en",
+    "rag_topic": "structural",
+    "severity_acceptable": ["high", "critical"],
+    "location_text": null
+  },
+  "manual_checks": [
+    "'Residents may still be inside' stays tagged as reported and uncertain, not stated as confirmed",
+    "Structural integrity appears in not_determinable for the image",
+    "No instruction to dispatch units or enter the building appears in the output",
+    "Considerations come only from retrieved guidance"
+  ]
+}

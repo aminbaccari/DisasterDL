@@ -1,0 +1,3 @@
+query_id,query,language,disaster_type,expected_source_document,expected_phrase
+q01,,en,flood,,
+q02,,fr,fire,,

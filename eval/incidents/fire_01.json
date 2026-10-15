@@ -1,0 +1,21 @@
+{
+  "id": "fire_01",
+  "text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+  "output_language": "en",
+  "image": "fire_01.jpg",
+  "image_note": "Photo with visible smoke and flames in vegetation, ideally with buildings in view.",
+  "designed_to_test": "Basic forest fire with an image. No location is stated, so the agents must not invent one.",
+  "expected": {
+    "incident_type": "forest_fire",
+    "language": "en",
+    "rag_topic": "fire",
+    "severity_acceptable": ["high", "critical"],
+    "location_text": null
+  },
+  "manual_checks": [
+    "Location is reported as not stated, not invented",
+    "Wind toward the village appears as a reported fact",
+    "Vision lists only what is visible and puts scale and wind in not_determinable",
+    "Considerations in the report come only from retrieved guidance, with citations"
+  ]
+}

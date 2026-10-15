@@ -1,0 +1,20 @@
+{
+  "id": "edge_01_vague",
+  "text": "Il y a un problème grave près du port, venez vite.",
+  "output_language": "fr",
+  "image": null,
+  "image_note": "",
+  "designed_to_test": "Vague French report with no image. The system must not guess the incident type or severity.",
+  "expected": {
+    "incident_type": "unclear",
+    "language": "fr",
+    "rag_topic": "general",
+    "severity_acceptable": ["undetermined"]
+  },
+  "manual_checks": [
+    "Report says that no image was provided",
+    "Missing information asks what happened and whether people are in danger",
+    "No specific hazard is invented",
+    "Retrieval returns general guidance or nothing, and the report says which"
+  ]
+}

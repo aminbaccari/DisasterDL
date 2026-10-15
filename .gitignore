@@ -1,0 +1,8 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+rag/chroma_db/
+n8n_data/
+.DS_Store
