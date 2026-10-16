@@ -1,0 +1,86 @@
+{
+ "note": "Real /search output (section strategy, topic fire) saved on 2026-10-16 for the fire_01 example. Queries: wildfire warning leave immediately when authorities say evacuate | fire near houses wind toward village leave or shelter in a cleared house | N95 mask smoke protection wildfire",
+ "topic": "fire",
+ "results": [
+  {
+   "chunk_id": "en/fire_kb.md::section::8",
+   "text": "FI-09 Under a wildfire warning: get to safety right away. If you are under a wildfire warning, get to safety right away. Leave if told to do so, and leave immediately if the authorities tell you to evacuate. Listen for emergency information and alerts from your community's alerting systems. Use N95 masks to keep particles out of the air you breathe. If you are trapped, call the emergency services and give your location, but be aware that the emergency response could be delayed or impossible; turn on lights to help people find you. The emergency number in the source is for the United States and is not given here. Source: FEMA V-1013, Be Prepared for a Wildfire (2018), PDF pages 1, 2. Origin of the sources: US. Audience: public. Type: taken from the sources. Team note, not from the sources: The emergency number in the source is for the United States and is not given here. Left out on purpose: the United States emergency number and the names of United States alert systems.",
+   "source": "fire_kb.md",
+   "page": 1,
+   "section": "FI-09 Under a wildfire warning: get to safety right away",
+   "topic": "fire",
+   "language": "en",
+   "score": 0.9077,
+   "entry_ids": [
+    "FI-09"
+   ]
+  },
+  {
+   "chunk_id": "en/fire_kb.md::section::12",
+   "text": "FI-18 Protecting yourself from smoke: N95 mask or damp cloth. Two ways to protect yourself from smoke are given. FEMA advises using N95 masks to keep particles out of the air you breathe. The French government page advises covering the nose and mouth with a damp cloth to protect against smoke. The sources do not compare the two or say how well a damp cloth filters smoke. The mask that FEMA recommends is the N95, which is designed to keep particles out. Source: FEMA V-1013, Be Prepared for a Wildfire (2018), PDF page 2; Ministère français de la Transition écologique, page Ayons les bons réflexes face aux feux de forêt et de végétation (mise à jour 3 juin 2026), web page retrieved 2026-10-16. Origin of the sources: FR, US. Audience: public. Type: reconciliation of sources that differ, written by the project team from the cited passages. Team note, not from the sources: The sources do not compare the two or say how well a damp cloth filters smoke.",
+   "source": "fire_kb.md",
+   "page": 1,
+   "section": "FI-18 Protecting yourself from smoke: N95 mask or damp cloth",
+   "topic": "fire",
+   "language": "en",
+   "score": 0.8971,
+   "entry_ids": [
+    "FI-18"
+   ]
+  },
+  {
+   "chunk_id": "en/fire_kb.md::section::9",
+   "text": "FI-10 Before a wildfire: warnings, evacuation routes and supplies. FEMA's advice for preparing before a wildfire: sign up for your community's warning system. Know your community's evacuation routes, find several ways to leave the area, drive the evacuation routes and find shelter locations, and have a plan for pets and livestock. Gather emergency supplies, including N95 respirator masks that filter out particles in the air, and keep in mind each person's specific needs, including medication and the needs of pets. Keep important documents in a fireproof safe, with password-protected digital copies, and review insurance coverage to make sure it is enough to replace your property. Source: FEMA V-1013, Be Prepared for a Wildfire (2018), PDF page 2. Origin of the sources: US. Audience: public. Type: taken from the sources. Left out on purpose: the names of United States alert systems.",
+   "source": "fire_kb.md",
+   "page": 1,
+   "section": "FI-10 Before a wildfire: warnings, evacuation routes and supplies",
+   "topic": "fire",
+   "language": "en",
+   "score": 0.8819,
+   "entry_ids": [
+    "FI-10"
+   ]
+  },
+  {
+   "chunk_id": "fr/fire_kb.md::section::10",
+   "text": "FI-25 Se protéger de la fumée : masque N95 ou linge humide. Deux moyens de se protéger de la fumée sont indiqués. La FEMA conseille d'utiliser un masque N95 pour empêcher les particules de pénétrer dans l'air que l'on respire. La page du gouvernement français conseille de se couvrir le nez et la bouche d'un linge humide pour se protéger de la fumée. Les sources ne comparent pas les deux et n'indiquent pas dans quelle mesure un linge humide filtre la fumée. Le masque recommandé par la FEMA est le N95, conçu pour retenir les particules. Source: FEMA V-1013, Be Prepared for a Wildfire (2018), PDF page 2; Ministère français de la Transition écologique, page Ayons les bons réflexes face aux feux de forêt et de végétation (mise à jour 3 juin 2026), web page retrieved 2026-10-16. Origin of the sources: FR, US. Audience: public. Type: French translation by the project team of FI-18, the English entry is the reference. Team note, not from the sources: Les sources ne comparent pas les deux et n'indiquent pas dans quelle mesure un linge humide filtre la fumée.",
+   "source": "fire_kb.md",
+   "page": 1,
+   "section": "FI-25 Se protéger de la fumée : masque N95 ou linge humide",
+   "topic": "fire",
+   "language": "fr",
+   "score": 0.8799,
+   "entry_ids": [
+    "FI-25"
+   ]
+  },
+  {
+   "chunk_id": "en/fire_kb.md::section::10",
+   "text": "FI-11 Making a home safer from wildfire: fire-resistant zone and water source. FEMA's advice for making a home safer from wildfire: use fire-resistant materials to build, renovate or make repairs. Find an outdoor water source with a hose that can reach any area of your property. Create a fire-resistant zone that is free of leaves, debris or flammable materials for at least 30 feet from your home. Source: FEMA V-1013, Be Prepared for a Wildfire (2018), PDF page 2. Origin of the sources: US. Audience: public. Type: taken from the sources. ## FI-13 Leave when told, or shelter in a cleared house: how the sources fit together Two kinds of advice need to be read together when a wildfire threatens. FEMA says to evacuate and leave immediately if the authorities tell you to do so, and to listen for emergency information and alerts. The French government page says that a person who sees a fire starting should alert the rescue services and take shelter in a house cleared of vegetation until rescuers arrive, and that a car is not a safe shelter because it could burn. Both give priority to instructions from the authorities. If the authorities order an evacuation, leave. The sources do not say when to leave rather than shelter in a cleared house, and give no further instructions for flames already reaching a house. Source: FEMA V-1013, Be Prepared for a Wildfire (2018), PDF page 2; Ministère français de la Transition écologique, page Ayons les bons réflexes face aux feux de forêt et de végétation (mise à jour 3 juin 2026), web page retrieved 2026-10-16. Origin of the sources: FR, US. Audience: public. Type: reconciliation of sources that differ, written by the project team from the cited passages. Team note, not from the sources: Both give priority",
+   "source": "fire_kb.md",
+   "page": 1,
+   "section": "FI-11 Making a home safer from wildfire: fire-resistant zone and water source",
+   "topic": "fire",
+   "language": "en",
+   "score": 0.8717,
+   "entry_ids": [
+    "FI-11",
+    "FI-13"
+   ]
+  },
+  {
+   "chunk_id": "fr/fire_kb.md::section::7",
+   "text": "FI-21 En cas d'alerte feu de forêt : se mettre en sécurité immédiatement. En cas d'alerte feu de forêt, mettez-vous en sécurité immédiatement. Partez si l'on vous le demande, et partez sans attendre si les autorités vous ordonnent d'évacuer. Écoutez les informations et les alertes d'urgence diffusées par les systèmes d'alerte de votre commune. Utilisez un masque N95 pour empêcher les particules de pénétrer dans l'air que vous respirez. Si vous êtes bloqué, appelez les secours et donnez votre position, mais sachez que l'intervention des secours peut être retardée ou impossible ; allumez les lumières pour que l'on puisse vous repérer. Le numéro d'urgence de la source est celui des États-Unis et n'est pas reproduit ici. Source: FEMA V-1013, Be Prepared for a Wildfire (2018), PDF pages 1, 2. Origin of the sources: US. Audience: public. Type: French translation by the project team of FI-09, the English entry is the reference. Team note, not from the sources: Le numéro d'urgence de la source est celui des États-Unis et n'est pas reproduit ici. Left out on purpose: the United States emergency number and the names of United States alert systems. ## FI-22 Avant un feu de forêt : alertes, itinéraires d'évacuation et fournitures Conseils de la FEMA pour se préparer avant un feu de forêt : inscrivez-vous au système d'alerte de votre commune. Connaissez les itinéraires d'évacuation de votre commune, repérez plusieurs façons de quitter la zone, parcourez les itinéraires d'évacuation, repérez les lieux d'hébergement et prévoyez un plan pour les animaux domestiques et le bétail. Rassemblez des fournitures d'urgence, dont des masques respiratoires N95 qui filtrent les particules de l'air, en tenant compte des besoins de chacun, notamment les médicaments, et de ceux des animaux. Conservez les documents importants dans un coffre ignifugé, avec des copies numériques protégées par mot",
+   "source": "fire_kb.md",
+   "page": 1,
+   "section": "FI-21 En cas d'alerte feu de forêt : se mettre en sécurité immédiatement",
+   "topic": "fire",
+   "language": "fr",
+   "score": 0.8585,
+   "entry_ids": [
+    "FI-21",
+    "FI-22"
+   ]
+  }
+ ]
+}

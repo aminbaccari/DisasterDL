@@ -1,0 +1,95 @@
+{
+ "note": "Hand-written example for the fixed incident fire_01. It shows the shape of the contract. It is NOT an output of a model.",
+ "input": {
+  "output_language": "en",
+  "generated_at": "2026-10-16T12:00:00Z",
+  "incident_json": "...",
+  "vision_json": "...",
+  "knowledge_json": "...",
+  "risk_json": "..."
+ },
+ "output": {
+  "language": "en",
+  "location": null,
+  "severity": "high",
+  "summary": "Flames are reported near the first houses of a village with a wind blowing toward it. The image shows a smoke column and flames on the slope above houses.",
+  "reported": [
+   {
+    "text": "Smoke rising from the hills behind the village",
+    "source": "report"
+   },
+   {
+    "text": "Flames visible near the first houses",
+    "source": "report"
+   },
+   {
+    "text": "Strong wind blowing toward the village",
+    "source": "report"
+   }
+  ],
+  "image_status": "analysed",
+  "observed": [
+   {
+    "text": "A dense smoke column rising from the hillside",
+    "confidence": "high",
+    "source": "image"
+   },
+   {
+    "text": "Orange flames at the base of the smoke",
+    "confidence": "medium",
+    "source": "image"
+   }
+  ],
+  "knowledge": {
+   "coverage": "partial",
+   "guidance": [
+    {
+     "text": "Leave immediately if the authorities tell you to evacuate.",
+     "entry_id": "FI-09",
+     "chunk_id": "en/fire_kb.md::section::8",
+     "source": "knowledge_base"
+    }
+   ],
+   "no_guidance_statement": "No guidance available in the knowledge base for flames already reaching a house. Follow the instructions of the authorities and emergency services."
+  },
+  "assessment": {
+   "basis": [
+    {
+     "text": "Flames near the first houses and wind toward the village",
+     "source": "report"
+    }
+   ],
+   "risks": [
+    {
+     "text": "Fire spreading to the village",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [
+    {
+     "text": "Houses at the edge of the village",
+     "source": "image"
+    }
+   ],
+   "conflicts": []
+  },
+  "recommendations": [
+   {
+    "text": "Responders may wish to weigh that the guidance says to leave immediately if the authorities order an evacuation.",
+    "entry_id": "FI-09",
+    "chunk_id": "en/fire_kb.md::section::8",
+    "source": "knowledge_base"
+   }
+  ],
+  "uncertainties": [
+   "Location not stated",
+   "Whether people are trapped or injured"
+  ],
+  "information_needed": [
+   "Exact location",
+   "Whether an evacuation has started"
+  ],
+  "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+  "report_markdown": "# Preliminary incident assessment\nIncident type: forest_fire | Location: Not stated | Severity (system assessment): high\n\n## Summary\nFlames are reported near the first houses of a village with a wind blowing toward it.\n\n## 3. Relevant information from the knowledge base\nCoverage: partial. Leave immediately if the authorities tell you to evacuate (FI-09).\nNo guidance available in the knowledge base for flames already reaching a house. Follow the instructions of the authorities and emergency services.\n"
+ }
+}

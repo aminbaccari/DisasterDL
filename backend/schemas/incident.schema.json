@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "disasterai/incident.schema.json",
+  "title": "Incident Understanding Agent output",
+  "description": "Source tag: every field comes from the incident text, so the implicit tag is 'report'. Contract from prompts/incident_understanding/v1.md.",
+  "type": "object",
+  "required": ["incident_type", "type_confidence", "location", "reported_facts", "initial_severity", "severity_reason",
+               "people_at_risk_mentioned", "missing_information", "language", "rag_topic", "notes"],
+  "additionalProperties": false,
+  "properties": {
+    "incident_type": {"enum": ["forest_fire", "flood", "structural_emergency", "other", "unclear"]},
+    "type_confidence": {"enum": ["high", "medium", "low"]},
+    "location": {
+      "type": "object",
+      "required": ["text", "precision"],
+      "additionalProperties": false,
+      "properties": {
+        "text": {"type": ["string", "null"]},
+        "precision": {"enum": ["exact", "area", "region", "unknown"]}
+      }
+    },
+    "reported_facts": {"type": "array", "items": {"type": "string"}},
+    "initial_severity": {"enum": ["low", "moderate", "high", "critical", "unknown"]},
+    "severity_reason": {"type": "string"},
+    "people_at_risk_mentioned": {"enum": ["yes", "no", "unknown"]},
+    "missing_information": {"type": "array", "items": {"type": "string"}, "maxItems": 6},
+    "language": {"enum": ["en", "fr", "ar", "other"]},
+    "rag_topic": {"enum": ["fire", "flood", "structural", "general"]},
+    "notes": {"type": ["string", "null"]},
+    "parse_error": {"type": "boolean", "description": "Set only by the n8n fallback when the model answer could not be parsed."}
+  }
+}

@@ -1,0 +1,31 @@
+{
+ "note": "Hand-written example for the fixed incident fire_01. It shows the shape of the contract. It is NOT an output of a model.",
+ "input": {
+  "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village."
+ },
+ "output": {
+  "incident_type": "forest_fire",
+  "type_confidence": "high",
+  "location": {
+   "text": null,
+   "precision": "unknown"
+  },
+  "reported_facts": [
+   "Smoke rising from the hills behind the village",
+   "Flames visible near the first houses",
+   "Strong wind blowing toward the village"
+  ],
+  "initial_severity": "high",
+  "severity_reason": "Flames reported near the first houses with a wind blowing toward the village",
+  "people_at_risk_mentioned": "unknown",
+  "missing_information": [
+   "Exact location",
+   "Distance between the flames and the houses",
+   "Whether an evacuation has started",
+   "Whether people are trapped or injured"
+  ],
+  "language": "en",
+  "rag_topic": "fire",
+  "notes": null
+ }
+}

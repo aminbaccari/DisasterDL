@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "disasterai/knowledge.schema.json",
+  "title": "Knowledge (RAG synthesis) Agent output",
+  "description": "Source tag: every point is tagged knowledge_base by construction. Each point cites a retrieved chunk and the knowledge base entry id (FL-04, ST-07, FI-13). The entry id is required here but prompts/rag_query/v1_synthesis.md does not ask for it: contract mismatch M2, fixed by synthesis v2.",
+  "type": "object",
+  "required": ["relevant_guidance", "ignored_chunks", "coverage", "gaps"],
+  "additionalProperties": false,
+  "properties": {
+    "relevant_guidance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["point", "citation"],
+        "additionalProperties": false,
+        "properties": {
+          "point": {"type": "string", "minLength": 1},
+          "citation": {"$ref": "#/$defs/citation"}
+        }
+      }
+    },
+    "ignored_chunks": {"type": "array", "items": {"type": "string"}},
+    "coverage": {"enum": ["good", "partial", "none"]},
+    "gaps": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "citation": {
+      "type": "object",
+      "required": ["chunk_id", "source", "entry_id"],
+      "additionalProperties": false,
+      "properties": {
+        "chunk_id": {"type": "string"},
+        "source": {"type": "string"},
+        "page": {"type": "integer", "description": "Always 1 for knowledge base files (each file is one page for the loader). Kept for compatibility, not used for checks."},
+        "entry_id": {"type": "string", "pattern": "^(FL|ST|FI)-[0-9]{2}$"}
+      }
+    }
+  }
+}

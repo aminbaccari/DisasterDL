@@ -1,0 +1,36 @@
+{
+ "note": "Hand-written example for the fixed incident fire_01. It shows the shape of the contract. It is NOT an output of a model.",
+ "input": {
+  "incident_json": "output of incident.example.json",
+  "passages_json": "results of retrieval.example.json"
+ },
+ "output": {
+  "relevant_guidance": [
+   {
+    "point": "If you are under a wildfire warning, get to safety right away and leave immediately if the authorities tell you to evacuate.",
+    "citation": {
+     "chunk_id": "en/fire_kb.md::section::8",
+     "source": "fire_kb.md",
+     "page": 1,
+     "entry_id": "FI-09"
+    }
+   },
+   {
+    "point": "Use N95 masks to keep particles out of the air you breathe. The sources do not say how well a damp cloth filters smoke.",
+    "citation": {
+     "chunk_id": "en/fire_kb.md::section::12",
+     "source": "fire_kb.md",
+     "page": 1,
+     "entry_id": "FI-18"
+    }
+   }
+  ],
+  "ignored_chunks": [
+   "fr/fire_kb.md::section::7"
+  ],
+  "coverage": "partial",
+  "gaps": [
+   "What to do when flames are already reaching a house (no entry covers it)"
+  ]
+ }
+}

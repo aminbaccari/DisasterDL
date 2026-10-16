@@ -1,0 +1,59 @@
+{
+ "note": "Hand-written example for the fixed incident fire_01. It shows the shape of the contract. It is NOT an output of a model.",
+ "input": {
+  "incident_json": "...",
+  "vision_json": "...",
+  "knowledge_json": "..."
+ },
+ "output": {
+  "severity": "high",
+  "severity_basis": [
+   {
+    "statement": "Flames visible near the first houses",
+    "source": "report"
+   },
+   {
+    "statement": "Wind blowing toward the village",
+    "source": "report"
+   },
+   {
+    "statement": "The image shows a smoke column and flames on the slope above houses",
+    "source": "image"
+   }
+  ],
+  "main_risks": [
+   {
+    "risk": "Fire spreading to the village",
+    "basis": "Flames near the first houses and wind toward the village",
+    "source": "report"
+   }
+  ],
+  "possibly_affected": [
+   {
+    "element": "Houses at the edge of the village",
+    "source": "image"
+   }
+  ],
+  "conflicts_between_sources": [],
+  "considerations": [
+   {
+    "text": "Responders may wish to weigh that the guidance says to leave immediately if the authorities order an evacuation.",
+    "citation": {
+     "chunk_id": "en/fire_kb.md::section::8",
+     "source": "fire_kb.md",
+     "page": 1,
+     "entry_id": "FI-09"
+    }
+   }
+  ],
+  "uncertainties": [
+   "No guidance was retrieved for flames already reaching a house",
+   "Location not stated"
+  ],
+  "information_needed": [
+   "Exact location",
+   "Whether an evacuation has started",
+   "Whether people are trapped or injured"
+  ]
+ }
+}

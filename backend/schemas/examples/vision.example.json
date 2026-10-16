@@ -1,0 +1,38 @@
+{
+ "note": "Hand-written example for the fixed incident fire_01. It shows the shape of the contract. It is NOT an output of a model.",
+ "input": {
+  "image": "fire_01.jpg",
+  "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village."
+ },
+ "output": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "Hillside with a smoke column above vegetation and a few houses in the foreground.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "A dense smoke column rising from the hillside",
+    "confidence": "high"
+   },
+   {
+    "category": "flames",
+    "description": "Orange flames at the base of the smoke, on the slope",
+    "confidence": "medium"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Several houses at the foot of the slope",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "yes",
+  "inconsistencies": [],
+  "not_determinable": [
+   "Wind speed and direction",
+   "Distance between the flames and the houses",
+   "Number of people",
+   "Cause of the fire"
+  ]
+ }
+}

@@ -1,0 +1,25 @@
+{
+ "note": "Hand-written example for the fixed incident fire_01. It shows the shape of the contract. It is NOT an output of a model.",
+ "input": {
+  "incident_json": "output of incident.example.json"
+ },
+ "output": {
+  "queries": [
+   {
+    "text": "what to do when a wildfire threatens houses",
+    "language": "en",
+    "need": "safety actions"
+   },
+   {
+    "text": "evacuation when authorities order it during a wildfire",
+    "language": "en",
+    "need": "evacuation"
+   },
+   {
+    "text": "protection contre la fumée d'un feu de forêt",
+    "language": "fr",
+    "need": "smoke hazard"
+   }
+  ]
+ }
+}

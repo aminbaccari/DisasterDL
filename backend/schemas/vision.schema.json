@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "disasterai/vision.schema.json",
+  "title": "Vision Agent output",
+  "description": "Source tag: every observation comes from the image, so the implicit tag is 'image'. Contract from prompts/vision/v1.md. When there is no image n8n sets vision to null and does not call the agent.",
+  "type": "object",
+  "required": ["image_usable", "quality_issues", "scene_summary", "observations", "visible_text", "consistent_with_report",
+               "inconsistencies", "not_determinable"],
+  "additionalProperties": false,
+  "properties": {
+    "image_usable": {"type": "boolean"},
+    "quality_issues": {"type": "array", "items": {"type": "string"}},
+    "scene_summary": {"type": "string"},
+    "observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["category", "description", "confidence"],
+        "additionalProperties": false,
+        "properties": {
+          "category": {"enum": ["smoke", "flames", "flood_water", "structural_damage", "infrastructure", "vehicles", "people", "vegetation", "other"]},
+          "description": {"type": "string"},
+          "confidence": {"enum": ["high", "medium", "low"]}
+        }
+      }
+    },
+    "visible_text": {"type": "array", "items": {"type": "string"}},
+    "consistent_with_report": {"enum": ["yes", "partly", "no", "cannot_tell"]},
+    "inconsistencies": {"type": "array", "items": {"type": "string"}},
+    "not_determinable": {"type": "array", "items": {"type": "string"}}
+  }
+}

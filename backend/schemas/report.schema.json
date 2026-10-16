@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "disasterai/report.schema.json",
+  "title": "Report Agent output (prompt v3)",
+  "description": "Structured report plus the rendered Markdown. Every claim has a source tag and every recommendation cites a knowledge base entry. prompts/report/v1.md and v2.md return Markdown only, so this contract needs report v3 (mismatch M1). /validate checks this object.",
+  "type": "object",
+  "required": ["language", "location", "severity", "summary", "reported", "image_status", "observed", "knowledge", "assessment",
+               "recommendations", "uncertainties", "information_needed", "disclaimer", "report_markdown"],
+  "additionalProperties": false,
+  "properties": {
+    "language": {"enum": ["en", "fr"]},
+    "location": {"type": ["string", "null"], "description": "Only text stated in the incident report, else null."},
+    "severity": {"enum": ["low", "moderate", "high", "critical", "undetermined"]},
+    "summary": {"type": "string"},
+    "reported": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "image_status": {"enum": ["analysed", "not_provided", "unusable"]},
+    "observed": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["text", "confidence", "source"],
+        "additionalProperties": false,
+        "properties": {"text": {"type": "string"}, "confidence": {"enum": ["high", "medium", "low"]}, "source": {"const": "image"}}
+      }
+    },
+    "knowledge": {
+      "type": "object",
+      "required": ["coverage", "guidance", "no_guidance_statement"],
+      "additionalProperties": false,
+      "properties": {
+        "coverage": {"enum": ["good", "partial", "none"]},
+        "guidance": {"type": "array", "items": {"$ref": "#/$defs/cited"}},
+        "no_guidance_statement": {"type": ["string", "null"], "description": "Required when coverage is partial or none: says plainly that the knowledge base has no guidance for the need and refers to the authorities."}
+      }
+    },
+    "assessment": {
+      "type": "object",
+      "required": ["basis", "risks", "possibly_affected", "conflicts"],
+      "additionalProperties": false,
+      "properties": {
+        "basis": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+        "risks": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+        "possibly_affected": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+        "conflicts": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "recommendations": {"type": "array", "items": {"$ref": "#/$defs/cited"}},
+    "uncertainties": {"type": "array", "items": {"type": "string"}},
+    "information_needed": {"type": "array", "items": {"type": "string"}},
+    "disclaimer": {"type": "string", "minLength": 20},
+    "report_markdown": {"type": "string", "minLength": 20}
+  },
+  "$defs": {
+    "claim": {
+      "type": "object",
+      "required": ["text", "source"],
+      "additionalProperties": false,
+      "properties": {"text": {"type": "string"}, "source": {"enum": ["report", "image", "knowledge_base", "model_inference"]}}
+    },
+    "cited": {
+      "type": "object",
+      "required": ["text", "entry_id", "chunk_id"],
+      "additionalProperties": false,
+      "properties": {
+        "text": {"type": "string"},
+        "entry_id": {"type": "string", "pattern": "^(FL|ST|FI)-[0-9]{2}$"},
+        "chunk_id": {"type": "string"},
+        "source": {"const": "knowledge_base"}
+      }
+    }
+  }
+}

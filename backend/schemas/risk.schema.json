@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "disasterai/risk.schema.json",
+  "title": "Risk Assessment Agent output",
+  "description": "Every statement carries a source tag. Considerations cite a knowledge base entry id, which prompts/risk_assessment/v1.md does not ask for (mismatch M2, fixed by risk v2). Severity uses 'undetermined' where the incident agent uses 'unknown' (intentional, see M3).",
+  "type": "object",
+  "required": ["severity", "severity_basis", "main_risks", "possibly_affected", "conflicts_between_sources", "considerations",
+               "uncertainties", "information_needed"],
+  "additionalProperties": false,
+  "properties": {
+    "severity": {"enum": ["low", "moderate", "high", "critical", "undetermined"]},
+    "severity_basis": {"type": "array", "items": {"$ref": "#/$defs/statement"}},
+    "main_risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["risk", "basis", "source"],
+        "additionalProperties": false,
+        "properties": {"risk": {"type": "string"}, "basis": {"type": "string"}, "source": {"$ref": "#/$defs/source"}}
+      }
+    },
+    "possibly_affected": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["element", "source"],
+        "additionalProperties": false,
+        "properties": {"element": {"type": "string"}, "source": {"$ref": "#/$defs/source"}}
+      }
+    },
+    "conflicts_between_sources": {"type": "array", "items": {"type": "string"}},
+    "considerations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["text", "citation"],
+        "additionalProperties": false,
+        "properties": {
+          "text": {"type": "string"},
+          "citation": {
+            "type": "object",
+            "required": ["chunk_id", "source", "entry_id"],
+            "additionalProperties": false,
+            "properties": {
+              "chunk_id": {"type": "string"},
+              "source": {"type": "string"},
+              "page": {"type": "integer"},
+              "entry_id": {"type": "string", "pattern": "^(FL|ST|FI)-[0-9]{2}$"}
+            }
+          }
+        }
+      }
+    },
+    "uncertainties": {"type": "array", "items": {"type": "string"}},
+    "information_needed": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "source": {"enum": ["report", "image", "knowledge_base", "model_inference"]},
+    "statement": {
+      "type": "object",
+      "required": ["statement", "source"],
+      "additionalProperties": false,
+      "properties": {"statement": {"type": "string"}, "source": {"$ref": "#/$defs/source"}}
+    }
+  }
+}

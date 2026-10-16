@@ -1,0 +1,12 @@
+# Contract mismatches between prompts and schemas (2026-10-16)
+
+The schemas in `backend/schemas/` were written from `prompts/README.md` and the v1 prompts, then checked against what the prompts document (`python scripts/check_contracts.py`). Prompts were not edited. Each fix is a new version file with an entry in `prompts/CHANGELOG.md`. None of the new versions has been run on a model yet.
+
+| Id | Mismatch | Evidence | Fix |
+|----|----------|----------|-----|
+| M1 | Report agent returns Markdown (v1, v2). `/validate` needs structured recommendations, citations and a location field. | A Markdown string fails `report.schema.json`: "is not of type 'object'". | `prompts/report/v3.md`: JSON with the Markdown inside. v2 wording on partial coverage is folded in. |
+| M2 | Citations in the synthesis and risk prompts carry `chunk_id`, `source`, `page` but no knowledge base entry id. Recommendations cannot be checked against retrieved entries. `page` is always 1 (each KB file is one page for the loader), so it identifies nothing. | v1-shaped outputs fail with "'entry_id' is a required property". | `/search` now returns `entry_ids` per chunk. `prompts/rag_query/v2_synthesis.md` and `prompts/risk_assessment/v2.md` add `entry_id` to citations. |
+| M3 | Severity enums differ: incident agent `unknown`, risk and report `undetermined`. | Both appear in the prompts. | Not a defect. `scripts/run_incidents.py` compares the risk severity (`undetermined`) with `eval/incidents/*.json`. Kept. |
+| M4 | Source tags are explicit only in risk and report. Incident facts, vision observations and knowledge points are tagged by agent identity, not per claim. | Schemas: `incident` has no tag field, `vision` has none. | Kept. The schema descriptions state the implicit tag (report, image, knowledge_base). The report schema forces an explicit tag on every claim and `source: image` on observations. |
+| M5 | The RAG query prompt does not set a topic filter. | `rag_query/v1.md` output has only queries. | None needed. n8n sends `incident.rag_topic` with each `/search` call. The evaluation shows the filter helps (docs/EVIDENCE_LOG.md). |
+| M6 | The data contract says "if retrieval returns nothing, skip the synthesis". The fire entries now return something for almost every fire query, so `coverage: none` will be rare. | See docs/EVIDENCE_LOG.md and the FI-01 limits entry. | v3 rule 6 and `/validate` handle partial coverage and gaps, not only `none`. |
