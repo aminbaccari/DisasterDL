@@ -11,12 +11,15 @@ import os
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
+from backend.validate import router as validate_router
 from rag import chunking, embedder, store
 
 # Set DEFAULT_STRATEGY in .env after the chunking evaluation decides which is better.
 DEFAULT_STRATEGY = os.getenv("DEFAULT_STRATEGY", "fixed")
 
 app = FastAPI(title="DisasterAI RAG service")
+# One process and one port for n8n: /search (retrieval) and /validate (guardrails on the report).
+app.include_router(validate_router)
 
 
 class SearchRequest(BaseModel):
