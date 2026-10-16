@@ -1,0 +1,129 @@
+{
+  "incident_id": "edge_02_conflict",
+  "image_status": "missing_text_only",
+  "status_code": 200,
+  "raw_response": {
+    "status": "ok",
+    "incident_type": "flood",
+    "severity": "high",
+    "report_markdown": "# Preliminary incident assessment\nIncident type: flood | Location: Not stated | Severity (system assessment): high\n\n## Summary\nFlooding on the main road; Water is rising quickly\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\nCoverage: good\n- Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie. (FL-08)\n- Evacuation during river floods, storm surge and coastal flooding: review your evacuation plan so you can leave quickly if officials advise you to evacuate. (FL-03)\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.\n",
+    "report": {
+      "language": "en",
+      "location": null,
+      "severity": "high",
+      "summary": "Flooding on the main road; Water is rising quickly",
+      "reported": [
+        {
+          "text": "Flooding on the main road",
+          "source": "report"
+        },
+        {
+          "text": "Water is rising quickly",
+          "source": "report"
+        }
+      ],
+      "image_status": "not_provided",
+      "observed": [],
+      "knowledge": {
+        "coverage": "good",
+        "guidance": [
+          {
+            "text": "Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.",
+            "entry_id": "FL-08",
+            "chunk_id": "fr/flood_kb.md::section::4",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Evacuation during river floods, storm surge and coastal flooding: review your evacuation plan so you can leave quickly if officials advise you to evacuate.",
+            "entry_id": "FL-03",
+            "chunk_id": "en/flood_kb.md::section::3",
+            "source": "knowledge_base"
+          }
+        ],
+        "no_guidance_statement": null
+      },
+      "assessment": {
+        "basis": [
+          {
+            "text": "Flooding on the main road",
+            "source": "report"
+          },
+          {
+            "text": "Water is rising quickly",
+            "source": "report"
+          }
+        ],
+        "risks": [
+          {
+            "text": "Water reported rising quickly on a main road",
+            "source": "report"
+          }
+        ],
+        "possibly_affected": [],
+        "conflicts": []
+      },
+      "recommendations": [
+        {
+          "text": "Responders may wish to weigh: Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.",
+          "entry_id": "FL-08",
+          "chunk_id": "fr/flood_kb.md::section::4",
+          "source": "knowledge_base"
+        }
+      ],
+      "uncertainties": [
+        "No image was analysed",
+        "Location not stated"
+      ],
+      "information_needed": [
+        "Exact location",
+        "Water depth",
+        "Number of people affected"
+      ],
+      "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+      "report_markdown": "# Preliminary incident assessment\nIncident type: flood | Location: Not stated | Severity (system assessment): high\n\n## Summary\nFlooding on the main road; Water is rising quickly\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\nCoverage: good\n- Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie. (FL-08)\n- Evacuation during river floods, storm surge and coastal flooding: review your evacuation plan so you can leave quickly if officials advise you to evacuate. (FL-03)\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.\n"
+    },
+    "validation": {
+      "status": "pass",
+      "violations": [],
+      "repaired": false
+    },
+    "degraded_steps": [],
+    "knowledge_coverage": "good",
+    "retrieved_entry_ids": [
+      "FL-08",
+      "FL-03",
+      "FL-17",
+      "FL-25",
+      "FL-12",
+      "FL-13",
+      "FL-18",
+      "FL-07"
+    ],
+    "prompt_versions": {
+      "incident": "v1",
+      "vision": "v1",
+      "rag_queries": "v1",
+      "knowledge": "v2",
+      "risk": "v2",
+      "report": "v3"
+    }
+  },
+  "seconds": 4.8,
+  "incident_type": "flood",
+  "severity": "high",
+  "degraded_steps": [],
+  "prompt_versions": {
+    "incident": "v1",
+    "vision": "v1",
+    "rag_queries": "v1",
+    "knowledge": "v2",
+    "risk": "v2",
+    "report": "v3"
+  },
+  "checks": {
+    "incident_type_ok": true,
+    "severity_ok": true,
+    "has_report": true
+  },
+  "run": 1
+}

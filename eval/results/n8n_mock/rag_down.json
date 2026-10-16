@@ -1,0 +1,13 @@
+{
+ "label": "MOCK",
+ "case": "rag_service_down",
+ "status": "flagged",
+ "coverage": "none",
+ "validation": "unavailable",
+ "degraded": [
+  "RAG search: search failed: connect ECONNREFUSED 192.168.65.254:8010",
+  "RAG search: search failed: connect ECONNREFUSED 192.168.65.254:8010",
+  "RAG search: search failed: connect ECONNREFUSED 192.168.65.254:8010",
+  "validation: validate: the /validate service did not answer: connect ECONNREFUSED 1"
+ ]
+}

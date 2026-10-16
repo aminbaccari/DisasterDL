@@ -1,0 +1,138 @@
+{
+  "incident_id": "structural_01",
+  "image_status": "missing_text_only",
+  "status_code": 200,
+  "raw_response": {
+    "status": "ok",
+    "incident_type": "structural_emergency",
+    "severity": "critical",
+    "report_markdown": "# Preliminary incident assessment\nIncident type: structural_emergency | Location: Not stated | Severity (system assessment): critical\n\n## Summary\nPart of a five-storey apartment building has collapsed; Dust covers the street\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\nCoverage: good\n- Environmental hazards in a damaged building can be ranked in tiers. (ST-19)\n- Damaged parapets, chimneys, canopies and similar elements are falling hazards. (ST-26)\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.\n",
+    "report": {
+      "language": "en",
+      "location": null,
+      "severity": "critical",
+      "summary": "Part of a five-storey apartment building has collapsed; Dust covers the street",
+      "reported": [
+        {
+          "text": "Part of a five-storey apartment building has collapsed",
+          "source": "report"
+        },
+        {
+          "text": "Dust covers the street",
+          "source": "report"
+        },
+        {
+          "text": "Neighbours say some residents may still be inside (second-hand, unconfirmed)",
+          "source": "report"
+        }
+      ],
+      "image_status": "not_provided",
+      "observed": [],
+      "knowledge": {
+        "coverage": "good",
+        "guidance": [
+          {
+            "text": "Environmental hazards in a damaged building can be ranked in tiers.",
+            "entry_id": "ST-19",
+            "chunk_id": "en/structural_kb.md::section::17",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Damaged parapets, chimneys, canopies and similar elements are falling hazards.",
+            "entry_id": "ST-26",
+            "chunk_id": "en/structural_kb.md::section::23",
+            "source": "knowledge_base"
+          }
+        ],
+        "no_guidance_statement": null
+      },
+      "assessment": {
+        "basis": [
+          {
+            "text": "Part of a five-storey apartment building has collapsed",
+            "source": "report"
+          },
+          {
+            "text": "Dust covers the street",
+            "source": "report"
+          },
+          {
+            "text": "Neighbours say some residents may still be inside (second-hand, unconfirmed)",
+            "source": "report"
+          }
+        ],
+        "risks": [
+          {
+            "text": "Partial collapse with possibly trapped residents, reported second-hand",
+            "source": "report"
+          }
+        ],
+        "possibly_affected": [],
+        "conflicts": []
+      },
+      "recommendations": [
+        {
+          "text": "Responders may wish to weigh: Environmental hazards in a damaged building can be ranked in tiers.",
+          "entry_id": "ST-19",
+          "chunk_id": "en/structural_kb.md::section::17",
+          "source": "knowledge_base"
+        }
+      ],
+      "uncertainties": [
+        "No image was analysed",
+        "Location not stated"
+      ],
+      "information_needed": [
+        "Exact location",
+        "Number of residents possibly inside",
+        "Extent of the damage",
+        "Gas or fire hazards"
+      ],
+      "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+      "report_markdown": "# Preliminary incident assessment\nIncident type: structural_emergency | Location: Not stated | Severity (system assessment): critical\n\n## Summary\nPart of a five-storey apartment building has collapsed; Dust covers the street\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\nCoverage: good\n- Environmental hazards in a damaged building can be ranked in tiers. (ST-19)\n- Damaged parapets, chimneys, canopies and similar elements are falling hazards. (ST-26)\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.\n"
+    },
+    "validation": {
+      "status": "pass",
+      "violations": [],
+      "repaired": false
+    },
+    "degraded_steps": [],
+    "knowledge_coverage": "good",
+    "retrieved_entry_ids": [
+      "ST-19",
+      "ST-26",
+      "ST-16",
+      "ST-18",
+      "ST-23",
+      "ST-24",
+      "ST-14",
+      "ST-15"
+    ],
+    "prompt_versions": {
+      "incident": "v1",
+      "vision": "v1",
+      "rag_queries": "v1",
+      "knowledge": "v2",
+      "risk": "v2",
+      "report": "v3"
+    }
+  },
+  "seconds": 1.0,
+  "incident_type": "structural_emergency",
+  "severity": "critical",
+  "degraded_steps": [],
+  "prompt_versions": {
+    "incident": "v1",
+    "vision": "v1",
+    "rag_queries": "v1",
+    "knowledge": "v2",
+    "risk": "v2",
+    "report": "v3"
+  },
+  "checks": {
+    "incident_type_ok": true,
+    "severity_ok": true,
+    "has_report": true
+  },
+  "run": 1
+}

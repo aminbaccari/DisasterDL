@@ -7,6 +7,7 @@ From the n8n container, the service is reachable at http://host.docker.internal:
 (see docker-compose.yml).
 """
 import os
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -17,7 +18,15 @@ from rag import chunking, embedder, store
 # Set DEFAULT_STRATEGY in .env after the chunking evaluation decides which is better.
 DEFAULT_STRATEGY = os.getenv("DEFAULT_STRATEGY", "fixed")
 
-app = FastAPI(title="DisasterAI RAG service")
+@asynccontextmanager
+async def lifespan(app):
+    """Load the embedding model before the first request. Observed 2026-10-16: the first /search calls from n8n
+    arrived together while the model was loading and timed out after 30 s, so the workflow ran in degraded mode."""
+    embedder.embed_queries(["warm up"])
+    yield
+
+
+app = FastAPI(title="DisasterAI RAG service", lifespan=lifespan)
 # One process and one port for n8n: /search (retrieval) and /validate (guardrails on the report).
 app.include_router(validate_router)
 

@@ -20,7 +20,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\n\nconst item = $input.first();\nconst body = item.json.body || {};\nconst text = String(body.incident_text || '').trim();\nconst lang = String(body.output_language || 'en').trim().toLowerCase() === 'fr' ? 'fr' : 'en';\nlet image_b64 = null, image_mime = null, image_note = null;\nconst supported = ['image/png', 'image/jpeg', 'image/webp', 'image/heic', 'image/heif'];\nif (item.binary && item.binary.image) {\n  const mime = item.binary.image.mimeType;\n  if (supported.includes(mime)) {\n    const buf = await this.helpers.getBinaryDataBuffer(0, 'image');\n    image_b64 = buf.toString('base64');\n    image_mime = mime;\n  } else {\n    image_note = 'Unsupported image type: ' + mime;\n  }\n}\nconst valid = text.length >= 3;\nreturn [{ json: { valid, reason: valid ? null : 'incident_text is missing or too short', incident_text: text, output_language: lang,\n  has_image: image_b64 !== null, image_b64, image_mime, image_note, generated_at: new Date().toISOString() } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\nconst item = $input.first();\nconst body = item.json.body || {};\nconst text = String(body.incident_text || '').trim();\nconst lang = String(body.output_language || 'en').trim().toLowerCase() === 'fr' ? 'fr' : 'en';\nlet image_b64 = null, image_mime = null, image_note = null;\nconst supported = ['image/png', 'image/jpeg', 'image/webp', 'image/heic', 'image/heif'];\nif (item.binary && item.binary.image) {\n  const mime = item.binary.image.mimeType;\n  if (supported.includes(mime)) {\n    const buf = await this.helpers.getBinaryDataBuffer(0, 'image');\n    image_b64 = buf.toString('base64');\n    image_mime = mime;\n  } else {\n    image_note = 'Unsupported image type: ' + mime;\n  }\n}\nconst valid = text.length >= 3;\nreturn [{ json: { valid, reason: valid ? null : 'incident_text is missing or too short', incident_text: text, output_language: lang,\n  has_image: image_b64 !== null, image_b64, image_mime, image_note, generated_at: new Date().toISOString() } }];\n"
       },
       "id": "b3c2318a-3616-5705-b8bb-f2ec5b3e5b76",
       "name": "Normalise input",
@@ -98,7 +98,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\n\nconst n = $input.first().json;\nreturn [{ json: { status: 'rejected', error: n.reason, incident_type: null, severity: null, report_markdown: '', degraded_steps: [], prompt_versions: PV } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\nconst n = $input.first().json;\nreturn [{ json: { status: 'rejected', error: n.reason, incident_type: null, severity: null, report_markdown: '', degraded_steps: [], prompt_versions: PV } }];\n"
       },
       "id": "b19270c2-af75-5a44-80d2-630bb43d2fe6",
       "name": "Reject input",
@@ -197,7 +197,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  if (j.error) return { err: 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst norm = $('Normalise input').first().json;\nconst ENUMS = {\n  incident_type: ['forest_fire', 'flood', 'structural_emergency', 'other', 'unclear'],\n  type_confidence: ['high', 'medium', 'low'],\n  initial_severity: ['low', 'moderate', 'high', 'critical', 'unknown'],\n  people_at_risk_mentioned: ['yes', 'no', 'unknown'],\n  language: ['en', 'fr', 'ar', 'other'],\n};\nfunction problem(o) {\n  if (!o || typeof o !== 'object' || Array.isArray(o)) return 'the answer is not a JSON object';\n  for (const [k, allowed] of Object.entries(ENUMS)) if (!allowed.includes(o[k])) return k + ' has an invalid value: ' + JSON.stringify(o[k]);\n  if (!Array.isArray(o.reported_facts) || !Array.isArray(o.missing_information)) return 'reported_facts or missing_information is not a list';\n  if (!o.location || typeof o.location !== 'object') return 'location is missing';\n  return null;\n}\nconst r = readModel($input.first().json);\nlet out = r.value, degraded = [];\nconst why = r.err || problem(out);\nif (why) {\n  degraded.push({ step: 'incident understanding', reason: why });\n  out = { incident_type: 'unclear', type_confidence: 'low', location: { text: null, precision: 'unknown' }, reported_facts: [norm.incident_text],\n    initial_severity: 'unknown', severity_reason: 'Fallback: the Incident Understanding step failed', people_at_risk_mentioned: 'unknown',\n    missing_information: ['Everything: the report could not be analysed automatically'], language: norm.output_language, rag_topic: 'general', notes: null, parse_error: true };\n}\n// The topic follows the type by rule (prompts/README.md), whatever the model wrote.\nout.rag_topic = { forest_fire: 'fire', flood: 'flood', structural_emergency: 'structural' }[out.incident_type] || 'general';\nreturn [{ json: { ...out, _degraded: degraded } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  const tag = RETRIED ? '(after one retry) ' : '';\n  if (j.error) return { err: tag + 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: tag + 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: tag + 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst norm = $('Normalise input').first().json;\nconst ENUMS = {\n  incident_type: ['forest_fire', 'flood', 'structural_emergency', 'other', 'unclear'],\n  type_confidence: ['high', 'medium', 'low'],\n  initial_severity: ['low', 'moderate', 'high', 'critical', 'unknown'],\n  people_at_risk_mentioned: ['yes', 'no', 'unknown'],\n  language: ['en', 'fr', 'ar', 'other'],\n};\nfunction problem(o) {\n  if (!o || typeof o !== 'object' || Array.isArray(o)) return 'the answer is not a JSON object';\n  for (const [k, allowed] of Object.entries(ENUMS)) if (!allowed.includes(o[k])) return k + ' has an invalid value: ' + JSON.stringify(o[k]);\n  if (!Array.isArray(o.reported_facts) || !Array.isArray(o.missing_information)) return 'reported_facts or missing_information is not a list';\n  if (!o.location || typeof o.location !== 'object') return 'location is missing';\n  return null;\n}\nconst r = readModel($input.first().json);\nlet out = r.value, degraded = [];\nconst why = r.err || problem(out);\nif (why) {\n  degraded.push({ step: 'incident understanding', reason: why });\n  out = { incident_type: 'unclear', type_confidence: 'low', location: { text: null, precision: 'unknown' }, reported_facts: [norm.incident_text],\n    initial_severity: 'unknown', severity_reason: 'Fallback: the Incident Understanding step failed', people_at_risk_mentioned: 'unknown',\n    missing_information: ['Everything: the report could not be analysed automatically'], language: norm.output_language, rag_topic: 'general', notes: null, parse_error: true };\n}\n// The topic follows the type by rule (prompts/README.md), whatever the model wrote.\nout.rag_topic = { forest_fire: 'fire', flood: 'flood', structural_emergency: 'structural' }[out.incident_type] || 'general';\nreturn [{ json: { ...out, _degraded: degraded, _failed: !!why } }];\n"
       },
       "id": "b28dd114-e83c-52aa-b86c-a6033caba385",
       "name": "Parse incident",
@@ -205,6 +205,98 @@
       "typeVersion": 2,
       "position": [
         1560,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b4902157-0711-5f0c-970e-c5df0dcf71fa",
+              "leftValue": "={{ !$json._failed }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ec8644f5-f189-5bb3-a47b-aec3c2f76f34",
+      "name": "incident: answer usable?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1820,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Config').first().json.gemini_url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $('Prompt incident v1').first().json.system } }, contents: [{ role: 'user', parts: [{ text: $('Prompt incident v1').first().json.user }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "options": {
+          "timeout": 90000
+        }
+      },
+      "id": "3ff6ffbc-9342-596d-b74d-85e67a580bfb",
+      "name": "Gemini: incident (retry)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2080,
+        440
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "gemini-key",
+          "name": "Gemini key"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = true;\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  const tag = RETRIED ? '(after one retry) ' : '';\n  if (j.error) return { err: tag + 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: tag + 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: tag + 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst norm = $('Normalise input').first().json;\nconst ENUMS = {\n  incident_type: ['forest_fire', 'flood', 'structural_emergency', 'other', 'unclear'],\n  type_confidence: ['high', 'medium', 'low'],\n  initial_severity: ['low', 'moderate', 'high', 'critical', 'unknown'],\n  people_at_risk_mentioned: ['yes', 'no', 'unknown'],\n  language: ['en', 'fr', 'ar', 'other'],\n};\nfunction problem(o) {\n  if (!o || typeof o !== 'object' || Array.isArray(o)) return 'the answer is not a JSON object';\n  for (const [k, allowed] of Object.entries(ENUMS)) if (!allowed.includes(o[k])) return k + ' has an invalid value: ' + JSON.stringify(o[k]);\n  if (!Array.isArray(o.reported_facts) || !Array.isArray(o.missing_information)) return 'reported_facts or missing_information is not a list';\n  if (!o.location || typeof o.location !== 'object') return 'location is missing';\n  return null;\n}\nconst r = readModel($input.first().json);\nlet out = r.value, degraded = [];\nconst why = r.err || problem(out);\nif (why) {\n  degraded.push({ step: 'incident understanding', reason: why });\n  out = { incident_type: 'unclear', type_confidence: 'low', location: { text: null, precision: 'unknown' }, reported_facts: [norm.incident_text],\n    initial_severity: 'unknown', severity_reason: 'Fallback: the Incident Understanding step failed', people_at_risk_mentioned: 'unknown',\n    missing_information: ['Everything: the report could not be analysed automatically'], language: norm.output_language, rag_topic: 'general', notes: null, parse_error: true };\n}\n// The topic follows the type by rule (prompts/README.md), whatever the model wrote.\nout.rag_topic = { forest_fire: 'fire', flood: 'flood', structural_emergency: 'structural' }[out.incident_type] || 'general';\nreturn [{ json: { ...out, _degraded: degraded, _failed: !!why } }];\n"
+      },
+      "id": "24e914c1-e797-5071-a248-5007b3cef0df",
+      "name": "Parse incident (retry)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2340,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nreturn [{ json: $input.first().json }];"
+      },
+      "id": "0ec8319a-91c2-5f4f-9d96-3eb61cd81e1b",
+      "name": "Incident ready",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2600,
         300
       ]
     },
@@ -238,20 +330,20 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1820,
+        2600,
         300
       ]
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\n\nconst inc = $input.first().json;\nconst norm = $('Normalise input').first().json;\nconst fr = norm.output_language === 'fr';\nconst missing = (inc.missing_information || []);\nconst md = fr\n  ? '# Informations supplémentaires nécessaires\\n\\nLe rapport ne permet pas de classer l\\'incident ni d\\'évaluer sa gravité. Aucune hypothèse n\\'a été faite.\\n\\n' + missing.map(m => '- ' + m).join('\\n')\n  : '# More information needed\\n\\nThe report does not allow the incident to be classified or its severity to be assessed. Nothing was guessed.\\n\\n' + missing.map(m => '- ' + m).join('\\n');\nreturn [{ json: { status: 'needs_more_information', incident_type: inc.incident_type, severity: 'undetermined', report_markdown: md,\n  missing_information: missing, report: null, validation: null, degraded_steps: inc._degraded || [], prompt_versions: PV } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\nconst inc = $input.first().json;\nconst norm = $('Normalise input').first().json;\nconst fr = norm.output_language === 'fr';\nconst missing = (inc.missing_information || []);\nconst md = fr\n  ? '# Informations supplémentaires nécessaires\\n\\nLe rapport ne permet pas de classer l\\'incident ni d\\'évaluer sa gravité. Aucune hypothèse n\\'a été faite.\\n\\n' + missing.map(m => '- ' + m).join('\\n')\n  : '# More information needed\\n\\nThe report does not allow the incident to be classified or its severity to be assessed. Nothing was guessed.\\n\\n' + missing.map(m => '- ' + m).join('\\n');\nreturn [{ json: { status: inc.parse_error ? 'degraded' : 'needs_more_information', incident_type: inc.incident_type, severity: 'undetermined', report_markdown: md,\n  missing_information: missing, report: null, validation: null, degraded_steps: inc._degraded || [], prompt_versions: PV } }];\n"
       },
       "id": "c11c340f-1cf5-5171-9381-9b39d2115030",
       "name": "Ask for missing information",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2080,
+        2860,
         480
       ]
     },
@@ -268,7 +360,7 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
       "position": [
-        2340,
+        3120,
         480
       ]
     },
@@ -302,7 +394,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        2080,
+        2860,
         120
       ]
     },
@@ -339,7 +431,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2340,
+        3120,
         40
       ]
     },
@@ -361,7 +453,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2600,
+        3380,
         40
       ],
       "credentials": {
@@ -377,27 +469,119 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  if (j.error) return { err: 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst CATS = ['smoke', 'flames', 'flood_water', 'structural_damage', 'infrastructure', 'vehicles', 'people', 'vegetation', 'other'];\nfunction problem(o) {\n  if (!o || typeof o !== 'object' || Array.isArray(o)) return 'the answer is not a JSON object';\n  if (typeof o.image_usable !== 'boolean') return 'image_usable is not a boolean';\n  if (!Array.isArray(o.observations) || !Array.isArray(o.not_determinable) || !Array.isArray(o.inconsistencies)) return 'observations, not_determinable or inconsistencies is not a list';\n  if (!['yes', 'partly', 'no', 'cannot_tell'].includes(o.consistent_with_report)) return 'consistent_with_report has an invalid value';\n  if (o.observations.some(x => !CATS.includes(x.category) || !['high', 'medium', 'low'].includes(x.confidence))) return 'an observation has an invalid category or confidence';\n  return null;\n}\nconst r = readModel($input.first().json);\nconst why = r.err || problem(r.value);\nif (why) {\n  return [{ json: { vision: { image_usable: false, quality_issues: ['The vision step failed: ' + why], scene_summary: '', observations: [], visible_text: [],\n    consistent_with_report: 'cannot_tell', inconsistencies: [], not_determinable: [] }, degraded_a: [{ step: 'vision', reason: why }] } }];\n}\nreturn [{ json: { vision: r.value, degraded_a: [] } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  const tag = RETRIED ? '(after one retry) ' : '';\n  if (j.error) return { err: tag + 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: tag + 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: tag + 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst CATS = ['smoke', 'flames', 'flood_water', 'structural_damage', 'infrastructure', 'vehicles', 'people', 'vegetation', 'other'];\nfunction problem(o) {\n  if (!o || typeof o !== 'object' || Array.isArray(o)) return 'the answer is not a JSON object';\n  if (typeof o.image_usable !== 'boolean') return 'image_usable is not a boolean';\n  if (!Array.isArray(o.observations) || !Array.isArray(o.not_determinable) || !Array.isArray(o.inconsistencies)) return 'observations, not_determinable or inconsistencies is not a list';\n  if (!['yes', 'partly', 'no', 'cannot_tell'].includes(o.consistent_with_report)) return 'consistent_with_report has an invalid value';\n  if (o.observations.some(x => !CATS.includes(x.category) || !['high', 'medium', 'low'].includes(x.confidence))) return 'an observation has an invalid category or confidence';\n  return null;\n}\nconst r = readModel($input.first().json);\nconst why = r.err || problem(r.value);\nif (why) {\n  return [{ json: { vision: { image_usable: false, quality_issues: ['The vision step failed: ' + why], scene_summary: '', observations: [], visible_text: [],\n    consistent_with_report: 'cannot_tell', inconsistencies: [], not_determinable: [] }, degraded_a: [{ step: 'vision', reason: why }], _failed: true } }];\n}\nreturn [{ json: { vision: r.value, degraded_a: [], _failed: false } }];\n"
       },
       "id": "f7bdf9ee-86e4-50ea-9ded-3bbb46488677",
       "name": "Parse vision",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2860,
+        3640,
         40
       ]
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\n\nconst n = $('Normalise input').first().json;\nreturn [{ json: { vision: null, vision_skipped: n.image_note || 'No image was provided', degraded_a: [] } }];\n"
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "eb419fed-c5fe-51cb-bc38-677d29b319bb",
+              "leftValue": "={{ !$json._failed }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "2379adb5-d5e6-57dd-8984-c254c91df738",
+      "name": "vision: answer usable?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3900,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Config').first().json.gemini_url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $('Prompt vision v1').first().json.system } }, contents: [{ role: 'user', parts: [{ text: $('Prompt vision v1').first().json.user }, { inline_data: { mime_type: $('Normalise input').first().json.image_mime, data: $('Normalise input').first().json.image_b64 } }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "options": {
+          "timeout": 90000
+        }
+      },
+      "id": "de0c80cf-a7f0-5020-9609-61a65621c7d5",
+      "name": "Gemini: vision (retry)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4160,
+        180
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "gemini-key",
+          "name": "Gemini key"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = true;\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  const tag = RETRIED ? '(after one retry) ' : '';\n  if (j.error) return { err: tag + 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: tag + 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: tag + 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst CATS = ['smoke', 'flames', 'flood_water', 'structural_damage', 'infrastructure', 'vehicles', 'people', 'vegetation', 'other'];\nfunction problem(o) {\n  if (!o || typeof o !== 'object' || Array.isArray(o)) return 'the answer is not a JSON object';\n  if (typeof o.image_usable !== 'boolean') return 'image_usable is not a boolean';\n  if (!Array.isArray(o.observations) || !Array.isArray(o.not_determinable) || !Array.isArray(o.inconsistencies)) return 'observations, not_determinable or inconsistencies is not a list';\n  if (!['yes', 'partly', 'no', 'cannot_tell'].includes(o.consistent_with_report)) return 'consistent_with_report has an invalid value';\n  if (o.observations.some(x => !CATS.includes(x.category) || !['high', 'medium', 'low'].includes(x.confidence))) return 'an observation has an invalid category or confidence';\n  return null;\n}\nconst r = readModel($input.first().json);\nconst why = r.err || problem(r.value);\nif (why) {\n  return [{ json: { vision: { image_usable: false, quality_issues: ['The vision step failed: ' + why], scene_summary: '', observations: [], visible_text: [],\n    consistent_with_report: 'cannot_tell', inconsistencies: [], not_determinable: [] }, degraded_a: [{ step: 'vision', reason: why }], _failed: true } }];\n}\nreturn [{ json: { vision: r.value, degraded_a: [], _failed: false } }];\n"
+      },
+      "id": "3cdd3562-63c3-58be-88d0-df109c9b2935",
+      "name": "Parse vision (retry)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4420,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nreturn [{ json: $input.first().json }];"
+      },
+      "id": "fa986cac-ecdf-50be-b247-f793be11b31e",
+      "name": "Vision ready",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4680,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\nconst n = $('Normalise input').first().json;\nreturn [{ json: { vision: null, vision_skipped: n.image_note || 'No image was provided', degraded_a: [] } }];\n"
       },
       "id": "bc768783-edec-54f8-a27f-52f5c59bc8eb",
       "name": "No image: vision skipped",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2340,
+        3120,
         200
       ]
     },
@@ -415,7 +599,7 @@
             {
               "id": "1a852e7b-d826-5f7c-9f95-0277c046fb92",
               "name": "user",
-              "value": "={{ \"<incident_json>\\n\" + (JSON.stringify((({_degraded, ...r}) => r)($('Parse incident').first().json))) + \"\\n</incident_json>\" }}",
+              "value": "={{ \"<incident_json>\\n\" + (JSON.stringify((({_degraded, ...r}) => r)($('Incident ready').first().json))) + \"\\n</incident_json>\" }}",
               "type": "string"
             },
             {
@@ -434,7 +618,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2080,
+        2860,
         700
       ]
     },
@@ -456,7 +640,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2340,
+        3120,
         700
       ],
       "credentials": {
@@ -472,14 +656,106 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  if (j.error) return { err: 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst inc = $('Parse incident').first().json;\nconst r = readModel($input.first().json);\nlet queries = r.value && Array.isArray(r.value.queries) ? r.value.queries.filter(q => q && typeof q.text === 'string' && q.text.length > 2).slice(0, 3) : [];\nconst degraded = [];\nif (!queries.length) {\n  degraded.push({ step: 'RAG queries', reason: r.err || 'no usable queries in the answer; used the incident facts as the query' });\n  queries = [{ text: (inc.reported_facts || []).join('. ').slice(0, 200), language: inc.language === 'fr' ? 'fr' : 'en', need: 'fallback' }];\n}\nreturn [{ json: { queries, degraded_b: degraded } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  const tag = RETRIED ? '(after one retry) ' : '';\n  if (j.error) return { err: tag + 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: tag + 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: tag + 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst inc = $('Incident ready').first().json;\nconst r = readModel($input.first().json);\nlet queries = r.value && Array.isArray(r.value.queries) ? r.value.queries.filter(q => q && typeof q.text === 'string' && q.text.length > 2).slice(0, 3) : [];\nconst degraded = [];\nif (!queries.length) {\n  degraded.push({ step: 'RAG queries', reason: r.err || 'no usable queries in the answer; used the incident facts as the query' });\n  queries = [{ text: (inc.reported_facts || []).join('. ').slice(0, 200), language: inc.language === 'fr' ? 'fr' : 'en', need: 'fallback' }];\n}\nreturn [{ json: { queries, degraded_b: degraded, _failed: degraded.length > 0 } }];\n"
       },
-      "id": "edd02944-b824-5654-9c6d-d7d0845407df",
-      "name": "Parse queries",
+      "id": "9d1c0399-6b32-5f7c-90b1-8e05a9455e2a",
+      "name": "Parse RAG queries",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2600,
+        3380,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "dfe6ac20-637f-5cd3-a85e-bdbace791a10",
+              "leftValue": "={{ !$json._failed }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "428f6c71-f67f-597d-a45b-ae4fc0ec2d8e",
+      "name": "RAG queries: answer usable?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3640,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Config').first().json.gemini_url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $('Prompt rag queries v1').first().json.system } }, contents: [{ role: 'user', parts: [{ text: $('Prompt rag queries v1').first().json.user }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "options": {
+          "timeout": 90000
+        }
+      },
+      "id": "e78761f2-4588-53cb-9eb6-99a7686b22e9",
+      "name": "Gemini: RAG queries (retry)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3900,
+        840
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "gemini-key",
+          "name": "Gemini key"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = true;\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  const tag = RETRIED ? '(after one retry) ' : '';\n  if (j.error) return { err: tag + 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: tag + 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: tag + 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst inc = $('Incident ready').first().json;\nconst r = readModel($input.first().json);\nlet queries = r.value && Array.isArray(r.value.queries) ? r.value.queries.filter(q => q && typeof q.text === 'string' && q.text.length > 2).slice(0, 3) : [];\nconst degraded = [];\nif (!queries.length) {\n  degraded.push({ step: 'RAG queries', reason: r.err || 'no usable queries in the answer; used the incident facts as the query' });\n  queries = [{ text: (inc.reported_facts || []).join('. ').slice(0, 200), language: inc.language === 'fr' ? 'fr' : 'en', need: 'fallback' }];\n}\nreturn [{ json: { queries, degraded_b: degraded, _failed: degraded.length > 0 } }];\n"
+      },
+      "id": "3af64828-7a95-5ed3-8303-ae682869bfcb",
+      "name": "Parse RAG queries (retry)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4160,
+        840
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nreturn [{ json: $input.first().json }];"
+      },
+      "id": "83db6293-b61e-5ffc-b5de-0638849be52c",
+      "name": "Queries ready",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4420,
         700
       ]
     },
@@ -495,7 +771,7 @@
           "conditions": [
             {
               "id": "240b07f7-1871-5fd3-8767-d4d3f6421a3c",
-              "leftValue": "={{ $('Parse incident').first().json.rag_topic !== 'general' }}",
+              "leftValue": "={{ $('Incident ready').first().json.rag_topic !== 'general' }}",
               "rightValue": "",
               "operator": {
                 "type": "boolean",
@@ -513,20 +789,20 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        2860,
+        4420,
         700
       ]
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\n\nconst topic = $('Parse incident').first().json.rag_topic;\nconst q = $input.first().json.queries;\nreturn q.map(x => ({ json: { query: x.text, topic } }));\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\nconst topic = $('Incident ready').first().json.rag_topic;\nconst q = $input.first().json.queries;\nreturn q.map(x => ({ json: { query: x.text, topic } }));\n"
       },
       "id": "ae0c3448-6198-52f9-aa52-3f5090a8bca4",
       "name": "Split queries",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3120,
+        4680,
         640
       ]
     },
@@ -546,7 +822,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        3380,
+        4940,
         640
       ],
       "retryOnFail": true,
@@ -556,14 +832,14 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\n\nconst topic = $('Parse incident').first().json.rag_topic;\nconst degraded = [...($('Parse queries').first().json.degraded_b || [])];\nconst best = {};\nfor (const item of $input.all()) {\n  const j = item.json;\n  if (j.error || !Array.isArray(j.results)) { degraded.push({ step: 'RAG search', reason: 'search failed: ' + String((j.error && j.error.message) || 'no results field').slice(0, 200) }); continue; }\n  for (const r of j.results) if (!best[r.chunk_id] || r.score > best[r.chunk_id].score) best[r.chunk_id] = r;\n}\nconst passages = Object.values(best).sort((a, b) => b.score - a.score).slice(0, 8);\nreturn [{ json: { passages, retrieval: { topic, results: passages }, degraded_b: degraded } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\nconst topic = $('Incident ready').first().json.rag_topic;\nconst degraded = [...($('Queries ready').first().json.degraded_b || [])];\nconst best = {};\nfor (const item of $input.all()) {\n  const j = item.json;\n  if (j.error || !Array.isArray(j.results)) { degraded.push({ step: 'RAG search', reason: 'search failed: ' + String((j.error && j.error.message) || 'no results field').slice(0, 200) }); continue; }\n  for (const r of j.results) if (!best[r.chunk_id] || r.score > best[r.chunk_id].score) best[r.chunk_id] = r;\n}\nconst passages = Object.values(best).sort((a, b) => b.score - a.score).slice(0, 8);\nreturn [{ json: { passages, retrieval: { topic, results: passages }, degraded_b: degraded } }];\n"
       },
       "id": "db7a09fe-b5cb-51e9-b67e-032e2a0e3d91",
       "name": "Merge passages",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3640,
+        5200,
         640
       ]
     },
@@ -597,7 +873,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        3900,
+        5460,
         640
       ]
     },
@@ -615,7 +891,7 @@
             {
               "id": "94b2892c-746e-5284-970f-6533a783d0ac",
               "name": "user",
-              "value": "={{ \"<incident_json>\\n\" + (JSON.stringify((({_degraded, ...r}) => r)($('Parse incident').first().json))) + \"\\n</incident_json>\\n\\n<retrieved_passages>\\n\" + (JSON.stringify($('Merge passages').first().json.passages)) + \"\\n</retrieved_passages>\" }}",
+              "value": "={{ \"<incident_json>\\n\" + (JSON.stringify((({_degraded, ...r}) => r)($('Incident ready').first().json))) + \"\\n</incident_json>\\n\\n<retrieved_passages>\\n\" + (JSON.stringify($('Merge passages').first().json.passages)) + \"\\n</retrieved_passages>\" }}",
               "type": "string"
             },
             {
@@ -634,7 +910,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        4160,
+        5720,
         580
       ]
     },
@@ -656,7 +932,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        4420,
+        5980,
         580
       ],
       "credentials": {
@@ -672,27 +948,119 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  if (j.error) return { err: 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst merged = $('Merge passages').first().json;\nconst entries = {};\nfor (const p of merged.passages) entries[p.chunk_id] = p.entry_ids || [];\nconst r = readModel($input.first().json);\nconst degraded = [...(merged.degraded_b || [])];\nlet k = r.value;\nconst bad = !k || typeof k !== 'object' || !Array.isArray(k.relevant_guidance) || !['good', 'partial', 'none'].includes(k.coverage) || !Array.isArray(k.gaps);\nif (r.err || bad) {\n  degraded.push({ step: 'knowledge synthesis', reason: r.err || 'the answer does not match the knowledge contract' });\n  k = { relevant_guidance: [], ignored_chunks: [], coverage: 'none', gaps: ['The knowledge synthesis step failed'] };\n} else {\n  // A point is kept only if it cites an entry that the cited chunk really holds.\n  const kept = k.relevant_guidance.filter(g => g && g.citation && (entries[g.citation.chunk_id] || []).includes(g.citation.entry_id));\n  if (kept.length !== k.relevant_guidance.length) degraded.push({ step: 'knowledge synthesis', reason: (k.relevant_guidance.length - kept.length) + ' guidance point(s) removed: the cited entry is not in the cited chunk' });\n  k.relevant_guidance = kept;\n  if (!kept.length) k.coverage = 'none';\n}\nreturn [{ json: { knowledge: k, retrieval: merged.retrieval, degraded_b: degraded } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  const tag = RETRIED ? '(after one retry) ' : '';\n  if (j.error) return { err: tag + 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: tag + 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: tag + 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst merged = $('Merge passages').first().json;\nconst entries = {};\nfor (const p of merged.passages) entries[p.chunk_id] = p.entry_ids || [];\nconst r = readModel($input.first().json);\nconst degraded = [...(merged.degraded_b || [])];\nlet k = r.value;\nconst bad = !k || typeof k !== 'object' || !Array.isArray(k.relevant_guidance) || !['good', 'partial', 'none'].includes(k.coverage) || !Array.isArray(k.gaps);\nif (r.err || bad) {\n  degraded.push({ step: 'knowledge synthesis', reason: r.err || 'the answer does not match the knowledge contract' });\n  k = { relevant_guidance: [], ignored_chunks: [], coverage: 'none', gaps: ['The knowledge synthesis step failed'] };\n} else {\n  // A point is kept only if it cites an entry that the cited chunk really holds.\n  const kept = k.relevant_guidance.filter(g => g && g.citation && (entries[g.citation.chunk_id] || []).includes(g.citation.entry_id));\n  if (kept.length !== k.relevant_guidance.length) degraded.push({ step: 'knowledge synthesis', reason: (k.relevant_guidance.length - kept.length) + ' guidance point(s) removed: the cited entry is not in the cited chunk' });\n  k.relevant_guidance = kept;\n  if (!kept.length) k.coverage = 'none';\n}\nreturn [{ json: { knowledge: k, retrieval: merged.retrieval, degraded_b: degraded, _failed: !!(r.err || bad) } }];\n"
       },
       "id": "6bac90ca-1627-594a-81a4-4dbf76729429",
       "name": "Parse knowledge",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4680,
+        6240,
         580
       ]
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\n\nconst topic = $('Parse incident').first().json.rag_topic;\nconst j = $input.first().json;\nconst reason = topic === 'general' ? 'No retrieval for this incident type' : ((j.degraded_b || []).some(d => d.step === 'RAG search') ? 'The knowledge base search failed' : 'No passages retrieved');\nreturn [{ json: { knowledge: { relevant_guidance: [], ignored_chunks: [], coverage: 'none', gaps: [reason] },\n  retrieval: { topic, results: [] }, degraded_b: j.degraded_b || [] } }];\n"
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "216fd804-f9ed-5cda-8224-a716577c0dd4",
+              "leftValue": "={{ !$json._failed }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "8b33294e-cd56-581e-a55f-4783a737b1bf",
+      "name": "knowledge: answer usable?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        6500,
+        580
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Config').first().json.gemini_url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $('Prompt knowledge v2').first().json.system } }, contents: [{ role: 'user', parts: [{ text: $('Prompt knowledge v2').first().json.user }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "options": {
+          "timeout": 90000
+        }
+      },
+      "id": "c8e7db15-0bad-5892-afc2-ec80b6521d17",
+      "name": "Gemini: knowledge (retry)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6760,
+        720
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "gemini-key",
+          "name": "Gemini key"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = true;\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  const tag = RETRIED ? '(after one retry) ' : '';\n  if (j.error) return { err: tag + 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: tag + 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: tag + 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst merged = $('Merge passages').first().json;\nconst entries = {};\nfor (const p of merged.passages) entries[p.chunk_id] = p.entry_ids || [];\nconst r = readModel($input.first().json);\nconst degraded = [...(merged.degraded_b || [])];\nlet k = r.value;\nconst bad = !k || typeof k !== 'object' || !Array.isArray(k.relevant_guidance) || !['good', 'partial', 'none'].includes(k.coverage) || !Array.isArray(k.gaps);\nif (r.err || bad) {\n  degraded.push({ step: 'knowledge synthesis', reason: r.err || 'the answer does not match the knowledge contract' });\n  k = { relevant_guidance: [], ignored_chunks: [], coverage: 'none', gaps: ['The knowledge synthesis step failed'] };\n} else {\n  // A point is kept only if it cites an entry that the cited chunk really holds.\n  const kept = k.relevant_guidance.filter(g => g && g.citation && (entries[g.citation.chunk_id] || []).includes(g.citation.entry_id));\n  if (kept.length !== k.relevant_guidance.length) degraded.push({ step: 'knowledge synthesis', reason: (k.relevant_guidance.length - kept.length) + ' guidance point(s) removed: the cited entry is not in the cited chunk' });\n  k.relevant_guidance = kept;\n  if (!kept.length) k.coverage = 'none';\n}\nreturn [{ json: { knowledge: k, retrieval: merged.retrieval, degraded_b: degraded, _failed: !!(r.err || bad) } }];\n"
+      },
+      "id": "bcfeb22e-62d7-5b7d-bd2a-b88d441870a3",
+      "name": "Parse knowledge (retry)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7020,
+        720
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nreturn [{ json: $input.first().json }];"
+      },
+      "id": "2b5c74e9-84a9-5440-816f-109663cdf201",
+      "name": "Knowledge ready",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7280,
+        580
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\nconst topic = $('Incident ready').first().json.rag_topic;\nconst j = $input.first().json;\nconst reason = topic === 'general' ? 'No retrieval for this incident type' : ((j.degraded_b || []).some(d => d.step === 'RAG search') ? 'The knowledge base search failed' : 'No passages retrieved');\nreturn [{ json: { knowledge: { relevant_guidance: [], ignored_chunks: [], coverage: 'none', gaps: [reason] },\n  retrieval: { topic, results: [] }, degraded_b: j.degraded_b || [] } }];\n"
       },
       "id": "ea46dfe7-188e-551e-b1f9-62f737ae401b",
       "name": "Knowledge: none",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4160,
+        5720,
         800
       ]
     },
@@ -707,20 +1075,20 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        4940,
+        7540,
         300
       ]
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\n\nconst m = $input.first().json;\nconst inc = $('Parse incident').first().json;\nconst norm = $('Normalise input').first().json;\nconst { _degraded, ...incident } = inc;\nreturn [{ json: { incident, vision: m.vision === undefined ? null : m.vision, knowledge: m.knowledge, retrieval: m.retrieval,\n  output_language: norm.output_language, generated_at: norm.generated_at, incident_text: norm.incident_text,\n  degraded: [...(_degraded || []), ...(m.degraded_a || []), ...(m.degraded_b || [])] } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\nconst m = $input.first().json;\nconst inc = $('Incident ready').first().json;\nconst norm = $('Normalise input').first().json;\nconst { _degraded, ...incident } = inc;\nreturn [{ json: { incident, vision: m.vision === undefined ? null : m.vision, knowledge: m.knowledge, retrieval: m.retrieval,\n  output_language: norm.output_language, generated_at: norm.generated_at, incident_text: norm.incident_text,\n  degraded: [...(_degraded || []), ...(m.degraded_a || []), ...(m.degraded_b || [])] } }];\n"
       },
       "id": "b581fd26-0f34-566f-ad9e-b5c71575aba6",
       "name": "Assemble context",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5200,
+        7800,
         300
       ]
     },
@@ -757,7 +1125,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        5460,
+        8060,
         300
       ]
     },
@@ -779,7 +1147,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5720,
+        8320,
         300
       ],
       "credentials": {
@@ -795,14 +1163,106 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  if (j.error) return { err: 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst ctx = $('Assemble context').first().json;\nconst ids = new Set(); const byChunk = {};\nfor (const p of ctx.retrieval.results) { byChunk[p.chunk_id] = p.entry_ids || []; for (const e of byChunk[p.chunk_id]) ids.add(e); }\nconst SEV = ['low', 'moderate', 'high', 'critical', 'undetermined'];\nconst r = readModel($input.first().json);\nconst degraded = [];\nlet risk = r.value;\nconst bad = !risk || typeof risk !== 'object' || !SEV.includes(risk.severity) || !Array.isArray(risk.considerations) || !Array.isArray(risk.uncertainties) || !Array.isArray(risk.conflicts_between_sources);\nif (r.err || bad) {\n  degraded.push({ step: 'risk assessment', reason: r.err || 'the answer does not match the risk contract' });\n  risk = { severity: 'undetermined', severity_basis: [], main_risks: [], possibly_affected: [], conflicts_between_sources: [], considerations: [],\n    uncertainties: ['The risk assessment step failed, no severity could be assessed'], information_needed: ctx.incident.missing_information || [] };\n} else {\n  const kept = risk.considerations.filter(c => c && c.citation && (byChunk[c.citation.chunk_id] || []).includes(c.citation.entry_id));\n  if (kept.length !== risk.considerations.length) degraded.push({ step: 'risk assessment', reason: (risk.considerations.length - kept.length) + ' consideration(s) removed: the cited entry is not in the cited chunk' });\n  risk.considerations = kept;\n}\nreturn [{ json: { risk, degraded_c: degraded } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  const tag = RETRIED ? '(after one retry) ' : '';\n  if (j.error) return { err: tag + 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: tag + 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: tag + 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst ctx = $('Assemble context').first().json;\nconst ids = new Set(); const byChunk = {};\nfor (const p of ctx.retrieval.results) { byChunk[p.chunk_id] = p.entry_ids || []; for (const e of byChunk[p.chunk_id]) ids.add(e); }\nconst SEV = ['low', 'moderate', 'high', 'critical', 'undetermined'];\nconst r = readModel($input.first().json);\nconst degraded = [];\nlet risk = r.value;\nconst bad = !risk || typeof risk !== 'object' || !SEV.includes(risk.severity) || !Array.isArray(risk.considerations) || !Array.isArray(risk.uncertainties) || !Array.isArray(risk.conflicts_between_sources);\nif (r.err || bad) {\n  degraded.push({ step: 'risk assessment', reason: r.err || 'the answer does not match the risk contract' });\n  risk = { severity: 'undetermined', severity_basis: [], main_risks: [], possibly_affected: [], conflicts_between_sources: [], considerations: [],\n    uncertainties: ['The risk assessment step failed, no severity could be assessed'], information_needed: ctx.incident.missing_information || [] };\n} else {\n  const kept = risk.considerations.filter(c => c && c.citation && (byChunk[c.citation.chunk_id] || []).includes(c.citation.entry_id));\n  if (kept.length !== risk.considerations.length) degraded.push({ step: 'risk assessment', reason: (risk.considerations.length - kept.length) + ' consideration(s) removed: the cited entry is not in the cited chunk' });\n  risk.considerations = kept;\n}\nreturn [{ json: { risk, degraded_c: degraded, _failed: !!(r.err || bad) } }];\n"
       },
       "id": "2d32ff73-533d-5402-8142-7a6c47ddcfb5",
       "name": "Parse risk",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5980,
+        8580,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "82814a56-f7ad-5349-8e23-53ad702dc2a2",
+              "leftValue": "={{ !$json._failed }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f508316f-8329-5339-abf9-fefbd2996587",
+      "name": "risk: answer usable?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        8840,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Config').first().json.gemini_url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $('Prompt risk v2').first().json.system } }, contents: [{ role: 'user', parts: [{ text: $('Prompt risk v2').first().json.user }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "options": {
+          "timeout": 90000
+        }
+      },
+      "id": "b51daab9-50b0-5d08-96fc-b229d411ee65",
+      "name": "Gemini: risk (retry)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        9100,
+        440
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "gemini-key",
+          "name": "Gemini key"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = true;\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  const tag = RETRIED ? '(after one retry) ' : '';\n  if (j.error) return { err: tag + 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: tag + 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: tag + 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst ctx = $('Assemble context').first().json;\nconst ids = new Set(); const byChunk = {};\nfor (const p of ctx.retrieval.results) { byChunk[p.chunk_id] = p.entry_ids || []; for (const e of byChunk[p.chunk_id]) ids.add(e); }\nconst SEV = ['low', 'moderate', 'high', 'critical', 'undetermined'];\nconst r = readModel($input.first().json);\nconst degraded = [];\nlet risk = r.value;\nconst bad = !risk || typeof risk !== 'object' || !SEV.includes(risk.severity) || !Array.isArray(risk.considerations) || !Array.isArray(risk.uncertainties) || !Array.isArray(risk.conflicts_between_sources);\nif (r.err || bad) {\n  degraded.push({ step: 'risk assessment', reason: r.err || 'the answer does not match the risk contract' });\n  risk = { severity: 'undetermined', severity_basis: [], main_risks: [], possibly_affected: [], conflicts_between_sources: [], considerations: [],\n    uncertainties: ['The risk assessment step failed, no severity could be assessed'], information_needed: ctx.incident.missing_information || [] };\n} else {\n  const kept = risk.considerations.filter(c => c && c.citation && (byChunk[c.citation.chunk_id] || []).includes(c.citation.entry_id));\n  if (kept.length !== risk.considerations.length) degraded.push({ step: 'risk assessment', reason: (risk.considerations.length - kept.length) + ' consideration(s) removed: the cited entry is not in the cited chunk' });\n  risk.considerations = kept;\n}\nreturn [{ json: { risk, degraded_c: degraded, _failed: !!(r.err || bad) } }];\n"
+      },
+      "id": "4e893cff-09da-549b-9f12-04874e9e7585",
+      "name": "Parse risk (retry)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        9360,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nreturn [{ json: $input.first().json }];"
+      },
+      "id": "aeb99be3-c0b2-5b95-b7d9-aa1872150222",
+      "name": "Risk ready",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        9620,
         300
       ]
     },
@@ -820,7 +1280,7 @@
             {
               "id": "aa498967-8814-5377-a28c-f8adb3109777",
               "name": "user",
-              "value": "={{ \"output_language: \" + ($('Assemble context').first().json.output_language) + \"\\ngenerated_at: \" + ($('Assemble context').first().json.generated_at) + \"\\n\\n<incident_json>\\n\" + (JSON.stringify($('Assemble context').first().json.incident)) + \"\\n</incident_json>\\n\\n<vision_json>\\n\" + (JSON.stringify($('Assemble context').first().json.vision)) + \"\\n</vision_json>\\n\\n<knowledge_json>\\n\" + (JSON.stringify($('Assemble context').first().json.knowledge)) + \"\\n</knowledge_json>\\n\\n<risk_json>\\n\" + (JSON.stringify($('Parse risk').first().json.risk)) + \"\\n</risk_json>\" }}",
+              "value": "={{ \"output_language: \" + ($('Assemble context').first().json.output_language) + \"\\ngenerated_at: \" + ($('Assemble context').first().json.generated_at) + \"\\n\\n<incident_json>\\n\" + (JSON.stringify($('Assemble context').first().json.incident)) + \"\\n</incident_json>\\n\\n<vision_json>\\n\" + (JSON.stringify($('Assemble context').first().json.vision)) + \"\\n</vision_json>\\n\\n<knowledge_json>\\n\" + (JSON.stringify($('Assemble context').first().json.knowledge)) + \"\\n</knowledge_json>\\n\\n<risk_json>\\n\" + (JSON.stringify($('Risk ready').first().json.risk)) + \"\\n</risk_json>\" }}",
               "type": "string"
             },
             {
@@ -839,7 +1299,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        6240,
+        9620,
         300
       ]
     },
@@ -861,7 +1321,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        6500,
+        9880,
         300
       ],
       "credentials": {
@@ -877,14 +1337,106 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  if (j.error) return { err: 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst r = readModel($input.first().json);\nif (r.err || !r.value || typeof r.value !== 'object' || Array.isArray(r.value)) {\n  return [{ json: { report: null, degraded_d: [{ step: 'report', reason: r.err || 'the answer is not a JSON object' }] } }];\n}\nreturn [{ json: { report: r.value, degraded_d: [] } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  const tag = RETRIED ? '(after one retry) ' : '';\n  if (j.error) return { err: tag + 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: tag + 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: tag + 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst r = readModel($input.first().json);\nif (r.err || !r.value || typeof r.value !== 'object' || Array.isArray(r.value)) {\n  return [{ json: { report: null, degraded_d: [{ step: 'report', reason: r.err || 'the answer is not a JSON object' }], _failed: true } }];\n}\nreturn [{ json: { report: r.value, degraded_d: [], _failed: false } }];\n"
       },
       "id": "dfbbefa5-da4f-5558-a41a-365d4c5c9873",
       "name": "Parse report",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        6760,
+        10140,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "594492a8-0e2d-5f30-ac9b-d473ec60d33d",
+              "leftValue": "={{ !$json._failed }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a00a6caa-23c5-5390-be87-0a1daba5a3b3",
+      "name": "report: answer usable?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        10400,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Config').first().json.gemini_url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $('Prompt report v3').first().json.system } }, contents: [{ role: 'user', parts: [{ text: $('Prompt report v3').first().json.user }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "options": {
+          "timeout": 90000
+        }
+      },
+      "id": "9f74a6bc-f9d1-54e4-8d2a-c26129f9afd1",
+      "name": "Gemini: report (retry)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        10660,
+        440
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "gemini-key",
+          "name": "Gemini key"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = true;\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  const tag = RETRIED ? '(after one retry) ' : '';\n  if (j.error) return { err: tag + 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: tag + 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: tag + 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst r = readModel($input.first().json);\nif (r.err || !r.value || typeof r.value !== 'object' || Array.isArray(r.value)) {\n  return [{ json: { report: null, degraded_d: [{ step: 'report', reason: r.err || 'the answer is not a JSON object' }], _failed: true } }];\n}\nreturn [{ json: { report: r.value, degraded_d: [], _failed: false } }];\n"
+      },
+      "id": "ace7ffbb-97ae-58ff-b1e9-bb116a5a0e75",
+      "name": "Parse report (retry)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        10920,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nreturn [{ json: $input.first().json }];"
+      },
+      "id": "c818c248-44bb-59e3-af6f-4c1e64c961d4",
+      "name": "Report ready",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        11180,
         300
       ]
     },
@@ -918,7 +1470,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        7020,
+        11180,
         300
       ]
     },
@@ -938,7 +1490,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        7280,
+        11440,
         220
       ],
       "retryOnFail": true,
@@ -976,20 +1528,20 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        7540,
+        11700,
         220
       ]
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst SOURCE = 'Parse report', VALIDATION = true, REPAIRED = false;\n\n// SOURCE is the Parse node whose report is returned, VALIDATION the node that validated it.\nconst ctx = $('Assemble context').first().json;\nconst risk = $('Parse risk').first().json;\nconst parsed = $(SOURCE).first().json;\nconst v = VALIDATION ? $input.first().json : null;\nconst validation = !v ? { status: 'not_run', violations: [], repaired: REPAIRED }\n  : (v.error ? { status: 'unavailable', violations: [{ check: 'validate', message: 'the /validate service did not answer: ' + String(v.error.message || '').slice(0, 150) }], repaired: REPAIRED }\n  : { status: v.status, violations: v.violations || [], repaired: REPAIRED });\nconst degraded = [...ctx.degraded, ...(risk.degraded_c || []), ...(parsed.degraded_d || [])];\nif (!parsed.report) {\n  return [{ json: { status: 'degraded', incident_type: ctx.incident.incident_type, severity: risk.risk.severity, report_markdown: '', report: null, risk: risk.risk,\n    validation, degraded_steps: degraded, knowledge_coverage: ctx.knowledge.coverage, prompt_versions: PV } }];\n}\nconst status = validation.status !== 'pass' ? 'flagged' : (degraded.length ? 'degraded' : 'ok');\nif (validation.status !== 'pass') degraded.push({ step: 'validation', reason: validation.violations.map(x => x.check + ': ' + x.message).join(' | ').slice(0, 600) || validation.status });\nconst ids = [...new Set(ctx.retrieval.results.flatMap(r => r.entry_ids || []))];\nreturn [{ json: { status, incident_type: ctx.incident.incident_type, severity: parsed.report.severity || risk.risk.severity,\n  report_markdown: parsed.report.report_markdown || '', report: parsed.report, validation, degraded_steps: degraded,\n  knowledge_coverage: ctx.knowledge.coverage, retrieved_entry_ids: ids, prompt_versions: PV } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nconst SOURCE = 'Report ready', VALIDATION = true, REPAIRED = false;\n\n// SOURCE is the Parse node whose report is returned, VALIDATION the node that validated it.\nconst ctx = $('Assemble context').first().json;\nconst risk = $('Risk ready').first().json;\nconst parsed = $(SOURCE).first().json;\nconst v = VALIDATION ? $input.first().json : null;\nconst validation = !v ? { status: 'not_run', violations: [], repaired: REPAIRED }\n  : (v.error ? { status: 'unavailable', violations: [{ check: 'validate', message: 'the /validate service did not answer: ' + String(v.error.message || '').slice(0, 150) }], repaired: REPAIRED }\n  : { status: v.status, violations: v.violations || [], repaired: REPAIRED });\nconst degraded = [...ctx.degraded, ...(risk.degraded_c || []), ...(parsed.degraded_d || [])];\nif (!parsed.report) {\n  return [{ json: { status: 'degraded', incident_type: ctx.incident.incident_type, severity: risk.risk.severity, report_markdown: '', report: null, risk: risk.risk,\n    validation, degraded_steps: degraded, knowledge_coverage: ctx.knowledge.coverage, prompt_versions: PV } }];\n}\nconst status = validation.status !== 'pass' ? 'flagged' : (degraded.length ? 'degraded' : 'ok');\nif (validation.status !== 'pass') degraded.push({ step: 'validation', reason: validation.violations.map(x => x.check + ': ' + x.message).join(' | ').slice(0, 600) || validation.status });\nconst ids = [...new Set(ctx.retrieval.results.flatMap(r => r.entry_ids || []))];\nreturn [{ json: { status, incident_type: ctx.incident.incident_type, severity: parsed.report.severity || risk.risk.severity,\n  report_markdown: parsed.report.report_markdown || '', report: parsed.report, validation, degraded_steps: degraded,\n  knowledge_coverage: ctx.knowledge.coverage, retrieved_entry_ids: ids, prompt_versions: PV } }];\n"
       },
       "id": "4a68b6de-6af2-5065-88ae-b75cdf1db978",
       "name": "Build response",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7800,
+        11960,
         140
       ]
     },
@@ -1006,7 +1558,7 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
       "position": [
-        8060,
+        12220,
         140
       ]
     },
@@ -1024,7 +1576,7 @@
             {
               "id": "129e107a-6fb7-5158-98f3-1f7c71098002",
               "name": "user",
-              "value": "={{ $('Prompt report v3').first().json.user + '\\n\\nYour previous answer failed these automatic checks. Fix only what they name, keep everything else, and return the full JSON object again.\\n<failed_checks>\\n' + JSON.stringify($json.violations || $json.error || 'validation service unavailable') + '\\n</failed_checks>\\n<previous_answer>\\n' + JSON.stringify($('Parse report').first().json.report) + '\\n</previous_answer>' }}",
+              "value": "={{ $('Prompt report v3').first().json.user + '\\n\\nYour previous answer failed these automatic checks. Fix only what they name, keep everything else, and return the full JSON object again.\\n<failed_checks>\\n' + JSON.stringify($json.violations || $json.error || 'validation service unavailable') + '\\n</failed_checks>\\n<previous_answer>\\n' + JSON.stringify($('Report ready').first().json.report) + '\\n</previous_answer>' }}",
               "type": "string"
             },
             {
@@ -1043,8 +1595,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        7800,
-        380
+        11960,
+        460
       ]
     },
     {
@@ -1060,13 +1612,13 @@
           "timeout": 90000
         }
       },
-      "id": "1bef10d7-1137-563c-b77e-fedefb9148b6",
-      "name": "Gemini: repair report",
+      "id": "22683cd7-27fb-5f9d-ba93-db4e6c2fc973",
+      "name": "Gemini: repaired report",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        8060,
-        380
+        12220,
+        460
       ],
       "credentials": {
         "httpHeaderAuth": {
@@ -1081,15 +1633,107 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  if (j.error) return { err: 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst r = readModel($input.first().json);\nif (r.err || !r.value || typeof r.value !== 'object' || Array.isArray(r.value)) {\n  return [{ json: { report: null, degraded_d: [{ step: 'report', reason: r.err || 'the answer is not a JSON object' }] } }];\n}\nreturn [{ json: { report: r.value, degraded_d: [] } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  const tag = RETRIED ? '(after one retry) ' : '';\n  if (j.error) return { err: tag + 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: tag + 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: tag + 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst r = readModel($input.first().json);\nif (r.err || !r.value || typeof r.value !== 'object' || Array.isArray(r.value)) {\n  return [{ json: { report: null, degraded_d: [{ step: 'report', reason: r.err || 'the answer is not a JSON object' }], _failed: true } }];\n}\nreturn [{ json: { report: r.value, degraded_d: [], _failed: false } }];\n"
       },
       "id": "6dc18b3f-b3f6-5243-94eb-e1806e96cfb4",
       "name": "Parse repaired report",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        8320,
-        380
+        12480,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d30ea3ea-ca41-580a-84fd-501ed90ea695",
+              "leftValue": "={{ !$json._failed }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a852aea1-326c-5a23-afce-8c634af7f35f",
+      "name": "repaired report: answer usable?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        12740,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Config').first().json.gemini_url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $('Prompt report repair v3').first().json.system } }, contents: [{ role: 'user', parts: [{ text: $('Prompt report repair v3').first().json.user }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "options": {
+          "timeout": 90000
+        }
+      },
+      "id": "90775614-b11b-526e-b38f-bff40adb9af9",
+      "name": "Gemini: repaired report (retry)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        13000,
+        600
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "gemini-key",
+          "name": "Gemini key"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = true;\n\n// Text of a Gemini answer, or the reason it could not be read.\nfunction readModel(j) {\n  const tag = RETRIED ? '(after one retry) ' : '';\n  if (j.error) return { err: tag + 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };\n  let t;\n  try { t = j.candidates[0].content.parts[0].text; } catch (e) {\n    return { err: tag + 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };\n  }\n  t = String(t).trim().replace(/^```(?:json)?\\s*/i, '').replace(/\\s*```$/, '');\n  try { return { value: JSON.parse(t) }; } catch (e) { return { err: tag + 'invalid JSON from the model: ' + t.slice(0, 120) }; }\n}\n\nconst r = readModel($input.first().json);\nif (r.err || !r.value || typeof r.value !== 'object' || Array.isArray(r.value)) {\n  return [{ json: { report: null, degraded_d: [{ step: 'report', reason: r.err || 'the answer is not a JSON object' }], _failed: true } }];\n}\nreturn [{ json: { report: r.value, degraded_d: [], _failed: false } }];\n"
+      },
+      "id": "91b76e3a-e833-5d22-a969-893ab4389503",
+      "name": "Parse repaired report (retry)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        13260,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nreturn [{ json: $input.first().json }];"
+      },
+      "id": "9bdbdb6a-29c6-5e5b-9db2-ab270a4fca5f",
+      "name": "Repaired report ready",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        13520,
+        460
       ]
     },
     {
@@ -1108,8 +1752,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        8580,
-        380
+        13520,
+        460
       ],
       "retryOnFail": true,
       "maxTries": 2,
@@ -1118,15 +1762,15 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst SOURCE = 'Parse repaired report', VALIDATION = true, REPAIRED = true;\n\n// SOURCE is the Parse node whose report is returned, VALIDATION the node that validated it.\nconst ctx = $('Assemble context').first().json;\nconst risk = $('Parse risk').first().json;\nconst parsed = $(SOURCE).first().json;\nconst v = VALIDATION ? $input.first().json : null;\nconst validation = !v ? { status: 'not_run', violations: [], repaired: REPAIRED }\n  : (v.error ? { status: 'unavailable', violations: [{ check: 'validate', message: 'the /validate service did not answer: ' + String(v.error.message || '').slice(0, 150) }], repaired: REPAIRED }\n  : { status: v.status, violations: v.violations || [], repaired: REPAIRED });\nconst degraded = [...ctx.degraded, ...(risk.degraded_c || []), ...(parsed.degraded_d || [])];\nif (!parsed.report) {\n  return [{ json: { status: 'degraded', incident_type: ctx.incident.incident_type, severity: risk.risk.severity, report_markdown: '', report: null, risk: risk.risk,\n    validation, degraded_steps: degraded, knowledge_coverage: ctx.knowledge.coverage, prompt_versions: PV } }];\n}\nconst status = validation.status !== 'pass' ? 'flagged' : (degraded.length ? 'degraded' : 'ok');\nif (validation.status !== 'pass') degraded.push({ step: 'validation', reason: validation.violations.map(x => x.check + ': ' + x.message).join(' | ').slice(0, 600) || validation.status });\nconst ids = [...new Set(ctx.retrieval.results.flatMap(r => r.entry_ids || []))];\nreturn [{ json: { status, incident_type: ctx.incident.incident_type, severity: parsed.report.severity || risk.risk.severity,\n  report_markdown: parsed.report.report_markdown || '', report: parsed.report, validation, degraded_steps: degraded,\n  knowledge_coverage: ctx.knowledge.coverage, retrieved_entry_ids: ids, prompt_versions: PV } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nconst SOURCE = 'Repaired report ready', VALIDATION = true, REPAIRED = true;\n\n// SOURCE is the Parse node whose report is returned, VALIDATION the node that validated it.\nconst ctx = $('Assemble context').first().json;\nconst risk = $('Risk ready').first().json;\nconst parsed = $(SOURCE).first().json;\nconst v = VALIDATION ? $input.first().json : null;\nconst validation = !v ? { status: 'not_run', violations: [], repaired: REPAIRED }\n  : (v.error ? { status: 'unavailable', violations: [{ check: 'validate', message: 'the /validate service did not answer: ' + String(v.error.message || '').slice(0, 150) }], repaired: REPAIRED }\n  : { status: v.status, violations: v.violations || [], repaired: REPAIRED });\nconst degraded = [...ctx.degraded, ...(risk.degraded_c || []), ...(parsed.degraded_d || [])];\nif (!parsed.report) {\n  return [{ json: { status: 'degraded', incident_type: ctx.incident.incident_type, severity: risk.risk.severity, report_markdown: '', report: null, risk: risk.risk,\n    validation, degraded_steps: degraded, knowledge_coverage: ctx.knowledge.coverage, prompt_versions: PV } }];\n}\nconst status = validation.status !== 'pass' ? 'flagged' : (degraded.length ? 'degraded' : 'ok');\nif (validation.status !== 'pass') degraded.push({ step: 'validation', reason: validation.violations.map(x => x.check + ': ' + x.message).join(' | ').slice(0, 600) || validation.status });\nconst ids = [...new Set(ctx.retrieval.results.flatMap(r => r.entry_ids || []))];\nreturn [{ json: { status, incident_type: ctx.incident.incident_type, severity: parsed.report.severity || risk.risk.severity,\n  report_markdown: parsed.report.report_markdown || '', report: parsed.report, validation, degraded_steps: degraded,\n  knowledge_coverage: ctx.knowledge.coverage, retrieved_entry_ids: ids, prompt_versions: PV } }];\n"
       },
       "id": "9eb654f8-8f3d-5616-9b35-7f64ea333476",
       "name": "Build response (after repair)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        8840,
-        380
+        13780,
+        460
       ]
     },
     {
@@ -1142,21 +1786,21 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
       "position": [
-        9100,
-        380
+        14040,
+        460
       ]
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst SOURCE = 'Parse report', VALIDATION = false, REPAIRED = false;\n\n// SOURCE is the Parse node whose report is returned, VALIDATION the node that validated it.\nconst ctx = $('Assemble context').first().json;\nconst risk = $('Parse risk').first().json;\nconst parsed = $(SOURCE).first().json;\nconst v = VALIDATION ? $input.first().json : null;\nconst validation = !v ? { status: 'not_run', violations: [], repaired: REPAIRED }\n  : (v.error ? { status: 'unavailable', violations: [{ check: 'validate', message: 'the /validate service did not answer: ' + String(v.error.message || '').slice(0, 150) }], repaired: REPAIRED }\n  : { status: v.status, violations: v.violations || [], repaired: REPAIRED });\nconst degraded = [...ctx.degraded, ...(risk.degraded_c || []), ...(parsed.degraded_d || [])];\nif (!parsed.report) {\n  return [{ json: { status: 'degraded', incident_type: ctx.incident.incident_type, severity: risk.risk.severity, report_markdown: '', report: null, risk: risk.risk,\n    validation, degraded_steps: degraded, knowledge_coverage: ctx.knowledge.coverage, prompt_versions: PV } }];\n}\nconst status = validation.status !== 'pass' ? 'flagged' : (degraded.length ? 'degraded' : 'ok');\nif (validation.status !== 'pass') degraded.push({ step: 'validation', reason: validation.violations.map(x => x.check + ': ' + x.message).join(' | ').slice(0, 600) || validation.status });\nconst ids = [...new Set(ctx.retrieval.results.flatMap(r => r.entry_ids || []))];\nreturn [{ json: { status, incident_type: ctx.incident.incident_type, severity: parsed.report.severity || risk.risk.severity,\n  report_markdown: parsed.report.report_markdown || '', report: parsed.report, validation, degraded_steps: degraded,\n  knowledge_coverage: ctx.knowledge.coverage, retrieved_entry_ids: ids, prompt_versions: PV } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nconst SOURCE = 'Report ready', VALIDATION = false, REPAIRED = false;\n\n// SOURCE is the Parse node whose report is returned, VALIDATION the node that validated it.\nconst ctx = $('Assemble context').first().json;\nconst risk = $('Risk ready').first().json;\nconst parsed = $(SOURCE).first().json;\nconst v = VALIDATION ? $input.first().json : null;\nconst validation = !v ? { status: 'not_run', violations: [], repaired: REPAIRED }\n  : (v.error ? { status: 'unavailable', violations: [{ check: 'validate', message: 'the /validate service did not answer: ' + String(v.error.message || '').slice(0, 150) }], repaired: REPAIRED }\n  : { status: v.status, violations: v.violations || [], repaired: REPAIRED });\nconst degraded = [...ctx.degraded, ...(risk.degraded_c || []), ...(parsed.degraded_d || [])];\nif (!parsed.report) {\n  return [{ json: { status: 'degraded', incident_type: ctx.incident.incident_type, severity: risk.risk.severity, report_markdown: '', report: null, risk: risk.risk,\n    validation, degraded_steps: degraded, knowledge_coverage: ctx.knowledge.coverage, prompt_versions: PV } }];\n}\nconst status = validation.status !== 'pass' ? 'flagged' : (degraded.length ? 'degraded' : 'ok');\nif (validation.status !== 'pass') degraded.push({ step: 'validation', reason: validation.violations.map(x => x.check + ': ' + x.message).join(' | ').slice(0, 600) || validation.status });\nconst ids = [...new Set(ctx.retrieval.results.flatMap(r => r.entry_ids || []))];\nreturn [{ json: { status, incident_type: ctx.incident.incident_type, severity: parsed.report.severity || risk.risk.severity,\n  report_markdown: parsed.report.report_markdown || '', report: parsed.report, validation, degraded_steps: degraded,\n  knowledge_coverage: ctx.knowledge.coverage, retrieved_entry_ids: ids, prompt_versions: PV } }];\n"
       },
       "id": "7dcfcc68-1521-597c-98f6-f48b214bd859",
       "name": "Degraded response",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7280,
-        520
+        11440,
+        600
       ]
     },
     {
@@ -1172,8 +1816,8 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
       "position": [
-        7540,
-        520
+        11700,
+        600
       ]
     }
   ],
@@ -1240,17 +1884,6 @@
         ]
       ]
     },
-    "Prompt incident v1": {
-      "main": [
-        [
-          {
-            "node": "Gemini: incident",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Gemini: incident": {
       "main": [
         [
@@ -1263,6 +1896,68 @@
       ]
     },
     "Parse incident": {
+      "main": [
+        [
+          {
+            "node": "incident: answer usable?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "incident: answer usable?": {
+      "main": [
+        [
+          {
+            "node": "Incident ready",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gemini: incident (retry)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini: incident (retry)": {
+      "main": [
+        [
+          {
+            "node": "Parse incident (retry)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse incident (retry)": {
+      "main": [
+        [
+          {
+            "node": "Incident ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prompt incident v1": {
+      "main": [
+        [
+          {
+            "node": "Gemini: incident",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Incident ready": {
       "main": [
         [
           {
@@ -1307,6 +2002,68 @@
         ]
       ]
     },
+    "Gemini: vision": {
+      "main": [
+        [
+          {
+            "node": "Parse vision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse vision": {
+      "main": [
+        [
+          {
+            "node": "vision: answer usable?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "vision: answer usable?": {
+      "main": [
+        [
+          {
+            "node": "Vision ready",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gemini: vision (retry)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini: vision (retry)": {
+      "main": [
+        [
+          {
+            "node": "Parse vision (retry)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse vision (retry)": {
+      "main": [
+        [
+          {
+            "node": "Vision ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Has image?": {
       "main": [
         [
@@ -1336,33 +2093,124 @@
         ]
       ]
     },
-    "Gemini: vision": {
+    "Gemini: RAG queries": {
       "main": [
         [
           {
-            "node": "Parse vision",
+            "node": "Parse RAG queries",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Parse vision": {
+    "Parse RAG queries": {
       "main": [
         [
           {
-            "node": "Wait for both branches",
+            "node": "RAG queries: answer usable?",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "No image: vision skipped": {
+    "RAG queries: answer usable?": {
       "main": [
         [
           {
-            "node": "Wait for both branches",
+            "node": "Queries ready",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gemini: RAG queries (retry)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini: RAG queries (retry)": {
+      "main": [
+        [
+          {
+            "node": "Parse RAG queries (retry)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse RAG queries (retry)": {
+      "main": [
+        [
+          {
+            "node": "Queries ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini: knowledge": {
+      "main": [
+        [
+          {
+            "node": "Parse knowledge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse knowledge": {
+      "main": [
+        [
+          {
+            "node": "knowledge: answer usable?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "knowledge: answer usable?": {
+      "main": [
+        [
+          {
+            "node": "Knowledge ready",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gemini: knowledge (retry)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini: knowledge (retry)": {
+      "main": [
+        [
+          {
+            "node": "Parse knowledge (retry)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse knowledge (retry)": {
+      "main": [
+        [
+          {
+            "node": "Knowledge ready",
             "type": "main",
             "index": 0
           }
@@ -1380,18 +2228,7 @@
         ]
       ]
     },
-    "Gemini: RAG queries": {
-      "main": [
-        [
-          {
-            "node": "Parse queries",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Parse queries": {
+    "Queries ready": {
       "main": [
         [
           {
@@ -1482,18 +2319,29 @@
         ]
       ]
     },
-    "Gemini: knowledge": {
+    "Vision ready": {
       "main": [
         [
           {
-            "node": "Parse knowledge",
+            "node": "Wait for both branches",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Parse knowledge": {
+    "No image: vision skipped": {
+      "main": [
+        [
+          {
+            "node": "Wait for both branches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Knowledge ready": {
       "main": [
         [
           {
@@ -1526,6 +2374,68 @@
         ]
       ]
     },
+    "Gemini: risk": {
+      "main": [
+        [
+          {
+            "node": "Parse risk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse risk": {
+      "main": [
+        [
+          {
+            "node": "risk: answer usable?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "risk: answer usable?": {
+      "main": [
+        [
+          {
+            "node": "Risk ready",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gemini: risk (retry)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini: risk (retry)": {
+      "main": [
+        [
+          {
+            "node": "Parse risk (retry)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse risk (retry)": {
+      "main": [
+        [
+          {
+            "node": "Risk ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Assemble context": {
       "main": [
         [
@@ -1548,18 +2458,69 @@
         ]
       ]
     },
-    "Gemini: risk": {
+    "Gemini: report": {
       "main": [
         [
           {
-            "node": "Parse risk",
+            "node": "Parse report",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Parse risk": {
+    "Parse report": {
+      "main": [
+        [
+          {
+            "node": "report: answer usable?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "report: answer usable?": {
+      "main": [
+        [
+          {
+            "node": "Report ready",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gemini: report (retry)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini: report (retry)": {
+      "main": [
+        [
+          {
+            "node": "Parse report (retry)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse report (retry)": {
+      "main": [
+        [
+          {
+            "node": "Report ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Risk ready": {
       "main": [
         [
           {
@@ -1581,18 +2542,7 @@
         ]
       ]
     },
-    "Gemini: report": {
-      "main": [
-        [
-          {
-            "node": "Parse report",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Parse report": {
+    "Report ready": {
       "main": [
         [
           {
@@ -1615,17 +2565,6 @@
         [
           {
             "node": "Degraded response",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Degraded response": {
-      "main": [
-        [
-          {
-            "node": "Respond degraded",
             "type": "main",
             "index": 0
           }
@@ -1672,18 +2611,7 @@
         ]
       ]
     },
-    "Prompt report repair v3": {
-      "main": [
-        [
-          {
-            "node": "Gemini: repair report",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Gemini: repair report": {
+    "Gemini: repaired report": {
       "main": [
         [
           {
@@ -1695,6 +2623,68 @@
       ]
     },
     "Parse repaired report": {
+      "main": [
+        [
+          {
+            "node": "repaired report: answer usable?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "repaired report: answer usable?": {
+      "main": [
+        [
+          {
+            "node": "Repaired report ready",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gemini: repaired report (retry)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini: repaired report (retry)": {
+      "main": [
+        [
+          {
+            "node": "Parse repaired report (retry)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse repaired report (retry)": {
+      "main": [
+        [
+          {
+            "node": "Repaired report ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prompt report repair v3": {
+      "main": [
+        [
+          {
+            "node": "Gemini: repaired report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Repaired report ready": {
       "main": [
         [
           {
@@ -1721,6 +2711,17 @@
         [
           {
             "node": "Respond after repair",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Degraded response": {
+      "main": [
+        [
+          {
+            "node": "Respond degraded",
             "type": "main",
             "index": 0
           }

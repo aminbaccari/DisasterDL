@@ -1,0 +1,87 @@
+{
+ "too_short": {
+  "label": "MOCK",
+  "http": 400,
+  "seconds": 1.8,
+  "status": "rejected",
+  "incident_type": null,
+  "severity": null,
+  "degraded": []
+ },
+ "gemini_unreachable": {
+  "label": "MOCK",
+  "http": 200,
+  "seconds": 7.0,
+  "status": "degraded",
+  "incident_type": "unclear",
+  "severity": "undetermined",
+  "degraded": [
+   "incident understanding: (after one retry) Gemini request failed: connect ECONNREFUSED 192.168."
+  ]
+ },
+ "normal_vague": {
+  "label": "MOCK",
+  "http": 200,
+  "seconds": 0.3,
+  "status": "needs_more_information",
+  "incident_type": "unclear",
+  "severity": "undetermined",
+  "degraded": []
+ },
+ "http500": {
+  "label": "MOCK",
+  "http": 200,
+  "seconds": 6.5,
+  "status": "degraded",
+  "incident_type": "unclear",
+  "severity": "undetermined",
+  "degraded": [
+   "incident understanding: (after one retry) Gemini request failed: 500 - \"{\\\"error\\\": {\\\"code\\\":"
+  ]
+ },
+ "invalid_json": {
+  "label": "MOCK",
+  "http": 200,
+  "seconds": 0.8,
+  "status": "degraded",
+  "incident_type": "unclear",
+  "severity": "undetermined",
+  "degraded": [
+   "incident understanding: (after one retry) invalid JSON from the model: Sorry, here is the answ"
+  ]
+ },
+ "bad_report": {
+  "label": "MOCK",
+  "http": 200,
+  "seconds": 1.9,
+  "status": "ok",
+  "incident_type": "forest_fire",
+  "severity": "high",
+  "knowledge_coverage": "partial",
+  "validation": {
+   "status": "pass",
+   "repaired": true,
+   "checks": []
+  },
+  "degraded": []
+ },
+ "bad_report_always": {
+  "label": "MOCK",
+  "http": 200,
+  "seconds": 2.8,
+  "status": "flagged",
+  "incident_type": "forest_fire",
+  "severity": "high",
+  "knowledge_coverage": "partial",
+  "validation": {
+   "status": "fail",
+   "repaired": true,
+   "checks": [
+    "location"
+   ]
+  },
+  "degraded": [
+   "validation: location: location 'Sfax' does not appear in the incident text"
+  ]
+ }
+}

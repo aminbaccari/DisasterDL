@@ -247,6 +247,9 @@ def agent_for_system(system_text):
     return None
 
 
+MODE = "normal"  # normal | invalid_json | http500 | bad_report | bad_report_always (set with --mode, to exercise the workflow failure paths)
+
+
 def handle_generate(body):
     """Answer a generateContent request body like the Gemini API does (candidates[0].content.parts[0].text)."""
     system = "".join(p.get("text", "") for p in body.get("system_instruction", {}).get("parts", [])) if isinstance(body.get("system_instruction", {}).get("parts"), list) \
@@ -255,7 +258,16 @@ def handle_generate(body):
     agent = agent_for_system(system)
     if agent is None:
         return {"error": {"code": 400, "message": "MOCK: unknown agent"}}
-    return {"candidates": [{"content": {"role": "model", "parts": [{"text": mock_agent(agent, user)}]}, "finishReason": "STOP"}],
+    if MODE == "http500":
+        return {"error": {"code": 500, "message": "MOCK: simulated Gemini failure"}}
+    text = mock_agent(agent, user)
+    if MODE == "invalid_json":
+        text = "Sorry, here is the answer: this is not JSON"
+    elif agent == "report" and (MODE == "bad_report_always" or (MODE == "bad_report" and "<failed_checks>" not in user)):
+        report = json.loads(text)
+        report["location"] = "Sfax"  # invented place, /validate must catch it
+        text = json.dumps(report, ensure_ascii=False)
+    return {"candidates": [{"content": {"role": "model", "parts": [{"text": text}]}, "finishReason": "STOP"}],
             "usageMetadata": {"mock": True}}
 
 
@@ -264,7 +276,7 @@ class Handler(BaseHTTPRequestHandler):
         body = json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))) or b"{}")
         answer = handle_generate(body)
         data = json.dumps(answer, ensure_ascii=False).encode("utf-8")
-        self.send_response(200 if "candidates" in answer else 400)
+        self.send_response(200 if "candidates" in answer else answer["error"]["code"])
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(data)))
         self.end_headers()
@@ -277,6 +289,8 @@ class Handler(BaseHTTPRequestHandler):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port", type=int, default=8020)
+    parser.add_argument("--mode", default="normal", choices=["normal", "invalid_json", "http500", "bad_report", "bad_report_always"])
     args = parser.parse_args()
+    MODE = args.mode
     print(f"MOCK Gemini endpoint on http://localhost:{args.port} (not a language model)")
     HTTPServer(("0.0.0.0", args.port), Handler).serve_forever()

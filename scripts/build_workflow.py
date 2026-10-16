@@ -32,14 +32,14 @@ CTX = "$('Assemble context').first().json"
 PLACEHOLDERS = {
     "incident": {"incident_text": "$('Normalise input').first().json.incident_text"},
     "vision": {"incident_text": "$('Normalise input').first().json.incident_text"},
-    "rag_queries": {"incident_json": "JSON.stringify((({_degraded, ...r}) => r)($('Parse incident').first().json))"},
-    "knowledge": {"incident_json": "JSON.stringify((({_degraded, ...r}) => r)($('Parse incident').first().json))",
+    "rag_queries": {"incident_json": "JSON.stringify((({_degraded, ...r}) => r)($('Incident ready').first().json))"},
+    "knowledge": {"incident_json": "JSON.stringify((({_degraded, ...r}) => r)($('Incident ready').first().json))",
                   "passages_json": "JSON.stringify($('Merge passages').first().json.passages)"},
     "risk": {"incident_json": f"JSON.stringify({CTX}.incident)", "vision_json_or_null": f"JSON.stringify({CTX}.vision)",
              "knowledge_json": f"JSON.stringify({CTX}.knowledge)"},
     "report": {"output_language": f"{CTX}.output_language", "generated_at": f"{CTX}.generated_at",
                "incident_json": f"JSON.stringify({CTX}.incident)", "vision_json_or_null": f"JSON.stringify({CTX}.vision)",
-               "knowledge_json": f"JSON.stringify({CTX}.knowledge)", "risk_json": "JSON.stringify($('Parse risk').first().json.risk)"},
+               "knowledge_json": f"JSON.stringify({CTX}.knowledge)", "risk_json": "JSON.stringify($('Risk ready').first().json.risk)"},
 }
 
 
@@ -77,13 +77,14 @@ def user_expression(agent, template):
 READ_MODEL = r"""
 // Text of a Gemini answer, or the reason it could not be read.
 function readModel(j) {
-  if (j.error) return { err: 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };
+  const tag = RETRIED ? '(after one retry) ' : '';
+  if (j.error) return { err: tag + 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };
   let t;
   try { t = j.candidates[0].content.parts[0].text; } catch (e) {
-    return { err: 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };
+    return { err: tag + 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };
   }
   t = String(t).trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
-  try { return { value: JSON.parse(t) }; } catch (e) { return { err: 'invalid JSON from the model: ' + t.slice(0, 120) }; }
+  try { return { value: JSON.parse(t) }; } catch (e) { return { err: tag + 'invalid JSON from the model: ' + t.slice(0, 120) }; }
 }
 """
 
@@ -141,7 +142,7 @@ if (why) {
 }
 // The topic follows the type by rule (prompts/README.md), whatever the model wrote.
 out.rag_topic = { forest_fire: 'fire', flood: 'flood', structural_emergency: 'structural' }[out.incident_type] || 'general';
-return [{ json: { ...out, _degraded: degraded } }];
+return [{ json: { ...out, _degraded: degraded, _failed: !!why } }];
 """
 
 NEEDS_INFO = r"""
@@ -152,7 +153,7 @@ const missing = (inc.missing_information || []);
 const md = fr
   ? '# Informations supplémentaires nécessaires\n\nLe rapport ne permet pas de classer l\'incident ni d\'évaluer sa gravité. Aucune hypothèse n\'a été faite.\n\n' + missing.map(m => '- ' + m).join('\n')
   : '# More information needed\n\nThe report does not allow the incident to be classified or its severity to be assessed. Nothing was guessed.\n\n' + missing.map(m => '- ' + m).join('\n');
-return [{ json: { status: 'needs_more_information', incident_type: inc.incident_type, severity: 'undetermined', report_markdown: md,
+return [{ json: { status: inc.parse_error ? 'degraded' : 'needs_more_information', incident_type: inc.incident_type, severity: 'undetermined', report_markdown: md,
   missing_information: missing, report: null, validation: null, degraded_steps: inc._degraded || [], prompt_versions: PV } }];
 """
 
@@ -175,13 +176,13 @@ const r = readModel($input.first().json);
 const why = r.err || problem(r.value);
 if (why) {
   return [{ json: { vision: { image_usable: false, quality_issues: ['The vision step failed: ' + why], scene_summary: '', observations: [], visible_text: [],
-    consistent_with_report: 'cannot_tell', inconsistencies: [], not_determinable: [] }, degraded_a: [{ step: 'vision', reason: why }] } }];
+    consistent_with_report: 'cannot_tell', inconsistencies: [], not_determinable: [] }, degraded_a: [{ step: 'vision', reason: why }], _failed: true } }];
 }
-return [{ json: { vision: r.value, degraded_a: [] } }];
+return [{ json: { vision: r.value, degraded_a: [], _failed: false } }];
 """
 
 PARSE_QUERIES = READ_MODEL + r"""
-const inc = $('Parse incident').first().json;
+const inc = $('Incident ready').first().json;
 const r = readModel($input.first().json);
 let queries = r.value && Array.isArray(r.value.queries) ? r.value.queries.filter(q => q && typeof q.text === 'string' && q.text.length > 2).slice(0, 3) : [];
 const degraded = [];
@@ -189,18 +190,18 @@ if (!queries.length) {
   degraded.push({ step: 'RAG queries', reason: r.err || 'no usable queries in the answer; used the incident facts as the query' });
   queries = [{ text: (inc.reported_facts || []).join('. ').slice(0, 200), language: inc.language === 'fr' ? 'fr' : 'en', need: 'fallback' }];
 }
-return [{ json: { queries, degraded_b: degraded } }];
+return [{ json: { queries, degraded_b: degraded, _failed: degraded.length > 0 } }];
 """
 
 SPLIT_QUERIES = r"""
-const topic = $('Parse incident').first().json.rag_topic;
+const topic = $('Incident ready').first().json.rag_topic;
 const q = $input.first().json.queries;
 return q.map(x => ({ json: { query: x.text, topic } }));
 """
 
 MERGE_PASSAGES = r"""
-const topic = $('Parse incident').first().json.rag_topic;
-const degraded = [...($('Parse queries').first().json.degraded_b || [])];
+const topic = $('Incident ready').first().json.rag_topic;
+const degraded = [...($('Queries ready').first().json.degraded_b || [])];
 const best = {};
 for (const item of $input.all()) {
   const j = item.json;
@@ -212,7 +213,7 @@ return [{ json: { passages, retrieval: { topic, results: passages }, degraded_b:
 """
 
 KNOWLEDGE_NONE = r"""
-const topic = $('Parse incident').first().json.rag_topic;
+const topic = $('Incident ready').first().json.rag_topic;
 const j = $input.first().json;
 const reason = topic === 'general' ? 'No retrieval for this incident type' : ((j.degraded_b || []).some(d => d.step === 'RAG search') ? 'The knowledge base search failed' : 'No passages retrieved');
 return [{ json: { knowledge: { relevant_guidance: [], ignored_chunks: [], coverage: 'none', gaps: [reason] },
@@ -237,12 +238,12 @@ if (r.err || bad) {
   k.relevant_guidance = kept;
   if (!kept.length) k.coverage = 'none';
 }
-return [{ json: { knowledge: k, retrieval: merged.retrieval, degraded_b: degraded } }];
+return [{ json: { knowledge: k, retrieval: merged.retrieval, degraded_b: degraded, _failed: !!(r.err || bad) } }];
 """
 
 ASSEMBLE = r"""
 const m = $input.first().json;
-const inc = $('Parse incident').first().json;
+const inc = $('Incident ready').first().json;
 const norm = $('Normalise input').first().json;
 const { _degraded, ...incident } = inc;
 return [{ json: { incident, vision: m.vision === undefined ? null : m.vision, knowledge: m.knowledge, retrieval: m.retrieval,
@@ -268,21 +269,21 @@ if (r.err || bad) {
   if (kept.length !== risk.considerations.length) degraded.push({ step: 'risk assessment', reason: (risk.considerations.length - kept.length) + ' consideration(s) removed: the cited entry is not in the cited chunk' });
   risk.considerations = kept;
 }
-return [{ json: { risk, degraded_c: degraded } }];
+return [{ json: { risk, degraded_c: degraded, _failed: !!(r.err || bad) } }];
 """
 
 PARSE_REPORT = READ_MODEL + r"""
 const r = readModel($input.first().json);
 if (r.err || !r.value || typeof r.value !== 'object' || Array.isArray(r.value)) {
-  return [{ json: { report: null, degraded_d: [{ step: 'report', reason: r.err || 'the answer is not a JSON object' }] } }];
+  return [{ json: { report: null, degraded_d: [{ step: 'report', reason: r.err || 'the answer is not a JSON object' }], _failed: true } }];
 }
-return [{ json: { report: r.value, degraded_d: [] } }];
+return [{ json: { report: r.value, degraded_d: [], _failed: false } }];
 """
 
 BUILD_RESPONSE = r"""
 // SOURCE is the Parse node whose report is returned, VALIDATION the node that validated it.
 const ctx = $('Assemble context').first().json;
-const risk = $('Parse risk').first().json;
+const risk = $('Risk ready').first().json;
 const parsed = $(SOURCE).first().json;
 const v = VALIDATION ? $input.first().json : null;
 const validation = !v ? { status: 'not_run', violations: [], repaired: REPAIRED }
@@ -302,8 +303,8 @@ return [{ json: { status, incident_type: ctx.incident.incident_type, severity: p
 """
 
 
-def with_pv(js, versions):
-    return "const PV = " + json.dumps(versions) + ";\n" + js
+def with_pv(js, versions, retried=False):
+    return "const PV = " + json.dumps(versions) + ";\nconst RETRIED = " + ("true" if retried else "false") + ";\n" + js
 
 
 def uid(name):
@@ -327,8 +328,8 @@ class Builder:
         outs[out].append({"node": b, "type": "main", "index": inp})
 
     # --- node helpers ---
-    def code(self, name, js, x, y, versions):
-        return self.add(name, "n8n-nodes-base.code", 2, {"jsCode": with_pv(js, versions)}, x, y)
+    def code(self, name, js, x, y, versions, retried=False):
+        return self.add(name, "n8n-nodes-base.code", 2, {"jsCode": with_pv(js, versions, retried)}, x, y)
 
     def if_(self, name, left_expr, x, y):
         cond = {"id": uid(name + "/cond"), "leftValue": left_expr, "rightValue": "",
@@ -346,11 +347,11 @@ class Builder:
         ]
         return self.add(name, "n8n-nodes-base.set", 3.4, {"mode": "manual", "assignments": {"assignments": assignments}, "includeOtherFields": False, "options": {}}, x, y)
 
-    def gemini(self, name, x, y, json_out=True, image=False):
+    def gemini(self, name, x, y, json_out=True, image=False, src="$json"):
         image_part = ", { inline_data: { mime_type: $('Normalise input').first().json.image_mime, data: $('Normalise input').first().json.image_b64 } }" if image else ""
-        parts = "[{ text: $json.user }" + image_part + "]"
+        parts = "[{ text: " + src + ".user }" + image_part + "]"
         gen = "generationConfig: { response_mime_type: 'application/json' }" if json_out else "generationConfig: {}"
-        body = "={{ JSON.stringify({ system_instruction: { parts: { text: $json.system } }, contents: [{ role: 'user', parts: " + parts + " }], " + gen + " }) }}"
+        body = "={{ JSON.stringify({ system_instruction: { parts: { text: " + src + ".system } }, contents: [{ role: 'user', parts: " + parts + " }], " + gen + " }) }}"
         params = {"method": "POST", "url": "={{ $('Config').first().json.gemini_url }}", "authentication": "genericCredentialType", "genericAuthType": "httpHeaderAuth",
                   "sendBody": True, "specifyBody": "json", "jsonBody": body, "options": {"timeout": 90000}}
         return self.add(name, "n8n-nodes-base.httpRequest", 4.2, params, x, y, credentials={"httpHeaderAuth": {"id": "gemini-key", "name": "Gemini key"}},
@@ -364,12 +365,34 @@ class Builder:
         return self.add(name, "n8n-nodes-base.respondToWebhook", 1.1, {"respondWith": "json", "responseBody": "={{ JSON.stringify($json) }}", "options": {"responseCode": code}}, x, y)
 
 
+def chain(b, label, prompt_name, parse_js, x, y, versions, ready_name, image=False, json_out=True):
+    """Gemini call, parse, and one retry when the answer is unusable (the HTTP node itself already retries transport errors).
+
+    Nodes: Gemini: <label>, Parse <label>, <label> answer usable?, Gemini: <label> (retry), Parse <label> (retry), <ready_name>.
+    Everything downstream reads the result from <ready_name>, whichever path produced it.
+    """
+    g = b.gemini(f"Gemini: {label}", x, y, json_out=json_out, image=image)
+    p = b.code(f"Parse {label}", parse_js, x + 260, y, versions)
+    ok = b.if_(f"{label}: answer usable?", "={{ !$json._failed }}", x + 520, y)
+    g2 = b.gemini(f"Gemini: {label} (retry)", x + 780, y + 140, json_out=json_out, image=image, src=f"$('{prompt_name}').first().json")
+    p2 = b.code(f"Parse {label} (retry)", parse_js, x + 1040, y + 140, versions, retried=True)
+    ready = b.code(ready_name, "return [{ json: $input.first().json }];", x + 1300, y, versions)
+    b.link(g, p)
+    b.link(p, ok)
+    b.link(ok, ready, 0)
+    b.link(ok, g2, 1)
+    b.link(g2, p2)
+    b.link(p2, ready)
+    return g, ready
+
+
 def build(args):
     v = VERSIONS
     b = Builder()
     X = 260  # column width
+    L = b.link
 
-    # 1. entry, config, input checks
+    # 1. entry, input checks
     b.add("Incident received", "n8n-nodes-base.webhook", 2, {"httpMethod": "POST", "path": args.path, "responseMode": "responseNode", "options": {}}, 0, 300, webhookId=uid("webhook"))
     gemini_url = f"{args.gemini_base.rstrip('/')}/v1beta/models/{args.model}:generateContent"
     cfg = [{"id": uid("cfg/" + k), "name": k, "value": val, "type": "string"} for k, val in (("gemini_url", gemini_url), ("rag_url", args.rag_url.rstrip("/")))]
@@ -378,92 +401,80 @@ def build(args):
     b.if_("Valid input?", "={{ $json.valid }}", 3 * X, 300)
     b.code("Reject input", REJECT, 4 * X, 480, v)
     b.respond("Respond 400", 5 * X, 480, 400)
+    L("Incident received", "Normalise input"); L("Normalise input", "Config"); L("Config", "Valid input?")
+    L("Valid input?", "Prompt incident " + v["incident"], 0); L("Valid input?", "Reject input", 1); L("Reject input", "Respond 400")
 
     # 2. incident understanding
     b.prompt("incident", 4 * X, 300)
-    b.gemini("Gemini: incident", 5 * X, 300)
-    b.code("Parse incident", PARSE_INCIDENT, 6 * X, 300, v)
-    b.if_("Enough to assess?", "={{ $json.incident_type !== 'unclear' }}", 7 * X, 300)
-    b.code("Ask for missing information", NEEDS_INFO, 8 * X, 480, v)
-    b.respond("Respond needs more information", 9 * X, 480)
+    first, ready = chain(b, "incident", "Prompt incident " + v["incident"], PARSE_INCIDENT, 5 * X, 300, v, "Incident ready")
+    L("Prompt incident " + v["incident"], first)
+    b.if_("Enough to assess?", "={{ $json.incident_type !== 'unclear' }}", 10 * X, 300)
+    b.code("Ask for missing information", NEEDS_INFO, 11 * X, 480, v)
+    b.respond("Respond needs more information", 12 * X, 480)
+    L(ready, "Enough to assess?"); L("Enough to assess?", "Ask for missing information", 1); L("Ask for missing information", "Respond needs more information")
 
     # 3a. vision branch
-    b.if_("Has image?", "={{ $('Normalise input').first().json.has_image }}", 8 * X, 120)
-    b.prompt("vision", 9 * X, 40)
-    b.gemini("Gemini: vision", 10 * X, 40, image=True)
-    b.code("Parse vision", PARSE_VISION, 11 * X, 40, v)
-    b.code("No image: vision skipped", NO_IMAGE, 9 * X, 200, v)
+    b.if_("Has image?", "={{ $('Normalise input').first().json.has_image }}", 11 * X, 120)
+    b.prompt("vision", 12 * X, 40)
+    vfirst, vready = chain(b, "vision", "Prompt vision " + v["vision"], PARSE_VISION, 13 * X, 40, v, "Vision ready", image=True)
+    b.code("No image: vision skipped", NO_IMAGE, 12 * X, 200, v)
+    L("Enough to assess?", "Has image?", 0); L("Has image?", "Prompt vision " + v["vision"], 0); L("Has image?", "No image: vision skipped", 1)
+    L("Prompt vision " + v["vision"], vfirst)
 
     # 3b. knowledge branch
-    b.prompt("rag_queries", 8 * X, 700)
-    b.gemini("Gemini: RAG queries", 9 * X, 700)
-    b.code("Parse queries", PARSE_QUERIES, 10 * X, 700, v)
-    b.if_("Topic searchable?", "={{ $('Parse incident').first().json.rag_topic !== 'general' }}", 11 * X, 700)
-    b.code("Split queries", SPLIT_QUERIES, 12 * X, 640, v)
+    b.prompt("rag_queries", 11 * X, 700)
+    qfirst, qready = chain(b, "RAG queries", "Prompt rag queries " + v["rag_queries"], PARSE_QUERIES, 12 * X, 700, v, "Queries ready")
+    b.if_("Topic searchable?", "={{ $('Incident ready').first().json.rag_topic !== 'general' }}", 17 * X, 700)
+    b.code("Split queries", SPLIT_QUERIES, 18 * X, 640, v)
     b.http_json("RAG search", "={{ $('Config').first().json.rag_url + '/search' }}",
-                "={{ JSON.stringify({ query: $json.query, k: 4, topic: $json.topic, strategy: 'section' }) }}", 13 * X, 640)
-    b.code("Merge passages", MERGE_PASSAGES, 14 * X, 640, v)
-    b.if_("Any passages?", "={{ $json.passages.length > 0 }}", 15 * X, 640)
-    b.prompt("knowledge", 16 * X, 580)
-    b.gemini("Gemini: knowledge", 17 * X, 580)
-    b.code("Parse knowledge", PARSE_KNOWLEDGE, 18 * X, 580, v)
-    b.code("Knowledge: none", KNOWLEDGE_NONE, 16 * X, 800, v)
-
-    # 4. merge, risk, report
-    b.add("Wait for both branches", "n8n-nodes-base.merge", 3.2, {"mode": "combine", "combineBy": "combineByPosition", "options": {}}, 19 * X, 300)
-    b.code("Assemble context", ASSEMBLE, 20 * X, 300, v)
-    b.prompt("risk", 21 * X, 300)
-    b.gemini("Gemini: risk", 22 * X, 300)
-    b.code("Parse risk", PARSE_RISK, 23 * X, 300, v)
-    b.prompt("report", 24 * X, 300)
-    b.gemini("Gemini: report", 25 * X, 300)
-    b.code("Parse report", PARSE_REPORT, 26 * X, 300, v)
-    b.if_("Report produced?", "={{ $json.report !== null }}", 27 * X, 300)
-    validate_body = ("={{ JSON.stringify({ report: $json.report, retrieval: $('Assemble context').first().json.retrieval, incident_text: $('Assemble context').first().json.incident_text, "
-                     "incident: $('Assemble context').first().json.incident, vision: $('Assemble context').first().json.vision }) }}")
-    b.http_json("Validate report", "={{ $('Config').first().json.rag_url + '/validate' }}", validate_body, 28 * X, 220)
-    b.if_("Validation passed?", "={{ $json.status === 'pass' }}", 29 * X, 220)
-    b.code("Build response", "const SOURCE = 'Parse report', VALIDATION = true, REPAIRED = false;\n" + BUILD_RESPONSE, 30 * X, 140, v)
-    b.respond("Respond", 31 * X, 140)
-
-    # repair path: one more attempt through the report agent
-    repair_user = ("={{ $('Prompt report " + v["report"] + "').first().json.user + '\\n\\nYour previous answer failed these automatic checks. Fix only what they name, keep everything else, and return the full JSON object again.\\n<failed_checks>\\n' "
-                   "+ JSON.stringify($json.violations || $json.error || 'validation service unavailable') + '\\n</failed_checks>\\n<previous_answer>\\n' + JSON.stringify($('Parse report').first().json.report) + '\\n</previous_answer>' }}")
-    b.prompt("report", 30 * X, 380, user_expr=repair_user, name="Prompt report repair " + v["report"])
-    b.gemini("Gemini: repair report", 31 * X, 380)
-    b.code("Parse repaired report", PARSE_REPORT, 32 * X, 380, v)
-    repaired_body = validate_body.replace("report: $json.report", "report: $json.report")
-    b.http_json("Validate repaired report", "={{ $('Config').first().json.rag_url + '/validate' }}", repaired_body, 33 * X, 380)
-    b.code("Build response (after repair)", "const SOURCE = 'Parse repaired report', VALIDATION = true, REPAIRED = true;\n" + BUILD_RESPONSE, 34 * X, 380, v)
-    b.respond("Respond after repair", 35 * X, 380)
-
-    # report agent failed twice: degraded response, never silent
-    b.code("Degraded response", "const SOURCE = 'Parse report', VALIDATION = false, REPAIRED = false;\n" + BUILD_RESPONSE, 28 * X, 520, v)
-    b.respond("Respond degraded", 29 * X, 520)
-
-    L = b.link
-    L("Incident received", "Normalise input"); L("Normalise input", "Config"); L("Config", "Valid input?")
-    L("Valid input?", "Prompt incident " + v["incident"], 0); L("Valid input?", "Reject input", 1); L("Reject input", "Respond 400")
-    L("Prompt incident " + v["incident"], "Gemini: incident"); L("Gemini: incident", "Parse incident"); L("Parse incident", "Enough to assess?")
-    L("Enough to assess?", "Has image?", 0); L("Enough to assess?", "Prompt rag queries " + v["rag_queries"], 0)
-    L("Enough to assess?", "Ask for missing information", 1); L("Ask for missing information", "Respond needs more information")
-    L("Has image?", "Prompt vision " + v["vision"], 0); L("Has image?", "No image: vision skipped", 1)
-    L("Prompt vision " + v["vision"], "Gemini: vision"); L("Gemini: vision", "Parse vision"); L("Parse vision", "Wait for both branches", 0, 0)
-    L("No image: vision skipped", "Wait for both branches", 0, 0)
-    L("Prompt rag queries " + v["rag_queries"], "Gemini: RAG queries"); L("Gemini: RAG queries", "Parse queries"); L("Parse queries", "Topic searchable?")
+                "={{ JSON.stringify({ query: $json.query, k: 4, topic: $json.topic, strategy: 'section' }) }}", 19 * X, 640)
+    b.code("Merge passages", MERGE_PASSAGES, 20 * X, 640, v)
+    b.if_("Any passages?", "={{ $json.passages.length > 0 }}", 21 * X, 640)
+    b.prompt("knowledge", 22 * X, 580)
+    kfirst, kready = chain(b, "knowledge", "Prompt knowledge " + v["knowledge"], PARSE_KNOWLEDGE, 23 * X, 580, v, "Knowledge ready")
+    b.code("Knowledge: none", KNOWLEDGE_NONE, 22 * X, 800, v)
+    L("Enough to assess?", "Prompt rag queries " + v["rag_queries"], 0); L("Prompt rag queries " + v["rag_queries"], qfirst); L(qready, "Topic searchable?")
     L("Topic searchable?", "Split queries", 0); L("Topic searchable?", "Knowledge: none", 1)
     L("Split queries", "RAG search"); L("RAG search", "Merge passages"); L("Merge passages", "Any passages?")
-    L("Any passages?", "Prompt knowledge " + v["knowledge"], 0); L("Any passages?", "Knowledge: none", 1)
-    L("Prompt knowledge " + v["knowledge"], "Gemini: knowledge"); L("Gemini: knowledge", "Parse knowledge")
-    L("Parse knowledge", "Wait for both branches", 0, 1); L("Knowledge: none", "Wait for both branches", 0, 1)
-    L("Wait for both branches", "Assemble context"); L("Assemble context", "Prompt risk " + v["risk"])
-    L("Prompt risk " + v["risk"], "Gemini: risk"); L("Gemini: risk", "Parse risk"); L("Parse risk", "Prompt report " + v["report"])
-    L("Prompt report " + v["report"], "Gemini: report"); L("Gemini: report", "Parse report"); L("Parse report", "Report produced?")
-    L("Report produced?", "Validate report", 0); L("Report produced?", "Degraded response", 1); L("Degraded response", "Respond degraded")
-    L("Validate report", "Validation passed?"); L("Validation passed?", "Build response", 0); L("Build response", "Respond")
-    L("Validation passed?", "Prompt report repair " + v["report"], 1)
-    L("Prompt report repair " + v["report"], "Gemini: repair report"); L("Gemini: repair report", "Parse repaired report")
-    L("Parse repaired report", "Validate repaired report"); L("Validate repaired report", "Build response (after repair)"); L("Build response (after repair)", "Respond after repair")
+    L("Any passages?", "Prompt knowledge " + v["knowledge"], 0); L("Any passages?", "Knowledge: none", 1); L("Prompt knowledge " + v["knowledge"], kfirst)
+
+    # 4. merge, risk, report
+    b.add("Wait for both branches", "n8n-nodes-base.merge", 3.2, {"mode": "combine", "combineBy": "combineByPosition", "options": {}}, 29 * X, 300)
+    b.code("Assemble context", ASSEMBLE, 30 * X, 300, v)
+    L(vready, "Wait for both branches", 0, 0); L("No image: vision skipped", "Wait for both branches", 0, 0)
+    L(kready, "Wait for both branches", 0, 1); L("Knowledge: none", "Wait for both branches", 0, 1)
+    L("Wait for both branches", "Assemble context")
+    b.prompt("risk", 31 * X, 300)
+    rfirst, rready = chain(b, "risk", "Prompt risk " + v["risk"], PARSE_RISK, 32 * X, 300, v, "Risk ready")
+    L("Assemble context", "Prompt risk " + v["risk"]); L("Prompt risk " + v["risk"], rfirst)
+    b.prompt("report", 37 * X, 300)
+    pfirst, pready = chain(b, "report", "Prompt report " + v["report"], PARSE_REPORT, 38 * X, 300, v, "Report ready")
+    L(rready, "Prompt report " + v["report"]); L("Prompt report " + v["report"], pfirst)
+    b.if_("Report produced?", "={{ $json.report !== null }}", 43 * X, 300)
+    validate_body = ("={{ JSON.stringify({ report: $json.report, retrieval: $('Assemble context').first().json.retrieval, incident_text: $('Assemble context').first().json.incident_text, "
+                     "incident: $('Assemble context').first().json.incident, vision: $('Assemble context').first().json.vision }) }}")
+    b.http_json("Validate report", "={{ $('Config').first().json.rag_url + '/validate' }}", validate_body, 44 * X, 220)
+    b.if_("Validation passed?", "={{ $json.status === 'pass' }}", 45 * X, 220)
+    b.code("Build response", "const SOURCE = 'Report ready', VALIDATION = true, REPAIRED = false;\n" + BUILD_RESPONSE, 46 * X, 140, v)
+    b.respond("Respond", 47 * X, 140)
+    L(pready, "Report produced?"); L("Report produced?", "Validate report", 0); L("Validate report", "Validation passed?")
+    L("Validation passed?", "Build response", 0); L("Build response", "Respond")
+
+    # repair path: one more pass through the report agent with the failed checks
+    repair_user = ("={{ $('Prompt report " + v["report"] + "').first().json.user + '\\n\\nYour previous answer failed these automatic checks. Fix only what they name, keep everything else, and return the full JSON object again.\\n<failed_checks>\\n' "
+                   "+ JSON.stringify($json.violations || $json.error || 'validation service unavailable') + '\\n</failed_checks>\\n<previous_answer>\\n' + JSON.stringify($('Report ready').first().json.report) + '\\n</previous_answer>' }}")
+    b.prompt("report", 46 * X, 460, user_expr=repair_user, name="Prompt report repair " + v["report"])
+    xfirst, xready = chain(b, "repaired report", "Prompt report repair " + v["report"], PARSE_REPORT, 47 * X, 460, v, "Repaired report ready")
+    b.http_json("Validate repaired report", "={{ $('Config').first().json.rag_url + '/validate' }}", validate_body, 52 * X, 460)
+    b.code("Build response (after repair)", "const SOURCE = 'Repaired report ready', VALIDATION = true, REPAIRED = true;\n" + BUILD_RESPONSE, 53 * X, 460, v)
+    b.respond("Respond after repair", 54 * X, 460)
+    L("Validation passed?", "Prompt report repair " + v["report"], 1); L("Prompt report repair " + v["report"], xfirst)
+    L(xready, "Validate repaired report"); L("Validate repaired report", "Build response (after repair)"); L("Build response (after repair)", "Respond after repair")
+
+    # the report agent failed even after its retry: degraded response, never silent
+    b.code("Degraded response", "const SOURCE = 'Report ready', VALIDATION = false, REPAIRED = false;\n" + BUILD_RESPONSE, 44 * X, 600, v)
+    b.respond("Respond degraded", 45 * X, 600)
+    L("Report produced?", "Degraded response", 1); L("Degraded response", "Respond degraded")
 
     return {
         "name": "DisasterAI pipeline", "nodes": b.nodes, "connections": b.connections, "active": False,
