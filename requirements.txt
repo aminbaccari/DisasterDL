@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+pydantic>=2
+pydantic-settings
+python-dotenv
+pyyaml
+httpx
+chromadb
+sentence-transformers
+pymupdf
+pillow
+imagehash
+langdetect
+pytest

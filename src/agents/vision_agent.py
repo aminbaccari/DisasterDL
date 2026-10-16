@@ -1,0 +1,1 @@
+"""Vision description agent placeholder."""
