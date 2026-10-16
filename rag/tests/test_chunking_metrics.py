@@ -91,3 +91,37 @@ class TestMetrics(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestEntryIdMatching(unittest.TestCase):
+    def fixed_chunk(self):
+        return {"source": "fire_kb.md", "section": "",
+                "text": "Origin: US. ## FI-09 Under a wildfire warning Leave if told. ## FI-10 Before a wildfire sign up"}
+
+    def section_chunk(self):
+        return {"source": "fire_kb.md", "section": "FI-13 Leave when told", "text": "FI-13 Leave when told. Two kinds of advice"}
+
+    def test_ids_from_fixed_and_section_chunks(self):
+        self.assertEqual(metrics.entry_ids(self.fixed_chunk()), ["FI-09", "FI-10"])
+        self.assertEqual(metrics.entry_ids(self.section_chunk()), ["FI-13"])
+
+    def test_id_in_the_body_does_not_count(self):
+        chunk = {"source": "fire_kb.md", "section": "FI-21 Titre", "text": "FI-21 Titre. Type: French translation of FI-09."}
+        self.assertEqual(metrics.entry_ids(chunk), ["FI-21"])
+
+    def test_hit_on_any_listed_entry(self):
+        self.assertTrue(metrics.is_hit(self.fixed_chunk(), expected_entry_ids=["FI-10", "FI-99"]))
+        self.assertFalse(metrics.is_hit(self.section_chunk(), expected_entry_ids=["FI-09"]))
+
+    def test_entry_id_wins_over_source(self):
+        # source does not match but the entry does: the entry id decides
+        self.assertTrue(metrics.is_hit(self.section_chunk(), "other.md", "", ["FI-13"]))
+
+    def test_rank_with_entry_ids(self):
+        results = [self.section_chunk(), self.fixed_chunk()]
+        self.assertEqual(metrics.first_hit_rank(results, expected_entry_ids=["FI-10"]), 2)
+        self.assertIsNone(metrics.first_hit_rank(results, expected_entry_ids=["FL-01"]))
+
+    def test_old_source_and_phrase_matching_still_works(self):
+        self.assertTrue(metrics.is_hit(self.fixed_chunk(), "fire_kb.md", "leave if told"))
+        self.assertFalse(metrics.is_hit(self.fixed_chunk(), "flood_kb.md"))

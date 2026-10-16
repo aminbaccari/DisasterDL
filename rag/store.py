@@ -4,6 +4,8 @@ from pathlib import Path
 
 import chromadb
 
+from rag.metrics import entry_ids
+
 DB_PATH = Path(os.getenv("CHROMA_PATH", str(Path(__file__).resolve().parent / "chroma_db")))
 
 
@@ -47,4 +49,5 @@ def search(query_embedding, strategy, k=5, topic=None):
                 "score": round(1 - res["distances"][0][i], 4),
             }
         )
+        results[-1]["entry_ids"] = entry_ids(results[-1])
     return results

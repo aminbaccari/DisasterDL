@@ -22,6 +22,21 @@ Real results only. Date every entry and say who ran it. Nothing here may be inve
 | 2026-10-16 | section | 5 | same 20 | hit@1 0.90, hit@3 1.00, hit@5 1.00, MRR 0.95 (fr: hit@1 1.00) | No topic filter. |
 | 2026-10-16 | fixed | 5 | same 20 | hit@1 0.60, hit@3 0.90, hit@5 1.00, MRR 0.76 | With --use-topic-filter. |
 | 2026-10-16 | section | 5 | same 20 | hit@1 0.90, hit@3 1.00, hit@5 1.00, MRR 0.95 | With --use-topic-filter. Section chosen as default: one chunk is one entry. |
+| 2026-10-16 | fixed | 1, 3, 5 | queries_v2.csv, 18 queries (10 en, 8 fr), written and committed (f56b979) before this run | hit@1 0.44, hit@3 0.78, hit@5 0.78, MRR 0.59 | No topic filter. Match on entry id. Raw: rag/eval/results_queries_v2_fixed_20261016-1524.csv. |
+| 2026-10-16 | section | 1, 3, 5 | same 18 | hit@1 0.78, hit@3 0.83, hit@5 0.89, MRR 0.81 | No topic filter. Raw: rag/eval/results_queries_v2_section_20261016-1524.csv. |
+| 2026-10-16 | fixed | 1, 3, 5 | same 18 | hit@1 0.56, hit@3 0.83, hit@5 0.89, MRR 0.70 | With --use-topic-filter (n8n passes rag_topic). Raw: results_queries_v2_topic_fixed_20261016-1524.csv. |
+| 2026-10-16 | section | 1, 3, 5 | same 18 | hit@1 0.78, hit@3 0.83, hit@5 0.94, MRR 0.82 | With --use-topic-filter. Raw: results_queries_v2_topic_section_20261016-1524.csv. |
+
+Notes on the two query sets. The first set (rag/eval/queries.csv, 20 queries, rows above) was written with the entries in view and committed together with its results, so it is not blind. The second set (queries_v2.csv) was written from entry needs and the fixed incidents and committed before any retrieval was run on it. Model: intfloat/multilingual-e5-small, offline from the local cache. Matching on entry id is lenient for the fixed strategy: a fixed chunk that holds three entries counts for each of them, so the gap in favour of section chunking is, if anything, understated. Eighteen queries is a small sample: one query is 5.6 points.
+
+Misses on queries_v2 (from a one-off script that printed the top 3 entry ids, section and fixed, no topic filter):
+- v13 (en, apartment block collapsed, people may be trapped, should neighbours go in), expected ST-05 or ST-17: not in the top 5 for either strategy. Section chunking returns cordon entries (ST-13, ST-09 to ST-11, ST-14, ST-15). ST-05 is titled "Do not enter obviously unsafe buildings; entry rules" but the query words (apartment block, trapped, neighbours) do not match it. A real retrieval weakness for the structural_01 incident.
+- v08 (fr, drying a flooded house before mould): rank none in both strategies. French query with the English-only entries FL-19 and FL-20: the French fire entries added on 2026-10-16 (FI-21 to FI-24) are returned instead. Without the topic filter, French queries are pulled to French entries, whatever the topic.
+- v12, v16 (fr, flood and structural): same pattern in the fixed strategy (French fire entries outrank the English flood and structural ones).
+- v02 (fr, fire: stay or leave) section rank 5: the French entry FI-24 and others exist but after-fire entries (FI-20, FI-26) rank higher.
+- v15 (en, who declares a building safe) section rank 3, fixed rank 2: ST-16 and ST-05 come before ST-01.
+- Topic filter: raises fixed hit@5 from 0.78 to 0.89 and section from 0.89 to 0.94, so the workflow should always send rag_topic. v13 still misses.
+- Not yet tried (ideas, not results): a query rewrite by the RAG query agent, more French flood and structural entries, a rerank by language.
 
 ## Vision tests
 

@@ -5,10 +5,12 @@ Run from the project root:
     python -m rag.evaluate --strategy fixed --use-topic-filter
 
 Query file columns: query_id, query, language, disaster_type,
-expected_source_document, expected_phrase.
+expected_source_document, expected_phrase, expected_entry_id.
 expected_phrase is optional. When it is given, a result only counts as a hit if
 the chunk contains that phrase, which is stricter than matching the source alone.
-Rows with an empty query or empty expected_source_document are skipped.
+expected_entry_id (optional, several ids separated by |) is the strict form: a hit means the chunk holds
+that entry's heading, for example FL-04. When it is given, expected_source_document is not needed.
+Rows with an empty query, or with neither expected_source_document nor expected_entry_id, are skipped.
 """
 import argparse
 import csv
@@ -23,7 +25,11 @@ EVAL_DIR = Path(__file__).resolve().parent / "eval"
 def load_queries(path):
     with open(path, newline="", encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
-    usable = [r for r in rows if r.get("query", "").strip() and r.get("expected_source_document", "").strip()]
+    usable = [
+        r for r in rows
+        if r.get("query", "").strip()
+        and (r.get("expected_source_document", "").strip() or r.get("expected_entry_id", "").strip())
+    ]
     return usable, len(rows) - len(usable)
 
 
@@ -34,8 +40,12 @@ def evaluate(strategy, rows, ks, use_topic_filter):
         topic = row.get("disaster_type") if use_topic_filter else None
         topic = topic if topic in ("fire", "flood", "structural", "general") else None
         results = store.search(embedder.embed_queries([row["query"]])[0], strategy, k=top, topic=topic)
+        entry_ids = [x.strip() for x in (row.get("expected_entry_id") or "").split("|") if x.strip()]
         rank = metrics.first_hit_rank(
-            results, row["expected_source_document"].strip(), row.get("expected_phrase", "").strip()
+            results,
+            (row.get("expected_source_document") or "").strip(),
+            (row.get("expected_phrase") or "").strip(),
+            entry_ids,
         )
         ranks.append(rank)
         details.append(
@@ -79,7 +89,8 @@ def main():
             lang_ranks = [r for r, d in zip(ranks, details) if d["language"] == lang]
             print_summary(lang, lang_ranks, args.ks)
 
-        out = EVAL_DIR / f"results_{strategy}_{stamp}.csv"
+        label = Path(args.queries).stem + ("_topic" if args.use_topic_filter else "")
+        out = EVAL_DIR / f"results_{label}_{strategy}_{stamp}.csv"
         with open(out, "w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=list(details[0].keys()))
             writer.writeheader()
