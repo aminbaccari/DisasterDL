@@ -426,7 +426,7 @@ def build(args):
     L = b.link
 
     # 1. entry, input checks
-    b.add("Incident received", "n8n-nodes-base.webhook", 2, {"httpMethod": "POST", "path": args.path, "responseMode": "responseNode", "options": {}}, 0, 300, webhookId=uid("webhook"))
+    b.add("Incident received", "n8n-nodes-base.webhook", 2, {"httpMethod": "POST", "path": args.path, "responseMode": "responseNode", "options": {}}, 0, 300, webhookId=uid("webhook/" + args.workflow_id))
     cfg = [{"id": uid("cfg/" + k), "name": k, "value": val, "type": "string"} for k, val in (("rag_url", args.rag_url.rstrip("/")),)]
     b.code("Normalise input", NORMALISE, X, 300, v)
     b.add("Config", "n8n-nodes-base.set", 3.4, {"mode": "manual", "assignments": {"assignments": cfg}, "includeOtherFields": True, "options": {}}, 2 * X, 300)
@@ -509,11 +509,11 @@ def build(args):
     L("Report produced?", "Degraded response", 1); L("Degraded response", "Respond degraded")
 
     return {
-        "name": "DisasterAI pipeline", "nodes": b.nodes, "connections": b.connections, "active": False,
+        "name": args.workflow_name, "nodes": b.nodes, "connections": b.connections, "active": False,
         "settings": {"executionOrder": "v1", "errorWorkflow": "disasterai-error", "saveDataErrorExecution": "all", "saveDataSuccessExecution": "all"},
         "pinData": {}, "meta": {"disasterai": {"prompt_versions": VERSIONS, "prompt_files": PROMPTS, "generated_by": "scripts/build_workflow.py",
                                                "rag_url": args.rag_url, "llm": "POST /llm, models from LLM_CHAIN in .env", "pace_seconds": args.pace_seconds}},
-        "id": "disasterai-pipeline", "tags": [],
+        "id": args.workflow_id, "tags": [],
     }
 
 
@@ -538,6 +538,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--rag-url", default="http://host.docker.internal:8010")
     parser.add_argument("--path", default="incident", help="webhook path")
+    parser.add_argument("--workflow-id", default="disasterai-pipeline", help="n8n workflow id (use another id to keep several variants side by side)")
+    parser.add_argument("--workflow-name", default="DisasterAI pipeline")
+    parser.add_argument("--out-name", default="disasterai.json", help="file name written in --out-dir")
     parser.add_argument("--prompt", action="append", default=[], metavar="AGENT=FILE",
                         help="use another prompt file for one agent, for before and after tests, for example --prompt incident=incident_understanding/v1.md --prompt report=report/v3.md")
     parser.add_argument("--pace-seconds", type=int, default=0,
@@ -554,9 +557,9 @@ def main():
         PROMPTS[agent] = path
         VERSIONS[agent] = re.search(r"v\d+", Path(path).stem).group(0)
     main_wf = build(args)
-    (out / "disasterai.json").write_text(json.dumps(main_wf, ensure_ascii=False, indent=2), encoding="utf-8")
+    (out / args.out_name).write_text(json.dumps(main_wf, ensure_ascii=False, indent=2), encoding="utf-8")
     (out / "disasterai_error.json").write_text(json.dumps(build_error_workflow(), ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"wrote {len(main_wf['nodes'])} nodes to {out / 'disasterai.json'} (prompt versions: {VERSIONS})")
+    print(f"wrote {len(main_wf['nodes'])} nodes to {out / args.out_name} (prompt versions: {VERSIONS})")
 
 
 if __name__ == "__main__":
