@@ -1,5 +1,6 @@
 """ChromaDB storage. One collection per chunking strategy, cosine distance."""
 import os
+import threading
 from pathlib import Path
 
 import chromadb
@@ -9,8 +10,18 @@ from rag.metrics import entry_ids
 DB_PATH = Path(os.getenv("CHROMA_PATH", str(Path(__file__).resolve().parent / "chroma_db")))
 
 
+_CLIENT = None
+_LOCK = threading.Lock()
+
+
 def _client():
-    return chromadb.PersistentClient(path=str(DB_PATH))
+    """One shared client. Opening a new PersistentClient per call failed under parallel requests from n8n
+    ("Could not connect to tenant default_tenant", seen 2026-10-16 with three simultaneous /search calls)."""
+    global _CLIENT
+    with _LOCK:
+        if _CLIENT is None:
+            _CLIENT = chromadb.PersistentClient(path=str(DB_PATH))
+        return _CLIENT
 
 
 def collection_name(strategy):

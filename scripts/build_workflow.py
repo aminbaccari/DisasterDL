@@ -347,7 +347,20 @@ class Builder:
         ]
         return self.add(name, "n8n-nodes-base.set", 3.4, {"mode": "manual", "assignments": {"assignments": assignments}, "includeOtherFields": False, "options": {}}, x, y)
 
+    pace_seconds = 0
+
     def gemini(self, name, x, y, json_out=True, image=False, src="$json"):
+        """HTTP node calling Gemini. With pacing on, a Wait node goes first. Returns (entry node, HTTP node)."""
+        entry = None
+        if self.pace_seconds:
+            entry = self.add(f"Pace before {name}", "n8n-nodes-base.wait", 1.1, {"resume": "timeInterval", "amount": self.pace_seconds, "unit": "seconds"}, x - 130, y + 60,
+                             webhookId=uid("wait/" + name))
+        http = self._gemini_http(name, x, y, json_out, image, src)
+        if entry:
+            self.link(entry, http)
+        return (entry or http), http
+
+    def _gemini_http(self, name, x, y, json_out=True, image=False, src="$json"):
         image_part = ", { inline_data: { mime_type: $('Normalise input').first().json.image_mime, data: $('Normalise input').first().json.image_b64 } }" if image else ""
         parts = "[{ text: " + src + ".user }" + image_part + "]"
         gen = "generationConfig: { response_mime_type: 'application/json' }" if json_out else "generationConfig: {}"
@@ -371,19 +384,19 @@ def chain(b, label, prompt_name, parse_js, x, y, versions, ready_name, image=Fal
     Nodes: Gemini: <label>, Parse <label>, <label> answer usable?, Gemini: <label> (retry), Parse <label> (retry), <ready_name>.
     Everything downstream reads the result from <ready_name>, whichever path produced it.
     """
-    g = b.gemini(f"Gemini: {label}", x, y, json_out=json_out, image=image)
+    entry, g = b.gemini(f"Gemini: {label}", x, y, json_out=json_out, image=image)
     p = b.code(f"Parse {label}", parse_js, x + 260, y, versions)
     ok = b.if_(f"{label}: answer usable?", "={{ !$json._failed }}", x + 520, y)
-    g2 = b.gemini(f"Gemini: {label} (retry)", x + 780, y + 140, json_out=json_out, image=image, src=f"$('{prompt_name}').first().json")
+    entry2, g2 = b.gemini(f"Gemini: {label} (retry)", x + 780, y + 140, json_out=json_out, image=image, src=f"$('{prompt_name}').first().json")
     p2 = b.code(f"Parse {label} (retry)", parse_js, x + 1040, y + 140, versions, retried=True)
     ready = b.code(ready_name, "return [{ json: $input.first().json }];", x + 1300, y, versions)
     b.link(g, p)
     b.link(p, ok)
     b.link(ok, ready, 0)
-    b.link(ok, g2, 1)
+    b.link(ok, entry2, 1)
     b.link(g2, p2)
     b.link(p2, ready)
-    return g, ready
+    return entry, ready
 
 
 def build(args):
@@ -480,7 +493,7 @@ def build(args):
         "name": "DisasterAI pipeline", "nodes": b.nodes, "connections": b.connections, "active": False,
         "settings": {"executionOrder": "v1", "errorWorkflow": "disasterai-error", "saveDataErrorExecution": "all", "saveDataSuccessExecution": "all"},
         "pinData": {}, "meta": {"disasterai": {"prompt_versions": VERSIONS, "prompt_files": PROMPTS, "generated_by": "scripts/build_workflow.py",
-                                               "gemini_url": gemini_url, "rag_url": args.rag_url}},
+                                               "gemini_url": gemini_url, "rag_url": args.rag_url, "pace_seconds": args.pace_seconds}},
         "id": "disasterai-pipeline", "tags": [],
     }
 
@@ -508,10 +521,13 @@ def main():
     parser.add_argument("--model", default="gemini-3.8-flash", help="model name in the URL (the value of GEMINI_MODEL in .env)")
     parser.add_argument("--rag-url", default="http://host.docker.internal:8010")
     parser.add_argument("--path", default="incident", help="webhook path")
+    parser.add_argument("--pace-seconds", type=int, default=0,
+                        help="wait this long before every Gemini call (free tier: 12 keeps under 5 requests per minute). Default 0, no waiting.")
     parser.add_argument("--out-dir", default=str(ROOT / "n8n" / "workflows"))
     args = parser.parse_args()
     out = Path(args.out_dir)
     out.mkdir(parents=True, exist_ok=True)
+    Builder.pace_seconds = args.pace_seconds
     main_wf = build(args)
     (out / "disasterai.json").write_text(json.dumps(main_wf, ensure_ascii=False, indent=2), encoding="utf-8")
     (out / "disasterai_error.json").write_text(json.dumps(build_error_workflow(), ensure_ascii=False, indent=2), encoding="utf-8")

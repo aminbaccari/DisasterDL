@@ -35,3 +35,10 @@ Template:
 - Change made to the prompt: v3 returns one JSON object that includes report_markdown. It also folds in the partial-coverage wording drafted in v2 (rule 6) and adds the rules on location, dispatch and entry, injected text and numbers. File: prompts/report/v3.md.
 - Result after the change: the documented v3 shape validates. NOT yet run on a model. v2 stays as an untested draft and is not used by the workflow.
 - Technique involved: JSON schema, constraint.
+
+## incident_understanding v1: observed failure, no new version yet (2026-10-16)
+- Test input that failed: fire_01 ("Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village."), real Gemini gemini-3.6-flash through the n8n workflow, execution 25 (eval/results/real_gemini-3.6-flash/n8n_execution_25.json).
+- What went wrong (actual output): `"location": {"text": "hills behind the village", "precision": "area"}`. The fixed incident expects the location to be not stated (manual check: "Location is reported as not stated, not invented").
+- Change made to the prompt: none. A v2 rule is a candidate (a relative description without a place name gives null), but it could not be tested because the free-tier daily quota was exhausted, and the prompt must not be changed without a before and after run.
+- Result after the change: not applicable.
+- Technique involved: constraint (candidate).
