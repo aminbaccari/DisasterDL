@@ -20,11 +20,10 @@ def passages():
 
 class TestBaseline(unittest.TestCase):
     def test_request_has_the_incident_and_the_passages(self):
-        request = baseline.build_request(INCIDENT, passages())
-        user = request["contents"][0]["parts"][0]["text"]
+        system, user = baseline.build_request(INCIDENT, passages())
         self.assertIn("<incident_report>", user)
         self.assertIn("FI-09", user)
-        self.assertEqual(request["generationConfig"]["response_mime_type"], "application/json")
+        self.assertIn("ONE JSON object", system)
 
     def test_example_report_scores_clean(self):
         report = json.loads((EXAMPLES / "report.example.json").read_text(encoding="utf-8"))["output"]

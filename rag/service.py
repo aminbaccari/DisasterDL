@@ -12,7 +12,12 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from backend.validate import router as validate_router
+from dotenv import load_dotenv
+
+load_dotenv()  # LLM_CHAIN and the provider keys are read from .env by backend/llm_chain.py
+
+from backend.llm_router import router as llm_router  # noqa: E402
+from backend.validate import router as validate_router  # noqa: E402
 from rag import chunking, embedder, store
 
 # Set DEFAULT_STRATEGY in .env after the chunking evaluation decides which is better.
@@ -27,8 +32,9 @@ async def lifespan(app):
 
 
 app = FastAPI(title="DisasterAI RAG service", lifespan=lifespan)
-# One process and one port for n8n: /search (retrieval) and /validate (guardrails on the report).
+# One process and one port for n8n: /search (retrieval), /validate (guardrails on the report), /llm (fallback chain of models).
 app.include_router(validate_router)
+app.include_router(llm_router)
 
 
 class SearchRequest(BaseModel):

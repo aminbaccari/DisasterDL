@@ -1,12 +1,13 @@
 """Generate the n8n workflow JSON from the versioned prompt files.
 
     python scripts/build_workflow.py                      # writes n8n/workflows/disasterai.json and disasterai_error.json
-    python scripts/build_workflow.py --gemini-base http://host.docker.internal:8020 --model mock   # point at the MOCK endpoint
+    python scripts/build_workflow.py --pace-seconds 13    # optional wait before every model call
 
 The prompts in prompts/ stay the single source of truth: this script reads the system prompt and the user message
 template of each agent from its markdown file and writes them into the nodes. The prompt file used by each agent is in
 PROMPTS below and its version is recorded in the node names ("Prompt risk v2") and in the response (prompt_versions).
-The Gemini key is not in the JSON: the HTTP nodes use an n8n credential named "Gemini key" (Header Auth, x-goog-api-key).
+No API key is in the JSON, nor in n8n. Every model call goes to POST /llm of the RAG service (backend/llm_chain.py), which tries the models
+listed in LLM_CHAIN in .env in order (Gemini, Groq, OpenRouter) and falls back on rate limits, server errors and unusable JSON.
 """
 import argparse
 import json
@@ -280,6 +281,17 @@ if (r.err || !r.value || typeof r.value !== 'object' || Array.isArray(r.value)) 
 return [{ json: { report: r.value, degraded_d: [], _failed: false } }];
 """
 
+READY_JS = r"""
+// Which model answered this step: from x_llm of the /llm call that produced the parsed result.
+const j = $input.first().json;
+const retried = $('LLM: LABEL (retry)').isExecuted;
+const call = $(retried ? 'LLM: LABEL (retry)' : 'LLM: LABEL').first().json;
+const x = call.x_llm || null;
+j._llm = x ? { step: 'LABEL', provider: x.provider, model: x.model, seconds: x.seconds, failed_attempts: (x.attempts || []).filter(a => a.status === 'error').map(a => a.provider + ':' + a.model + ' ' + a.reason) }
+           : { step: 'LABEL', provider: null, model: null, error: String((call.error && call.error.message) || 'no x_llm in the answer').slice(0, 150) };
+return [{ json: j }];
+"""
+
 BUILD_RESPONSE = r"""
 // SOURCE is the Parse node whose report is returned, VALIDATION the node that validated it.
 const ctx = $('Assemble context').first().json;
@@ -297,9 +309,14 @@ if (!parsed.report) {
 const status = validation.status !== 'pass' ? 'flagged' : (degraded.length ? 'degraded' : 'ok');
 if (validation.status !== 'pass') degraded.push({ step: 'validation', reason: validation.violations.map(x => x.check + ': ' + x.message).join(' | ').slice(0, 600) || validation.status });
 const ids = [...new Set(ctx.retrieval.results.flatMap(r => r.entry_ids || []))];
+const models = [];
+for (const n of ['Incident ready', 'Vision ready', 'Queries ready', 'Knowledge ready', 'Risk ready', 'Report ready', 'Repaired report ready']) {
+  let node; try { node = $(n); if (!node.isExecuted) continue; } catch (e) { continue; }
+  const l = node.first().json._llm; if (l) models.push(l);
+}
 return [{ json: { status, incident_type: ctx.incident.incident_type, severity: parsed.report.severity || risk.risk.severity,
   report_markdown: parsed.report.report_markdown || '', report: parsed.report, validation, degraded_steps: degraded,
-  knowledge_coverage: ctx.knowledge.coverage, retrieved_entry_ids: ids, prompt_versions: PV } }];
+  knowledge_coverage: ctx.knowledge.coverage, retrieved_entry_ids: ids, models_used: models, prompt_versions: PV } }];
 """
 
 
@@ -349,26 +366,23 @@ class Builder:
 
     pace_seconds = 0
 
-    def gemini(self, name, x, y, json_out=True, image=False, src="$json"):
-        """HTTP node calling Gemini. With pacing on, a Wait node goes first. Returns (entry node, HTTP node)."""
+    def gemini(self, name, x, y, json_out=True, image=False, src="$json", retry=False):
+        """HTTP node calling the model chain. With pacing on, a Wait node goes first. Returns (entry node, HTTP node)."""
         entry = None
         if self.pace_seconds:
             entry = self.add(f"Pace before {name}", "n8n-nodes-base.wait", 1.1, {"resume": "timeInterval", "amount": self.pace_seconds, "unit": "seconds"}, x - 130, y + 60,
                              webhookId=uid("wait/" + name))
-        http = self._gemini_http(name, x, y, json_out, image, src)
+        http = self._gemini_http(name, x, y, json_out, image, src, retry)
         if entry:
             self.link(entry, http)
         return (entry or http), http
 
-    def _gemini_http(self, name, x, y, json_out=True, image=False, src="$json"):
-        image_part = ", { inline_data: { mime_type: $('Normalise input').first().json.image_mime, data: $('Normalise input').first().json.image_b64 } }" if image else ""
-        parts = "[{ text: " + src + ".user }" + image_part + "]"
-        gen = "generationConfig: { response_mime_type: 'application/json' }" if json_out else "generationConfig: {}"
-        body = "={{ JSON.stringify({ system_instruction: { parts: { text: " + src + ".system } }, contents: [{ role: 'user', parts: " + parts + " }], " + gen + " }) }}"
-        params = {"method": "POST", "url": "={{ $('Config').first().json.gemini_url }}", "authentication": "genericCredentialType", "genericAuthType": "httpHeaderAuth",
-                  "sendBody": True, "specifyBody": "json", "jsonBody": body, "options": {"timeout": 90000}}
-        return self.add(name, "n8n-nodes-base.httpRequest", 4.2, params, x, y, credentials={"httpHeaderAuth": {"id": "gemini-key", "name": "Gemini key"}},
-                        retryOnFail=True, maxTries=2, waitBetweenTries=3000, onError="continueRegularOutput")
+    def _gemini_http(self, name, x, y, json_out=True, image=False, src="$json", retry=False):
+        """POST /llm: the chain picks the model. The retry node sends retry: true so the model that just failed is not asked first again."""
+        img = (", image_b64: $('Normalise input').first().json.image_b64, image_mime: $('Normalise input').first().json.image_mime" if image else "")
+        body = ("={{ JSON.stringify({ system: " + src + ".system, user: " + src + ".user, json: " + ("true" if json_out else "false") + ", retry: " + ("true" if retry else "false") + img + " }) }}")
+        params = {"method": "POST", "url": "={{ $('Config').first().json.rag_url + '/llm' }}", "sendBody": True, "specifyBody": "json", "jsonBody": body, "options": {"timeout": 300000}}
+        return self.add(name, "n8n-nodes-base.httpRequest", 4.2, params, x, y, onError="continueRegularOutput")
 
     def http_json(self, name, url_expr, body_expr, x, y, timeout=30000):
         params = {"method": "POST", "url": url_expr, "sendBody": True, "specifyBody": "json", "jsonBody": body_expr, "options": {"timeout": timeout}}
@@ -379,17 +393,18 @@ class Builder:
 
 
 def chain(b, label, prompt_name, parse_js, x, y, versions, ready_name, image=False, json_out=True):
-    """Gemini call, parse, and one retry when the answer is unusable (the HTTP node itself already retries transport errors).
+    """Model call through /llm (which already falls back across providers), parse, and one more call when the answer is still unusable.
 
-    Nodes: Gemini: <label>, Parse <label>, <label> answer usable?, Gemini: <label> (retry), Parse <label> (retry), <ready_name>.
-    Everything downstream reads the result from <ready_name>, whichever path produced it.
+    Nodes: LLM: <label>, Parse <label>, <label> answer usable?, LLM: <label> (retry), Parse <label> (retry), <ready_name>.
+    Everything downstream reads the result from <ready_name>, whichever path produced it. <ready_name> adds _llm: the provider and
+    model that answered (from the x_llm field of /llm), so every result can be attributed to a model.
     """
-    entry, g = b.gemini(f"Gemini: {label}", x, y, json_out=json_out, image=image)
+    entry, g = b.gemini(f"LLM: {label}", x, y, json_out=json_out, image=image)
     p = b.code(f"Parse {label}", parse_js, x + 260, y, versions)
     ok = b.if_(f"{label}: answer usable?", "={{ !$json._failed }}", x + 520, y)
-    entry2, g2 = b.gemini(f"Gemini: {label} (retry)", x + 780, y + 140, json_out=json_out, image=image, src=f"$('{prompt_name}').first().json")
+    entry2, g2 = b.gemini(f"LLM: {label} (retry)", x + 780, y + 140, json_out=json_out, image=image, src=f"$('{prompt_name}').first().json", retry=True)
     p2 = b.code(f"Parse {label} (retry)", parse_js, x + 1040, y + 140, versions, retried=True)
-    ready = b.code(ready_name, "return [{ json: $input.first().json }];", x + 1300, y, versions)
+    ready = b.code(ready_name, READY_JS.replace("LABEL", label), x + 1300, y, versions)
     b.link(g, p)
     b.link(p, ok)
     b.link(ok, ready, 0)
@@ -407,8 +422,7 @@ def build(args):
 
     # 1. entry, input checks
     b.add("Incident received", "n8n-nodes-base.webhook", 2, {"httpMethod": "POST", "path": args.path, "responseMode": "responseNode", "options": {}}, 0, 300, webhookId=uid("webhook"))
-    gemini_url = f"{args.gemini_base.rstrip('/')}/v1beta/models/{args.model}:generateContent"
-    cfg = [{"id": uid("cfg/" + k), "name": k, "value": val, "type": "string"} for k, val in (("gemini_url", gemini_url), ("rag_url", args.rag_url.rstrip("/")))]
+    cfg = [{"id": uid("cfg/" + k), "name": k, "value": val, "type": "string"} for k, val in (("rag_url", args.rag_url.rstrip("/")),)]
     b.code("Normalise input", NORMALISE, X, 300, v)
     b.add("Config", "n8n-nodes-base.set", 3.4, {"mode": "manual", "assignments": {"assignments": cfg}, "includeOtherFields": True, "options": {}}, 2 * X, 300)
     b.if_("Valid input?", "={{ $json.valid }}", 3 * X, 300)
@@ -493,7 +507,7 @@ def build(args):
         "name": "DisasterAI pipeline", "nodes": b.nodes, "connections": b.connections, "active": False,
         "settings": {"executionOrder": "v1", "errorWorkflow": "disasterai-error", "saveDataErrorExecution": "all", "saveDataSuccessExecution": "all"},
         "pinData": {}, "meta": {"disasterai": {"prompt_versions": VERSIONS, "prompt_files": PROMPTS, "generated_by": "scripts/build_workflow.py",
-                                               "gemini_url": gemini_url, "rag_url": args.rag_url, "pace_seconds": args.pace_seconds}},
+                                               "rag_url": args.rag_url, "llm": "POST /llm, models from LLM_CHAIN in .env", "pace_seconds": args.pace_seconds}},
         "id": "disasterai-pipeline", "tags": [],
     }
 
@@ -517,12 +531,10 @@ def build_error_workflow():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--gemini-base", default="https://generativelanguage.googleapis.com")
-    parser.add_argument("--model", default="gemini-3.8-flash", help="model name in the URL (the value of GEMINI_MODEL in .env)")
     parser.add_argument("--rag-url", default="http://host.docker.internal:8010")
     parser.add_argument("--path", default="incident", help="webhook path")
     parser.add_argument("--pace-seconds", type=int, default=0,
-                        help="wait this long before every Gemini call (free tier: 12 keeps under 5 requests per minute). Default 0, no waiting.")
+                        help="wait this long before every model call. Default 0: the chain already moves to the next model on a rate limit.")
     parser.add_argument("--out-dir", default=str(ROOT / "n8n" / "workflows"))
     args = parser.parse_args()
     out = Path(args.out_dir)

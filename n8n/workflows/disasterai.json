@@ -37,12 +37,6 @@
         "assignments": {
           "assignments": [
             {
-              "id": "273a0149-9367-525c-8e0c-e39012917686",
-              "name": "gemini_url",
-              "value": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
-              "type": "string"
-            },
-            {
               "id": "f7d9ec30-86de-5fb8-9262-1dd37042d239",
               "name": "rag_url",
               "value": "http://host.docker.internal:8010",
@@ -166,33 +160,22 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Config').first().json.gemini_url }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "url": "={{ $('Config').first().json.rag_url + '/llm' }}",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $json.system } }, contents: [{ role: 'user', parts: [{ text: $json.user }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "jsonBody": "={{ JSON.stringify({ system: $json.system, user: $json.user, json: true, retry: false }) }}",
         "options": {
-          "timeout": 90000
+          "timeout": 300000
         }
       },
-      "id": "23d53b0e-6cb3-5c77-98ad-658340ac9f51",
-      "name": "Gemini: incident",
+      "id": "5b0a900d-fa24-5e62-aa40-e2f039da89e1",
+      "name": "LLM: incident",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
         1300,
         300
       ],
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "gemini-key",
-          "name": "Gemini key"
-        }
-      },
-      "retryOnFail": true,
-      "maxTries": 2,
-      "waitBetweenTries": 3000,
       "onError": "continueRegularOutput"
     },
     {
@@ -245,33 +228,22 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Config').first().json.gemini_url }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "url": "={{ $('Config').first().json.rag_url + '/llm' }}",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $('Prompt incident v1').first().json.system } }, contents: [{ role: 'user', parts: [{ text: $('Prompt incident v1').first().json.user }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "jsonBody": "={{ JSON.stringify({ system: $('Prompt incident v1').first().json.system, user: $('Prompt incident v1').first().json.user, json: true, retry: true }) }}",
         "options": {
-          "timeout": 90000
+          "timeout": 300000
         }
       },
-      "id": "3ff6ffbc-9342-596d-b74d-85e67a580bfb",
-      "name": "Gemini: incident (retry)",
+      "id": "0e366e75-8630-5b16-99e9-de28a496d528",
+      "name": "LLM: incident (retry)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
         2080,
         440
       ],
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "gemini-key",
-          "name": "Gemini key"
-        }
-      },
-      "retryOnFail": true,
-      "maxTries": 2,
-      "waitBetweenTries": 3000,
       "onError": "continueRegularOutput"
     },
     {
@@ -289,7 +261,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nreturn [{ json: $input.first().json }];"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\n// Which model answered this step: from x_llm of the /llm call that produced the parsed result.\nconst j = $input.first().json;\nconst retried = $('LLM: incident (retry)').isExecuted;\nconst call = $(retried ? 'LLM: incident (retry)' : 'LLM: incident').first().json;\nconst x = call.x_llm || null;\nj._llm = x ? { step: 'incident', provider: x.provider, model: x.model, seconds: x.seconds, failed_attempts: (x.attempts || []).filter(a => a.status === 'error').map(a => a.provider + ':' + a.model + ' ' + a.reason) }\n           : { step: 'incident', provider: null, model: null, error: String((call.error && call.error.message) || 'no x_llm in the answer').slice(0, 150) };\nreturn [{ json: j }];\n"
       },
       "id": "0ec8319a-91c2-5f4f-9d96-3eb61cd81e1b",
       "name": "Incident ready",
@@ -438,33 +410,22 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Config').first().json.gemini_url }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "url": "={{ $('Config').first().json.rag_url + '/llm' }}",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $json.system } }, contents: [{ role: 'user', parts: [{ text: $json.user }, { inline_data: { mime_type: $('Normalise input').first().json.image_mime, data: $('Normalise input').first().json.image_b64 } }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "jsonBody": "={{ JSON.stringify({ system: $json.system, user: $json.user, json: true, retry: false, image_b64: $('Normalise input').first().json.image_b64, image_mime: $('Normalise input').first().json.image_mime }) }}",
         "options": {
-          "timeout": 90000
+          "timeout": 300000
         }
       },
-      "id": "3c80d62e-6897-5978-94ad-037251f962cf",
-      "name": "Gemini: vision",
+      "id": "70637505-242a-5262-8f80-907f6513f1a7",
+      "name": "LLM: vision",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
         3380,
         40
       ],
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "gemini-key",
-          "name": "Gemini key"
-        }
-      },
-      "retryOnFail": true,
-      "maxTries": 2,
-      "waitBetweenTries": 3000,
       "onError": "continueRegularOutput"
     },
     {
@@ -517,33 +478,22 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Config').first().json.gemini_url }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "url": "={{ $('Config').first().json.rag_url + '/llm' }}",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $('Prompt vision v1').first().json.system } }, contents: [{ role: 'user', parts: [{ text: $('Prompt vision v1').first().json.user }, { inline_data: { mime_type: $('Normalise input').first().json.image_mime, data: $('Normalise input').first().json.image_b64 } }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "jsonBody": "={{ JSON.stringify({ system: $('Prompt vision v1').first().json.system, user: $('Prompt vision v1').first().json.user, json: true, retry: true, image_b64: $('Normalise input').first().json.image_b64, image_mime: $('Normalise input').first().json.image_mime }) }}",
         "options": {
-          "timeout": 90000
+          "timeout": 300000
         }
       },
-      "id": "de0c80cf-a7f0-5020-9609-61a65621c7d5",
-      "name": "Gemini: vision (retry)",
+      "id": "35b0abf4-c2d5-52a2-a9e8-3633e2087e07",
+      "name": "LLM: vision (retry)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
         4160,
         180
       ],
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "gemini-key",
-          "name": "Gemini key"
-        }
-      },
-      "retryOnFail": true,
-      "maxTries": 2,
-      "waitBetweenTries": 3000,
       "onError": "continueRegularOutput"
     },
     {
@@ -561,7 +511,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nreturn [{ json: $input.first().json }];"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\n// Which model answered this step: from x_llm of the /llm call that produced the parsed result.\nconst j = $input.first().json;\nconst retried = $('LLM: vision (retry)').isExecuted;\nconst call = $(retried ? 'LLM: vision (retry)' : 'LLM: vision').first().json;\nconst x = call.x_llm || null;\nj._llm = x ? { step: 'vision', provider: x.provider, model: x.model, seconds: x.seconds, failed_attempts: (x.attempts || []).filter(a => a.status === 'error').map(a => a.provider + ':' + a.model + ' ' + a.reason) }\n           : { step: 'vision', provider: null, model: null, error: String((call.error && call.error.message) || 'no x_llm in the answer').slice(0, 150) };\nreturn [{ json: j }];\n"
       },
       "id": "fa986cac-ecdf-50be-b247-f793be11b31e",
       "name": "Vision ready",
@@ -625,33 +575,22 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Config').first().json.gemini_url }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "url": "={{ $('Config').first().json.rag_url + '/llm' }}",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $json.system } }, contents: [{ role: 'user', parts: [{ text: $json.user }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "jsonBody": "={{ JSON.stringify({ system: $json.system, user: $json.user, json: true, retry: false }) }}",
         "options": {
-          "timeout": 90000
+          "timeout": 300000
         }
       },
-      "id": "4e964d1e-b88c-551d-974d-3ca356775099",
-      "name": "Gemini: RAG queries",
+      "id": "2202f070-6798-58b6-99ea-a9afa2264a00",
+      "name": "LLM: RAG queries",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
         3120,
         700
       ],
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "gemini-key",
-          "name": "Gemini key"
-        }
-      },
-      "retryOnFail": true,
-      "maxTries": 2,
-      "waitBetweenTries": 3000,
       "onError": "continueRegularOutput"
     },
     {
@@ -704,33 +643,22 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Config').first().json.gemini_url }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "url": "={{ $('Config').first().json.rag_url + '/llm' }}",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $('Prompt rag queries v1').first().json.system } }, contents: [{ role: 'user', parts: [{ text: $('Prompt rag queries v1').first().json.user }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "jsonBody": "={{ JSON.stringify({ system: $('Prompt rag queries v1').first().json.system, user: $('Prompt rag queries v1').first().json.user, json: true, retry: true }) }}",
         "options": {
-          "timeout": 90000
+          "timeout": 300000
         }
       },
-      "id": "e78761f2-4588-53cb-9eb6-99a7686b22e9",
-      "name": "Gemini: RAG queries (retry)",
+      "id": "c0b71618-2f8a-5ed6-8545-713715729396",
+      "name": "LLM: RAG queries (retry)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
         3900,
         840
       ],
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "gemini-key",
-          "name": "Gemini key"
-        }
-      },
-      "retryOnFail": true,
-      "maxTries": 2,
-      "waitBetweenTries": 3000,
       "onError": "continueRegularOutput"
     },
     {
@@ -748,7 +676,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nreturn [{ json: $input.first().json }];"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\n// Which model answered this step: from x_llm of the /llm call that produced the parsed result.\nconst j = $input.first().json;\nconst retried = $('LLM: RAG queries (retry)').isExecuted;\nconst call = $(retried ? 'LLM: RAG queries (retry)' : 'LLM: RAG queries').first().json;\nconst x = call.x_llm || null;\nj._llm = x ? { step: 'RAG queries', provider: x.provider, model: x.model, seconds: x.seconds, failed_attempts: (x.attempts || []).filter(a => a.status === 'error').map(a => a.provider + ':' + a.model + ' ' + a.reason) }\n           : { step: 'RAG queries', provider: null, model: null, error: String((call.error && call.error.message) || 'no x_llm in the answer').slice(0, 150) };\nreturn [{ json: j }];\n"
       },
       "id": "83db6293-b61e-5ffc-b5de-0638849be52c",
       "name": "Queries ready",
@@ -917,33 +845,22 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Config').first().json.gemini_url }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "url": "={{ $('Config').first().json.rag_url + '/llm' }}",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $json.system } }, contents: [{ role: 'user', parts: [{ text: $json.user }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "jsonBody": "={{ JSON.stringify({ system: $json.system, user: $json.user, json: true, retry: false }) }}",
         "options": {
-          "timeout": 90000
+          "timeout": 300000
         }
       },
-      "id": "5a84af93-4b63-52f5-8a6d-3297746cc441",
-      "name": "Gemini: knowledge",
+      "id": "2f9f3248-ed94-54ac-aadf-cb15a7b9a75d",
+      "name": "LLM: knowledge",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
         5980,
         580
       ],
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "gemini-key",
-          "name": "Gemini key"
-        }
-      },
-      "retryOnFail": true,
-      "maxTries": 2,
-      "waitBetweenTries": 3000,
       "onError": "continueRegularOutput"
     },
     {
@@ -996,33 +913,22 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Config').first().json.gemini_url }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "url": "={{ $('Config').first().json.rag_url + '/llm' }}",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $('Prompt knowledge v2').first().json.system } }, contents: [{ role: 'user', parts: [{ text: $('Prompt knowledge v2').first().json.user }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "jsonBody": "={{ JSON.stringify({ system: $('Prompt knowledge v2').first().json.system, user: $('Prompt knowledge v2').first().json.user, json: true, retry: true }) }}",
         "options": {
-          "timeout": 90000
+          "timeout": 300000
         }
       },
-      "id": "c8e7db15-0bad-5892-afc2-ec80b6521d17",
-      "name": "Gemini: knowledge (retry)",
+      "id": "4a9c499c-42d0-5a11-bc13-a022e1831330",
+      "name": "LLM: knowledge (retry)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
         6760,
         720
       ],
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "gemini-key",
-          "name": "Gemini key"
-        }
-      },
-      "retryOnFail": true,
-      "maxTries": 2,
-      "waitBetweenTries": 3000,
       "onError": "continueRegularOutput"
     },
     {
@@ -1040,7 +946,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nreturn [{ json: $input.first().json }];"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\n// Which model answered this step: from x_llm of the /llm call that produced the parsed result.\nconst j = $input.first().json;\nconst retried = $('LLM: knowledge (retry)').isExecuted;\nconst call = $(retried ? 'LLM: knowledge (retry)' : 'LLM: knowledge').first().json;\nconst x = call.x_llm || null;\nj._llm = x ? { step: 'knowledge', provider: x.provider, model: x.model, seconds: x.seconds, failed_attempts: (x.attempts || []).filter(a => a.status === 'error').map(a => a.provider + ':' + a.model + ' ' + a.reason) }\n           : { step: 'knowledge', provider: null, model: null, error: String((call.error && call.error.message) || 'no x_llm in the answer').slice(0, 150) };\nreturn [{ json: j }];\n"
       },
       "id": "2b5c74e9-84a9-5440-816f-109663cdf201",
       "name": "Knowledge ready",
@@ -1132,33 +1038,22 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Config').first().json.gemini_url }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "url": "={{ $('Config').first().json.rag_url + '/llm' }}",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $json.system } }, contents: [{ role: 'user', parts: [{ text: $json.user }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "jsonBody": "={{ JSON.stringify({ system: $json.system, user: $json.user, json: true, retry: false }) }}",
         "options": {
-          "timeout": 90000
+          "timeout": 300000
         }
       },
-      "id": "3b06348e-5c3a-5b4e-b18f-ab6dc1963113",
-      "name": "Gemini: risk",
+      "id": "7c75ac0b-05dc-5376-b96d-72add08b34f5",
+      "name": "LLM: risk",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
         8320,
         300
       ],
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "gemini-key",
-          "name": "Gemini key"
-        }
-      },
-      "retryOnFail": true,
-      "maxTries": 2,
-      "waitBetweenTries": 3000,
       "onError": "continueRegularOutput"
     },
     {
@@ -1211,33 +1106,22 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Config').first().json.gemini_url }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "url": "={{ $('Config').first().json.rag_url + '/llm' }}",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $('Prompt risk v2').first().json.system } }, contents: [{ role: 'user', parts: [{ text: $('Prompt risk v2').first().json.user }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "jsonBody": "={{ JSON.stringify({ system: $('Prompt risk v2').first().json.system, user: $('Prompt risk v2').first().json.user, json: true, retry: true }) }}",
         "options": {
-          "timeout": 90000
+          "timeout": 300000
         }
       },
-      "id": "b51daab9-50b0-5d08-96fc-b229d411ee65",
-      "name": "Gemini: risk (retry)",
+      "id": "e5a76cbd-7e11-5b5f-bdb4-c7493a271b84",
+      "name": "LLM: risk (retry)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
         9100,
         440
       ],
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "gemini-key",
-          "name": "Gemini key"
-        }
-      },
-      "retryOnFail": true,
-      "maxTries": 2,
-      "waitBetweenTries": 3000,
       "onError": "continueRegularOutput"
     },
     {
@@ -1255,7 +1139,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nreturn [{ json: $input.first().json }];"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\n// Which model answered this step: from x_llm of the /llm call that produced the parsed result.\nconst j = $input.first().json;\nconst retried = $('LLM: risk (retry)').isExecuted;\nconst call = $(retried ? 'LLM: risk (retry)' : 'LLM: risk').first().json;\nconst x = call.x_llm || null;\nj._llm = x ? { step: 'risk', provider: x.provider, model: x.model, seconds: x.seconds, failed_attempts: (x.attempts || []).filter(a => a.status === 'error').map(a => a.provider + ':' + a.model + ' ' + a.reason) }\n           : { step: 'risk', provider: null, model: null, error: String((call.error && call.error.message) || 'no x_llm in the answer').slice(0, 150) };\nreturn [{ json: j }];\n"
       },
       "id": "aeb99be3-c0b2-5b95-b7d9-aa1872150222",
       "name": "Risk ready",
@@ -1306,33 +1190,22 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Config').first().json.gemini_url }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "url": "={{ $('Config').first().json.rag_url + '/llm' }}",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $json.system } }, contents: [{ role: 'user', parts: [{ text: $json.user }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "jsonBody": "={{ JSON.stringify({ system: $json.system, user: $json.user, json: true, retry: false }) }}",
         "options": {
-          "timeout": 90000
+          "timeout": 300000
         }
       },
-      "id": "67352ac5-95c7-564d-a937-c4a68ea0f45d",
-      "name": "Gemini: report",
+      "id": "2e6b636f-04c1-523e-a402-119821532d04",
+      "name": "LLM: report",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
         9880,
         300
       ],
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "gemini-key",
-          "name": "Gemini key"
-        }
-      },
-      "retryOnFail": true,
-      "maxTries": 2,
-      "waitBetweenTries": 3000,
       "onError": "continueRegularOutput"
     },
     {
@@ -1385,33 +1258,22 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Config').first().json.gemini_url }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "url": "={{ $('Config').first().json.rag_url + '/llm' }}",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $('Prompt report v3').first().json.system } }, contents: [{ role: 'user', parts: [{ text: $('Prompt report v3').first().json.user }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "jsonBody": "={{ JSON.stringify({ system: $('Prompt report v3').first().json.system, user: $('Prompt report v3').first().json.user, json: true, retry: true }) }}",
         "options": {
-          "timeout": 90000
+          "timeout": 300000
         }
       },
-      "id": "9f74a6bc-f9d1-54e4-8d2a-c26129f9afd1",
-      "name": "Gemini: report (retry)",
+      "id": "e02d7286-2bcf-5dfc-a206-c0ca9749d51a",
+      "name": "LLM: report (retry)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
         10660,
         440
       ],
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "gemini-key",
-          "name": "Gemini key"
-        }
-      },
-      "retryOnFail": true,
-      "maxTries": 2,
-      "waitBetweenTries": 3000,
       "onError": "continueRegularOutput"
     },
     {
@@ -1429,7 +1291,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nreturn [{ json: $input.first().json }];"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\n// Which model answered this step: from x_llm of the /llm call that produced the parsed result.\nconst j = $input.first().json;\nconst retried = $('LLM: report (retry)').isExecuted;\nconst call = $(retried ? 'LLM: report (retry)' : 'LLM: report').first().json;\nconst x = call.x_llm || null;\nj._llm = x ? { step: 'report', provider: x.provider, model: x.model, seconds: x.seconds, failed_attempts: (x.attempts || []).filter(a => a.status === 'error').map(a => a.provider + ':' + a.model + ' ' + a.reason) }\n           : { step: 'report', provider: null, model: null, error: String((call.error && call.error.message) || 'no x_llm in the answer').slice(0, 150) };\nreturn [{ json: j }];\n"
       },
       "id": "c818c248-44bb-59e3-af6f-4c1e64c961d4",
       "name": "Report ready",
@@ -1534,7 +1396,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nconst SOURCE = 'Report ready', VALIDATION = true, REPAIRED = false;\n\n// SOURCE is the Parse node whose report is returned, VALIDATION the node that validated it.\nconst ctx = $('Assemble context').first().json;\nconst risk = $('Risk ready').first().json;\nconst parsed = $(SOURCE).first().json;\nconst v = VALIDATION ? $input.first().json : null;\nconst validation = !v ? { status: 'not_run', violations: [], repaired: REPAIRED }\n  : (v.error ? { status: 'unavailable', violations: [{ check: 'validate', message: 'the /validate service did not answer: ' + String(v.error.message || '').slice(0, 150) }], repaired: REPAIRED }\n  : { status: v.status, violations: v.violations || [], repaired: REPAIRED });\nconst degraded = [...ctx.degraded, ...(risk.degraded_c || []), ...(parsed.degraded_d || [])];\nif (!parsed.report) {\n  return [{ json: { status: 'degraded', incident_type: ctx.incident.incident_type, severity: risk.risk.severity, report_markdown: '', report: null, risk: risk.risk,\n    validation, degraded_steps: degraded, knowledge_coverage: ctx.knowledge.coverage, prompt_versions: PV } }];\n}\nconst status = validation.status !== 'pass' ? 'flagged' : (degraded.length ? 'degraded' : 'ok');\nif (validation.status !== 'pass') degraded.push({ step: 'validation', reason: validation.violations.map(x => x.check + ': ' + x.message).join(' | ').slice(0, 600) || validation.status });\nconst ids = [...new Set(ctx.retrieval.results.flatMap(r => r.entry_ids || []))];\nreturn [{ json: { status, incident_type: ctx.incident.incident_type, severity: parsed.report.severity || risk.risk.severity,\n  report_markdown: parsed.report.report_markdown || '', report: parsed.report, validation, degraded_steps: degraded,\n  knowledge_coverage: ctx.knowledge.coverage, retrieved_entry_ids: ids, prompt_versions: PV } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nconst SOURCE = 'Report ready', VALIDATION = true, REPAIRED = false;\n\n// SOURCE is the Parse node whose report is returned, VALIDATION the node that validated it.\nconst ctx = $('Assemble context').first().json;\nconst risk = $('Risk ready').first().json;\nconst parsed = $(SOURCE).first().json;\nconst v = VALIDATION ? $input.first().json : null;\nconst validation = !v ? { status: 'not_run', violations: [], repaired: REPAIRED }\n  : (v.error ? { status: 'unavailable', violations: [{ check: 'validate', message: 'the /validate service did not answer: ' + String(v.error.message || '').slice(0, 150) }], repaired: REPAIRED }\n  : { status: v.status, violations: v.violations || [], repaired: REPAIRED });\nconst degraded = [...ctx.degraded, ...(risk.degraded_c || []), ...(parsed.degraded_d || [])];\nif (!parsed.report) {\n  return [{ json: { status: 'degraded', incident_type: ctx.incident.incident_type, severity: risk.risk.severity, report_markdown: '', report: null, risk: risk.risk,\n    validation, degraded_steps: degraded, knowledge_coverage: ctx.knowledge.coverage, prompt_versions: PV } }];\n}\nconst status = validation.status !== 'pass' ? 'flagged' : (degraded.length ? 'degraded' : 'ok');\nif (validation.status !== 'pass') degraded.push({ step: 'validation', reason: validation.violations.map(x => x.check + ': ' + x.message).join(' | ').slice(0, 600) || validation.status });\nconst ids = [...new Set(ctx.retrieval.results.flatMap(r => r.entry_ids || []))];\nconst models = [];\nfor (const n of ['Incident ready', 'Vision ready', 'Queries ready', 'Knowledge ready', 'Risk ready', 'Report ready', 'Repaired report ready']) {\n  let node; try { node = $(n); if (!node.isExecuted) continue; } catch (e) { continue; }\n  const l = node.first().json._llm; if (l) models.push(l);\n}\nreturn [{ json: { status, incident_type: ctx.incident.incident_type, severity: parsed.report.severity || risk.risk.severity,\n  report_markdown: parsed.report.report_markdown || '', report: parsed.report, validation, degraded_steps: degraded,\n  knowledge_coverage: ctx.knowledge.coverage, retrieved_entry_ids: ids, models_used: models, prompt_versions: PV } }];\n"
       },
       "id": "4a68b6de-6af2-5065-88ae-b75cdf1db978",
       "name": "Build response",
@@ -1602,33 +1464,22 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Config').first().json.gemini_url }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "url": "={{ $('Config').first().json.rag_url + '/llm' }}",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $json.system } }, contents: [{ role: 'user', parts: [{ text: $json.user }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "jsonBody": "={{ JSON.stringify({ system: $json.system, user: $json.user, json: true, retry: false }) }}",
         "options": {
-          "timeout": 90000
+          "timeout": 300000
         }
       },
-      "id": "22683cd7-27fb-5f9d-ba93-db4e6c2fc973",
-      "name": "Gemini: repaired report",
+      "id": "97928526-9f2c-50d1-8ee8-0bbbeb8b63f1",
+      "name": "LLM: repaired report",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
         12220,
         460
       ],
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "gemini-key",
-          "name": "Gemini key"
-        }
-      },
-      "retryOnFail": true,
-      "maxTries": 2,
-      "waitBetweenTries": 3000,
       "onError": "continueRegularOutput"
     },
     {
@@ -1681,33 +1532,22 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Config').first().json.gemini_url }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "url": "={{ $('Config').first().json.rag_url + '/llm' }}",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ system_instruction: { parts: { text: $('Prompt report repair v3').first().json.system } }, contents: [{ role: 'user', parts: [{ text: $('Prompt report repair v3').first().json.user }] }], generationConfig: { response_mime_type: 'application/json' } }) }}",
+        "jsonBody": "={{ JSON.stringify({ system: $('Prompt report repair v3').first().json.system, user: $('Prompt report repair v3').first().json.user, json: true, retry: true }) }}",
         "options": {
-          "timeout": 90000
+          "timeout": 300000
         }
       },
-      "id": "90775614-b11b-526e-b38f-bff40adb9af9",
-      "name": "Gemini: repaired report (retry)",
+      "id": "3fb206a0-5cf5-5a31-a4b9-bcfbf6455bdd",
+      "name": "LLM: repaired report (retry)",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
         13000,
         600
       ],
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "gemini-key",
-          "name": "Gemini key"
-        }
-      },
-      "retryOnFail": true,
-      "maxTries": 2,
-      "waitBetweenTries": 3000,
       "onError": "continueRegularOutput"
     },
     {
@@ -1725,7 +1565,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nreturn [{ json: $input.first().json }];"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\n\n// Which model answered this step: from x_llm of the /llm call that produced the parsed result.\nconst j = $input.first().json;\nconst retried = $('LLM: repaired report (retry)').isExecuted;\nconst call = $(retried ? 'LLM: repaired report (retry)' : 'LLM: repaired report').first().json;\nconst x = call.x_llm || null;\nj._llm = x ? { step: 'repaired report', provider: x.provider, model: x.model, seconds: x.seconds, failed_attempts: (x.attempts || []).filter(a => a.status === 'error').map(a => a.provider + ':' + a.model + ' ' + a.reason) }\n           : { step: 'repaired report', provider: null, model: null, error: String((call.error && call.error.message) || 'no x_llm in the answer').slice(0, 150) };\nreturn [{ json: j }];\n"
       },
       "id": "9bdbdb6a-29c6-5e5b-9db2-ab270a4fca5f",
       "name": "Repaired report ready",
@@ -1762,7 +1602,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nconst SOURCE = 'Repaired report ready', VALIDATION = true, REPAIRED = true;\n\n// SOURCE is the Parse node whose report is returned, VALIDATION the node that validated it.\nconst ctx = $('Assemble context').first().json;\nconst risk = $('Risk ready').first().json;\nconst parsed = $(SOURCE).first().json;\nconst v = VALIDATION ? $input.first().json : null;\nconst validation = !v ? { status: 'not_run', violations: [], repaired: REPAIRED }\n  : (v.error ? { status: 'unavailable', violations: [{ check: 'validate', message: 'the /validate service did not answer: ' + String(v.error.message || '').slice(0, 150) }], repaired: REPAIRED }\n  : { status: v.status, violations: v.violations || [], repaired: REPAIRED });\nconst degraded = [...ctx.degraded, ...(risk.degraded_c || []), ...(parsed.degraded_d || [])];\nif (!parsed.report) {\n  return [{ json: { status: 'degraded', incident_type: ctx.incident.incident_type, severity: risk.risk.severity, report_markdown: '', report: null, risk: risk.risk,\n    validation, degraded_steps: degraded, knowledge_coverage: ctx.knowledge.coverage, prompt_versions: PV } }];\n}\nconst status = validation.status !== 'pass' ? 'flagged' : (degraded.length ? 'degraded' : 'ok');\nif (validation.status !== 'pass') degraded.push({ step: 'validation', reason: validation.violations.map(x => x.check + ': ' + x.message).join(' | ').slice(0, 600) || validation.status });\nconst ids = [...new Set(ctx.retrieval.results.flatMap(r => r.entry_ids || []))];\nreturn [{ json: { status, incident_type: ctx.incident.incident_type, severity: parsed.report.severity || risk.risk.severity,\n  report_markdown: parsed.report.report_markdown || '', report: parsed.report, validation, degraded_steps: degraded,\n  knowledge_coverage: ctx.knowledge.coverage, retrieved_entry_ids: ids, prompt_versions: PV } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nconst SOURCE = 'Repaired report ready', VALIDATION = true, REPAIRED = true;\n\n// SOURCE is the Parse node whose report is returned, VALIDATION the node that validated it.\nconst ctx = $('Assemble context').first().json;\nconst risk = $('Risk ready').first().json;\nconst parsed = $(SOURCE).first().json;\nconst v = VALIDATION ? $input.first().json : null;\nconst validation = !v ? { status: 'not_run', violations: [], repaired: REPAIRED }\n  : (v.error ? { status: 'unavailable', violations: [{ check: 'validate', message: 'the /validate service did not answer: ' + String(v.error.message || '').slice(0, 150) }], repaired: REPAIRED }\n  : { status: v.status, violations: v.violations || [], repaired: REPAIRED });\nconst degraded = [...ctx.degraded, ...(risk.degraded_c || []), ...(parsed.degraded_d || [])];\nif (!parsed.report) {\n  return [{ json: { status: 'degraded', incident_type: ctx.incident.incident_type, severity: risk.risk.severity, report_markdown: '', report: null, risk: risk.risk,\n    validation, degraded_steps: degraded, knowledge_coverage: ctx.knowledge.coverage, prompt_versions: PV } }];\n}\nconst status = validation.status !== 'pass' ? 'flagged' : (degraded.length ? 'degraded' : 'ok');\nif (validation.status !== 'pass') degraded.push({ step: 'validation', reason: validation.violations.map(x => x.check + ': ' + x.message).join(' | ').slice(0, 600) || validation.status });\nconst ids = [...new Set(ctx.retrieval.results.flatMap(r => r.entry_ids || []))];\nconst models = [];\nfor (const n of ['Incident ready', 'Vision ready', 'Queries ready', 'Knowledge ready', 'Risk ready', 'Report ready', 'Repaired report ready']) {\n  let node; try { node = $(n); if (!node.isExecuted) continue; } catch (e) { continue; }\n  const l = node.first().json._llm; if (l) models.push(l);\n}\nreturn [{ json: { status, incident_type: ctx.incident.incident_type, severity: parsed.report.severity || risk.risk.severity,\n  report_markdown: parsed.report.report_markdown || '', report: parsed.report, validation, degraded_steps: degraded,\n  knowledge_coverage: ctx.knowledge.coverage, retrieved_entry_ids: ids, models_used: models, prompt_versions: PV } }];\n"
       },
       "id": "9eb654f8-8f3d-5616-9b35-7f64ea333476",
       "name": "Build response (after repair)",
@@ -1792,7 +1632,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nconst SOURCE = 'Report ready', VALIDATION = false, REPAIRED = false;\n\n// SOURCE is the Parse node whose report is returned, VALIDATION the node that validated it.\nconst ctx = $('Assemble context').first().json;\nconst risk = $('Risk ready').first().json;\nconst parsed = $(SOURCE).first().json;\nconst v = VALIDATION ? $input.first().json : null;\nconst validation = !v ? { status: 'not_run', violations: [], repaired: REPAIRED }\n  : (v.error ? { status: 'unavailable', violations: [{ check: 'validate', message: 'the /validate service did not answer: ' + String(v.error.message || '').slice(0, 150) }], repaired: REPAIRED }\n  : { status: v.status, violations: v.violations || [], repaired: REPAIRED });\nconst degraded = [...ctx.degraded, ...(risk.degraded_c || []), ...(parsed.degraded_d || [])];\nif (!parsed.report) {\n  return [{ json: { status: 'degraded', incident_type: ctx.incident.incident_type, severity: risk.risk.severity, report_markdown: '', report: null, risk: risk.risk,\n    validation, degraded_steps: degraded, knowledge_coverage: ctx.knowledge.coverage, prompt_versions: PV } }];\n}\nconst status = validation.status !== 'pass' ? 'flagged' : (degraded.length ? 'degraded' : 'ok');\nif (validation.status !== 'pass') degraded.push({ step: 'validation', reason: validation.violations.map(x => x.check + ': ' + x.message).join(' | ').slice(0, 600) || validation.status });\nconst ids = [...new Set(ctx.retrieval.results.flatMap(r => r.entry_ids || []))];\nreturn [{ json: { status, incident_type: ctx.incident.incident_type, severity: parsed.report.severity || risk.risk.severity,\n  report_markdown: parsed.report.report_markdown || '', report: parsed.report, validation, degraded_steps: degraded,\n  knowledge_coverage: ctx.knowledge.coverage, retrieved_entry_ids: ids, prompt_versions: PV } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v1\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v3\"};\nconst RETRIED = false;\nconst SOURCE = 'Report ready', VALIDATION = false, REPAIRED = false;\n\n// SOURCE is the Parse node whose report is returned, VALIDATION the node that validated it.\nconst ctx = $('Assemble context').first().json;\nconst risk = $('Risk ready').first().json;\nconst parsed = $(SOURCE).first().json;\nconst v = VALIDATION ? $input.first().json : null;\nconst validation = !v ? { status: 'not_run', violations: [], repaired: REPAIRED }\n  : (v.error ? { status: 'unavailable', violations: [{ check: 'validate', message: 'the /validate service did not answer: ' + String(v.error.message || '').slice(0, 150) }], repaired: REPAIRED }\n  : { status: v.status, violations: v.violations || [], repaired: REPAIRED });\nconst degraded = [...ctx.degraded, ...(risk.degraded_c || []), ...(parsed.degraded_d || [])];\nif (!parsed.report) {\n  return [{ json: { status: 'degraded', incident_type: ctx.incident.incident_type, severity: risk.risk.severity, report_markdown: '', report: null, risk: risk.risk,\n    validation, degraded_steps: degraded, knowledge_coverage: ctx.knowledge.coverage, prompt_versions: PV } }];\n}\nconst status = validation.status !== 'pass' ? 'flagged' : (degraded.length ? 'degraded' : 'ok');\nif (validation.status !== 'pass') degraded.push({ step: 'validation', reason: validation.violations.map(x => x.check + ': ' + x.message).join(' | ').slice(0, 600) || validation.status });\nconst ids = [...new Set(ctx.retrieval.results.flatMap(r => r.entry_ids || []))];\nconst models = [];\nfor (const n of ['Incident ready', 'Vision ready', 'Queries ready', 'Knowledge ready', 'Risk ready', 'Report ready', 'Repaired report ready']) {\n  let node; try { node = $(n); if (!node.isExecuted) continue; } catch (e) { continue; }\n  const l = node.first().json._llm; if (l) models.push(l);\n}\nreturn [{ json: { status, incident_type: ctx.incident.incident_type, severity: parsed.report.severity || risk.risk.severity,\n  report_markdown: parsed.report.report_markdown || '', report: parsed.report, validation, degraded_steps: degraded,\n  knowledge_coverage: ctx.knowledge.coverage, retrieved_entry_ids: ids, models_used: models, prompt_versions: PV } }];\n"
       },
       "id": "7dcfcc68-1521-597c-98f6-f48b214bd859",
       "name": "Degraded response",
@@ -1884,7 +1724,7 @@
         ]
       ]
     },
-    "Gemini: incident": {
+    "LLM: incident": {
       "main": [
         [
           {
@@ -1917,14 +1757,14 @@
         ],
         [
           {
-            "node": "Gemini: incident (retry)",
+            "node": "LLM: incident (retry)",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Gemini: incident (retry)": {
+    "LLM: incident (retry)": {
       "main": [
         [
           {
@@ -1950,7 +1790,7 @@
       "main": [
         [
           {
-            "node": "Gemini: incident",
+            "node": "LLM: incident",
             "type": "main",
             "index": 0
           }
@@ -2002,7 +1842,7 @@
         ]
       ]
     },
-    "Gemini: vision": {
+    "LLM: vision": {
       "main": [
         [
           {
@@ -2035,14 +1875,14 @@
         ],
         [
           {
-            "node": "Gemini: vision (retry)",
+            "node": "LLM: vision (retry)",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Gemini: vision (retry)": {
+    "LLM: vision (retry)": {
       "main": [
         [
           {
@@ -2086,14 +1926,14 @@
       "main": [
         [
           {
-            "node": "Gemini: vision",
+            "node": "LLM: vision",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Gemini: RAG queries": {
+    "LLM: RAG queries": {
       "main": [
         [
           {
@@ -2126,14 +1966,14 @@
         ],
         [
           {
-            "node": "Gemini: RAG queries (retry)",
+            "node": "LLM: RAG queries (retry)",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Gemini: RAG queries (retry)": {
+    "LLM: RAG queries (retry)": {
       "main": [
         [
           {
@@ -2155,7 +1995,7 @@
         ]
       ]
     },
-    "Gemini: knowledge": {
+    "LLM: knowledge": {
       "main": [
         [
           {
@@ -2188,14 +2028,14 @@
         ],
         [
           {
-            "node": "Gemini: knowledge (retry)",
+            "node": "LLM: knowledge (retry)",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Gemini: knowledge (retry)": {
+    "LLM: knowledge (retry)": {
       "main": [
         [
           {
@@ -2221,7 +2061,7 @@
       "main": [
         [
           {
-            "node": "Gemini: RAG queries",
+            "node": "LLM: RAG queries",
             "type": "main",
             "index": 0
           }
@@ -2312,7 +2152,7 @@
       "main": [
         [
           {
-            "node": "Gemini: knowledge",
+            "node": "LLM: knowledge",
             "type": "main",
             "index": 0
           }
@@ -2374,7 +2214,7 @@
         ]
       ]
     },
-    "Gemini: risk": {
+    "LLM: risk": {
       "main": [
         [
           {
@@ -2407,14 +2247,14 @@
         ],
         [
           {
-            "node": "Gemini: risk (retry)",
+            "node": "LLM: risk (retry)",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Gemini: risk (retry)": {
+    "LLM: risk (retry)": {
       "main": [
         [
           {
@@ -2451,14 +2291,14 @@
       "main": [
         [
           {
-            "node": "Gemini: risk",
+            "node": "LLM: risk",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Gemini: report": {
+    "LLM: report": {
       "main": [
         [
           {
@@ -2491,14 +2331,14 @@
         ],
         [
           {
-            "node": "Gemini: report (retry)",
+            "node": "LLM: report (retry)",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Gemini: report (retry)": {
+    "LLM: report (retry)": {
       "main": [
         [
           {
@@ -2535,7 +2375,7 @@
       "main": [
         [
           {
-            "node": "Gemini: report",
+            "node": "LLM: report",
             "type": "main",
             "index": 0
           }
@@ -2611,7 +2451,7 @@
         ]
       ]
     },
-    "Gemini: repaired report": {
+    "LLM: repaired report": {
       "main": [
         [
           {
@@ -2644,14 +2484,14 @@
         ],
         [
           {
-            "node": "Gemini: repaired report (retry)",
+            "node": "LLM: repaired report (retry)",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Gemini: repaired report (retry)": {
+    "LLM: repaired report (retry)": {
       "main": [
         [
           {
@@ -2677,7 +2517,7 @@
       "main": [
         [
           {
-            "node": "Gemini: repaired report",
+            "node": "LLM: repaired report",
             "type": "main",
             "index": 0
           }
@@ -2756,8 +2596,8 @@
         "report": "report/v3.md"
       },
       "generated_by": "scripts/build_workflow.py",
-      "gemini_url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
       "rag_url": "http://host.docker.internal:8010",
+      "llm": "POST /llm, models from LLM_CHAIN in .env",
       "pace_seconds": 0
     }
   },

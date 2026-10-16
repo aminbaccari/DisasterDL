@@ -136,7 +136,7 @@ def mock_incident(user_text):
 
 
 def mock_vision(user_text):
-    return VISION_OUT.get(incident_id_for(user_text)) or {"image_usable": False, "quality_issues": ["Mock: no canned image analysis for this text"],
+    return VISION_OUT.get(incident_id_for(user_text)) or {"image_usable": False, "quality_issues": ["Mock: no canned image analysis for this text"],#type:ignore
                                                           "scene_summary": "", "observations": [], "visible_text": [], "consistent_with_report": "cannot_tell",
                                                           "inconsistencies": [], "not_determinable": []}
 
@@ -175,7 +175,7 @@ def mock_risk(user_text):
     incident = _json(user_text, "incident_json") or {}
     vision = _json(user_text, "vision_json")
     knowledge = _json(user_text, "knowledge_json") or {"relevant_guidance": [], "gaps": []}
-    severity = SEVERITY_FOR_RISK.get(incident.get("initial_severity"), incident.get("initial_severity", "undetermined"))
+    severity = SEVERITY_FOR_RISK.get(incident.get("initial_severity"), incident.get("initial_severity", "undetermined"))#type:ignore
     basis = [{"statement": f, "source": "report"} for f in incident.get("reported_facts", [])[:3]]
     if vision and vision.get("image_usable"):
         basis += [{"statement": o["description"], "source": "image"} for o in vision.get("observations", [])[:1]]
