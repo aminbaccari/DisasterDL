@@ -1,0 +1,511 @@
+"""Generate the n8n workflow JSON from the versioned prompt files.
+
+    python scripts/build_workflow.py                      # writes n8n/workflows/disasterai.json and disasterai_error.json
+    python scripts/build_workflow.py --gemini-base http://host.docker.internal:8020 --model mock   # point at the MOCK endpoint
+
+The prompts in prompts/ stay the single source of truth: this script reads the system prompt and the user message
+template of each agent from its markdown file and writes them into the nodes. The prompt file used by each agent is in
+PROMPTS below and its version is recorded in the node names ("Prompt risk v2") and in the response (prompt_versions).
+The Gemini key is not in the JSON: the HTTP nodes use an n8n credential named "Gemini key" (Header Auth, x-goog-api-key).
+"""
+import argparse
+import json
+import re
+import uuid
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+
+# agent -> prompt file, relative to prompts/. Changing a version means changing this table and rebuilding.
+PROMPTS = {
+    "incident": "incident_understanding/v1.md",
+    "vision": "vision/v1.md",
+    "rag_queries": "rag_query/v1.md",
+    "knowledge": "rag_query/v2_synthesis.md",
+    "risk": "risk_assessment/v2.md",
+    "report": "report/v3.md",
+}
+VERSIONS = {agent: re.search(r"v\d+", Path(path).stem).group(0) for agent, path in PROMPTS.items()}
+
+# placeholders of the user message templates -> JavaScript expressions evaluated in the Set node of that agent
+CTX = "$('Assemble context').first().json"
+PLACEHOLDERS = {
+    "incident": {"incident_text": "$('Normalise input').first().json.incident_text"},
+    "vision": {"incident_text": "$('Normalise input').first().json.incident_text"},
+    "rag_queries": {"incident_json": "JSON.stringify((({_degraded, ...r}) => r)($('Parse incident').first().json))"},
+    "knowledge": {"incident_json": "JSON.stringify((({_degraded, ...r}) => r)($('Parse incident').first().json))",
+                  "passages_json": "JSON.stringify($('Merge passages').first().json.passages)"},
+    "risk": {"incident_json": f"JSON.stringify({CTX}.incident)", "vision_json_or_null": f"JSON.stringify({CTX}.vision)",
+             "knowledge_json": f"JSON.stringify({CTX}.knowledge)"},
+    "report": {"output_language": f"{CTX}.output_language", "generated_at": f"{CTX}.generated_at",
+               "incident_json": f"JSON.stringify({CTX}.incident)", "vision_json_or_null": f"JSON.stringify({CTX}.vision)",
+               "knowledge_json": f"JSON.stringify({CTX}.knowledge)", "risk_json": "JSON.stringify($('Parse risk').first().json.risk)"},
+}
+
+
+# ---------- reading the prompt files ----------
+def blocks(text):
+    return re.findall(r"~~~\n(.*?)\n~~~", text, re.S)
+
+
+def read_prompt(agent):
+    """Return (system prompt, user template) from a prompt markdown file."""
+    text = (ROOT / "prompts" / PROMPTS[agent]).read_text(encoding="utf-8")
+    text = text.replace("\r\n", "\n")
+    system_part, _, user_part = text.partition("## User message template")
+    system = blocks(system_part.partition("## System prompt")[2])[0]
+    if "EXAMPLE1_JSON" in system:  # incident prompt: the two example lines are listed after the prompt
+        for label in ("EXAMPLE1_JSON", "EXAMPLE2_JSON"):
+            example = blocks(system_part.partition(f"{label}:")[2])[0]
+            system = system.replace(label, example, 1)
+    user = blocks(user_part)[0] if blocks(user_part) else ""
+    return system, user
+
+
+def user_expression(agent, template):
+    """Turn '<incident_report>\\n{{incident_text}}\\n</incident_report>' into an n8n expression that concatenates JS values."""
+    parts, last = [], 0
+    for match in re.finditer(r"\{\{(\w+)\}\}", template):
+        parts.append(json.dumps(template[last:match.start()]))
+        parts.append("(" + PLACEHOLDERS[agent][match.group(1)] + ")")
+        last = match.end()
+    parts.append(json.dumps(template[last:]))
+    return "={{ " + " + ".join(parts) + " }}"
+
+
+# ---------- JavaScript used in the Code nodes ----------
+READ_MODEL = r"""
+// Text of a Gemini answer, or the reason it could not be read.
+function readModel(j) {
+  if (j.error) return { err: 'Gemini request failed: ' + String(j.error.message || JSON.stringify(j.error)).slice(0, 300) };
+  let t;
+  try { t = j.candidates[0].content.parts[0].text; } catch (e) {
+    return { err: 'no text in the Gemini answer' + (j.promptFeedback ? ' (' + JSON.stringify(j.promptFeedback).slice(0, 150) + ')' : '') };
+  }
+  t = String(t).trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
+  try { return { value: JSON.parse(t) }; } catch (e) { return { err: 'invalid JSON from the model: ' + t.slice(0, 120) }; }
+}
+"""
+
+NORMALISE = r"""
+const item = $input.first();
+const body = item.json.body || {};
+const text = String(body.incident_text || '').trim();
+const lang = String(body.output_language || 'en').trim().toLowerCase() === 'fr' ? 'fr' : 'en';
+let image_b64 = null, image_mime = null, image_note = null;
+const supported = ['image/png', 'image/jpeg', 'image/webp', 'image/heic', 'image/heif'];
+if (item.binary && item.binary.image) {
+  const mime = item.binary.image.mimeType;
+  if (supported.includes(mime)) {
+    const buf = await this.helpers.getBinaryDataBuffer(0, 'image');
+    image_b64 = buf.toString('base64');
+    image_mime = mime;
+  } else {
+    image_note = 'Unsupported image type: ' + mime;
+  }
+}
+const valid = text.length >= 3;
+return [{ json: { valid, reason: valid ? null : 'incident_text is missing or too short', incident_text: text, output_language: lang,
+  has_image: image_b64 !== null, image_b64, image_mime, image_note, generated_at: new Date().toISOString() } }];
+"""
+
+REJECT = r"""
+const n = $input.first().json;
+return [{ json: { status: 'rejected', error: n.reason, incident_type: null, severity: null, report_markdown: '', degraded_steps: [], prompt_versions: PV } }];
+"""
+
+PARSE_INCIDENT = READ_MODEL + r"""
+const norm = $('Normalise input').first().json;
+const ENUMS = {
+  incident_type: ['forest_fire', 'flood', 'structural_emergency', 'other', 'unclear'],
+  type_confidence: ['high', 'medium', 'low'],
+  initial_severity: ['low', 'moderate', 'high', 'critical', 'unknown'],
+  people_at_risk_mentioned: ['yes', 'no', 'unknown'],
+  language: ['en', 'fr', 'ar', 'other'],
+};
+function problem(o) {
+  if (!o || typeof o !== 'object' || Array.isArray(o)) return 'the answer is not a JSON object';
+  for (const [k, allowed] of Object.entries(ENUMS)) if (!allowed.includes(o[k])) return k + ' has an invalid value: ' + JSON.stringify(o[k]);
+  if (!Array.isArray(o.reported_facts) || !Array.isArray(o.missing_information)) return 'reported_facts or missing_information is not a list';
+  if (!o.location || typeof o.location !== 'object') return 'location is missing';
+  return null;
+}
+const r = readModel($input.first().json);
+let out = r.value, degraded = [];
+const why = r.err || problem(out);
+if (why) {
+  degraded.push({ step: 'incident understanding', reason: why });
+  out = { incident_type: 'unclear', type_confidence: 'low', location: { text: null, precision: 'unknown' }, reported_facts: [norm.incident_text],
+    initial_severity: 'unknown', severity_reason: 'Fallback: the Incident Understanding step failed', people_at_risk_mentioned: 'unknown',
+    missing_information: ['Everything: the report could not be analysed automatically'], language: norm.output_language, rag_topic: 'general', notes: null, parse_error: true };
+}
+// The topic follows the type by rule (prompts/README.md), whatever the model wrote.
+out.rag_topic = { forest_fire: 'fire', flood: 'flood', structural_emergency: 'structural' }[out.incident_type] || 'general';
+return [{ json: { ...out, _degraded: degraded } }];
+"""
+
+NEEDS_INFO = r"""
+const inc = $input.first().json;
+const norm = $('Normalise input').first().json;
+const fr = norm.output_language === 'fr';
+const missing = (inc.missing_information || []);
+const md = fr
+  ? '# Informations supplémentaires nécessaires\n\nLe rapport ne permet pas de classer l\'incident ni d\'évaluer sa gravité. Aucune hypothèse n\'a été faite.\n\n' + missing.map(m => '- ' + m).join('\n')
+  : '# More information needed\n\nThe report does not allow the incident to be classified or its severity to be assessed. Nothing was guessed.\n\n' + missing.map(m => '- ' + m).join('\n');
+return [{ json: { status: 'needs_more_information', incident_type: inc.incident_type, severity: 'undetermined', report_markdown: md,
+  missing_information: missing, report: null, validation: null, degraded_steps: inc._degraded || [], prompt_versions: PV } }];
+"""
+
+NO_IMAGE = r"""
+const n = $('Normalise input').first().json;
+return [{ json: { vision: null, vision_skipped: n.image_note || 'No image was provided', degraded_a: [] } }];
+"""
+
+PARSE_VISION = READ_MODEL + r"""
+const CATS = ['smoke', 'flames', 'flood_water', 'structural_damage', 'infrastructure', 'vehicles', 'people', 'vegetation', 'other'];
+function problem(o) {
+  if (!o || typeof o !== 'object' || Array.isArray(o)) return 'the answer is not a JSON object';
+  if (typeof o.image_usable !== 'boolean') return 'image_usable is not a boolean';
+  if (!Array.isArray(o.observations) || !Array.isArray(o.not_determinable) || !Array.isArray(o.inconsistencies)) return 'observations, not_determinable or inconsistencies is not a list';
+  if (!['yes', 'partly', 'no', 'cannot_tell'].includes(o.consistent_with_report)) return 'consistent_with_report has an invalid value';
+  if (o.observations.some(x => !CATS.includes(x.category) || !['high', 'medium', 'low'].includes(x.confidence))) return 'an observation has an invalid category or confidence';
+  return null;
+}
+const r = readModel($input.first().json);
+const why = r.err || problem(r.value);
+if (why) {
+  return [{ json: { vision: { image_usable: false, quality_issues: ['The vision step failed: ' + why], scene_summary: '', observations: [], visible_text: [],
+    consistent_with_report: 'cannot_tell', inconsistencies: [], not_determinable: [] }, degraded_a: [{ step: 'vision', reason: why }] } }];
+}
+return [{ json: { vision: r.value, degraded_a: [] } }];
+"""
+
+PARSE_QUERIES = READ_MODEL + r"""
+const inc = $('Parse incident').first().json;
+const r = readModel($input.first().json);
+let queries = r.value && Array.isArray(r.value.queries) ? r.value.queries.filter(q => q && typeof q.text === 'string' && q.text.length > 2).slice(0, 3) : [];
+const degraded = [];
+if (!queries.length) {
+  degraded.push({ step: 'RAG queries', reason: r.err || 'no usable queries in the answer; used the incident facts as the query' });
+  queries = [{ text: (inc.reported_facts || []).join('. ').slice(0, 200), language: inc.language === 'fr' ? 'fr' : 'en', need: 'fallback' }];
+}
+return [{ json: { queries, degraded_b: degraded } }];
+"""
+
+SPLIT_QUERIES = r"""
+const topic = $('Parse incident').first().json.rag_topic;
+const q = $input.first().json.queries;
+return q.map(x => ({ json: { query: x.text, topic } }));
+"""
+
+MERGE_PASSAGES = r"""
+const topic = $('Parse incident').first().json.rag_topic;
+const degraded = [...($('Parse queries').first().json.degraded_b || [])];
+const best = {};
+for (const item of $input.all()) {
+  const j = item.json;
+  if (j.error || !Array.isArray(j.results)) { degraded.push({ step: 'RAG search', reason: 'search failed: ' + String((j.error && j.error.message) || 'no results field').slice(0, 200) }); continue; }
+  for (const r of j.results) if (!best[r.chunk_id] || r.score > best[r.chunk_id].score) best[r.chunk_id] = r;
+}
+const passages = Object.values(best).sort((a, b) => b.score - a.score).slice(0, 8);
+return [{ json: { passages, retrieval: { topic, results: passages }, degraded_b: degraded } }];
+"""
+
+KNOWLEDGE_NONE = r"""
+const topic = $('Parse incident').first().json.rag_topic;
+const j = $input.first().json;
+const reason = topic === 'general' ? 'No retrieval for this incident type' : ((j.degraded_b || []).some(d => d.step === 'RAG search') ? 'The knowledge base search failed' : 'No passages retrieved');
+return [{ json: { knowledge: { relevant_guidance: [], ignored_chunks: [], coverage: 'none', gaps: [reason] },
+  retrieval: { topic, results: [] }, degraded_b: j.degraded_b || [] } }];
+"""
+
+PARSE_KNOWLEDGE = READ_MODEL + r"""
+const merged = $('Merge passages').first().json;
+const entries = {};
+for (const p of merged.passages) entries[p.chunk_id] = p.entry_ids || [];
+const r = readModel($input.first().json);
+const degraded = [...(merged.degraded_b || [])];
+let k = r.value;
+const bad = !k || typeof k !== 'object' || !Array.isArray(k.relevant_guidance) || !['good', 'partial', 'none'].includes(k.coverage) || !Array.isArray(k.gaps);
+if (r.err || bad) {
+  degraded.push({ step: 'knowledge synthesis', reason: r.err || 'the answer does not match the knowledge contract' });
+  k = { relevant_guidance: [], ignored_chunks: [], coverage: 'none', gaps: ['The knowledge synthesis step failed'] };
+} else {
+  // A point is kept only if it cites an entry that the cited chunk really holds.
+  const kept = k.relevant_guidance.filter(g => g && g.citation && (entries[g.citation.chunk_id] || []).includes(g.citation.entry_id));
+  if (kept.length !== k.relevant_guidance.length) degraded.push({ step: 'knowledge synthesis', reason: (k.relevant_guidance.length - kept.length) + ' guidance point(s) removed: the cited entry is not in the cited chunk' });
+  k.relevant_guidance = kept;
+  if (!kept.length) k.coverage = 'none';
+}
+return [{ json: { knowledge: k, retrieval: merged.retrieval, degraded_b: degraded } }];
+"""
+
+ASSEMBLE = r"""
+const m = $input.first().json;
+const inc = $('Parse incident').first().json;
+const norm = $('Normalise input').first().json;
+const { _degraded, ...incident } = inc;
+return [{ json: { incident, vision: m.vision === undefined ? null : m.vision, knowledge: m.knowledge, retrieval: m.retrieval,
+  output_language: norm.output_language, generated_at: norm.generated_at, incident_text: norm.incident_text,
+  degraded: [...(_degraded || []), ...(m.degraded_a || []), ...(m.degraded_b || [])] } }];
+"""
+
+PARSE_RISK = READ_MODEL + r"""
+const ctx = $('Assemble context').first().json;
+const ids = new Set(); const byChunk = {};
+for (const p of ctx.retrieval.results) { byChunk[p.chunk_id] = p.entry_ids || []; for (const e of byChunk[p.chunk_id]) ids.add(e); }
+const SEV = ['low', 'moderate', 'high', 'critical', 'undetermined'];
+const r = readModel($input.first().json);
+const degraded = [];
+let risk = r.value;
+const bad = !risk || typeof risk !== 'object' || !SEV.includes(risk.severity) || !Array.isArray(risk.considerations) || !Array.isArray(risk.uncertainties) || !Array.isArray(risk.conflicts_between_sources);
+if (r.err || bad) {
+  degraded.push({ step: 'risk assessment', reason: r.err || 'the answer does not match the risk contract' });
+  risk = { severity: 'undetermined', severity_basis: [], main_risks: [], possibly_affected: [], conflicts_between_sources: [], considerations: [],
+    uncertainties: ['The risk assessment step failed, no severity could be assessed'], information_needed: ctx.incident.missing_information || [] };
+} else {
+  const kept = risk.considerations.filter(c => c && c.citation && (byChunk[c.citation.chunk_id] || []).includes(c.citation.entry_id));
+  if (kept.length !== risk.considerations.length) degraded.push({ step: 'risk assessment', reason: (risk.considerations.length - kept.length) + ' consideration(s) removed: the cited entry is not in the cited chunk' });
+  risk.considerations = kept;
+}
+return [{ json: { risk, degraded_c: degraded } }];
+"""
+
+PARSE_REPORT = READ_MODEL + r"""
+const r = readModel($input.first().json);
+if (r.err || !r.value || typeof r.value !== 'object' || Array.isArray(r.value)) {
+  return [{ json: { report: null, degraded_d: [{ step: 'report', reason: r.err || 'the answer is not a JSON object' }] } }];
+}
+return [{ json: { report: r.value, degraded_d: [] } }];
+"""
+
+BUILD_RESPONSE = r"""
+// SOURCE is the Parse node whose report is returned, VALIDATION the node that validated it.
+const ctx = $('Assemble context').first().json;
+const risk = $('Parse risk').first().json;
+const parsed = $(SOURCE).first().json;
+const v = VALIDATION ? $input.first().json : null;
+const validation = !v ? { status: 'not_run', violations: [], repaired: REPAIRED }
+  : (v.error ? { status: 'unavailable', violations: [{ check: 'validate', message: 'the /validate service did not answer: ' + String(v.error.message || '').slice(0, 150) }], repaired: REPAIRED }
+  : { status: v.status, violations: v.violations || [], repaired: REPAIRED });
+const degraded = [...ctx.degraded, ...(risk.degraded_c || []), ...(parsed.degraded_d || [])];
+if (!parsed.report) {
+  return [{ json: { status: 'degraded', incident_type: ctx.incident.incident_type, severity: risk.risk.severity, report_markdown: '', report: null, risk: risk.risk,
+    validation, degraded_steps: degraded, knowledge_coverage: ctx.knowledge.coverage, prompt_versions: PV } }];
+}
+const status = validation.status !== 'pass' ? 'flagged' : (degraded.length ? 'degraded' : 'ok');
+if (validation.status !== 'pass') degraded.push({ step: 'validation', reason: validation.violations.map(x => x.check + ': ' + x.message).join(' | ').slice(0, 600) || validation.status });
+const ids = [...new Set(ctx.retrieval.results.flatMap(r => r.entry_ids || []))];
+return [{ json: { status, incident_type: ctx.incident.incident_type, severity: parsed.report.severity || risk.risk.severity,
+  report_markdown: parsed.report.report_markdown || '', report: parsed.report, validation, degraded_steps: degraded,
+  knowledge_coverage: ctx.knowledge.coverage, retrieved_entry_ids: ids, prompt_versions: PV } }];
+"""
+
+
+def with_pv(js, versions):
+    return "const PV = " + json.dumps(versions) + ";\n" + js
+
+
+def uid(name):
+    return str(uuid.uuid5(uuid.NAMESPACE_URL, "disasterai/" + name))
+
+
+class Builder:
+    def __init__(self):
+        self.nodes, self.connections = [], {}
+
+    def add(self, name, type_, version, params, x, y, **extra):
+        node = {"parameters": params, "id": uid(name), "name": name, "type": type_, "typeVersion": version, "position": [x, y]}
+        node.update(extra)
+        self.nodes.append(node)
+        return name
+
+    def link(self, a, b, out=0, inp=0):
+        outs = self.connections.setdefault(a, {"main": []})["main"]
+        while len(outs) <= out:
+            outs.append([])
+        outs[out].append({"node": b, "type": "main", "index": inp})
+
+    # --- node helpers ---
+    def code(self, name, js, x, y, versions):
+        return self.add(name, "n8n-nodes-base.code", 2, {"jsCode": with_pv(js, versions)}, x, y)
+
+    def if_(self, name, left_expr, x, y):
+        cond = {"id": uid(name + "/cond"), "leftValue": left_expr, "rightValue": "",
+                "operator": {"type": "boolean", "operation": "true", "singleValue": True}}
+        params = {"conditions": {"options": {"caseSensitive": True, "leftValue": "", "typeValidation": "loose", "version": 2}, "conditions": [cond], "combinator": "and"}, "options": {}}
+        return self.add(name, "n8n-nodes-base.if", 2.2, params, x, y)
+
+    def prompt(self, agent, x, y, user_expr=None, name=None):
+        system, template = read_prompt(agent)
+        name = name or f"Prompt {agent.replace('_', ' ')} {VERSIONS[agent]}"
+        assignments = [
+            {"id": uid(name + "/system"), "name": "system", "value": system, "type": "string"},
+            {"id": uid(name + "/user"), "name": "user", "value": user_expr or user_expression(agent, template), "type": "string"},
+            {"id": uid(name + "/version"), "name": "prompt_file", "value": "prompts/" + PROMPTS[agent], "type": "string"},
+        ]
+        return self.add(name, "n8n-nodes-base.set", 3.4, {"mode": "manual", "assignments": {"assignments": assignments}, "includeOtherFields": False, "options": {}}, x, y)
+
+    def gemini(self, name, x, y, json_out=True, image=False):
+        image_part = ", { inline_data: { mime_type: $('Normalise input').first().json.image_mime, data: $('Normalise input').first().json.image_b64 } }" if image else ""
+        parts = "[{ text: $json.user }" + image_part + "]"
+        gen = "generationConfig: { response_mime_type: 'application/json' }" if json_out else "generationConfig: {}"
+        body = "={{ JSON.stringify({ system_instruction: { parts: { text: $json.system } }, contents: [{ role: 'user', parts: " + parts + " }], " + gen + " }) }}"
+        params = {"method": "POST", "url": "={{ $('Config').first().json.gemini_url }}", "authentication": "genericCredentialType", "genericAuthType": "httpHeaderAuth",
+                  "sendBody": True, "specifyBody": "json", "jsonBody": body, "options": {"timeout": 90000}}
+        return self.add(name, "n8n-nodes-base.httpRequest", 4.2, params, x, y, credentials={"httpHeaderAuth": {"id": "gemini-key", "name": "Gemini key"}},
+                        retryOnFail=True, maxTries=2, waitBetweenTries=3000, onError="continueRegularOutput")
+
+    def http_json(self, name, url_expr, body_expr, x, y, timeout=30000):
+        params = {"method": "POST", "url": url_expr, "sendBody": True, "specifyBody": "json", "jsonBody": body_expr, "options": {"timeout": timeout}}
+        return self.add(name, "n8n-nodes-base.httpRequest", 4.2, params, x, y, retryOnFail=True, maxTries=2, waitBetweenTries=2000, onError="continueRegularOutput")
+
+    def respond(self, name, x, y, code=200):
+        return self.add(name, "n8n-nodes-base.respondToWebhook", 1.1, {"respondWith": "json", "responseBody": "={{ JSON.stringify($json) }}", "options": {"responseCode": code}}, x, y)
+
+
+def build(args):
+    v = VERSIONS
+    b = Builder()
+    X = 260  # column width
+
+    # 1. entry, config, input checks
+    b.add("Incident received", "n8n-nodes-base.webhook", 2, {"httpMethod": "POST", "path": args.path, "responseMode": "responseNode", "options": {}}, 0, 300, webhookId=uid("webhook"))
+    gemini_url = f"{args.gemini_base.rstrip('/')}/v1beta/models/{args.model}:generateContent"
+    cfg = [{"id": uid("cfg/" + k), "name": k, "value": val, "type": "string"} for k, val in (("gemini_url", gemini_url), ("rag_url", args.rag_url.rstrip("/")))]
+    b.code("Normalise input", NORMALISE, X, 300, v)
+    b.add("Config", "n8n-nodes-base.set", 3.4, {"mode": "manual", "assignments": {"assignments": cfg}, "includeOtherFields": True, "options": {}}, 2 * X, 300)
+    b.if_("Valid input?", "={{ $json.valid }}", 3 * X, 300)
+    b.code("Reject input", REJECT, 4 * X, 480, v)
+    b.respond("Respond 400", 5 * X, 480, 400)
+
+    # 2. incident understanding
+    b.prompt("incident", 4 * X, 300)
+    b.gemini("Gemini: incident", 5 * X, 300)
+    b.code("Parse incident", PARSE_INCIDENT, 6 * X, 300, v)
+    b.if_("Enough to assess?", "={{ $json.incident_type !== 'unclear' }}", 7 * X, 300)
+    b.code("Ask for missing information", NEEDS_INFO, 8 * X, 480, v)
+    b.respond("Respond needs more information", 9 * X, 480)
+
+    # 3a. vision branch
+    b.if_("Has image?", "={{ $('Normalise input').first().json.has_image }}", 8 * X, 120)
+    b.prompt("vision", 9 * X, 40)
+    b.gemini("Gemini: vision", 10 * X, 40, image=True)
+    b.code("Parse vision", PARSE_VISION, 11 * X, 40, v)
+    b.code("No image: vision skipped", NO_IMAGE, 9 * X, 200, v)
+
+    # 3b. knowledge branch
+    b.prompt("rag_queries", 8 * X, 700)
+    b.gemini("Gemini: RAG queries", 9 * X, 700)
+    b.code("Parse queries", PARSE_QUERIES, 10 * X, 700, v)
+    b.if_("Topic searchable?", "={{ $('Parse incident').first().json.rag_topic !== 'general' }}", 11 * X, 700)
+    b.code("Split queries", SPLIT_QUERIES, 12 * X, 640, v)
+    b.http_json("RAG search", "={{ $('Config').first().json.rag_url + '/search' }}",
+                "={{ JSON.stringify({ query: $json.query, k: 4, topic: $json.topic, strategy: 'section' }) }}", 13 * X, 640)
+    b.code("Merge passages", MERGE_PASSAGES, 14 * X, 640, v)
+    b.if_("Any passages?", "={{ $json.passages.length > 0 }}", 15 * X, 640)
+    b.prompt("knowledge", 16 * X, 580)
+    b.gemini("Gemini: knowledge", 17 * X, 580)
+    b.code("Parse knowledge", PARSE_KNOWLEDGE, 18 * X, 580, v)
+    b.code("Knowledge: none", KNOWLEDGE_NONE, 16 * X, 800, v)
+
+    # 4. merge, risk, report
+    b.add("Wait for both branches", "n8n-nodes-base.merge", 3.2, {"mode": "combine", "combineBy": "combineByPosition", "options": {}}, 19 * X, 300)
+    b.code("Assemble context", ASSEMBLE, 20 * X, 300, v)
+    b.prompt("risk", 21 * X, 300)
+    b.gemini("Gemini: risk", 22 * X, 300)
+    b.code("Parse risk", PARSE_RISK, 23 * X, 300, v)
+    b.prompt("report", 24 * X, 300)
+    b.gemini("Gemini: report", 25 * X, 300)
+    b.code("Parse report", PARSE_REPORT, 26 * X, 300, v)
+    b.if_("Report produced?", "={{ $json.report !== null }}", 27 * X, 300)
+    validate_body = ("={{ JSON.stringify({ report: $json.report, retrieval: $('Assemble context').first().json.retrieval, incident_text: $('Assemble context').first().json.incident_text, "
+                     "incident: $('Assemble context').first().json.incident, vision: $('Assemble context').first().json.vision }) }}")
+    b.http_json("Validate report", "={{ $('Config').first().json.rag_url + '/validate' }}", validate_body, 28 * X, 220)
+    b.if_("Validation passed?", "={{ $json.status === 'pass' }}", 29 * X, 220)
+    b.code("Build response", "const SOURCE = 'Parse report', VALIDATION = true, REPAIRED = false;\n" + BUILD_RESPONSE, 30 * X, 140, v)
+    b.respond("Respond", 31 * X, 140)
+
+    # repair path: one more attempt through the report agent
+    repair_user = ("={{ $('Prompt report " + v["report"] + "').first().json.user + '\\n\\nYour previous answer failed these automatic checks. Fix only what they name, keep everything else, and return the full JSON object again.\\n<failed_checks>\\n' "
+                   "+ JSON.stringify($json.violations || $json.error || 'validation service unavailable') + '\\n</failed_checks>\\n<previous_answer>\\n' + JSON.stringify($('Parse report').first().json.report) + '\\n</previous_answer>' }}")
+    b.prompt("report", 30 * X, 380, user_expr=repair_user, name="Prompt report repair " + v["report"])
+    b.gemini("Gemini: repair report", 31 * X, 380)
+    b.code("Parse repaired report", PARSE_REPORT, 32 * X, 380, v)
+    repaired_body = validate_body.replace("report: $json.report", "report: $json.report")
+    b.http_json("Validate repaired report", "={{ $('Config').first().json.rag_url + '/validate' }}", repaired_body, 33 * X, 380)
+    b.code("Build response (after repair)", "const SOURCE = 'Parse repaired report', VALIDATION = true, REPAIRED = true;\n" + BUILD_RESPONSE, 34 * X, 380, v)
+    b.respond("Respond after repair", 35 * X, 380)
+
+    # report agent failed twice: degraded response, never silent
+    b.code("Degraded response", "const SOURCE = 'Parse report', VALIDATION = false, REPAIRED = false;\n" + BUILD_RESPONSE, 28 * X, 520, v)
+    b.respond("Respond degraded", 29 * X, 520)
+
+    L = b.link
+    L("Incident received", "Normalise input"); L("Normalise input", "Config"); L("Config", "Valid input?")
+    L("Valid input?", "Prompt incident " + v["incident"], 0); L("Valid input?", "Reject input", 1); L("Reject input", "Respond 400")
+    L("Prompt incident " + v["incident"], "Gemini: incident"); L("Gemini: incident", "Parse incident"); L("Parse incident", "Enough to assess?")
+    L("Enough to assess?", "Has image?", 0); L("Enough to assess?", "Prompt rag queries " + v["rag_queries"], 0)
+    L("Enough to assess?", "Ask for missing information", 1); L("Ask for missing information", "Respond needs more information")
+    L("Has image?", "Prompt vision " + v["vision"], 0); L("Has image?", "No image: vision skipped", 1)
+    L("Prompt vision " + v["vision"], "Gemini: vision"); L("Gemini: vision", "Parse vision"); L("Parse vision", "Wait for both branches", 0, 0)
+    L("No image: vision skipped", "Wait for both branches", 0, 0)
+    L("Prompt rag queries " + v["rag_queries"], "Gemini: RAG queries"); L("Gemini: RAG queries", "Parse queries"); L("Parse queries", "Topic searchable?")
+    L("Topic searchable?", "Split queries", 0); L("Topic searchable?", "Knowledge: none", 1)
+    L("Split queries", "RAG search"); L("RAG search", "Merge passages"); L("Merge passages", "Any passages?")
+    L("Any passages?", "Prompt knowledge " + v["knowledge"], 0); L("Any passages?", "Knowledge: none", 1)
+    L("Prompt knowledge " + v["knowledge"], "Gemini: knowledge"); L("Gemini: knowledge", "Parse knowledge")
+    L("Parse knowledge", "Wait for both branches", 0, 1); L("Knowledge: none", "Wait for both branches", 0, 1)
+    L("Wait for both branches", "Assemble context"); L("Assemble context", "Prompt risk " + v["risk"])
+    L("Prompt risk " + v["risk"], "Gemini: risk"); L("Gemini: risk", "Parse risk"); L("Parse risk", "Prompt report " + v["report"])
+    L("Prompt report " + v["report"], "Gemini: report"); L("Gemini: report", "Parse report"); L("Parse report", "Report produced?")
+    L("Report produced?", "Validate report", 0); L("Report produced?", "Degraded response", 1); L("Degraded response", "Respond degraded")
+    L("Validate report", "Validation passed?"); L("Validation passed?", "Build response", 0); L("Build response", "Respond")
+    L("Validation passed?", "Prompt report repair " + v["report"], 1)
+    L("Prompt report repair " + v["report"], "Gemini: repair report"); L("Gemini: repair report", "Parse repaired report")
+    L("Parse repaired report", "Validate repaired report"); L("Validate repaired report", "Build response (after repair)"); L("Build response (after repair)", "Respond after repair")
+
+    return {
+        "name": "DisasterAI pipeline", "nodes": b.nodes, "connections": b.connections, "active": False,
+        "settings": {"executionOrder": "v1", "errorWorkflow": "disasterai-error", "saveDataErrorExecution": "all", "saveDataSuccessExecution": "all"},
+        "pinData": {}, "meta": {"disasterai": {"prompt_versions": VERSIONS, "prompt_files": PROMPTS, "generated_by": "scripts/build_workflow.py",
+                                               "gemini_url": gemini_url, "rag_url": args.rag_url}},
+        "id": "disasterai-pipeline", "tags": [],
+    }
+
+
+ERROR_JS = r"""
+// Global error workflow: keep a readable line per failed execution (visible in the Executions tab of this workflow).
+const e = $input.first().json;
+return [{ json: { when: new Date().toISOString(), workflow: e.workflow && e.workflow.name, execution_id: e.execution && e.execution.id,
+  failed_node: e.execution && e.execution.lastNodeExecuted, message: e.execution && e.execution.error && e.execution.error.message } }];
+"""
+
+
+def build_error_workflow():
+    b = Builder()
+    b.add("Error Trigger", "n8n-nodes-base.errorTrigger", 1, {}, 0, 0)
+    b.code("Log failure", ERROR_JS, 260, 0, VERSIONS)
+    b.link("Error Trigger", "Log failure")
+    return {"name": "DisasterAI error workflow", "nodes": b.nodes, "connections": b.connections, "active": False, "settings": {"executionOrder": "v1"},
+            "pinData": {}, "id": "disasterai-error", "tags": [], "meta": {}}
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--gemini-base", default="https://generativelanguage.googleapis.com")
+    parser.add_argument("--model", default="gemini-3.8-flash", help="model name in the URL (the value of GEMINI_MODEL in .env)")
+    parser.add_argument("--rag-url", default="http://host.docker.internal:8010")
+    parser.add_argument("--path", default="incident", help="webhook path")
+    parser.add_argument("--out-dir", default=str(ROOT / "n8n" / "workflows"))
+    args = parser.parse_args()
+    out = Path(args.out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    main_wf = build(args)
+    (out / "disasterai.json").write_text(json.dumps(main_wf, ensure_ascii=False, indent=2), encoding="utf-8")
+    (out / "disasterai_error.json").write_text(json.dumps(build_error_workflow(), ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"wrote {len(main_wf['nodes'])} nodes to {out / 'disasterai.json'} (prompt versions: {VERSIONS})")
+
+
+if __name__ == "__main__":
+    main()
