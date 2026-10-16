@@ -1,0 +1,234 @@
+{
+  "incident_id": "flood_01",
+  "image_status": "sent",
+  "status_code": 200,
+  "raw_response": {
+    "status": "ok",
+    "incident_type": "flood",
+    "severity": "high",
+    "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T19:18:48.851Z\nIncident type: flood | Location: un quartier résidentiel de Nabeul | Severity (system assessment): high\n\n## Summary\nDe fortes inondations affectent un quartier résidentiel de Nabeul, avec plusieurs routes bloquées et l'eau qui continue de monter. La sévérité a été évaluée comme élevée par le système. Des risques de débordement et de dommages aux infrastructures sont présents.\n\n## 1. What was reported\n- De fortes inondations touchent un quartier résidentiel de Nabeul (report)\n- Plusieurs routes sont bloquées (report)\n- l'eau continue de monter (report)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\nCoverage: good\n- Ne prenez pas votre voiture pendant une inondation ; quelques centimètres d'eau suffisent à l'emporter et il faut reporter vos déplacements à pied ou en voiture. (FL-05)\n- Restez informé et suivez immédiatement les consignes des secours et de la mairie. (FL-08)\n- Aidez les personnes fragiles et isolées en les prévenant par SMS, de préférence aux appels. (FL-09)\n- Éloignez-vous des cours d'eau, des berges et des ponts pendant les fortes pluies et les inondations. (FL-06)\n- Soyez prêt à évacuer rapidement si les autorités locales vous le conseillent. (FL-03)\nAucune consigne disponible dans la base de connaissances sur ce point. Suivez les instructions des autorités et des services de secours.\n\n## 4. System assessment\nLa sévérité est élevée, basée sur le rapport indiquant de fortes inondations touchant un quartier résidentiel de Nabeul, plusieurs routes bloquées et l'eau qui continue de monter (report). Les principaux risques comprennent le risque de noyade ou de blessures dues à la montée des eaux (report), le risque de réponse d'urgence retardée ou entravée en raison des routes bloquées (report), et le risque de dommages matériels aux habitations et infrastructures (report). Les éléments potentiellement affectés sont le quartier résidentiel (habitations et habitants) (report), les routes et voies de transport (report), et les services publics et infrastructures locales (report). Aucun conflit entre les sources n'a été détecté.\n\n## 5. Missing information and uncertainties\n**Uncertainties:**\n- No image was analysed.\n- People at risk status is unknown.\n\n**Information needed:**\n- water depth\n- flow rate or speed\n- number of people affected or evacuated\n- injuries or casualties status\n- status of emergency services response\n- forecast for further rainfall\n\nCe rapport est une aide à la décision produite par un prototype d'IA. Il ne remplace pas les services d'urgence et ne constitue pas une décision officielle. L'échelle de gravité est une échelle de travail de ce prototype.",
+    "report": {
+      "language": "fr",
+      "location": "un quartier résidentiel de Nabeul",
+      "severity": "high",
+      "summary": "De fortes inondations affectent un quartier résidentiel de Nabeul, avec plusieurs routes bloquées et l'eau qui continue de monter. La sévérité a été évaluée comme élevée par le système. Des risques de débordement et de dommages aux infrastructures sont présents.",
+      "reported": [
+        {
+          "text": "De fortes inondations touchent un quartier résidentiel de Nabeul",
+          "source": "report"
+        },
+        {
+          "text": "Plusieurs routes sont bloquées",
+          "source": "report"
+        },
+        {
+          "text": "l'eau continue de monter",
+          "source": "report"
+        }
+      ],
+      "image_status": "not_provided",
+      "observed": [],
+      "knowledge": {
+        "coverage": "good",
+        "guidance": [
+          {
+            "text": "Ne prenez pas votre voiture pendant une inondation ; quelques centimètres d'eau suffisent à l'emporter et il faut reporter vos déplacements à pied ou en voiture.",
+            "entry_id": "FL-05",
+            "chunk_id": "fr/flood_kb.md::section::1",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Restez informé et suivez immédiatement les consignes des secours et de la mairie.",
+            "entry_id": "FL-08",
+            "chunk_id": "fr/flood_kb.md::section::4",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Aidez les personnes fragiles et isolées en les prévenant par SMS, de préférence aux appels.",
+            "entry_id": "FL-09",
+            "chunk_id": "fr/flood_kb.md::section::5",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Éloignez-vous des cours d'eau, des berges et des ponts pendant les fortes pluies et les inondations.",
+            "entry_id": "FL-06",
+            "chunk_id": "fr/flood_kb.md::section::2",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Soyez prêt à évacuer rapidement si les autorités locales vous le conseillent.",
+            "entry_id": "FL-03",
+            "chunk_id": "en/flood_kb.md::section::3",
+            "source": "knowledge_base"
+          }
+        ],
+        "no_guidance_statement": "Aucune consigne disponible dans la base de connaissances sur ce point. Suivez les instructions des autorités et des services de secours."
+      },
+      "assessment": {
+        "basis": [
+          {
+            "text": "Strong floods affecting a residential neighbourhood of Nabeul, several roads blocked and water continuing to rise",
+            "source": "report"
+          }
+        ],
+        "risks": [
+          {
+            "text": "Risk of drowning or injuries due to rising floodwaters",
+            "source": "report"
+          },
+          {
+            "text": "Risk of delayed or hindered emergency response because roads are blocked",
+            "source": "report"
+          },
+          {
+            "text": "Risk of property damage to homes and infrastructure in the flooded area",
+            "source": "report"
+          }
+        ],
+        "possibly_affected": [
+          {
+            "text": "Residential neighbourhood (homes and inhabitants)",
+            "source": "report"
+          },
+          {
+            "text": "Roads and transportation routes",
+            "source": "report"
+          },
+          {
+            "text": "Local utilities and infrastructure",
+            "source": "report"
+          }
+        ],
+        "conflicts": []
+      },
+      "recommendations": [
+        {
+          "text": "Ne prenez pas votre voiture pendant une inondation ; quelques centimètres d'eau suffisent à l'emporter et il faut reporter vos déplacements à pied ou en voiture.",
+          "entry_id": "FL-05",
+          "chunk_id": "fr/flood_kb.md::section::1",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Restez informé et suivez immédiatement les consignes des secours et de la mairie.",
+          "entry_id": "FL-08",
+          "chunk_id": "fr/flood_kb.md::section::4",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Aidez les personnes fragiles et isolées en les prévenant par SMS, de préférence aux appels.",
+          "entry_id": "FL-09",
+          "chunk_id": "fr/flood_kb.md::section::5",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Éloignez-vous des cours d'eau, des berges et des ponts pendant les fortes pluies et les inondations.",
+          "entry_id": "FL-06",
+          "chunk_id": "fr/flood_kb.md::section::2",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Soyez prêt à évacuer rapidement si les autorités locales vous le conseillent.",
+          "entry_id": "FL-03",
+          "chunk_id": "en/flood_kb.md::section::3",
+          "source": "knowledge_base"
+        }
+      ],
+      "uncertainties": [
+        "No image was analysed.",
+        "People at risk status is unknown."
+      ],
+      "information_needed": [
+        "water depth",
+        "flow rate or speed",
+        "number of people affected or evacuated",
+        "injuries or casualties status",
+        "status of emergency services response",
+        "forecast for further rainfall"
+      ],
+      "disclaimer": "Ce rapport est une aide à la décision produite par un prototype d'IA. Il ne remplace pas les services d'urgence et ne constitue pas une décision officielle. L'échelle de gravité est une échelle de travail de ce prototype.",
+      "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T19:18:48.851Z\nIncident type: flood | Location: un quartier résidentiel de Nabeul | Severity (system assessment): high\n\n## Summary\nDe fortes inondations affectent un quartier résidentiel de Nabeul, avec plusieurs routes bloquées et l'eau qui continue de monter. La sévérité a été évaluée comme élevée par le système. Des risques de débordement et de dommages aux infrastructures sont présents.\n\n## 1. What was reported\n- De fortes inondations touchent un quartier résidentiel de Nabeul (report)\n- Plusieurs routes sont bloquées (report)\n- l'eau continue de monter (report)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\nCoverage: good\n- Ne prenez pas votre voiture pendant une inondation ; quelques centimètres d'eau suffisent à l'emporter et il faut reporter vos déplacements à pied ou en voiture. (FL-05)\n- Restez informé et suivez immédiatement les consignes des secours et de la mairie. (FL-08)\n- Aidez les personnes fragiles et isolées en les prévenant par SMS, de préférence aux appels. (FL-09)\n- Éloignez-vous des cours d'eau, des berges et des ponts pendant les fortes pluies et les inondations. (FL-06)\n- Soyez prêt à évacuer rapidement si les autorités locales vous le conseillent. (FL-03)\nAucune consigne disponible dans la base de connaissances sur ce point. Suivez les instructions des autorités et des services de secours.\n\n## 4. System assessment\nLa sévérité est élevée, basée sur le rapport indiquant de fortes inondations touchant un quartier résidentiel de Nabeul, plusieurs routes bloquées et l'eau qui continue de monter (report). Les principaux risques comprennent le risque de noyade ou de blessures dues à la montée des eaux (report), le risque de réponse d'urgence retardée ou entravée en raison des routes bloquées (report), et le risque de dommages matériels aux habitations et infrastructures (report). Les éléments potentiellement affectés sont le quartier résidentiel (habitations et habitants) (report), les routes et voies de transport (report), et les services publics et infrastructures locales (report). Aucun conflit entre les sources n'a été détecté.\n\n## 5. Missing information and uncertainties\n**Uncertainties:**\n- No image was analysed.\n- People at risk status is unknown.\n\n**Information needed:**\n- water depth\n- flow rate or speed\n- number of people affected or evacuated\n- injuries or casualties status\n- status of emergency services response\n- forecast for further rainfall\n\nCe rapport est une aide à la décision produite par un prototype d'IA. Il ne remplace pas les services d'urgence et ne constitue pas une décision officielle. L'échelle de gravité est une échelle de travail de ce prototype."
+    },
+    "validation": {
+      "status": "pass",
+      "violations": [],
+      "repaired": false
+    },
+    "degraded_steps": [],
+    "knowledge_coverage": "good",
+    "retrieved_entry_ids": [
+      "FL-26",
+      "FL-05",
+      "FL-02",
+      "FL-08",
+      "FL-09",
+      "FL-12",
+      "FL-03",
+      "FL-06"
+    ],
+    "models_used": [
+      {
+        "step": "incident",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 12.34,
+        "failed_attempts": []
+      },
+      {
+        "step": "RAG queries",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 25.72,
+        "failed_attempts": []
+      },
+      {
+        "step": "knowledge",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 2.48,
+        "failed_attempts": []
+      },
+      {
+        "step": "risk",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 2.47,
+        "failed_attempts": []
+      },
+      {
+        "step": "report",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 81.24,
+        "failed_attempts": [
+          "groq:openai/gpt-oss-120b rate limit"
+        ]
+      }
+    ],
+    "prompt_versions": {
+      "incident": "v1",
+      "vision": "v1",
+      "rag_queries": "v1",
+      "knowledge": "v2",
+      "risk": "v2",
+      "report": "v3"
+    }
+  },
+  "seconds": 124.6,
+  "incident_type": "flood",
+  "severity": "high",
+  "degraded_steps": [],
+  "prompt_versions": {
+    "incident": "v1",
+    "vision": "v1",
+    "rag_queries": "v1",
+    "knowledge": "v2",
+    "risk": "v2",
+    "report": "v3"
+  },
+  "checks": {
+    "incident_type_ok": true,
+    "severity_ok": true,
+    "has_report": true
+  },
+  "run": 1
+}

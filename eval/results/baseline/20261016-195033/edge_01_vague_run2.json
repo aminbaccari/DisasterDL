@@ -1,0 +1,69 @@
+{
+ "row": {
+  "answered_by": "groq:openai/gpt-oss-120b",
+  "incident_id": "edge_01_vague",
+  "run": 2,
+  "seconds": 2.0,
+  "error": "",
+  "schema_ok": true,
+  "validate_ok": true,
+  "validate_checks": "",
+  "type_ok": null,
+  "severity_ok": false,
+  "cites_entries": false,
+  "invented_location": false
+ },
+ "report": {
+  "language": "fr",
+  "location": null,
+  "severity": "high",
+  "summary": "Un problème grave a été signalé près du port, demandant une intervention rapide.",
+  "reported": [
+   {
+    "text": "Il y a un problème grave près du port, venez vite.",
+    "source": "report"
+   }
+  ],
+  "image_status": "not_provided",
+  "observed": [],
+  "knowledge": {
+   "coverage": "none",
+   "guidance": [],
+   "no_guidance_statement": "Aucune directive disponible dans les sources consultées ; veuillez contacter les autorités compétentes pour des instructions appropriées."
+  },
+  "assessment": {
+   "basis": [
+    {
+     "text": "Il y a un problème grave près du port, venez vite.",
+     "source": "report"
+    }
+   ],
+   "risks": [
+    {
+     "text": "Danger potentiel pour les personnes et les infrastructures à proximité du port.",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [
+    {
+     "text": "Les personnes se trouvant à proximité du port.",
+     "source": "report"
+    }
+   ],
+   "conflicts": []
+  },
+  "recommendations": [],
+  "uncertainties": [
+   "Nature exacte du problème signalé",
+   "Localisation précise du incident",
+   "Nombre de personnes potentiellement affectées"
+  ],
+  "information_needed": [
+   "Description détaillée de l'incident (incendie, fuite chimique, etc.)",
+   "Coordonnées GPS ou adresse exacte du site",
+   "Évaluation initiale du nombre de victimes ou de personnes exposées"
+  ],
+  "disclaimer": "Ce rapport est préliminaire et ne remplace pas les services d'urgence. Les informations fournies sont basées sur les données disponibles et peuvent être incomplètes.",
+  "report_markdown": "# Rapport d'incident\n\n**Message reçu** : \"Il y a un problème grave près du port, venez vite.\"\n\nAucun détail supplémentaire n'est disponible pour le moment.\n"
+ }
+}

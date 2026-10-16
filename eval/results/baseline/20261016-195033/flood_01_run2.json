@@ -1,0 +1,123 @@
+{
+ "row": {
+  "answered_by": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+  "incident_id": "flood_01",
+  "run": 2,
+  "seconds": 76.8,
+  "error": "",
+  "schema_ok": true,
+  "validate_ok": true,
+  "validate_checks": "",
+  "type_ok": null,
+  "severity_ok": true,
+  "cites_entries": true,
+  "invented_location": false
+ },
+ "report": {
+  "language": "fr",
+  "location": "Nabeul",
+  "severity": "moderate",
+  "summary": "De fortes inondations affectent un quartier résidentiel de Nabeul, avec des routes bloquées et une montée continue des eaux.",
+  "reported": [
+   {
+    "text": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.",
+    "source": "report"
+   }
+  ],
+  "image_status": "not_provided",
+  "observed": [],
+  "knowledge": {
+   "coverage": "good",
+   "guidance": [
+    {
+     "text": "FL-08 Restez informé et écoutez les consignes des secours et de la mairie. Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie. Si les fortes pluies et les inondations sont dangereuses, appliquez tout de suite les bons réflexes. Source: Pluie et inondation, version FALC (Ministère français, adaptation Com'access), PDF page 9. Origin of the sources: FR. Audience: public. Type: taken from the sources.",
+     "entry_id": "FL-08",
+     "chunk_id": "fr/flood_kb.md::section::4",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "FL-06 Éloignez-vous des cours d'eau, des berges et des ponts. Fortes pluies et inondation dangereuses, premier réflexe : éloignez-vous des cours d'eau, des berges et des ponts. On peut sauver des vies si on a les bons réflexes, c'est-à-dire ce qu'il faut savoir faire tout de suite. Source: Pluie et inondation, version FALC (Ministère français, adaptation Com'access), PDF pages 3, 9. Origin of the sources: FR. Audience: public. Type: taken from the sources.",
+     "entry_id": "FL-06",
+     "chunk_id": "fr/flood_kb.md::section::2",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "FL-09 Aidez les personnes fragiles et isolées, par SMS. Inondation : aidez les personnes autour de vous. Prévenez les personnes fragiles et isolées par SMS, de préférence aux appels. Source: Pluie et inondation, version FALC (Ministère français, adaptation Com'access), PDF pages 9, 10. Origin of the sources: FR. Audience: public. Type: taken from the sources.",
+     "entry_id": "FL-09",
+     "chunk_id": "fr/flood_kb.md::section::5",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "FL-07 Restez ou mettez-vous à l'abri, allez à l'étage. Fortes pluies et inondation dangereuses : restez ou mettez-vous à l'abri et ne vous déplacez pas. Réfugiez-vous à l'étage du bâtiment. Laissez vos enfants en sécurité à l'école. Ne descendez pas au sous-sol. Source: Pluie et inondation, version FALC (Ministère français, adaptation Com'access), PDF pages 9, 10. Origin of the sources: FR. Audience: public. Type: taken from the sources.",
+     "entry_id": "FL-07",
+     "chunk_id": "fr/flood_kb.md::section::3",
+     "source": "knowledge_base"
+    }
+   ],
+   "no_guidance_statement": null
+  },
+  "assessment": {
+   "basis": [
+    {
+     "text": "De fortes inondations touchent un quartier résidentiel de Nabeul.",
+     "source": "report"
+    },
+    {
+     "text": "Plusieurs routes sont bloquées et l'eau continue de monter.",
+     "source": "report"
+    }
+   ],
+   "risks": [
+    {
+     "text": "Plusieurs routes sont bloquées et l'eau continue de monter.",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [
+    {
+     "text": "quartier résidentiel de Nabeul",
+     "source": "report"
+    }
+   ],
+   "conflicts": []
+  },
+  "recommendations": [
+   {
+    "text": "FL-08 Restez informé et écoutez les consignes des secours et de la mairie. Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie. Si les fortes pluies et les inondations sont dangereuses, appliquez tout de suite les bons réflexes. Source: Pluie et inondation, version FALC (Ministère français, adaptation Com'access), PDF page 9. Origin of the sources: FR. Audience: public. Type: taken from the sources.",
+    "entry_id": "FL-08",
+    "chunk_id": "fr/flood_kb.md::section::4",
+    "source": "knowledge_base"
+   },
+   {
+    "text": "FL-06 Éloignez-vous des cours d'eau, des berges et des ponts. Fortes pluies et inondation dangereuses, premier réflexe : éloignez-vous des cours d'eau, des berges et des ponts. On peut sauver des vies si on a les bons réflexes, c'est-à-dire ce qu'il faut savoir faire tout de suite. Source: Pluie et inondation, version FALC (Ministère français, adaptation Com'access), PDF pages 3, 9. Origin of the sources: FR. Audience: public. Type: taken from the sources.",
+    "entry_id": "FL-06",
+    "chunk_id": "fr/flood_kb.md::section::2",
+    "source": "knowledge_base"
+   },
+   {
+    "text": "FL-09 Aidez les personnes fragiles et isolées, par SMS. Inondation : aidez les personnes autour de vous. Prévenez les personnes fragiles et isolées par SMS, de préférence aux appels. Source: Pluie et inondation, version FALC (Ministère français, adaptation Com'access), PDF pages 9, 10. Origin of the sources: FR. Audience: public. Type: taken from the sources.",
+    "entry_id": "FL-09",
+    "chunk_id": "fr/flood_kb.md::section::5",
+    "source": "knowledge_base"
+   },
+   {
+    "text": "FL-07 Restez ou mettez-vous à l'abri, allez à l'étage. Fortes pluies et inondation dangereuses : restez ou mettez-vous à l'abri et ne vous déplacez pas. Réfugiez-vous à l'étage du bâtiment. Laissez vos enfants en sécurité à l'école. Ne descendez pas au sous-sol. Source: Pluie et inondation, version FALC (Ministère français, adaptation Com'access), PDF pages 9, 10. Origin of the sources: FR. Audience: public. Type: taken from the sources.",
+    "entry_id": "FL-07",
+    "chunk_id": "fr/flood_kb.md::section::3",
+    "source": "knowledge_base"
+   }
+  ],
+  "uncertainties": [
+   "Profondeur exacte de l'eau",
+   "Évolution future du niveau d'eau",
+   "Nombre exact de personnes touchées"
+  ],
+  "information_needed": [
+   "Profondeur exacte de l'eau",
+   "Évolution future du niveau d'eau",
+   "Nombre exact de personnes touchées"
+  ],
+  "disclaimer": "Ce rapport est une évaluation préliminaire basée sur les informations disponibles et ne remplace pas les services d'urgence.",
+  "report_markdown": "*De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.*"
+ }
+}

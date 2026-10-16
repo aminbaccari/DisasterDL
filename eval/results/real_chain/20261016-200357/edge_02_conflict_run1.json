@@ -1,0 +1,205 @@
+{
+  "incident_id": "edge_02_conflict",
+  "image_status": "sent",
+  "status_code": 200,
+  "raw_response": {
+    "status": "ok",
+    "incident_type": "flood",
+    "severity": "moderate",
+    "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T19:04:26.765Z\nIncident type: flood | Location: main road | Severity (system assessment): moderate\n\n## Summary\nA flood has been reported on the main road with water rising quickly. The situation is assessed as moderate severity. Key details such as water depth, flow rate, and impact on people are not known.\n\n## 1. What was reported\n- Flooding on the main road (reported)\n- Water is rising quickly (reported)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\nCoverage: good  \n- During a flood, do not travel through water and move to an upper floor; follow the instructions of rescuers and the town hall. (entry FL-12)  \n- Be ready to evacuate on official advice; review your evacuation plan so you can leave quickly if officials advise evacuation. (entry FL-03)  \n- Before a flood, know your risk and plan a higher place to go that you can reach quickly. (entry FL-02)  \n\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: moderate, based on reported facts that flooding is occurring on the main road and water is rising quickly.  \nRisks: Rapidly rising water may inundate the main road and surrounding area, hindering transport and potentially endangering anyone nearby.  \nPossibly affected: main road, vehicles using the road, pedestrians on or near the road, nearby properties.  \nConflicts: None.\n\n## 5. Missing information and uncertainties\n- No image was provided for analysis\n- People at risk status is unknown\n- Extent of flooding beyond the main road is not reported\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+    "report": {
+      "language": "en",
+      "location": "main road",
+      "severity": "moderate",
+      "summary": "A flood has been reported on the main road with water rising quickly. The situation is assessed as moderate severity. Key details such as water depth, flow rate, and impact on people are not known.",
+      "reported": [
+        {
+          "text": "Flooding on the main road",
+          "source": "report"
+        },
+        {
+          "text": "Water is rising quickly",
+          "source": "report"
+        }
+      ],
+      "image_status": "not_provided",
+      "observed": [],
+      "knowledge": {
+        "coverage": "good",
+        "guidance": [
+          {
+            "text": "During a flood, do not travel through water and move to an upper floor; follow the instructions of rescuers and the town hall.",
+            "entry_id": "FL-12",
+            "chunk_id": "en/flood_kb.md::section::6",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Be ready to evacuate on official advice; review your evacuation plan so you can leave quickly if officials advise evacuation.",
+            "entry_id": "FL-03",
+            "chunk_id": "en/flood_kb.md::section::3",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Before a flood, know your risk and plan a higher place to go that you can reach quickly.",
+            "entry_id": "FL-02",
+            "chunk_id": "en/flood_kb.md::section::2",
+            "source": "knowledge_base"
+          }
+        ],
+        "no_guidance_statement": "No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services."
+      },
+      "assessment": {
+        "basis": [
+          {
+            "text": "Flooding on the main road",
+            "source": "report"
+          },
+          {
+            "text": "Water is rising quickly",
+            "source": "report"
+          }
+        ],
+        "risks": [
+          {
+            "text": "Rapidly rising water may inundate the main road and surrounding area, hindering transport and potentially endangering anyone nearby",
+            "source": "report"
+          }
+        ],
+        "possibly_affected": [
+          {
+            "text": "main road",
+            "source": "report"
+          },
+          {
+            "text": "vehicles using the road",
+            "source": "report"
+          },
+          {
+            "text": "pedestrians on or near the road",
+            "source": "report"
+          },
+          {
+            "text": "nearby properties",
+            "source": "report"
+          }
+        ],
+        "conflicts": []
+      },
+      "recommendations": [
+        {
+          "text": "During a flood, do not travel through water and move to an upper floor; follow the instructions of rescuers and the town hall.",
+          "entry_id": "FL-12",
+          "chunk_id": "en/flood_kb.md::section::6",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Be ready to evacuate on official advice; review your evacuation plan so you can leave quickly if officials advise evacuation.",
+          "entry_id": "FL-03",
+          "chunk_id": "en/flood_kb.md::section::3",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Before a flood, know your risk and plan a higher place to go that you can reach quickly.",
+          "entry_id": "FL-02",
+          "chunk_id": "en/flood_kb.md::section::2",
+          "source": "knowledge_base"
+        }
+      ],
+      "uncertainties": [
+        "No image was provided for analysis",
+        "People at risk status is unknown",
+        "Extent of flooding beyond the main road is not reported"
+      ],
+      "information_needed": [
+        "Water depth",
+        "Flow rate",
+        "Extent of flooding (how far water has spread)",
+        "Whether any people are injured or trapped",
+        "Whether evacuation or road closure is in effect",
+        "Time of report"
+      ],
+      "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+      "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T19:04:26.765Z\nIncident type: flood | Location: main road | Severity (system assessment): moderate\n\n## Summary\nA flood has been reported on the main road with water rising quickly. The situation is assessed as moderate severity. Key details such as water depth, flow rate, and impact on people are not known.\n\n## 1. What was reported\n- Flooding on the main road (reported)\n- Water is rising quickly (reported)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\nCoverage: good  \n- During a flood, do not travel through water and move to an upper floor; follow the instructions of rescuers and the town hall. (entry FL-12)  \n- Be ready to evacuate on official advice; review your evacuation plan so you can leave quickly if officials advise evacuation. (entry FL-03)  \n- Before a flood, know your risk and plan a higher place to go that you can reach quickly. (entry FL-02)  \n\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: moderate, based on reported facts that flooding is occurring on the main road and water is rising quickly.  \nRisks: Rapidly rising water may inundate the main road and surrounding area, hindering transport and potentially endangering anyone nearby.  \nPossibly affected: main road, vehicles using the road, pedestrians on or near the road, nearby properties.  \nConflicts: None.\n\n## 5. Missing information and uncertainties\n- No image was provided for analysis\n- People at risk status is unknown\n- Extent of flooding beyond the main road is not reported\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+    },
+    "validation": {
+      "status": "pass",
+      "violations": [],
+      "repaired": false
+    },
+    "degraded_steps": [],
+    "knowledge_coverage": "good",
+    "retrieved_entry_ids": [
+      "FL-08",
+      "FL-02",
+      "FL-26",
+      "FL-05",
+      "FL-09",
+      "FL-03",
+      "FL-12",
+      "FL-06"
+    ],
+    "models_used": [
+      {
+        "step": "incident",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 20.38,
+        "failed_attempts": []
+      },
+      {
+        "step": "RAG queries",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 11.84,
+        "failed_attempts": []
+      },
+      {
+        "step": "knowledge",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 58.79,
+        "failed_attempts": []
+      },
+      {
+        "step": "risk",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 2.03,
+        "failed_attempts": []
+      },
+      {
+        "step": "report",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 6.43,
+        "failed_attempts": []
+      }
+    ],
+    "prompt_versions": {
+      "incident": "v1",
+      "vision": "v1",
+      "rag_queries": "v1",
+      "knowledge": "v2",
+      "risk": "v2",
+      "report": "v3"
+    }
+  },
+  "seconds": 100.0,
+  "incident_type": "flood",
+  "severity": "moderate",
+  "degraded_steps": [],
+  "prompt_versions": {
+    "incident": "v1",
+    "vision": "v1",
+    "rag_queries": "v1",
+    "knowledge": "v2",
+    "risk": "v2",
+    "report": "v3"
+  },
+  "checks": {
+    "incident_type_ok": true,
+    "severity_ok": true,
+    "has_report": true
+  },
+  "run": 1
+}

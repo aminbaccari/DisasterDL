@@ -1,0 +1,117 @@
+{
+ "row": {
+  "answered_by": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+  "incident_id": "fire_01",
+  "run": 2,
+  "seconds": 45.6,
+  "error": "",
+  "schema_ok": false,
+  "validate_ok": false,
+  "validate_checks": "",
+  "type_ok": null,
+  "severity_ok": true,
+  "cites_entries": false,
+  "invented_location": false
+ },
+ "report": {
+  "language": "en",
+  "location": null,
+  "severity": "high",
+  "reported": [
+   {
+    "text": "Smoke is rising from the hills behind the village",
+    "source": "report"
+   },
+   {
+    "text": "flames are visible near the first houses",
+    "source": "report"
+   },
+   {
+    "text": "A strong wind is blowing toward the village",
+    "source": "report"
+   }
+  ],
+  "image_status": "not_provided",
+  "observed": [],
+  "knowledge": {
+   "coverage": "partial",
+   "guidance": [
+    {
+     "text": "during a smoke episode, a common advisory is to stay indoors, where people can better control their environment.",
+     "entry_id": "FI-05",
+     "chunk_id": "en/fire_kb.md::section::4",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Pour se protéger dans son habitation avant l'arrivée du feu, la page du ministère français conseille de rentrer le tuyau d'arrosage, qui pourra servir après le passage du feu à éteindre les dernières braises ; de boucher les aérations et le bas des portes pour que les fumées toxiques et les flammèches ne puissent pas pénétrer dans l'habitation ; et de se couvrir le nez et la bouche d'un linge humide pour se protéger de la fumée.",
+     "entry_id": "FI-16",
+     "chunk_id": "fr/fire_kb.md::section::4",
+     "source": "knowledge_base"
+    }
+   ],
+   "no_guidance_statement": null
+  },
+  "assessment": {
+   "basis": [
+    {
+     "text": "Smoke is rising from the hills behind the village",
+     "source": "report"
+    },
+    {
+     "text": "flames are visible near the first houses",
+     "source": "report"
+    },
+    {
+     "text": "A strong wind is blowing toward the village",
+     "source": "report"
+    }
+   ],
+   "risks": [
+    {
+     "text": "flames may reach houses due to wind",
+     "source": "report"
+    },
+    {
+     "text": "smoke inhalation risk for villagers",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [
+    {
+     "text": "the village",
+     "source": "report"
+    },
+    {
+     "text": "the first houses",
+     "source": "report"
+    }
+   ],
+   "conflicts": []
+  },
+  "recommendations": [
+   {
+    "text": "during a smoke episode, a common advisory is to stay indoors, where people can better control their environment.",
+    "entry_id": "FI-05",
+    "chunk_id": "en/fire_kb.md::section::4",
+    "source": "knowledge_base"
+   },
+   {
+    "text": "Pour se protéger dans son habitation avant l'arrivée du feu, la page du ministère français conseille de rentrer le tuyau d'arrosage, qui pourra servir après le passage du feu à éteindre les dernières braises ; de boucher les aérations et le bas des portes pour que les fumées toxiques et les flammèches ne puissent pas pénétrer dans l'habitation ; et de se couvrir le nez et la bouche d'un linge humide pour se protéger de la fumée.",
+    "entry_id": "FI-16",
+    "chunk_id": "fr/fire_kb.md::section::4",
+    "source": "knowledge_base"
+   }
+  ],
+  "uncertainties": [
+   "Exact fire spread rate",
+   "Potential change in wind direction"
+  ],
+  "information_needed": [
+   "Precise location of the village",
+   "Number of houses at risk",
+   "Availability of cleaner-air shelters"
+  ],
+  "disclaimer": "This is a preliminary assessment and not a substitute for professional emergency services. Always follow instructions from local authorities.",
+  "report_markdown": "Smoke is rising from the hills behind the village\n\nflames are visible near the first houses\n\nA strong wind is blowing toward the village"
+ }
+}

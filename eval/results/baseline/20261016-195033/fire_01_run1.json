@@ -1,0 +1,119 @@
+{
+ "row": {
+  "answered_by": "groq:openai/gpt-oss-120b",
+  "incident_id": "fire_01",
+  "run": 1,
+  "seconds": 4.6,
+  "error": "",
+  "schema_ok": true,
+  "validate_ok": false,
+  "validate_checks": "location,no_guidance",
+  "type_ok": null,
+  "severity_ok": true,
+  "cites_entries": true,
+  "invented_location": false
+ },
+ "report": {
+  "language": "en",
+  "location": null,
+  "severity": "high",
+  "summary": "Smoke is rising from the hills behind a village and flames are visible near the first houses, with a strong wind blowing toward the settlement, indicating a high fire hazard.",
+  "reported": [
+   {
+    "text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+    "source": "report"
+   }
+  ],
+  "image_status": "not_provided",
+  "observed": [],
+  "knowledge": {
+   "coverage": "partial",
+   "guidance": [
+    {
+     "text": "Toxic soot and fumes from burning materials can affect people with heart or lung conditions, the elderly, smokers and children; exposure risk increases with wind direction and speed.",
+     "entry_id": "FI-04",
+     "chunk_id": "en/fire_kb.md::section::4",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "During a smoke episode, staying indoors is advised to control exposure, but if flames approach or authorities order evacuation, evacuation takes priority.",
+     "entry_id": "FI-05",
+     "chunk_id": "en/fire_kb.md::section::4",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Before fire reaches a home, seal vents and door bottoms, and cover nose and mouth with a damp cloth to reduce inhalation of smoke and flames.",
+     "entry_id": "FI-16",
+     "chunk_id": "fr/fire_kb.md::section::4",
+     "source": "knowledge_base"
+    }
+   ],
+   "no_guidance_statement": null
+  },
+  "assessment": {
+   "basis": [
+    {
+     "text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+     "source": "report"
+    }
+   ],
+   "risks": [
+    {
+     "text": "Inhalation of toxic smoke and soot, especially for vulnerable populations.",
+     "source": "report"
+    },
+    {
+     "text": "Rapid fire spread toward the village due to strong wind.",
+     "source": "report"
+    },
+    {
+     "text": "Potential structural damage to houses near the flames.",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [
+    {
+     "text": "Residents of the village, particularly the elderly, children, smokers and people with heart or lung conditions.",
+     "source": "report"
+    }
+   ],
+   "conflicts": [
+    "Guidance to stay indoors for smoke (FI-05) conflicts with the need to evacuate if flames approach, as evacuation orders override shelter‑in‑place advice."
+   ]
+  },
+  "recommendations": [
+   {
+    "text": "Inform residents, especially vulnerable groups, to stay indoors with windows closed and use damp cloths over mouth/nose while awaiting official instructions.",
+    "entry_id": "FI-05",
+    "chunk_id": "en/fire_kb.md::section::4",
+    "source": "knowledge_base"
+   },
+   {
+    "text": "If fire approaches the homes, follow any evacuation orders immediately; shelter‑in‑place advice does not apply once flames are near.",
+    "entry_id": "FI-05",
+    "chunk_id": "en/fire_kb.md::section::4",
+    "source": "knowledge_base"
+   },
+   {
+    "text": "Seal vents and door gaps and prepare a damp cloth for breathing protection before fire reaches the building.",
+    "entry_id": "FI-16",
+    "chunk_id": "fr/fire_kb.md::section::4",
+    "source": "knowledge_base"
+   }
+  ],
+  "uncertainties": [
+   "Exact distance of flames from the houses",
+   "Current wind speed and direction changes",
+   "Official evacuation status",
+   "Availability of clean‑air shelters"
+  ],
+  "information_needed": [
+   "Updated fire perimeter and progression",
+   "Real‑time wind speed/direction data",
+   "Official orders from local emergency managers",
+   "Status of vulnerable individuals in the village"
+  ],
+  "disclaimer": "This information is provided for situational awareness only and does not replace official instructions from emergency services or local authorities.",
+  "report_markdown": "## Preliminary Fire Situation Report\n- **Location:** Village (exact location not specified)\n- **Observed conditions:** Smoke rising from hills behind the village, flames near first houses, strong wind blowing toward the settlement.\n- **Severity:** High (fire approaching habitations with wind‑driven spread).\n- **Key risks:** Toxic smoke inhalation, rapid fire spread, damage to structures, heightened risk for elderly, children, smokers, and persons with heart or lung conditions.\n- **Guidance summary:**\n  - Stay indoors, close windows/doors, use damp cloth over mouth and nose (FI‑05).\n  - Seal vents and door gaps to limit smoke entry (FI‑16).\n  - If flames approach, obey evacuation orders immediately (FI‑05).\n  - Be aware of toxic soot hazards, especially for vulnerable groups (FI‑04).\n- **Uncertainties & needed information:** fire perimeter, wind data, evacuation orders, shelter availability.\n- **Recommendation:** Communicate the above protective actions to residents and await official directives.\n---\n*This report is for awareness only and does not replace official emergency service instructions.*"
+ }
+}

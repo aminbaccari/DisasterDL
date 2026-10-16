@@ -1,0 +1,209 @@
+{
+  "incident_id": "edge_02_conflict",
+  "image_status": "sent",
+  "status_code": 200,
+  "raw_response": {
+    "status": "ok",
+    "incident_type": "flood",
+    "severity": "moderate",
+    "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T19:06:06.873Z\nIncident type: flood | Location: main road | Severity (system assessment): moderate\n\n## Summary\nFlooding has been reported on the main road with water rising quickly. The system assesses a moderate severity, noting potential road closures and vehicle hazards. No people at risk have been mentioned.\n\n## 1. What was reported\n- Flooding on the main road (reported)\n- Water is rising quickly (reported)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\n- Never walk, swim or drive through floodwater; just 6 in (15 cm) of fast‑moving water can knock you over and 12 in (30 cm) can carry a vehicle away. (entry FL-04, chunk en/flood_kb.md::section::4)\n- Be ready to evacuate on official advice; review your evacuation plan so you can leave quickly if officials advise evacuation during river floods, storm surge or coastal flooding. (entry FL-03, chunk en/flood_kb.md::section::3)\n- Without instructions during sudden intense flooding with rising water, do not travel through water and move to an upper floor. (entry FL-12, chunk en/flood_kb.md::section::6)\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: moderate. Evidence: Flooding on the main road with water rising quickly reported (report); no people at risk mentioned (report). Main risks include potential road closure, vehicles becoming stranded or swept away, and spread of floodwater to adjacent areas (report). Possibly affected elements are the main road, vehicles traveling on or near the road, and nearby properties or infrastructure (report).\n\n## 5. Missing information and uncertainties\nUncertainties: No image was analysed.\nInformation needed: Water depth; Flow rate or rate of rise; Extent of flooding (how far it spreads); Number of people or vehicles affected; Whether evacuation has started; Whether any injuries or casualties have occurred.\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+    "report": {
+      "language": "en",
+      "location": "main road",
+      "severity": "moderate",
+      "summary": "Flooding has been reported on the main road with water rising quickly. The system assesses a moderate severity, noting potential road closures and vehicle hazards. No people at risk have been mentioned.",
+      "reported": [
+        {
+          "text": "Flooding on the main road",
+          "source": "report"
+        },
+        {
+          "text": "Water is rising quickly",
+          "source": "report"
+        }
+      ],
+      "image_status": "not_provided",
+      "observed": [],
+      "knowledge": {
+        "coverage": "good",
+        "guidance": [
+          {
+            "text": "Never walk, swim or drive through floodwater; just 6 in (15 cm) of fast‑moving water can knock you over and 12 in (30 cm) can carry a vehicle away.",
+            "entry_id": "FL-04",
+            "chunk_id": "en/flood_kb.md::section::4",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Be ready to evacuate on official advice; review your evacuation plan so you can leave quickly if officials advise evacuation during river floods, storm surge or coastal flooding.",
+            "entry_id": "FL-03",
+            "chunk_id": "en/flood_kb.md::section::3",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Without instructions during sudden intense flooding with rising water, do not travel through water and move to an upper floor.",
+            "entry_id": "FL-12",
+            "chunk_id": "en/flood_kb.md::section::6",
+            "source": "knowledge_base"
+          }
+        ],
+        "no_guidance_statement": "No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services."
+      },
+      "assessment": {
+        "basis": [
+          {
+            "text": "Flooding on the main road with water rising quickly reported.",
+            "source": "report"
+          },
+          {
+            "text": "No people at risk mentioned in the report.",
+            "source": "report"
+          }
+        ],
+        "risks": [
+          {
+            "text": "Potential road closure due to rising water on the main road.",
+            "source": "report"
+          },
+          {
+            "text": "Vehicles could become stranded or swept away if water depth increases.",
+            "source": "report"
+          },
+          {
+            "text": "Risk of floodwater spreading to adjacent areas beyond the main road.",
+            "source": "report"
+          }
+        ],
+        "possibly_affected": [
+          {
+            "text": "main road",
+            "source": "report"
+          },
+          {
+            "text": "vehicles traveling on or near the road",
+            "source": "report"
+          },
+          {
+            "text": "nearby properties or infrastructure",
+            "source": "report"
+          }
+        ],
+        "conflicts": []
+      },
+      "recommendations": [
+        {
+          "text": "Never walk, swim or drive through floodwater; just 6 in (15 cm) of fast‑moving water can knock you over and 12 in (30 cm) can carry a vehicle away.",
+          "entry_id": "FL-04",
+          "chunk_id": "en/flood_kb.md::section::4",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Be ready to evacuate on official advice; review your evacuation plan so you can leave quickly if officials advise evacuation during river floods, storm surge or coastal flooding.",
+          "entry_id": "FL-03",
+          "chunk_id": "en/flood_kb.md::section::3",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Without instructions during sudden intense flooding with rising water, do not travel through water and move to an upper floor.",
+          "entry_id": "FL-12",
+          "chunk_id": "en/flood_kb.md::section::6",
+          "source": "knowledge_base"
+        }
+      ],
+      "uncertainties": [
+        "No image was analysed."
+      ],
+      "information_needed": [
+        "Water depth",
+        "Flow rate or rate of rise",
+        "Extent of flooding (how far it spreads)",
+        "Number of people or vehicles affected",
+        "Whether evacuation has started",
+        "Whether any injuries or casualties have occurred"
+      ],
+      "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+      "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T19:06:06.873Z\nIncident type: flood | Location: main road | Severity (system assessment): moderate\n\n## Summary\nFlooding has been reported on the main road with water rising quickly. The system assesses a moderate severity, noting potential road closures and vehicle hazards. No people at risk have been mentioned.\n\n## 1. What was reported\n- Flooding on the main road (reported)\n- Water is rising quickly (reported)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\n- Never walk, swim or drive through floodwater; just 6 in (15 cm) of fast‑moving water can knock you over and 12 in (30 cm) can carry a vehicle away. (entry FL-04, chunk en/flood_kb.md::section::4)\n- Be ready to evacuate on official advice; review your evacuation plan so you can leave quickly if officials advise evacuation during river floods, storm surge or coastal flooding. (entry FL-03, chunk en/flood_kb.md::section::3)\n- Without instructions during sudden intense flooding with rising water, do not travel through water and move to an upper floor. (entry FL-12, chunk en/flood_kb.md::section::6)\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: moderate. Evidence: Flooding on the main road with water rising quickly reported (report); no people at risk mentioned (report). Main risks include potential road closure, vehicles becoming stranded or swept away, and spread of floodwater to adjacent areas (report). Possibly affected elements are the main road, vehicles traveling on or near the road, and nearby properties or infrastructure (report).\n\n## 5. Missing information and uncertainties\nUncertainties: No image was analysed.\nInformation needed: Water depth; Flow rate or rate of rise; Extent of flooding (how far it spreads); Number of people or vehicles affected; Whether evacuation has started; Whether any injuries or casualties have occurred.\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+    },
+    "validation": {
+      "status": "pass",
+      "violations": [],
+      "repaired": false
+    },
+    "degraded_steps": [],
+    "knowledge_coverage": "good",
+    "retrieved_entry_ids": [
+      "FL-03",
+      "FL-05",
+      "FL-06",
+      "FL-08",
+      "FL-12",
+      "FL-09",
+      "FL-26",
+      "FL-04"
+    ],
+    "models_used": [
+      {
+        "step": "incident",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 19.12,
+        "failed_attempts": [
+          "groq:openai/gpt-oss-120b rate limit"
+        ]
+      },
+      {
+        "step": "RAG queries",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 21.45,
+        "failed_attempts": []
+      },
+      {
+        "step": "knowledge",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 39.57,
+        "failed_attempts": []
+      },
+      {
+        "step": "risk",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 2.57,
+        "failed_attempts": []
+      },
+      {
+        "step": "report",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 6.27,
+        "failed_attempts": []
+      }
+    ],
+    "prompt_versions": {
+      "incident": "v1",
+      "vision": "v1",
+      "rag_queries": "v1",
+      "knowledge": "v2",
+      "risk": "v2",
+      "report": "v3"
+    }
+  },
+  "seconds": 89.6,
+  "incident_type": "flood",
+  "severity": "moderate",
+  "degraded_steps": [],
+  "prompt_versions": {
+    "incident": "v1",
+    "vision": "v1",
+    "rag_queries": "v1",
+    "knowledge": "v2",
+    "risk": "v2",
+    "report": "v3"
+  },
+  "checks": {
+    "incident_type_ok": true,
+    "severity_ok": true,
+    "has_report": true
+  },
+  "run": 2
+}

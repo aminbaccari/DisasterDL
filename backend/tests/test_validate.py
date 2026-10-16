@@ -120,6 +120,13 @@ class TestValidate(unittest.TestCase):
         p["report"]["report_markdown"] = "# Preliminary incident assessment\nIncident type: forest_fire | Location: Tunis | Severity: high\n" + "x" * 30
         self.assertIn("location", checks(run(p)))
 
+    def test_markdown_emphasis_and_not_stated_wording_pass(self):
+        # real model outputs (baseline run 2026-10-16) wrote 'Location: ** Not specified' and 'Location: ** Village (exact location not specified)'
+        p = base()
+        for shown in ("** Not specified", "**Not stated**", "** Village (exact location not specified)", "Non précisé", "Unknown"):
+            p["report"]["report_markdown"] = f"# Preliminary incident assessment\nIncident type: forest_fire | Location: {shown} | Severity: high\n" + "x" * 30
+            self.assertNotIn("location", checks(run(p)), shown)
+
     def test_stated_location_passes(self):
         p = base()
         p["incident_text"] += " The village is near Nabeul."

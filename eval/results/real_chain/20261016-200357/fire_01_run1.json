@@ -1,0 +1,247 @@
+{
+  "incident_id": "fire_01",
+  "image_status": "sent",
+  "status_code": 200,
+  "raw_response": {
+    "status": "ok",
+    "incident_type": "forest_fire",
+    "severity": "high",
+    "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T19:13:34.651Z\nIncident type: forest_fire | Location: village | Severity (system assessment): high\n\n## Summary\nA forest fire is reported near a village, with smoke rising from hills and flames visible near the first houses. Strong winds are blowing toward the village, creating a high risk of fire spread to homes and residents.\n\n## 1. What was reported\n- Smoke is rising from the hills behind the village (reported)\n- Flames are visible near the first houses (reported)\n- A strong wind is blowing toward the village (reported)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\nCoverage: good\n- If authorities order an evacuation, leave immediately; otherwise, take shelter in a house cleared of vegetation until rescuers arrive. (FI-13, en/fire_kb.md::section::10) [knowledge_base]\n- Sign up for your community's warning system, know evacuation routes and have several ways to leave, drive the routes to identify shelter locations, and prepare emergency supplies including N95 masks, medication, pet needs, important documents in a fireproof safe, and review insurance coverage. (FI-10, en/fire_kb.md::section::9) [knowledge_base]\n- Create a fire‑resistant zone free of leaves, debris or flammable materials for at least 30 ft around your home, and keep an outdoor water source with a hose that can reach any part of your property. (FI-11, en/fire_kb.md::section::10) [knowledge_base]\n- Before the fire reaches your home, roll up the garden hose so it can be used later to extinguish embers, seal vents and the bottom of doors to keep smoke and sparks out, and cover your nose and mouth with a damp cloth to protect against smoke. (FI-16, fr/fire_kb.md::section::4) [knowledge_base]\n- Keep N95 respirator masks that filter air particles, considering personal medication and pet needs; store important documents in a fireproof safe with password‑protected digital copies; verify that your insurance is sufficient to replace your property. (FI-21, fr/fire_kb.md::section::8) [knowledge_base]\n- If you see a fire starting, alert emergency services and try to locate the fire; while waiting for help, take shelter in a cleared house (a car is not safe because it could burn); stay informed and follow instructions from emergency services or the municipality. (FI-14, fr/fire_kb.md::section::2) [knowledge_base]\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: high\nBasis:\n- Flames are visible near the first houses (report)\n- A strong wind is blowing toward the village (report)\nMain risks:\n- Fire could spread to nearby houses (report)\n- Wind may accelerate fire spread toward the village (report)\nPossibly affected:\n- First houses near the village (report)\n- Residents of the village (report)\nConflicts: None\n\n## 5. Missing information and uncertainties\nUncertainties:\n- No image was analysed.\nInformation needed:\n- Exact location of the fire\n- Wind speed and direction details\n- Distance between fire and homes\n- Whether evacuation has been ordered\n- Number of people affected or at risk\n- Availability of firefighting resources\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+    "report": {
+      "language": "en",
+      "location": "village",
+      "severity": "high",
+      "summary": "A forest fire is reported near a village, with smoke rising from hills and flames visible near the first houses. Strong winds are blowing toward the village, creating a high risk of fire spread to homes and residents.",
+      "reported": [
+        {
+          "text": "Smoke is rising from the hills behind the village",
+          "source": "report"
+        },
+        {
+          "text": "Flames are visible near the first houses",
+          "source": "report"
+        },
+        {
+          "text": "A strong wind is blowing toward the village",
+          "source": "report"
+        }
+      ],
+      "image_status": "not_provided",
+      "observed": [],
+      "knowledge": {
+        "coverage": "good",
+        "guidance": [
+          {
+            "text": "If authorities order an evacuation, leave immediately; otherwise, take shelter in a house cleared of vegetation until rescuers arrive.",
+            "entry_id": "FI-13",
+            "chunk_id": "en/fire_kb.md::section::10",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Sign up for your community's warning system, know evacuation routes and have several ways to leave, drive the routes to identify shelter locations, and prepare emergency supplies including N95 masks, medication, pet needs, important documents in a fireproof safe, and review insurance coverage.",
+            "entry_id": "FI-10",
+            "chunk_id": "en/fire_kb.md::section::9",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Create a fire‑resistant zone free of leaves, debris or flammable materials for at least 30 ft around your home, and keep an outdoor water source with a hose that can reach any part of your property.",
+            "entry_id": "FI-11",
+            "chunk_id": "en/fire_kb.md::section::10",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Before the fire reaches your home, roll up the garden hose so it can be used later to extinguish embers, seal vents and the bottom of doors to keep smoke and sparks out, and cover your nose and mouth with a damp cloth to protect against smoke.",
+            "entry_id": "FI-16",
+            "chunk_id": "fr/fire_kb.md::section::4",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Keep N95 respirator masks that filter air particles, considering personal medication and pet needs; store important documents in a fireproof safe with password‑protected digital copies; verify that your insurance is sufficient to replace your property.",
+            "entry_id": "FI-21",
+            "chunk_id": "fr/fire_kb.md::section::8",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "If you see a fire starting, alert emergency services and try to locate the fire; while waiting for help, take shelter in a cleared house (a car is not safe because it could burn); stay informed and follow instructions from emergency services or the municipality.",
+            "entry_id": "FI-14",
+            "chunk_id": "fr/fire_kb.md::section::2",
+            "source": "knowledge_base"
+          }
+        ],
+        "no_guidance_statement": "No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services."
+      },
+      "assessment": {
+        "basis": [
+          {
+            "text": "Flames are visible near the first houses",
+            "source": "report"
+          },
+          {
+            "text": "A strong wind is blowing toward the village",
+            "source": "report"
+          }
+        ],
+        "risks": [
+          {
+            "text": "Fire could spread to nearby houses",
+            "source": "report"
+          },
+          {
+            "text": "Wind may accelerate fire spread toward the village",
+            "source": "report"
+          }
+        ],
+        "possibly_affected": [
+          {
+            "text": "First houses near the village",
+            "source": "report"
+          },
+          {
+            "text": "Residents of the village",
+            "source": "report"
+          }
+        ],
+        "conflicts": []
+      },
+      "recommendations": [
+        {
+          "text": "If authorities order an evacuation, leave immediately; otherwise, take shelter in a house cleared of vegetation until rescuers arrive.",
+          "entry_id": "FI-13",
+          "chunk_id": "en/fire_kb.md::section::10",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Sign up for your community's warning system, know evacuation routes and have several ways to leave, drive the routes to identify shelter locations, and prepare emergency supplies including N95 masks, medication, pet needs, important documents in a fireproof safe, and review insurance coverage.",
+          "entry_id": "FI-10",
+          "chunk_id": "en/fire_kb.md::section::9",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Create a fire‑resistant zone free of leaves, debris or flammable materials for at least 30 ft around your home, and keep an outdoor water source with a hose that can reach any part of your property.",
+          "entry_id": "FI-11",
+          "chunk_id": "en/fire_kb.md::section::10",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Before the fire reaches your home, roll up the garden hose so it can be used later to extinguish embers, seal vents and the bottom of doors to keep smoke and sparks out, and cover your nose and mouth with a damp cloth to protect against smoke.",
+          "entry_id": "FI-16",
+          "chunk_id": "fr/fire_kb.md::section::4",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "If you see a fire starting, alert emergency services and try to locate the fire; while waiting for help, take shelter in a cleared house (a car is not safe because it could burn); stay informed and follow instructions from emergency services or the municipality.",
+          "entry_id": "FI-14",
+          "chunk_id": "fr/fire_kb.md::section::2",
+          "source": "knowledge_base"
+        }
+      ],
+      "uncertainties": [
+        "No image was analysed."
+      ],
+      "information_needed": [
+        "Exact location of the fire",
+        "Wind speed and direction details",
+        "Distance between fire and homes",
+        "Whether evacuation has been ordered",
+        "Number of people affected or at risk",
+        "Availability of firefighting resources"
+      ],
+      "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+      "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T19:13:34.651Z\nIncident type: forest_fire | Location: village | Severity (system assessment): high\n\n## Summary\nA forest fire is reported near a village, with smoke rising from hills and flames visible near the first houses. Strong winds are blowing toward the village, creating a high risk of fire spread to homes and residents.\n\n## 1. What was reported\n- Smoke is rising from the hills behind the village (reported)\n- Flames are visible near the first houses (reported)\n- A strong wind is blowing toward the village (reported)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\nCoverage: good\n- If authorities order an evacuation, leave immediately; otherwise, take shelter in a house cleared of vegetation until rescuers arrive. (FI-13, en/fire_kb.md::section::10) [knowledge_base]\n- Sign up for your community's warning system, know evacuation routes and have several ways to leave, drive the routes to identify shelter locations, and prepare emergency supplies including N95 masks, medication, pet needs, important documents in a fireproof safe, and review insurance coverage. (FI-10, en/fire_kb.md::section::9) [knowledge_base]\n- Create a fire‑resistant zone free of leaves, debris or flammable materials for at least 30 ft around your home, and keep an outdoor water source with a hose that can reach any part of your property. (FI-11, en/fire_kb.md::section::10) [knowledge_base]\n- Before the fire reaches your home, roll up the garden hose so it can be used later to extinguish embers, seal vents and the bottom of doors to keep smoke and sparks out, and cover your nose and mouth with a damp cloth to protect against smoke. (FI-16, fr/fire_kb.md::section::4) [knowledge_base]\n- Keep N95 respirator masks that filter air particles, considering personal medication and pet needs; store important documents in a fireproof safe with password‑protected digital copies; verify that your insurance is sufficient to replace your property. (FI-21, fr/fire_kb.md::section::8) [knowledge_base]\n- If you see a fire starting, alert emergency services and try to locate the fire; while waiting for help, take shelter in a cleared house (a car is not safe because it could burn); stay informed and follow instructions from emergency services or the municipality. (FI-14, fr/fire_kb.md::section::2) [knowledge_base]\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: high\nBasis:\n- Flames are visible near the first houses (report)\n- A strong wind is blowing toward the village (report)\nMain risks:\n- Fire could spread to nearby houses (report)\n- Wind may accelerate fire spread toward the village (report)\nPossibly affected:\n- First houses near the village (report)\n- Residents of the village (report)\nConflicts: None\n\n## 5. Missing information and uncertainties\nUncertainties:\n- No image was analysed.\nInformation needed:\n- Exact location of the fire\n- Wind speed and direction details\n- Distance between fire and homes\n- Whether evacuation has been ordered\n- Number of people affected or at risk\n- Availability of firefighting resources\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+    },
+    "validation": {
+      "status": "pass",
+      "violations": [],
+      "repaired": true
+    },
+    "degraded_steps": [],
+    "knowledge_coverage": "good",
+    "retrieved_entry_ids": [
+      "FI-11",
+      "FI-13",
+      "FI-10",
+      "FI-16",
+      "FI-17",
+      "FI-26",
+      "FI-21",
+      "FI-23",
+      "FI-24",
+      "FI-19",
+      "FI-14"
+    ],
+    "models_used": [
+      {
+        "step": "incident",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 2.07,
+        "failed_attempts": []
+      },
+      {
+        "step": "RAG queries",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 1.38,
+        "failed_attempts": []
+      },
+      {
+        "step": "knowledge",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 70.46,
+        "failed_attempts": [
+          "groq:openai/gpt-oss-120b rate limit"
+        ]
+      },
+      {
+        "step": "risk",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 2.51,
+        "failed_attempts": []
+      },
+      {
+        "step": "report",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 7.35,
+        "failed_attempts": []
+      },
+      {
+        "step": "repaired report",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 80.22,
+        "failed_attempts": [
+          "groq:openai/gpt-oss-120b rate limit"
+        ]
+      }
+    ],
+    "prompt_versions": {
+      "incident": "v1",
+      "vision": "v1",
+      "rag_queries": "v1",
+      "knowledge": "v2",
+      "risk": "v2",
+      "report": "v3"
+    }
+  },
+  "seconds": 164.4,
+  "incident_type": "forest_fire",
+  "severity": "high",
+  "degraded_steps": [],
+  "prompt_versions": {
+    "incident": "v1",
+    "vision": "v1",
+    "rag_queries": "v1",
+    "knowledge": "v2",
+    "risk": "v2",
+    "report": "v3"
+  },
+  "checks": {
+    "incident_type_ok": true,
+    "severity_ok": true,
+    "has_report": true
+  },
+  "run": 1
+}

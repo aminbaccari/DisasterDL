@@ -1,0 +1,100 @@
+{
+ "row": {
+  "answered_by": "groq:openai/gpt-oss-120b",
+  "incident_id": "edge_02_conflict",
+  "run": 2,
+  "seconds": 3.4,
+  "error": "",
+  "schema_ok": true,
+  "validate_ok": false,
+  "validate_checks": "location",
+  "type_ok": null,
+  "severity_ok": true,
+  "cites_entries": true,
+  "invented_location": false
+ },
+ "report": {
+  "language": "en",
+  "location": null,
+  "severity": "high",
+  "summary": "Rapidly rising floodwater on the main road presents an immediate danger of drowning, vehicle loss and infrastructure damage.",
+  "reported": [
+   {
+    "text": "Flooding on the main road, water is rising quickly.",
+    "source": "report"
+   }
+  ],
+  "image_status": "not_provided",
+  "observed": [],
+  "knowledge": {
+   "coverage": "good",
+   "guidance": [
+    {
+     "text": "Do not travel through water; move to an upper floor and follow official instructions when floodwater rises suddenly.",
+     "entry_id": "FL-12",
+     "chunk_id": "en/flood_kb.md::section::6",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Do not drive or walk through floodwater; no depth is safe, postpone trips when roads are flooded or blocked.",
+     "entry_id": "FL-14",
+     "chunk_id": "en/flood_kb.md::section::7",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Floods can cause drowning, damage to buildings and roads, power outages and landslides.",
+     "entry_id": "FL-01",
+     "chunk_id": "en/flood_kb.md::section::1",
+     "source": "knowledge_base"
+    }
+   ],
+   "no_guidance_statement": null
+  },
+  "assessment": {
+   "basis": [
+    {
+     "text": "Flooding on the main road, water is rising quickly.",
+     "source": "report"
+    }
+   ],
+   "risks": [
+    {
+     "text": "Rapidly rising water poses a risk of drowning, vehicle loss and structural damage.",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [
+    {
+     "text": "Vehicles and pedestrians using the main road, nearby structures and utilities.",
+     "source": "report"
+    }
+   ],
+   "conflicts": []
+  },
+  "recommendations": [
+   {
+    "text": "Do not travel through water; move to an upper floor and follow official instructions when floodwater rises suddenly.",
+    "entry_id": "FL-12",
+    "chunk_id": "en/flood_kb.md::section::6",
+    "source": "knowledge_base"
+   },
+   {
+    "text": "Do not drive or walk through floodwater; no depth is safe, postpone trips when roads are flooded or blocked.",
+    "entry_id": "FL-14",
+    "chunk_id": "en/flood_kb.md::section::7",
+    "source": "knowledge_base"
+   }
+  ],
+  "uncertainties": [
+   "Exact water depth on the road",
+   "Whether official evacuation or road closure orders have been issued"
+  ],
+  "information_needed": [
+   "Current water level measurements",
+   "Official statements from local authorities regarding road closure or evacuation",
+   "Status of electricity and gas services in the area"
+  ],
+  "disclaimer": "This preliminary assessment is for informational purposes only and does not replace emergency services. Always follow instructions from local authorities and professional responders.",
+  "report_markdown": "## Preliminary Flood Report\n**Location:** Not specified\n**Severity:** High\n\n**Incident Description:**\n- Flooding on the main road, water is rising quickly.\n\n**Key Risks:**\n- Drowning\n- Vehicle loss or damage\n- Damage to infrastructure\n\n**Guidance from Knowledge Base:**\n- *FL-12*: Do not travel through water; move to an upper floor and follow official instructions when floodwater rises suddenly.\n- *FL-14*: Do not drive or walk through floodwater; no depth is safe, postpone trips when roads are flooded or blocked.\n- *FL-01*: Floods can cause drowning, damage to buildings and roads, power outages and landslides.\n\n**Recommendations:**\n1. Avoid the flooded road and do not attempt to drive or walk through the water. (FL-14)\n2. If already in a building, move to an upper floor and await official instructions. (FL-12)\n\n**Uncertainties & Information Needed:**\n- Exact water depth on the road.\n- Official evacuation or road‑closure orders.\n- Status of electricity and gas services.\n\n*Please await further updates from local emergency services.*"
+ }
+}

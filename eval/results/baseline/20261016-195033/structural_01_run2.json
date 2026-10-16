@@ -1,0 +1,99 @@
+{
+ "row": {
+  "answered_by": "groq:openai/gpt-oss-120b",
+  "incident_id": "structural_01",
+  "run": 2,
+  "seconds": 3.6,
+  "error": "",
+  "schema_ok": true,
+  "validate_ok": false,
+  "validate_checks": "no_guidance",
+  "type_ok": null,
+  "severity_ok": true,
+  "cites_entries": true,
+  "invented_location": false
+ },
+ "report": {
+  "language": "en",
+  "location": null,
+  "severity": "high",
+  "summary": "A portion of a five‑storey apartment building has collapsed, generating dust on the street and reports that residents may still be trapped inside. Structural guidance advises establishing a collapse‑shadow cordon based on the likely collapse mode and monitoring aftershocks for any new damage that would require re‑evaluation.",
+  "reported": [
+   {
+    "text": "Part of a five-storey apartment building has collapsed. Dust covers the street and neighbours say some residents may still be inside.",
+    "source": "report"
+   }
+  ],
+  "image_status": "not_provided",
+  "observed": [],
+  "knowledge": {
+   "coverage": "partial",
+   "guidance": [
+    {
+     "text": "Establish a collapse‑shadow cordon (wedge or limited rectangle) appropriate to the observed damage and collapse mode, rather than a full 360‑degree cordon.",
+     "entry_id": "ST-09",
+     "chunk_id": "en/structural_kb.md::section::9",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Monitor aftershocks and, if new damage is reported on any building, re‑evaluate its stability according to indicator‑building protocols.",
+     "entry_id": "ST-14",
+     "chunk_id": "en/structural_kb.md::section::13",
+     "source": "knowledge_base"
+    }
+   ],
+   "no_guidance_statement": null
+  },
+  "assessment": {
+   "basis": [
+    {
+     "text": "Building collapse with dust and possible trapped residents reported by neighbours.",
+     "source": "report"
+    }
+   ],
+   "risks": [
+    {
+     "text": "Risk of further collapse or secondary collapse of adjacent structures, especially if aftershocks occur.",
+     "source": "report"
+    },
+    {
+     "text": "Risk of injuries to trapped residents and responders due to unstable debris.",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [
+    {
+     "text": "Residents inside the collapsed portion, nearby neighbours, pedestrians on the street.",
+     "source": "report"
+    }
+   ],
+   "conflicts": []
+  },
+  "recommendations": [
+   {
+    "text": "Apply a collapse‑shadow cordon using the wedge or limited‑rectangle method appropriate to the observed damage (ST‑09).",
+    "entry_id": "ST-09",
+    "chunk_id": "en/structural_kb.md::section::9",
+    "source": "knowledge_base"
+   },
+   {
+    "text": "Implement aftershock monitoring and re‑evaluate the building if additional damage is reported (ST‑14).",
+    "entry_id": "ST-14",
+    "chunk_id": "en/structural_kb.md::section::13",
+    "source": "knowledge_base"
+   }
+  ],
+  "uncertainties": [
+   "Exact extent of structural damage to the remaining building sections",
+   "Number of occupants still inside",
+   "Magnitude and timing of potential aftershocks"
+  ],
+  "information_needed": [
+   "Detailed engineering inspection of the remaining structure",
+   "Building layout and occupancy data",
+   "Aftershock forecasts from seismological services"
+  ],
+  "disclaimer": "This preliminary assessment is for informational purposes only and does not replace official emergency services. Decisions should be made by qualified authorities.",
+  "report_markdown": "**Incident Report**\n\nPart of a five‑storey apartment building has collapsed. Dust covers the street and neighbours say some residents may still be inside.\n\n**Preliminary Assessment**\n- High severity due to partial collapse and potential trapped occupants.\n- Recommend establishing a collapse‑shadow cordon (ST‑09) and monitoring aftershocks for re‑evaluation (ST‑14).\n\n*Note: This is not a directive to dispatch units or enter the damaged building.*"
+ }
+}

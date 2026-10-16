@@ -39,7 +39,7 @@ OPENAI_STYLE = {
 }
 KEY_VARS = {"gemini": "GEMINI_API_KEY", "groq": "GROQ_API_KEY", "openrouter": "OPENROUTER_API_KEY"}
 # Models known to accept an image. Gemini Flash models do. For Groq and OpenRouter the model name decides (checked with scripts/llm_ping.py --image).
-VISION_HINTS = ("gemini", "llama-4", "vision", "-vl", "gpt-4o", "pixtral", "qwen2.5-vl", "gemma-3")
+VISION_HINTS = ("gemini", "llama-4", "vision", "-vl", "gpt-4o", "pixtral", "qwen2.5-vl", "gemma-3", "gemma-4")
 
 COOLDOWN_RATE_LIMIT = 65       # seconds, a per-minute limit
 COOLDOWN_DAILY = 6 * 3600      # seconds, a per-day quota or an exhausted free tier

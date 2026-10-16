@@ -109,16 +109,16 @@ def check_scope(report):
     text = report_text(report)
     problems = []
     if PHONE.search(text):
-        problems.append(f"phone number: {PHONE.search(text).group(0).strip()}")
+        problems.append(f"phone number: {PHONE.search(text).group(0).strip()}")#type:ignore
     for number in set(SHORT_NUMBERS.findall(text)):
         if not (number == TUNISIAN_NUMBER[0] and TUNISIAN_NUMBER[1] in cited):
             problems.append(f"emergency number {number} (only {TUNISIAN_NUMBER[0]} is allowed, and only with {TUNISIAN_NUMBER[1]} cited)")
     if URL.search(text):
-        problems.append(f"web address: {URL.search(text).group(0)}")
+        problems.append(f"web address: {URL.search(text).group(0)}")#type:ignore
     if CONTACT_FOREIGN.search(text):
-        problems.append(f"tells the reader to contact a foreign institution: {CONTACT_FOREIGN.search(text).group(0)}")
+        problems.append(f"tells the reader to contact a foreign institution: {CONTACT_FOREIGN.search(text).group(0)}")#type:ignore
     if TUNISIAN_FOREIGN.search(text):
-        problems.append(f"presents a foreign institution as Tunisian: {TUNISIAN_FOREIGN.search(text).group(0)}")
+        problems.append(f"presents a foreign institution as Tunisian: {TUNISIAN_FOREIGN.search(text).group(0)}")#type:ignore
     return problems
 
 
@@ -143,6 +143,9 @@ def check_forbidden_instructions(report):
     return problems
 
 
+NOT_STATED = re.compile(r"not (stated|specified|provided|given|available|known)|unknown|n/a|non (pr[ée]cis|indiqu|renseign)|inconnu|aucun", re.I)
+
+
 def check_location(report, incident_text):
     location = report.get("location")
     markdown = report.get("report_markdown", "")
@@ -151,8 +154,8 @@ def check_location(report, incident_text):
         problems.append(f"location {location!r} does not appear in the incident text")
     match = re.search(r"Location:\s*([^|\n]+)", markdown)
     if match:
-        shown = match.group(1).strip()
-        if shown.lower() not in ("not stated", "non précisé", "non precise", "non précisée") and _norm(shown) not in _norm(incident_text):
+        shown = re.sub(r"[*_`#]+", "", match.group(1)).strip()  # models write 'Location: **Not stated**' and similar
+        if shown and not NOT_STATED.search(shown) and _norm(shown) not in _norm(incident_text):
             problems.append(f"the Markdown header shows location {shown!r}, which is not in the incident text")
     return problems
 

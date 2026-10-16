@@ -106,6 +106,7 @@ if (item.binary && item.binary.image) {
     image_note = 'Unsupported image type: ' + mime;
   }
 }
+if (!image_b64 && !image_note && body.image) image_note = 'The image field arrived as text, not as a file: send the part with its own Content-Type (for example image/jpeg). The Vision step was skipped.';
 const valid = text.length >= 3;
 return [{ json: { valid, reason: valid ? null : 'incident_text is missing or too short', incident_text: text, output_language: lang,
   has_image: image_b64 !== null, image_b64, image_mime, image_note, generated_at: new Date().toISOString() } }];
@@ -160,7 +161,7 @@ return [{ json: { status: inc.parse_error ? 'degraded' : 'needs_more_information
 
 NO_IMAGE = r"""
 const n = $('Normalise input').first().json;
-return [{ json: { vision: null, vision_skipped: n.image_note || 'No image was provided', degraded_a: [] } }];
+return [{ json: { vision: null, vision_skipped: n.image_note || 'No image was provided', degraded_a: n.image_note ? [{ step: 'vision', reason: n.image_note }] : [] } }];
 """
 
 PARSE_VISION = READ_MODEL + r"""

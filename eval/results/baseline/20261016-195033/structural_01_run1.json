@@ -1,0 +1,111 @@
+{
+ "row": {
+  "answered_by": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+  "incident_id": "structural_01",
+  "run": 1,
+  "seconds": 60.5,
+  "error": "",
+  "schema_ok": true,
+  "validate_ok": false,
+  "validate_checks": "no_guidance",
+  "type_ok": null,
+  "severity_ok": true,
+  "cites_entries": true,
+  "invented_location": false
+ },
+ "report": {
+  "language": "en",
+  "location": null,
+  "severity": "high",
+  "summary": "Partial collapse of a five-storey apartment building with dust covering the street and neighbours reporting that some residents may still be inside.",
+  "reported": [
+   {
+    "text": "Part of a five-storey apartment building has collapsed.",
+    "source": "report"
+   },
+   {
+    "text": "Dust covers the street and neighbours say some residents may still be inside.",
+    "source": "report"
+   }
+  ],
+  "image_status": "not_provided",
+  "observed": [],
+  "knowledge": {
+   "coverage": "partial",
+   "guidance": [
+    {
+     "text": "Aftershocks can increase the tilt of a leaning story until collapse; re‑evaluate buildings after aftershocks using indicator buildings.",
+     "entry_id": "ST-14",
+     "chunk_id": "en/structural_kb.md::section::13",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Establish a collapse shadow cordon as a wedge or limited rectangle in the direction the building may fall, based on the likely collapse mode and damage.",
+     "entry_id": "ST-09",
+     "chunk_id": "en/structural_kb.md::section::9",
+     "source": "knowledge_base"
+    }
+   ],
+   "no_guidance_statement": null
+  },
+  "assessment": {
+   "basis": [
+    {
+     "text": "Part of a five-storey apartment building has collapsed.",
+     "source": "report"
+    },
+    {
+     "text": "Dust covers the street and neighbours say some residents may still be inside.",
+     "source": "report"
+    }
+   ],
+   "risks": [
+    {
+     "text": "Aftershocks could cause further collapse of the damaged structure.",
+     "source": "report"
+    },
+    {
+     "text": "Trapped occupants may be injured or succumb to hazards such as dust and unstable debris.",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [
+    {
+     "text": "Residents inside the collapsed section of the building.",
+     "source": "report"
+    },
+    {
+     "text": "Pedestrians and neighbours on the adjacent street exposed to dust and falling debris.",
+     "source": "report"
+    }
+   ],
+   "conflicts": []
+  },
+  "recommendations": [
+   {
+    "text": "Aftershocks can increase the tilt of a leaning story until collapse; re‑evaluate buildings after aftershocks using indicator buildings.",
+    "entry_id": "ST-14",
+    "chunk_id": "en/structural_kb.md::section::13",
+    "source": "knowledge_base"
+   },
+   {
+    "text": "Establish a collapse shadow cordon as a wedge or limited rectangle in the direction the building may fall, based on the likely collapse mode and damage.",
+    "entry_id": "ST-09",
+    "chunk_id": "en/structural_kb.md::section::9",
+    "source": "knowledge_base"
+   }
+  ],
+  "uncertainties": [
+   "Exact extent of the structural collapse.",
+   "Number of occupants possibly trapped inside.",
+   "Potential for aftershocks in the area."
+  ],
+  "information_needed": [
+   "Precise location of the incident.",
+   "Details on the building’s structural system and age.",
+   "Confirmation of any aftershock activity reported by seismic monitoring."
+  ],
+  "disclaimer": "This report is preliminary and should not be used as the sole basis for decision‑making; consult qualified professionals and authorities.",
+  "report_markdown": "Part of a five-storey apartment building has collapsed.\nDust covers the street and neighbours say some residents may still be inside."
+ }
+}

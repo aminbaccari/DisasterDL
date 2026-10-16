@@ -1,0 +1,267 @@
+{
+  "incident_id": "structural_01",
+  "image_status": "sent",
+  "status_code": 200,
+  "raw_response": {
+    "status": "ok",
+    "incident_type": "structural_emergency",
+    "severity": "high",
+    "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T19:25:41.902Z\nIncident type: structural_emergency | Location: Not stated | Severity (system assessment): high\n\n## Summary\nPart of a five-storey apartment building has collapsed, covering the street in dust. Neighbours report that some residents may still be inside. No image was provided for visual verification.\n\n## 1. What was reported\n- Part of a five-storey apartment building has collapsed (reported)\n- Dust covers the street (reported)\n- Neighbours say some residents may still be inside (reported)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\n- If a building has collapsed or is partially collapsed, post it as UNSAFE. (ST-04)\n- A safety cordon evacuates the area around at‑risk buildings and restricts access to prevent further casualties in aftershocks. (ST-06)\n- Initial cordon distance should be set to the building height above the damage point (or up to 1.5 × height for low‑rise buildings) until a more precise evaluation can be made. (ST-07)\n- A collapse‑shadow cordon is a wedge or limited rectangle in the direction the building may fall, not a full 360° circle, and is based on the likely collapse mode. (ST-09)\n- Aftershocks or new damage to indicator buildings require re‑evaluation of the affected building. (ST-14)\n- The FEMA cordon guidance was written for earthquake‑induced collapses and does not provide specific distances for collapses of unknown or non‑seismic cause. (ST-25)\n\nCoverage: partial. No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: high.\nBasis:\n- Part of a five-storey apartment building has collapsed (report)\n- Neighbours say some residents may still be inside (report)\nMain risks:\n- Potential residents trapped inside the collapsed building (report)\n- Risk of further structural failure or collapse of remaining parts of the building (report)\n- Possible secondary hazards from compromised utilities (gas, electricity) (report)\n- Dust exposure for responders and public (report)\nPossibly affected:\n- Apartment building (report)\n- Residents of the building (report)\n- Street adjacent to the building (report)\n- Gas, electricity, water utilities (report)\nConflicts: none.\n\n## 5. Missing information and uncertainties\nUncertainties:\n- No image was analysed.\n- Exact location of the building is unknown.\n- Number of residents possibly inside is unknown.\n- Extent of the collapse (floors/units affected) is unknown.\n- Whether anyone is injured or trapped is unknown.\n- Whether emergency services are on scene is unknown.\n- Whether gas, electricity or other utilities are compromised is unknown.\n\nInformation needed:\n- Exact location of the building\n- Number of residents possibly inside\n- Extent of the collapse (floors/units affected)\n- Status of injuries or trapped persons\n- Presence of emergency services\n- Condition of utilities (gas, electricity, water)\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+    "report": {
+      "language": "en",
+      "location": null,
+      "severity": "high",
+      "summary": "Part of a five-storey apartment building has collapsed, covering the street in dust. Neighbours report that some residents may still be inside. No image was provided for visual verification.",
+      "reported": [
+        {
+          "text": "Part of a five-storey apartment building has collapsed",
+          "source": "report"
+        },
+        {
+          "text": "Dust covers the street",
+          "source": "report"
+        },
+        {
+          "text": "Neighbours say some residents may still be inside",
+          "source": "report"
+        }
+      ],
+      "image_status": "not_provided",
+      "observed": [],
+      "knowledge": {
+        "coverage": "partial",
+        "guidance": [
+          {
+            "text": "If a building has collapsed or is partially collapsed, post it as UNSAFE.",
+            "entry_id": "ST-04",
+            "chunk_id": "en/structural_kb.md::section::4",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "A safety cordon evacuates the area around at‑risk buildings and restricts access to prevent further casualties in aftershocks.",
+            "entry_id": "ST-06",
+            "chunk_id": "en/structural_kb.md::section::6",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Initial cordon distance should be set to the building height above the damage point (or up to 1.5 × height for low‑rise buildings) until a more precise evaluation can be made.",
+            "entry_id": "ST-07",
+            "chunk_id": "en/structural_kb.md::section::6",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "A collapse‑shadow cordon is a wedge or limited rectangle in the direction the building may fall, not a full 360° circle, and is based on the likely collapse mode.",
+            "entry_id": "ST-09",
+            "chunk_id": "en/structural_kb.md::section::10",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Aftershocks or new damage to indicator buildings require re‑evaluation of the affected building.",
+            "entry_id": "ST-14",
+            "chunk_id": "en/structural_kb.md::section::13",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "The FEMA cordon guidance was written for earthquake‑induced collapses and does not provide specific distances for collapses of unknown or non‑seismic cause.",
+            "entry_id": "ST-25",
+            "chunk_id": "en/structural_kb.md::section::22",
+            "source": "knowledge_base"
+          }
+        ],
+        "no_guidance_statement": "No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services."
+      },
+      "assessment": {
+        "basis": [
+          {
+            "text": "Part of a five-storey apartment building has collapsed",
+            "source": "report"
+          },
+          {
+            "text": "Neighbours say some residents may still be inside",
+            "source": "report"
+          }
+        ],
+        "risks": [
+          {
+            "text": "Potential residents trapped inside the collapsed building",
+            "source": "report"
+          },
+          {
+            "text": "Risk of further structural failure or collapse of remaining parts of the building",
+            "source": "report"
+          },
+          {
+            "text": "Possible secondary hazards from compromised utilities (gas, electricity)",
+            "source": "report"
+          },
+          {
+            "text": "Dust exposure for responders and public",
+            "source": "report"
+          }
+        ],
+        "possibly_affected": [
+          {
+            "text": "Apartment building",
+            "source": "report"
+          },
+          {
+            "text": "Residents of the building",
+            "source": "report"
+          },
+          {
+            "text": "Street adjacent to the building",
+            "source": "report"
+          },
+          {
+            "text": "Gas, electricity, water utilities",
+            "source": "report"
+          }
+        ],
+        "conflicts": []
+      },
+      "recommendations": [
+        {
+          "text": "If a building has collapsed or is partially collapsed, post it as UNSAFE.",
+          "entry_id": "ST-04",
+          "chunk_id": "en/structural_kb.md::section::4",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "A safety cordon evacuates the area around at‑risk buildings and restricts access to prevent further casualties in aftershocks.",
+          "entry_id": "ST-06",
+          "chunk_id": "en/structural_kb.md::section::6",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Initial cordon distance should be set to the building height above the damage point (or up to 1.5 × height for low‑rise buildings) until a more precise evaluation can be made.",
+          "entry_id": "ST-07",
+          "chunk_id": "en/structural_kb.md::section::6",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "A collapse‑shadow cordon is a wedge or limited rectangle in the direction the building may fall, not a full 360° circle, and is based on the likely collapse mode.",
+          "entry_id": "ST-09",
+          "chunk_id": "en/structural_kb.md::section::10",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Aftershocks or new damage to indicator buildings require re‑evaluation of the affected building.",
+          "entry_id": "ST-14",
+          "chunk_id": "en/structural_kb.md::section::13",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "The FEMA cordon guidance was written for earthquake‑induced collapses and does not provide specific distances for collapses of unknown or non‑seismic cause.",
+          "entry_id": "ST-25",
+          "chunk_id": "en/structural_kb.md::section::22",
+          "source": "knowledge_base"
+        }
+      ],
+      "uncertainties": [
+        "No image was analysed.",
+        "Exact location of the building is unknown.",
+        "Number of residents possibly inside is unknown.",
+        "Extent of the collapse (floors/units affected) is unknown.",
+        "Whether anyone is injured or trapped is unknown.",
+        "Whether emergency services are on scene is unknown.",
+        "Whether gas, electricity or other utilities are compromised is unknown."
+      ],
+      "information_needed": [
+        "Exact location of the building",
+        "Number of residents possibly inside",
+        "Extent of the collapse (floors/units affected)",
+        "Status of injuries or trapped persons",
+        "Presence of emergency services",
+        "Condition of utilities (gas, electricity, water)"
+      ],
+      "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+      "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T19:25:41.902Z\nIncident type: structural_emergency | Location: Not stated | Severity (system assessment): high\n\n## Summary\nPart of a five-storey apartment building has collapsed, covering the street in dust. Neighbours report that some residents may still be inside. No image was provided for visual verification.\n\n## 1. What was reported\n- Part of a five-storey apartment building has collapsed (reported)\n- Dust covers the street (reported)\n- Neighbours say some residents may still be inside (reported)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\n- If a building has collapsed or is partially collapsed, post it as UNSAFE. (ST-04)\n- A safety cordon evacuates the area around at‑risk buildings and restricts access to prevent further casualties in aftershocks. (ST-06)\n- Initial cordon distance should be set to the building height above the damage point (or up to 1.5 × height for low‑rise buildings) until a more precise evaluation can be made. (ST-07)\n- A collapse‑shadow cordon is a wedge or limited rectangle in the direction the building may fall, not a full 360° circle, and is based on the likely collapse mode. (ST-09)\n- Aftershocks or new damage to indicator buildings require re‑evaluation of the affected building. (ST-14)\n- The FEMA cordon guidance was written for earthquake‑induced collapses and does not provide specific distances for collapses of unknown or non‑seismic cause. (ST-25)\n\nCoverage: partial. No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: high.\nBasis:\n- Part of a five-storey apartment building has collapsed (report)\n- Neighbours say some residents may still be inside (report)\nMain risks:\n- Potential residents trapped inside the collapsed building (report)\n- Risk of further structural failure or collapse of remaining parts of the building (report)\n- Possible secondary hazards from compromised utilities (gas, electricity) (report)\n- Dust exposure for responders and public (report)\nPossibly affected:\n- Apartment building (report)\n- Residents of the building (report)\n- Street adjacent to the building (report)\n- Gas, electricity, water utilities (report)\nConflicts: none.\n\n## 5. Missing information and uncertainties\nUncertainties:\n- No image was analysed.\n- Exact location of the building is unknown.\n- Number of residents possibly inside is unknown.\n- Extent of the collapse (floors/units affected) is unknown.\n- Whether anyone is injured or trapped is unknown.\n- Whether emergency services are on scene is unknown.\n- Whether gas, electricity or other utilities are compromised is unknown.\n\nInformation needed:\n- Exact location of the building\n- Number of residents possibly inside\n- Extent of the collapse (floors/units affected)\n- Status of injuries or trapped persons\n- Presence of emergency services\n- Condition of utilities (gas, electricity, water)\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+    },
+    "validation": {
+      "status": "pass",
+      "violations": [],
+      "repaired": false
+    },
+    "degraded_steps": [],
+    "knowledge_coverage": "partial",
+    "retrieved_entry_ids": [
+      "ST-14",
+      "ST-15",
+      "ST-16",
+      "ST-04",
+      "ST-25",
+      "ST-09",
+      "ST-11",
+      "ST-10",
+      "ST-06",
+      "ST-07",
+      "ST-20",
+      "ST-21"
+    ],
+    "models_used": [
+      {
+        "step": "incident",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 16.13,
+        "failed_attempts": []
+      },
+      {
+        "step": "RAG queries",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 1.14,
+        "failed_attempts": []
+      },
+      {
+        "step": "knowledge",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 4.28,
+        "failed_attempts": []
+      },
+      {
+        "step": "risk",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 3.4,
+        "failed_attempts": []
+      },
+      {
+        "step": "report",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 61.14,
+        "failed_attempts": [
+          "groq:openai/gpt-oss-120b rate limit"
+        ]
+      }
+    ],
+    "prompt_versions": {
+      "incident": "v1",
+      "vision": "v1",
+      "rag_queries": "v1",
+      "knowledge": "v2",
+      "risk": "v2",
+      "report": "v3"
+    }
+  },
+  "seconds": 86.8,
+  "incident_type": "structural_emergency",
+  "severity": "high",
+  "degraded_steps": [],
+  "prompt_versions": {
+    "incident": "v1",
+    "vision": "v1",
+    "rag_queries": "v1",
+    "knowledge": "v2",
+    "risk": "v2",
+    "report": "v3"
+  },
+  "checks": {
+    "incident_type_ok": true,
+    "severity_ok": true,
+    "has_report": true
+  },
+  "run": 2
+}

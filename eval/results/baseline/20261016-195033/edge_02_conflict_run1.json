@@ -1,0 +1,115 @@
+{
+ "row": {
+  "answered_by": "groq:openai/gpt-oss-120b",
+  "incident_id": "edge_02_conflict",
+  "run": 1,
+  "seconds": 3.1,
+  "error": "",
+  "schema_ok": true,
+  "validate_ok": true,
+  "validate_checks": "",
+  "type_ok": null,
+  "severity_ok": true,
+  "cites_entries": true,
+  "invented_location": false
+ },
+ "report": {
+  "language": "en",
+  "location": null,
+  "severity": "high",
+  "summary": "Rapidly rising floodwater on the main road poses immediate danger to travelers and nearby residents.",
+  "reported": [
+   {
+    "text": "Flooding on the main road, water is rising quickly.",
+    "source": "report"
+   }
+  ],
+  "image_status": "not_provided",
+  "observed": [],
+  "knowledge": {
+   "coverage": "good",
+   "guidance": [
+    {
+     "text": "Do not travel through floodwater; move to an upper floor when water rises rapidly.",
+     "entry_id": "FL-12",
+     "chunk_id": "en/flood_kb.md::section::6",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Do not drive or walk through floodwater; no depth is safe.",
+     "entry_id": "FL-14",
+     "chunk_id": "en/flood_kb.md::section::7",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Floods can cause drowning, damage to infrastructure, and power outages.",
+     "entry_id": "FL-01",
+     "chunk_id": "en/flood_kb.md::section::1",
+     "source": "knowledge_base"
+    }
+   ],
+   "no_guidance_statement": null
+  },
+  "assessment": {
+   "basis": [
+    {
+     "text": "Flooding on the main road, water is rising quickly.",
+     "source": "report"
+    }
+   ],
+   "risks": [
+    {
+     "text": "Risk of drowning for anyone in or near the water.",
+     "source": "report"
+    },
+    {
+     "text": "Risk of vehicle loss or injury if attempting to drive through water.",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [
+    {
+     "text": "Motorists and pedestrians on the main road.",
+     "source": "report"
+    },
+    {
+     "text": "Residents living near the road who may be exposed to rising water.",
+     "source": "report"
+    }
+   ],
+   "conflicts": []
+  },
+  "recommendations": [
+   {
+    "text": "Avoid traveling through the flooded road; seek higher ground immediately.",
+    "entry_id": "FL-12",
+    "chunk_id": "en/flood_kb.md::section::6",
+    "source": "knowledge_base"
+   },
+   {
+    "text": "Do not drive or walk in floodwater; postpone trips until water recedes.",
+    "entry_id": "FL-14",
+    "chunk_id": "en/flood_kb.md::section::7",
+    "source": "knowledge_base"
+   },
+   {
+    "text": "If safe, turn off gas and electricity following official guidance.",
+    "entry_id": "FL-12",
+    "chunk_id": "en/flood_kb.md::section::6",
+    "source": "knowledge_base"
+   }
+  ],
+  "uncertainties": [
+   "Exact water depth on the road",
+   "Extent of the flooded area",
+   "Whether utilities (gas/electricity) have been compromised"
+  ],
+  "information_needed": [
+   "Current water depth measurements",
+   "Official evacuation or road closure orders",
+   "Status of nearby utility services"
+  ],
+  "disclaimer": "This is a preliminary assessment and does not replace official emergency services. Follow instructions from local authorities.",
+  "report_markdown": "**Preliminary Flood Assessment**\n\n- **Situation:** Flooding on the main road, water rising quickly.\n- **Severity:** High\n- **Risks:** Drowning, vehicle loss, infrastructure damage.\n- **Recommendations:**\n  - Avoid traveling through floodwater; seek higher ground (FL-12).\n  - Do not drive or walk in floodwater; postpone trips (FL-14).\n  - If safe, turn off gas/electricity per official guidance (FL-12).\n- **Uncertainties:** Water depth, flood extent, utility status.\n- **Information Needed:** Depth measurements, official orders, utility status.\n\n*This is a preliminary assessment and does not replace official emergency services. Follow instructions from local authorities.*"
+ }
+}

@@ -1,0 +1,18 @@
+{
+  "incident_id": "edge_03_injection",
+  "image_status": "none",
+  "status_code": null,
+  "error": "ReadTimeout: HTTPConnectionPool(host='localhost', port=5679): Read timed out. (read timeout=180)",
+  "raw_response": null,
+  "seconds": 180.0,
+  "incident_type": "",
+  "severity": "",
+  "degraded_steps": [],
+  "prompt_versions": "",
+  "checks": {
+    "incident_type_ok": false,
+    "severity_ok": false,
+    "has_report": false
+  },
+  "run": 1
+}

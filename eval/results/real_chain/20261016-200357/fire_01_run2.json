@@ -1,0 +1,228 @@
+{
+  "incident_id": "fire_01",
+  "image_status": "sent",
+  "status_code": 200,
+  "raw_response": {
+    "status": "ok",
+    "incident_type": "forest_fire",
+    "severity": "high",
+    "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T19:16:20.167Z\nIncident type: forest_fire | Location: village | Severity (system assessment): high\n\n## Summary\nA forest fire is active near a village, with smoke rising from the hills behind it and flames visible close to the first houses. A strong wind is blowing toward the village, increasing the threat to residents and structures.\n\n## 1. What was reported\n- Smoke is rising from the hills behind the village (reported)\n- Flames are visible near the first houses (reported)\n- A strong wind is blowing toward the village (reported)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\nCoverage: good\n- If authorities order an evacuation, leave immediately; if you cannot evacuate, take shelter in a house that has been cleared of vegetation, and listen for emergency information and alerts. (entry_id: FI-13)\n- Use fire‑resistant materials for building or repairs, keep an outdoor water source with a hose that can reach any part of your property, and create a fire‑resistant zone free of leaves, debris or flammable materials for at least 30 feet around your home. (entry_id: FI-11)\n- Sign up for your community’s warning system, know and practice evacuation routes, keep multiple ways to leave the area, and prepare emergency supplies including N95 respirator masks, important documents in a fireproof safe, and a plan for pets or livestock. (entry_id: FI-10)\n\n## 4. System assessment\nSeverity: high. Basis: Flames are visible near the first houses (report); A strong wind is blowing toward the village (report); Fire near houses and wind toward village poses a threat to people and structures (model_inference). Main risks: Threat to residential structures (report); Risk to residents due to wind-driven fire spread (report); Fire spreading to surrounding vegetation/hills (report). Possibly affected: Houses near the fire (report); Village residents (model_inference); Vegetation and hills behind the village (report). Conflicts: none.\n\n## 5. Missing information and uncertainties\nUncertainties:\n- No image was analysed.\n\nInformation needed:\n- Exact location (coordinates or address)\n- Size/extent of the fire\n- Number of people affected or evacuated\n- Current containment efforts or resources on scene\n- Additional weather conditions (e.g., humidity)\n- Access routes and road conditions\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+    "report": {
+      "language": "en",
+      "location": "village",
+      "severity": "high",
+      "summary": "A forest fire is active near a village, with smoke rising from the hills behind it and flames visible close to the first houses. A strong wind is blowing toward the village, increasing the threat to residents and structures.",
+      "reported": [
+        {
+          "text": "Smoke is rising from the hills behind the village",
+          "source": "report"
+        },
+        {
+          "text": "Flames are visible near the first houses",
+          "source": "report"
+        },
+        {
+          "text": "A strong wind is blowing toward the village",
+          "source": "report"
+        }
+      ],
+      "image_status": "not_provided",
+      "observed": [],
+      "knowledge": {
+        "coverage": "good",
+        "guidance": [
+          {
+            "text": "If authorities order an evacuation, leave immediately; if you cannot evacuate, take shelter in a house that has been cleared of vegetation, and listen for emergency information and alerts.",
+            "entry_id": "FI-13",
+            "chunk_id": "en/fire_kb.md::section::10",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Use fire‑resistant materials for building or repairs, keep an outdoor water source with a hose that can reach any part of your property, and create a fire‑resistant zone free of leaves, debris or flammable materials for at least 30 feet around your home.",
+            "entry_id": "FI-11",
+            "chunk_id": "en/fire_kb.md::section::10",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Sign up for your community’s warning system, know and practice evacuation routes, keep multiple ways to leave the area, and prepare emergency supplies including N95 respirator masks, important documents in a fireproof safe, and a plan for pets or livestock.",
+            "entry_id": "FI-10",
+            "chunk_id": "en/fire_kb.md::section::9",
+            "source": "knowledge_base"
+          }
+        ],
+        "no_guidance_statement": null
+      },
+      "assessment": {
+        "basis": [
+          {
+            "text": "Flames are visible near the first houses",
+            "source": "report"
+          },
+          {
+            "text": "A strong wind is blowing toward the village",
+            "source": "report"
+          },
+          {
+            "text": "Fire near houses and wind toward village poses a threat to people and structures",
+            "source": "model_inference"
+          }
+        ],
+        "risks": [
+          {
+            "text": "Threat to residential structures",
+            "source": "report"
+          },
+          {
+            "text": "Risk to residents due to wind-driven fire spread",
+            "source": "report"
+          },
+          {
+            "text": "Fire spreading to surrounding vegetation/hills",
+            "source": "report"
+          }
+        ],
+        "possibly_affected": [
+          {
+            "text": "Houses near the fire",
+            "source": "report"
+          },
+          {
+            "text": "Village residents",
+            "source": "model_inference"
+          },
+          {
+            "text": "Vegetation and hills behind the village",
+            "source": "report"
+          }
+        ],
+        "conflicts": []
+      },
+      "recommendations": [
+        {
+          "text": "If authorities order an evacuation, leave immediately; if you cannot evacuate, take shelter in a house that has been cleared of vegetation, and listen for emergency information and alerts.",
+          "entry_id": "FI-13",
+          "chunk_id": "en/fire_kb.md::section::10",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Use fire‑resistant materials for building or repairs, keep an outdoor water source with a hose that can reach any part of your property, and create a fire‑resistant zone free of leaves, debris or flammable materials for at least 30 feet around your home.",
+          "entry_id": "FI-11",
+          "chunk_id": "en/fire_kb.md::section::10",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Sign up for your community’s warning system, know and practice evacuation routes, keep multiple ways to leave the area, and prepare emergency supplies including N95 respirator masks, important documents in a fireproof safe, and a plan for pets or livestock.",
+          "entry_id": "FI-10",
+          "chunk_id": "en/fire_kb.md::section::9",
+          "source": "knowledge_base"
+        }
+      ],
+      "uncertainties": [
+        "No image was analysed."
+      ],
+      "information_needed": [
+        "Exact location (coordinates or address)",
+        "Size/extent of the fire",
+        "Number of people affected or evacuated",
+        "Current containment efforts or resources on scene",
+        "Additional weather conditions (e.g., humidity)",
+        "Access routes and road conditions"
+      ],
+      "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+      "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T19:16:20.167Z\nIncident type: forest_fire | Location: village | Severity (system assessment): high\n\n## Summary\nA forest fire is active near a village, with smoke rising from the hills behind it and flames visible close to the first houses. A strong wind is blowing toward the village, increasing the threat to residents and structures.\n\n## 1. What was reported\n- Smoke is rising from the hills behind the village (reported)\n- Flames are visible near the first houses (reported)\n- A strong wind is blowing toward the village (reported)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\nCoverage: good\n- If authorities order an evacuation, leave immediately; if you cannot evacuate, take shelter in a house that has been cleared of vegetation, and listen for emergency information and alerts. (entry_id: FI-13)\n- Use fire‑resistant materials for building or repairs, keep an outdoor water source with a hose that can reach any part of your property, and create a fire‑resistant zone free of leaves, debris or flammable materials for at least 30 feet around your home. (entry_id: FI-11)\n- Sign up for your community’s warning system, know and practice evacuation routes, keep multiple ways to leave the area, and prepare emergency supplies including N95 respirator masks, important documents in a fireproof safe, and a plan for pets or livestock. (entry_id: FI-10)\n\n## 4. System assessment\nSeverity: high. Basis: Flames are visible near the first houses (report); A strong wind is blowing toward the village (report); Fire near houses and wind toward village poses a threat to people and structures (model_inference). Main risks: Threat to residential structures (report); Risk to residents due to wind-driven fire spread (report); Fire spreading to surrounding vegetation/hills (report). Possibly affected: Houses near the fire (report); Village residents (model_inference); Vegetation and hills behind the village (report). Conflicts: none.\n\n## 5. Missing information and uncertainties\nUncertainties:\n- No image was analysed.\n\nInformation needed:\n- Exact location (coordinates or address)\n- Size/extent of the fire\n- Number of people affected or evacuated\n- Current containment efforts or resources on scene\n- Additional weather conditions (e.g., humidity)\n- Access routes and road conditions\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+    },
+    "validation": {
+      "status": "pass",
+      "violations": [],
+      "repaired": true
+    },
+    "degraded_steps": [],
+    "knowledge_coverage": "good",
+    "retrieved_entry_ids": [
+      "FI-11",
+      "FI-13",
+      "FI-10",
+      "FI-16",
+      "FI-21",
+      "FI-23",
+      "FI-24",
+      "FI-17",
+      "FI-22",
+      "FI-20"
+    ],
+    "models_used": [
+      {
+        "step": "incident",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 1.59,
+        "failed_attempts": []
+      },
+      {
+        "step": "RAG queries",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 1.69,
+        "failed_attempts": []
+      },
+      {
+        "step": "knowledge",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 47.38,
+        "failed_attempts": [
+          "groq:openai/gpt-oss-120b rate limit"
+        ]
+      },
+      {
+        "step": "risk",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 39.89,
+        "failed_attempts": []
+      },
+      {
+        "step": "report",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 6.96,
+        "failed_attempts": []
+      },
+      {
+        "step": "repaired report",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 50.69,
+        "failed_attempts": [
+          "groq:openai/gpt-oss-120b rate limit"
+        ]
+      }
+    ],
+    "prompt_versions": {
+      "incident": "v1",
+      "vision": "v1",
+      "rag_queries": "v1",
+      "knowledge": "v2",
+      "risk": "v2",
+      "report": "v3"
+    }
+  },
+  "seconds": 149.7,
+  "incident_type": "forest_fire",
+  "severity": "high",
+  "degraded_steps": [],
+  "prompt_versions": {
+    "incident": "v1",
+    "vision": "v1",
+    "rag_queries": "v1",
+    "knowledge": "v2",
+    "risk": "v2",
+    "report": "v3"
+  },
+  "checks": {
+    "incident_type_ok": true,
+    "severity_ok": true,
+    "has_report": true
+  },
+  "run": 2
+}

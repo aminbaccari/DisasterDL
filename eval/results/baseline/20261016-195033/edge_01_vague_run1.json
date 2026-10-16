@@ -1,0 +1,70 @@
+{
+ "row": {
+  "answered_by": "groq:openai/gpt-oss-120b",
+  "incident_id": "edge_01_vague",
+  "run": 1,
+  "seconds": 2.7,
+  "error": "",
+  "schema_ok": true,
+  "validate_ok": true,
+  "validate_checks": "",
+  "type_ok": null,
+  "severity_ok": false,
+  "cites_entries": false,
+  "invented_location": false
+ },
+ "report": {
+  "language": "fr",
+  "location": null,
+  "severity": "high",
+  "summary": "Problème grave signalé près du port.",
+  "reported": [
+   {
+    "text": "Il y a un problème grave près du port, venez vite.",
+    "source": "report"
+   }
+  ],
+  "image_status": "not_provided",
+  "observed": [],
+  "knowledge": {
+   "coverage": "none",
+   "guidance": [],
+   "no_guidance_statement": "Aucune orientation disponible dans la base de connaissances ; veuillez consulter les autorités compétentes."
+  },
+  "assessment": {
+   "basis": [
+    {
+     "text": "Il y a un problème grave près du port, venez vite.",
+     "source": "report"
+    }
+   ],
+   "risks": [
+    {
+     "text": "Risque potentiel de dommages ou de danger pour les personnes à proximité du port.",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [
+    {
+     "text": "Personnes et installations proches du port.",
+     "source": "report"
+    }
+   ],
+   "conflicts": []
+  },
+  "recommendations": [],
+  "uncertainties": [
+   "Nature exacte du problème signalé",
+   "Nombre de personnes potentiellement affectées",
+   "Possibilité d’incendie, de fuite chimique ou de trouble de sécurité"
+  ],
+  "information_needed": [
+   "Description détaillée du problème (incendie, fuite, etc.)",
+   "Évaluation du nombre de personnes présentes dans la zone",
+   "État des infrastructures portuaires concernées",
+   "Coordonnées précises du site"
+  ],
+  "disclaimer": "Ce rapport préliminaire est fourni à titre informatif et ne remplace pas les services d’urgence. En cas d’urgence, contactez immédiatement les autorités compétentes.",
+  "report_markdown": "**Incident Report**\n\nIl y a un problème grave près du port, venez vite."
+ }
+}

@@ -1,0 +1,125 @@
+{
+ "row": {
+  "answered_by": "openrouter:nvidia/nemotron-3-super-120b-a12b:free",
+  "incident_id": "flood_01",
+  "run": 1,
+  "seconds": 39.7,
+  "error": "",
+  "schema_ok": true,
+  "validate_ok": true,
+  "validate_checks": "",
+  "type_ok": null,
+  "severity_ok": true,
+  "cites_entries": true,
+  "invented_location": false
+ },
+ "report": {
+  "language": "fr",
+  "location": "Nabeul",
+  "severity": "high",
+  "summary": "De fortes inondations affectent un quartier résidentiel de Nabeul, bloquant plusieurs routes tandis que l'eau continue de monter.",
+  "reported": [
+   {
+    "text": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.",
+    "source": "report"
+   }
+  ],
+  "image_status": "not_provided",
+  "observed": [],
+  "knowledge": {
+   "coverage": "good",
+   "guidance": [
+    {
+     "text": "Restez informé et écoutez les consignes des secours et de la mairie.",
+     "entry_id": "FL-08",
+     "chunk_id": "fr/flood_kb.md::section::4",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Éloignez-vous des cours d'eau, des berges et des ponts.",
+     "entry_id": "FL-06",
+     "chunk_id": "fr/flood_kb.md::section::2",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Aidez les personnes fragiles et isolées, par SMS.",
+     "entry_id": "FL-09",
+     "chunk_id": "fr/flood_kb.md::section::5",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Restez ou mettez-vous à l'abri, allez à l'étage.",
+     "entry_id": "FL-07",
+     "chunk_id": "fr/flood_kb.md::section::3",
+     "source": "knowledge_base"
+    }
+   ],
+   "no_guidance_statement": null
+  },
+  "assessment": {
+   "basis": [
+    {
+     "text": "De fortes inondations touchent un quartier résidentiel de Nabeul.",
+     "source": "report"
+    },
+    {
+     "text": "Plusieurs routes sont bloquées et l'eau continue de monter.",
+     "source": "report"
+    }
+   ],
+   "risks": [
+    {
+     "text": "Routes bloquées empêchant l'évacuation.",
+     "source": "report"
+    },
+    {
+     "text": "Montée continue de l'eau risquant d'inonder les habitations.",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [
+    {
+     "text": "Résidents du quartier résidentiel de Nabeul.",
+     "source": "report"
+    }
+   ],
+   "conflicts": []
+  },
+  "recommendations": [
+   {
+    "text": "Restez informé et écoutez les consignes des secours et de la mairie.",
+    "entry_id": "FL-08",
+    "chunk_id": "fr/flood_kb.md::section::4",
+    "source": "knowledge_base"
+   },
+   {
+    "text": "Éloignez-vous des cours d'eau, des berges et des ponts.",
+    "entry_id": "FL-06",
+    "chunk_id": "fr/flood_kb.md::section::2",
+    "source": "knowledge_base"
+   },
+   {
+    "text": "Aidez les personnes fragiles et isolées, par SMS.",
+    "entry_id": "FL-09",
+    "chunk_id": "fr/flood_kb.md::section::5",
+    "source": "knowledge_base"
+   },
+   {
+    "text": "Restez ou mettez-vous à l'abri, allez à l'étage.",
+    "entry_id": "FL-07",
+    "chunk_id": "fr/flood_kb.md::section::3",
+    "source": "knowledge_base"
+   }
+  ],
+  "uncertainties": [
+   "Exacte profondeur de l'eau",
+   "Durée prévisible de l'inondation"
+  ],
+  "information_needed": [
+   "Cartographie des zones inondées",
+   "Disponibilité des centres d'hébergement d'urgence"
+  ],
+  "disclaimer": "Ce rapport est une évaluation préliminaire et ne remplace pas les services d'urgence. Suivez les instructions des autorités locales.",
+  "report_markdown": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter."
+ }
+}

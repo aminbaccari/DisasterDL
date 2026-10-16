@@ -14,6 +14,7 @@ incident file are for a human to score.
 import argparse
 import csv
 import json
+import mimetypes
 import sys
 import time
 from datetime import datetime
@@ -60,7 +61,10 @@ def run_one(url, incident, images_dir, timeout, allow_missing_images):
         image_path = Path(images_dir) / image_name
         if image_path.exists():
             handle = open(image_path, "rb")
-            files["image"] = (image_name, handle)
+            # The part needs its own Content-Type: without it n8n 2.43 delivered the JPEG as a garbled text field
+            # (body.image) and the Vision branch was skipped silently in the run of 2026-10-16.
+            mime = mimetypes.guess_type(image_name)[0] or "application/octet-stream"
+            files["image"] = (image_name, handle, mime)
             image_status = "sent"
         elif allow_missing_images:
             image_status = "missing_text_only"
@@ -150,7 +154,15 @@ def main():
                     "incident_type_ok": checks.get("incident_type_ok", ""),
                     "severity_ok": checks.get("severity_ok", ""),
                     "has_report": checks.get("has_report", ""),
-                    "degraded_steps": ";".join(record["degraded_steps"])
+                    "status": (record.get("raw_response") or {}).get("status", "") if isinstance(record.get("raw_response"), dict) else "",
+                    "validation": ((record.get("raw_response") or {}).get("validation") or {}).get("status", "") if isinstance(record.get("raw_response"), dict) else "",
+                    "models_used": ";".join(
+                        f"{m.get('step')}={m.get('provider')}:{m.get('model')}"
+                        for m in ((record.get("raw_response") or {}).get("models_used") or [])
+                    ) if isinstance(record.get("raw_response"), dict) else "",
+                    "degraded_steps": ";".join(
+                        d if isinstance(d, str) else f"{d.get('step')}: {str(d.get('reason'))[:90]}" for d in record["degraded_steps"]
+                    )
                     if isinstance(record["degraded_steps"], list)
                     else record["degraded_steps"],
                     "prompt_versions": json.dumps(record["prompt_versions"], ensure_ascii=False)
