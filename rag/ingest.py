@@ -27,7 +27,7 @@ def build(strategy, corpus_dir, size, overlap, min_words, batch=32):
         avg = sum(len(c.text.split()) for c in chunks) / len(chunks)
         print(f"  {doc['source']}: {len(chunks)} chunks, {avg:.0f} words on average")
         for n, chunk in enumerate(chunks):
-            ids.append(f"{doc['source']}::{strategy}::{n}")
+            ids.append(f"{doc['language']}/{doc['source']}::{strategy}::{n}")
             texts.append(chunk.text)
             metas.append(
                 {

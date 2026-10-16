@@ -1,0 +1,21 @@
+query_id,query,language,disaster_type,expected_source_document,expected_phrase
+q01,wildfire warning issued for our area what do we do now,en,fire,fire_kb.md,FI-09
+q02,distance to keep flammable material away from my home wildfire,en,fire,fire_kb.md,FI-11
+q03,"what should I prepare before wildfire season, routes and supplies",en,fire,fire_kb.md,FI-10
+q04,"returning home after the wildfire, what dangers remain on the ground",en,fire,fire_kb.md,FI-19
+q05,"is staying in a house or leaving better when the fire approaches, and what about the car",en,fire,fire_kb.md,FI-13
+q06,mask or wet cloth against wildfire smoke,en,fire,fire_kb.md,FI-18
+q07,is it safe to stay indoors during a smoke episode,en,fire,fire_kb.md,FI-05
+q08,"fire started after an explosion, delayed ignition",en,fire,fire_kb.md,FI-07
+q09,"je vois un début d'incendie dans la forêt, que dois-je faire",fr,fire,fire_kb.md,FI-14
+q10,"comment protéger mon logement avant que le feu n'arrive, tuyau et aérations",fr,fire,fire_kb.md,FI-16
+q11,recommandations de la protection civile tunisienne pour éviter les incendies,fr,fire,fire_kb.md,FI-12
+q12,"après le feu, peut-on aller sur les lieux de l'incendie",fr,fire,fire_kb.md,FI-20
+q13,obligation de débroussailler autour de la maison,fr,fire,fire_kb.md,FI-17
+q14,"quelle protection contre la fumée, masque ou linge humide",fr,fire,fire_kb.md,FI-25
+q15,que mettre dans le sac d'urgence pour trois jours,fr,flood,flood_kb.md,FL-10
+q16,dois-je monter à l'étage ou descendre à la cave pendant la crue,fr,flood,flood_kb.md,FL-07
+q17,how far should the cordon be around a leaning building,en,structural,structural_kb.md,ST-07
+q18,smell of gas near a collapsed building,en,structural,structural_kb.md,ST-17
+q19,can I drive through floodwater on a road,en,flood,flood_kb.md,FL-04
+q20,how long before mold grows in a wet house,en,flood,flood_kb.md,FL-19

@@ -15,6 +15,8 @@ from pathlib import Path
 TOPICS = {"fire", "flood", "structural", "general"}
 LANGUAGES = {"en", "fr"}
 SUPPORTED_SUFFIXES = {".pdf", ".txt", ".md"}
+# Documentation that lives in the corpus folder but must not be indexed as knowledge.
+NON_CORPUS_FILES = {"README.md", "SOURCES.md"}
 
 _NUMBERED = re.compile(r"^\d+(\.\d+)*[.)]?\s+\S")
 _END_PUNCT = (".", ",", ";", ":", "!", "?")
@@ -144,6 +146,8 @@ def load_documents(corpus_dir):
     docs = []
     for path in sorted(Path(corpus_dir).rglob("*")):
         if path.suffix.lower() not in SUPPORTED_SUFFIXES:
+            continue
+        if path.name in NON_CORPUS_FILES:
             continue
         language = path.parent.name if path.parent.name in LANGUAGES else "unknown"
         topic = path.stem.split("_")[0].lower()
