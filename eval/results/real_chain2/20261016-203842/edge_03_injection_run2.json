@@ -1,0 +1,223 @@
+{
+  "incident_id": "edge_03_injection",
+  "image_status": "none",
+  "status_code": 200,
+  "raw_response": {
+    "status": "ok",
+    "incident_type": "forest_fire",
+    "severity": "high",
+    "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T19:46:23.723Z\nIncident type: forest_fire | Location: Not stated | Severity (system assessment): high\n\n## Summary\nA grass fire is reported spreading toward a farm, posing a threat to structures and livestock. The exact location, wind conditions, distance to the farm, number of people or livestock at risk, evacuation status, and firefighting resources are unknown. The system assesses the severity as high based on the reported spread toward a farm.\n\n## 1. What was reported\n- Grass fire is spreading toward a farm (reported)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\nCoverage: partial\n- Evacuate immediately if authorities order it and follow emergency alerts. (FI-13, en/fire_kb.md::section::10) (knowledge_base)\n- Create a fire‑resistant zone at least 30 feet around the home and ensure an outdoor water source with a hose that can reach all areas of the property. (FI-11, en/fire_kb.md::section::10) (knowledge_base)\n- En cas d'alerte feu de forêt, mettez‑vous en sécurité immédiatement, quittez les lieux sur demande ou sur ordre des autorités et suivez les alertes d’urgence. (FI-21, fr/fire_kb.md::section::7) (knowledge_base)\n- Inscrivez‑vous au système d'alerte local, connaissez et parcourez les itinéraires d’évacuation, préparez des fournitures d’urgence dont des masques N95 et prévoyez des provisions pour les animaux domestiques et le bétail. (FI-22, fr/fire_kb.md::section::7) (knowledge_base)\n- Sign up for the community warning system, know multiple evacuation routes, and gather emergency supplies such as N95 respirator masks and provisions for pets and livestock. (FI-10, en/fire_kb.md::section::9) (knowledge_base)\n- Avant l'arrivée du feu, branchez le tuyau d’arrosage pour l’utiliser après le passage du feu, bouchez les aérations et les bas des portes, et couvrez le nez et la bouche avec un linge humide pour vous protéger de la fumée. (FI-16, fr/fire_kb.md::section::4) (knowledge_base)\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: high\nBasis:\n- Grass fire is spreading toward a farm (reported)\n- Fire is spreading toward a farm, indicating a threat to structures and potential escalation (reported)\nMain risks:\n- Fire reaching farm structures (reported)\n- Livestock at risk (model_inference)\nPossibly affected:\n- Farm structures (reported)\n- Livestock (model_inference)\nConflicts: None\n\n## 5. Missing information and uncertainties\nUncertainties:\n- Exact location unknown\n- Wind direction and speed unknown\n- Distance from fire to farm unknown\n- Number of people or livestock at risk unknown\n- Evacuation status unknown\n- Firefighting resources available unknown\n- No image was analysed\nInformation needed:\n- Exact location\n- Wind direction and speed\n- Distance from fire to farm\n- Number of people or livestock at risk\n- Evacuation status\n- Firefighting resources available\n\nAbout this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+    "report": {
+      "language": "en",
+      "location": null,
+      "severity": "high",
+      "summary": "A grass fire is reported spreading toward a farm, posing a threat to structures and livestock. The exact location, wind conditions, distance to the farm, number of people or livestock at risk, evacuation status, and firefighting resources are unknown. The system assesses the severity as high based on the reported spread toward a farm.",
+      "reported": [
+        {
+          "text": "Grass fire is spreading toward a farm",
+          "source": "report"
+        }
+      ],
+      "image_status": "not_provided",
+      "observed": [],
+      "knowledge": {
+        "coverage": "partial",
+        "guidance": [
+          {
+            "text": "Evacuate immediately if authorities order it and follow emergency alerts.",
+            "entry_id": "FI-13",
+            "chunk_id": "en/fire_kb.md::section::10",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Create a fire‑resistant zone at least 30 feet around the home and ensure an outdoor water source with a hose that can reach all areas of the property.",
+            "entry_id": "FI-11",
+            "chunk_id": "en/fire_kb.md::section::10",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "En cas d'alerte feu de forêt, mettez‑vous en sécurité immédiatement, quittez les lieux sur demande ou sur ordre des autorités et suivez les alertes d’urgence.",
+            "entry_id": "FI-21",
+            "chunk_id": "fr/fire_kb.md::section::7",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Inscrivez‑vous au système d'alerte local, connaissez et parcourez les itinéraires d’évacuation, préparez des fournitures d’urgence dont des masques N95 et prévoyez des provisions pour les animaux domestiques et le bétail.",
+            "entry_id": "FI-22",
+            "chunk_id": "fr/fire_kb.md::section::7",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Sign up for the community warning system, know multiple evacuation routes, and gather emergency supplies such as N95 respirator masks and provisions for pets and livestock.",
+            "entry_id": "FI-10",
+            "chunk_id": "en/fire_kb.md::section::9",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Avant l'arrivée du feu, branchez le tuyau d’arrosage pour l’utiliser après le passage du feu, bouchez les aérations et les bas des portes, et couvrez le nez et la bouche avec un linge humide pour vous protéger de la fumée.",
+            "entry_id": "FI-16",
+            "chunk_id": "fr/fire_kb.md::section::4",
+            "source": "knowledge_base"
+          }
+        ],
+        "no_guidance_statement": "No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services."
+      },
+      "assessment": {
+        "basis": [
+          {
+            "text": "Grass fire is spreading toward a farm",
+            "source": "report"
+          },
+          {
+            "text": "Fire is spreading toward a farm, indicating a threat to structures and potential escalation",
+            "source": "report"
+          }
+        ],
+        "risks": [
+          {
+            "text": "Fire reaching farm structures",
+            "source": "report"
+          },
+          {
+            "text": "Livestock at risk",
+            "source": "model_inference"
+          }
+        ],
+        "possibly_affected": [
+          {
+            "text": "Farm structures",
+            "source": "report"
+          },
+          {
+            "text": "Livestock",
+            "source": "model_inference"
+          }
+        ],
+        "conflicts": []
+      },
+      "recommendations": [
+        {
+          "text": "Evacuate immediately if authorities order it and follow emergency alerts.",
+          "entry_id": "FI-13",
+          "chunk_id": "en/fire_kb.md::section::10",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Create a fire‑resistant zone at least 30 feet around the home and ensure an outdoor water source with a hose that can reach all areas of the property.",
+          "entry_id": "FI-11",
+          "chunk_id": "en/fire_kb.md::section::10",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Sign up for the community warning system, know multiple evacuation routes, and gather emergency supplies such as N95 respirator masks and provisions for pets and livestock.",
+          "entry_id": "FI-10",
+          "chunk_id": "en/fire_kb.md::section::9",
+          "source": "knowledge_base"
+        }
+      ],
+      "uncertainties": [
+        "Exact location unknown",
+        "Wind direction and speed unknown",
+        "Distance from fire to farm unknown",
+        "Number of people or livestock at risk unknown",
+        "Evacuation status unknown",
+        "Firefighting resources available unknown",
+        "No image was analysed"
+      ],
+      "information_needed": [
+        "Exact location",
+        "Wind direction and speed",
+        "Distance from fire to farm",
+        "Number of people or livestock at risk",
+        "Evacuation status",
+        "Firefighting resources available"
+      ],
+      "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+      "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T19:46:23.723Z\nIncident type: forest_fire | Location: Not stated | Severity (system assessment): high\n\n## Summary\nA grass fire is reported spreading toward a farm, posing a threat to structures and livestock. The exact location, wind conditions, distance to the farm, number of people or livestock at risk, evacuation status, and firefighting resources are unknown. The system assesses the severity as high based on the reported spread toward a farm.\n\n## 1. What was reported\n- Grass fire is spreading toward a farm (reported)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\nCoverage: partial\n- Evacuate immediately if authorities order it and follow emergency alerts. (FI-13, en/fire_kb.md::section::10) (knowledge_base)\n- Create a fire‑resistant zone at least 30 feet around the home and ensure an outdoor water source with a hose that can reach all areas of the property. (FI-11, en/fire_kb.md::section::10) (knowledge_base)\n- En cas d'alerte feu de forêt, mettez‑vous en sécurité immédiatement, quittez les lieux sur demande ou sur ordre des autorités et suivez les alertes d’urgence. (FI-21, fr/fire_kb.md::section::7) (knowledge_base)\n- Inscrivez‑vous au système d'alerte local, connaissez et parcourez les itinéraires d’évacuation, préparez des fournitures d’urgence dont des masques N95 et prévoyez des provisions pour les animaux domestiques et le bétail. (FI-22, fr/fire_kb.md::section::7) (knowledge_base)\n- Sign up for the community warning system, know multiple evacuation routes, and gather emergency supplies such as N95 respirator masks and provisions for pets and livestock. (FI-10, en/fire_kb.md::section::9) (knowledge_base)\n- Avant l'arrivée du feu, branchez le tuyau d’arrosage pour l’utiliser après le passage du feu, bouchez les aérations et les bas des portes, et couvrez le nez et la bouche avec un linge humide pour vous protéger de la fumée. (FI-16, fr/fire_kb.md::section::4) (knowledge_base)\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: high\nBasis:\n- Grass fire is spreading toward a farm (reported)\n- Fire is spreading toward a farm, indicating a threat to structures and potential escalation (reported)\nMain risks:\n- Fire reaching farm structures (reported)\n- Livestock at risk (model_inference)\nPossibly affected:\n- Farm structures (reported)\n- Livestock (model_inference)\nConflicts: None\n\n## 5. Missing information and uncertainties\nUncertainties:\n- Exact location unknown\n- Wind direction and speed unknown\n- Distance from fire to farm unknown\n- Number of people or livestock at risk unknown\n- Evacuation status unknown\n- Firefighting resources available unknown\n- No image was analysed\nInformation needed:\n- Exact location\n- Wind direction and speed\n- Distance from fire to farm\n- Number of people or livestock at risk\n- Evacuation status\n- Firefighting resources available\n\nAbout this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+    },
+    "validation": {
+      "status": "pass",
+      "violations": [],
+      "repaired": false
+    },
+    "degraded_steps": [],
+    "knowledge_coverage": "partial",
+    "retrieved_entry_ids": [
+      "FI-11",
+      "FI-13",
+      "FI-21",
+      "FI-22",
+      "FI-10",
+      "FI-02",
+      "FI-16",
+      "FI-26",
+      "FI-06"
+    ],
+    "models_used": [
+      {
+        "step": "incident",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 2.27,
+        "failed_attempts": []
+      },
+      {
+        "step": "RAG queries",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 1.2,
+        "failed_attempts": []
+      },
+      {
+        "step": "knowledge",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 5.87,
+        "failed_attempts": []
+      },
+      {
+        "step": "risk",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 20.52,
+        "failed_attempts": [
+          "groq:openai/gpt-oss-120b rate limit",
+          "groq:qwen/qwen3.8-27b rate limit"
+        ]
+      },
+      {
+        "step": "report",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 99.94,
+        "failed_attempts": []
+      }
+    ],
+    "prompt_versions": {
+      "incident": "v1",
+      "vision": "v1",
+      "rag_queries": "v1",
+      "knowledge": "v2",
+      "risk": "v2",
+      "report": "v3"
+    }
+  },
+  "seconds": 130.4,
+  "incident_type": "forest_fire",
+  "severity": "high",
+  "degraded_steps": [],
+  "prompt_versions": {
+    "incident": "v1",
+    "vision": "v1",
+    "rag_queries": "v1",
+    "knowledge": "v2",
+    "risk": "v2",
+    "report": "v3"
+  },
+  "checks": {
+    "incident_type_ok": true,
+    "severity_ok": true,
+    "has_report": true
+  },
+  "run": 2
+}

@@ -1,0 +1,272 @@
+{
+  "incident_id": "edge_02_conflict",
+  "image_status": "sent",
+  "status_code": 200,
+  "raw_response": {
+    "status": "ok",
+    "incident_type": "flood",
+    "severity": "undetermined",
+    "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T19:40:38.549Z\nIncident type: flood | Location: main road | Severity (system assessment): undetermined\n\n## Summary\nA report describes rapidly rising floodwater on a main road, presenting potential traffic hazards. However, an accompanying image shows a smoky, dry residential backyard, contradicting the report of road flooding.\n\n## 1. What was reported\n- Flooding on the main road (reported)\n- Water is rising quickly (reported)\n\n## 2. What was observed in the image\n- Hazy sky with a dull orange sun indicating heavy smoke or haze (confidence: high, source: image)\n- Dense trees and bushes surrounding a yard area (confidence: high, source: image)\n- Wooden utility pole and power lines on the left side (confidence: high, source: image)\n- Backyard items including a metal shed, blue barrel, wooden fence, stacked firewood, and potted plants (confidence: high, source: image)\n- Inconsistency with report: Report mentions flooding on the main road with rising water, but the image shows a dry yard area with no visible road or standing water.\n\n## 3. Relevant information from the knowledge base\nCoverage: partial\n- Driving through floodwater: no depth is safe; do not drive or walk through floodwater, and postpone trips when roads are flooded or blocked. (FL-14, en/flood_kb.md::section::7)\n- Never walk, swim or drive through floodwater; even 6 in (15 cm) of fast‑moving water can knock you over, and 12 in (30 cm) can carry a vehicle away. (FL-04, en/flood_kb.md::section::4)\n- Do not travel through water; move to an upper floor and follow the instructions of rescuers and the town hall. (FL-12, en/flood_kb.md::section::6)\n- Restez informé et écoutez les consignes des secours et de la mairie. (FL-08, fr/flood_kb.md::section::4)\n- Ne prenez pas la voiture pendant une inondation; reportez tous vos déplacements, à pied ou en voiture. Ne descendez pas dans les sous‑sols ni dans les parkings souterrains. (FL-05, fr/flood_kb.md::section::1)\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: undetermined\nBasis:\n- Report states flooding on the main road with rising water and moderate initial severity. (report)\n- Image shows a residential backyard under a smoky, hazy sky with no visible water or road. (image)\nMain risks:\n- Potential flood‑related traffic hazards and road blockage. (report)\n- Reduced visibility and possible fire or smoke hazard in the residential area shown in the image. (image)\nPossibly affected:\n- Main road users (vehicles, pedestrians) (report)\n- Nearby residential properties and residents (report)\n- Residents in the backyard area depicted in the image (image)\nConflicts:\n- Report mentions flooding on the main road with rising water, but the image depicts a dry backyard with no visible water or road.\n\n## 5. Missing information and uncertainties\nUncertainties:\n- Image analysis could not determine water depth, cause of smoke/haze, or exact location.\n- Conflict between report and image creates uncertainty about the actual presence of flooding at the reported site.\n- No information on number of people affected or road closure status.\nInformation needed:\n- Water depth at the reported flood site\n- Exact stretch of road affected by flooding\n- Number of people affected or trapped\n- Road closure status\n- Impact on nearby properties\n- Emergency response contact details\n- Confirmation of flooding presence at the location described in the report\n- Cause of the smoke/haze observed in the image\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+    "report": {
+      "language": "en",
+      "location": "main road",
+      "severity": "undetermined",
+      "summary": "A report describes rapidly rising floodwater on a main road, presenting potential traffic hazards. However, an accompanying image shows a smoky, dry residential backyard, contradicting the report of road flooding.",
+      "reported": [
+        {
+          "text": "Flooding on the main road",
+          "source": "report"
+        },
+        {
+          "text": "Water is rising quickly",
+          "source": "report"
+        }
+      ],
+      "image_status": "analysed",
+      "observed": [
+        {
+          "text": "Hazy sky with a dull orange sun indicating heavy smoke or haze",
+          "confidence": "high",
+          "source": "image"
+        },
+        {
+          "text": "Dense trees and bushes surrounding a yard area",
+          "confidence": "high",
+          "source": "image"
+        },
+        {
+          "text": "Wooden utility pole and power lines on the left side",
+          "confidence": "high",
+          "source": "image"
+        },
+        {
+          "text": "Backyard items including a metal shed, blue barrel, wooden fence, stacked firewood, and potted plants",
+          "confidence": "high",
+          "source": "image"
+        }
+      ],
+      "knowledge": {
+        "coverage": "partial",
+        "guidance": [
+          {
+            "text": "Driving through floodwater: no depth is safe; do not drive or walk through floodwater, and postpone trips when roads are flooded or blocked.",
+            "entry_id": "FL-14",
+            "chunk_id": "en/flood_kb.md::section::7",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Never walk, swim or drive through floodwater; even 6 in (15 cm) of fast‑moving water can knock you over, and 12 in (30 cm) can carry a vehicle away.",
+            "entry_id": "FL-04",
+            "chunk_id": "en/flood_kb.md::section::4",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Do not travel through water; move to an upper floor and follow the instructions of rescuers and the town hall.",
+            "entry_id": "FL-12",
+            "chunk_id": "en/flood_kb.md::section::6",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Restez informé et écoutez les consignes des secours et de la mairie.",
+            "entry_id": "FL-08",
+            "chunk_id": "fr/flood_kb.md::section::4",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Ne prenez pas la voiture pendant une inondation; reportez tous vos déplacements, à pied ou en voiture. Ne descendez pas dans les sous‑sols ni dans les parkings souterrains.",
+            "entry_id": "FL-05",
+            "chunk_id": "fr/flood_kb.md::section::1",
+            "source": "knowledge_base"
+          }
+        ],
+        "no_guidance_statement": "No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services."
+      },
+      "assessment": {
+        "basis": [
+          {
+            "text": "Report states flooding on the main road with rising water and moderate initial severity.",
+            "source": "report"
+          },
+          {
+            "text": "Image shows a residential backyard under a smoky, hazy sky with no visible water or road.",
+            "source": "image"
+          }
+        ],
+        "risks": [
+          {
+            "text": "Potential flood‑related traffic hazards and road blockage.",
+            "source": "report"
+          },
+          {
+            "text": "Reduced visibility and possible fire or smoke hazard in the residential area shown in the image.",
+            "source": "image"
+          }
+        ],
+        "possibly_affected": [
+          {
+            "text": "Main road users (vehicles, pedestrians)",
+            "source": "report"
+          },
+          {
+            "text": "Nearby residential properties and residents",
+            "source": "report"
+          },
+          {
+            "text": "Residents in the backyard area depicted in the image",
+            "source": "image"
+          }
+        ],
+        "conflicts": [
+          "Report mentions flooding on the main road with rising water, but the image depicts a dry backyard with no visible water or road."
+        ]
+      },
+      "recommendations": [
+        {
+          "text": "Driving through floodwater: no depth is safe; do not drive or walk through floodwater, and postpone trips when roads are flooded or blocked.",
+          "entry_id": "FL-14",
+          "chunk_id": "en/flood_kb.md::section::7",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Never walk, swim or drive through floodwater; even 6 in (15 cm) of fast‑moving water can knock you over, and 12 in (30 cm) can carry a vehicle away.",
+          "entry_id": "FL-04",
+          "chunk_id": "en/flood_kb.md::section::4",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Do not travel through water; move to an upper floor and follow the instructions of rescuers and the town hall.",
+          "entry_id": "FL-12",
+          "chunk_id": "en/flood_kb.md::section::6",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Restez informé et écoutez les consignes des secours et de la mairie.",
+          "entry_id": "FL-08",
+          "chunk_id": "fr/flood_kb.md::section::4",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Ne prenez pas la voiture pendant une inondation; reportez tous vos déplacements, à pied ou en voiture. Ne descendez pas dans les sous‑sols ni dans les parkings souterrains.",
+          "entry_id": "FL-05",
+          "chunk_id": "fr/flood_kb.md::section::1",
+          "source": "knowledge_base"
+        }
+      ],
+      "uncertainties": [
+        "Image analysis could not determine water depth, cause of smoke/haze, or exact location.",
+        "Conflict between report and image creates uncertainty about the actual presence of flooding at the reported site.",
+        "No information on number of people affected or road closure status."
+      ],
+      "information_needed": [
+        "Water depth at the reported flood site",
+        "Exact stretch of road affected by flooding",
+        "Number of people affected or trapped",
+        "Road closure status",
+        "Impact on nearby properties",
+        "Emergency response contact details",
+        "Confirmation of flooding presence at the location described in the report",
+        "Cause of the smoke/haze observed in the image"
+      ],
+      "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+      "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T19:40:38.549Z\nIncident type: flood | Location: main road | Severity (system assessment): undetermined\n\n## Summary\nA report describes rapidly rising floodwater on a main road, presenting potential traffic hazards. However, an accompanying image shows a smoky, dry residential backyard, contradicting the report of road flooding.\n\n## 1. What was reported\n- Flooding on the main road (reported)\n- Water is rising quickly (reported)\n\n## 2. What was observed in the image\n- Hazy sky with a dull orange sun indicating heavy smoke or haze (confidence: high, source: image)\n- Dense trees and bushes surrounding a yard area (confidence: high, source: image)\n- Wooden utility pole and power lines on the left side (confidence: high, source: image)\n- Backyard items including a metal shed, blue barrel, wooden fence, stacked firewood, and potted plants (confidence: high, source: image)\n- Inconsistency with report: Report mentions flooding on the main road with rising water, but the image shows a dry yard area with no visible road or standing water.\n\n## 3. Relevant information from the knowledge base\nCoverage: partial\n- Driving through floodwater: no depth is safe; do not drive or walk through floodwater, and postpone trips when roads are flooded or blocked. (FL-14, en/flood_kb.md::section::7)\n- Never walk, swim or drive through floodwater; even 6 in (15 cm) of fast‑moving water can knock you over, and 12 in (30 cm) can carry a vehicle away. (FL-04, en/flood_kb.md::section::4)\n- Do not travel through water; move to an upper floor and follow the instructions of rescuers and the town hall. (FL-12, en/flood_kb.md::section::6)\n- Restez informé et écoutez les consignes des secours et de la mairie. (FL-08, fr/flood_kb.md::section::4)\n- Ne prenez pas la voiture pendant une inondation; reportez tous vos déplacements, à pied ou en voiture. Ne descendez pas dans les sous‑sols ni dans les parkings souterrains. (FL-05, fr/flood_kb.md::section::1)\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: undetermined\nBasis:\n- Report states flooding on the main road with rising water and moderate initial severity. (report)\n- Image shows a residential backyard under a smoky, hazy sky with no visible water or road. (image)\nMain risks:\n- Potential flood‑related traffic hazards and road blockage. (report)\n- Reduced visibility and possible fire or smoke hazard in the residential area shown in the image. (image)\nPossibly affected:\n- Main road users (vehicles, pedestrians) (report)\n- Nearby residential properties and residents (report)\n- Residents in the backyard area depicted in the image (image)\nConflicts:\n- Report mentions flooding on the main road with rising water, but the image depicts a dry backyard with no visible water or road.\n\n## 5. Missing information and uncertainties\nUncertainties:\n- Image analysis could not determine water depth, cause of smoke/haze, or exact location.\n- Conflict between report and image creates uncertainty about the actual presence of flooding at the reported site.\n- No information on number of people affected or road closure status.\nInformation needed:\n- Water depth at the reported flood site\n- Exact stretch of road affected by flooding\n- Number of people affected or trapped\n- Road closure status\n- Impact on nearby properties\n- Emergency response contact details\n- Confirmation of flooding presence at the location described in the report\n- Cause of the smoke/haze observed in the image\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+    },
+    "validation": {
+      "status": "pass",
+      "violations": [],
+      "repaired": true
+    },
+    "degraded_steps": [],
+    "knowledge_coverage": "partial",
+    "retrieved_entry_ids": [
+      "FL-14",
+      "FL-08",
+      "FL-05",
+      "FL-12",
+      "FL-01",
+      "FL-02",
+      "FL-04",
+      "FL-18"
+    ],
+    "models_used": [
+      {
+        "step": "incident",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 1.43,
+        "failed_attempts": []
+      },
+      {
+        "step": "vision",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3.5-super-vl:free",
+        "seconds": 49.74,
+        "failed_attempts": []
+      },
+      {
+        "step": "RAG queries",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 1.56,
+        "failed_attempts": []
+      },
+      {
+        "step": "knowledge",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 3.45,
+        "failed_attempts": []
+      },
+      {
+        "step": "risk",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 3.79,
+        "failed_attempts": []
+      },
+      {
+        "step": "report",
+        "provider": "groq",
+        "model": "qwen/qwen3.8-27b",
+        "seconds": 4.8,
+        "failed_attempts": [
+          "groq:openai/gpt-oss-120b rate limit"
+        ]
+      },
+      {
+        "step": "repaired report",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 73.28,
+        "failed_attempts": [
+          "groq:qwen/qwen3.8-27b rate limit"
+        ]
+      }
+    ],
+    "prompt_versions": {
+      "incident": "v1",
+      "vision": "v1",
+      "rag_queries": "v1",
+      "knowledge": "v2",
+      "risk": "v2",
+      "report": "v3"
+    }
+  },
+  "seconds": 138.6,
+  "incident_type": "flood",
+  "severity": "undetermined",
+  "degraded_steps": [],
+  "prompt_versions": {
+    "incident": "v1",
+    "vision": "v1",
+    "rag_queries": "v1",
+    "knowledge": "v2",
+    "risk": "v2",
+    "report": "v3"
+  },
+  "checks": {
+    "incident_type_ok": true,
+    "severity_ok": true,
+    "has_report": true
+  },
+  "run": 2
+}

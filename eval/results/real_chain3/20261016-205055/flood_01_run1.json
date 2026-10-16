@@ -1,0 +1,259 @@
+{
+  "incident_id": "flood_01",
+  "image_status": "sent",
+  "status_code": 200,
+  "raw_response": {
+    "status": "flagged",
+    "incident_type": "flood",
+    "severity": "high",
+    "report_markdown": "",
+    "report": {
+      "language": "fr",
+      "location": "Nabeul",
+      "severity": "high",
+      "summary": "Un quartier résidentiel de Nabeul est touché par de fortes inondations, avec plusieurs routes bloquées et une progression active des eaux. L'évaluation système retient une gravité élevée en raison de la menace sur les habitants et des infrastructures.",
+      "reported": [
+        {
+          "text": "De fortes inondations touchent un quartier résidentiel de Nabeul.",
+          "source": "report"
+        },
+        {
+          "text": "Plusieurs routes sont bloquées.",
+          "source": "report"
+        },
+        {
+          "text": "L'eau continue de monter.",
+          "source": "report"
+        }
+      ],
+      "image_status": "unusable",
+      "observed": [],
+      "knowledge": {
+        "coverage": "partial",
+        "guidance": [
+          {
+            "text": "En cas de fortes pluies et d’inondation dangereuses, restez ou mettez-vous à l’abri et ne vous déplacez pas. Réfugiez-vous à l’étage du bâtiment et ne descendez jamais au sous-sol.",
+            "entry_id": "FL-07",
+            "chunk_id": "fr/flood_kb.md::section::3",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Restez informé et écoutez les consignes des secours et de la mairie ; si la situation est dangereuse, appliquez les bons réflexes en conséquence.",
+            "entry_id": "FL-08",
+            "chunk_id": "fr/flood_kb.md::section::4",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Soyez prêt à évacuer en cas de consigne officielle des autorités locales, car la montée des eaux peut être rapide et submerger de vastes zones.",
+            "entry_id": "FL-03",
+            "chunk_id": "en/flood_kb.md::section::3",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "En l’absence d’instructions officielles pendant une inondation soudaine avec montée des eaux, ne traversez pas l’eau et montez à l’étage.",
+            "entry_id": "FL-12",
+            "chunk_id": "en/flood_kb.md::section::6",
+            "source": "knowledge_base"
+          }
+        ],
+        "no_guidance_statement": "Aucune consigne disponible dans la base de connaissances sur ce point. Suivez les instructions des autorités et des services de secours."
+      },
+      "assessment": {
+        "basis": [
+          {
+            "text": "De fortes inondations touchent un quartier résidentiel de Nabeul.",
+            "source": "report"
+          },
+          {
+            "text": "L'eau continue de monter.",
+            "source": "report"
+          },
+          {
+            "text": "This constitutes a threat to people and buildings in a residential area, with potential for spread or impact given the active water rise.",
+            "source": "model_inference"
+          }
+        ],
+        "risks": [
+          {
+            "text": "Rising water levels leading to increased danger to residents and property.",
+            "source": "report"
+          },
+          {
+            "text": "Restricted access and escape routes due to blocked infrastructure.",
+            "source": "report"
+          }
+        ],
+        "possibly_affected": [
+          {
+            "text": "Residential area in Nabeul",
+            "source": "report"
+          },
+          {
+            "text": "Local roads",
+            "source": "report"
+          }
+        ],
+        "conflicts": []
+      },
+      "recommendations": [
+        {
+          "text": "Stay informed and listen to instructions from rescue services and the mayor's office; if the situation is dangerous, apply the correct reflexes accordingly.",
+          "entry_id": "FL-08",
+          "chunk_id": "fr/flood_kb.md::section::4",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Be ready to evacuate in case of an official order from local authorities, as the water level can rise quickly and submerge large areas.",
+          "entry_id": "FL-03",
+          "chunk_id": "en/flood_kb.md::section::3",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "In the absence of official instructions during a sudden flood with rising water, do not cross the water and go upstairs.",
+          "entry_id": "FL-12",
+          "chunk_id": "en/flood_kb.md::section::6",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "In case of heavy rain and dangerous flooding, stay or shelter and do not move. Take refuge on the upper floor of the building and never go down to the basement.",
+          "entry_id": "FL-07",
+          "chunk_id": "fr/flood_kb.md::section::3",
+          "source": "knowledge_base"
+        }
+      ]
+    },
+    "validation": {
+      "status": "fail",
+      "violations": [
+        {
+          "check": "schema",
+          "message": "(root): 'uncertainties' is a required property"
+        },
+        {
+          "check": "schema",
+          "message": "(root): 'information_needed' is a required property"
+        },
+        {
+          "check": "schema",
+          "message": "(root): 'disclaimer' is a required property"
+        },
+        {
+          "check": "schema",
+          "message": "(root): 'report_markdown' is a required property"
+        }
+      ],
+      "repaired": true
+    },
+    "degraded_steps": [
+      {
+        "step": "vision",
+        "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b no image support; groq:qwen/qwen3.8-27b no image support; groq:openai/gpt-oss-20b no image support; openrouter:nvidia/nemotron-3-super-120b-a12b:free no image support; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-fla"
+      },
+      {
+        "step": "validation",
+        "reason": "schema: (root): 'uncertainties' is a required property | schema: (root): 'information_needed' is a required property | schema: (root): 'disclaimer' is a required property | schema: (root): 'report_markdown' is a required property"
+      }
+    ],
+    "knowledge_coverage": "partial",
+    "retrieved_entry_ids": [
+      "FL-03",
+      "FL-12",
+      "FL-08",
+      "FL-13",
+      "FL-25",
+      "FL-17",
+      "FL-22",
+      "FL-07"
+    ],
+    "models_used": [
+      {
+        "step": "incident",
+        "provider": "groq",
+        "model": "qwen/qwen3.8-27b",
+        "seconds": 0.76,
+        "failed_attempts": []
+      },
+      {
+        "step": "vision",
+        "provider": null,
+        "model": null,
+        "seconds": 0,
+        "failed_attempts": []
+      },
+      {
+        "step": "RAG queries",
+        "provider": "groq",
+        "model": "qwen/qwen3.8-27b",
+        "seconds": 0.44,
+        "failed_attempts": []
+      },
+      {
+        "step": "knowledge",
+        "provider": "groq",
+        "model": "qwen/qwen3.8-27b",
+        "seconds": 1.67,
+        "failed_attempts": [
+          "groq:qwen/qwen3.8-27b rate limit"
+        ]
+      },
+      {
+        "step": "risk",
+        "provider": "groq",
+        "model": "qwen/qwen3.8-27b",
+        "seconds": 2.17,
+        "failed_attempts": []
+      },
+      {
+        "step": "report",
+        "provider": "groq",
+        "model": "qwen/qwen3.8-27b",
+        "seconds": 4.53,
+        "failed_attempts": []
+      },
+      {
+        "step": "repaired report",
+        "provider": "groq",
+        "model": "qwen/qwen3.8-27b",
+        "seconds": 5.02,
+        "failed_attempts": [
+          "groq:qwen/qwen3.8-27b rate limit"
+        ]
+      }
+    ],
+    "prompt_versions": {
+      "incident": "v1",
+      "vision": "v1",
+      "rag_queries": "v1",
+      "knowledge": "v2",
+      "risk": "v2",
+      "report": "v3"
+    }
+  },
+  "seconds": 431.3,
+  "incident_type": "flood",
+  "severity": "high",
+  "degraded_steps": [
+    {
+      "step": "vision",
+      "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b no image support; groq:qwen/qwen3.8-27b no image support; groq:openai/gpt-oss-20b no image support; openrouter:nvidia/nemotron-3-super-120b-a12b:free no image support; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-fla"
+    },
+    {
+      "step": "validation",
+      "reason": "schema: (root): 'uncertainties' is a required property | schema: (root): 'information_needed' is a required property | schema: (root): 'disclaimer' is a required property | schema: (root): 'report_markdown' is a required property"
+    }
+  ],
+  "prompt_versions": {
+    "incident": "v1",
+    "vision": "v1",
+    "rag_queries": "v1",
+    "knowledge": "v2",
+    "risk": "v2",
+    "report": "v3"
+  },
+  "checks": {
+    "incident_type_ok": true,
+    "severity_ok": true,
+    "has_report": false
+  },
+  "run": 1
+}

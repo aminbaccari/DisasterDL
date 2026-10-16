@@ -1,0 +1,271 @@
+{
+  "incident_id": "fire_01",
+  "image_status": "sent",
+  "status_code": 200,
+  "raw_response": {
+    "status": "flagged",
+    "incident_type": "forest_fire",
+    "severity": "high",
+    "report_markdown": "",
+    "report": {
+      "language": "en",
+      "location": "the hills behind the village",
+      "severity": "high",
+      "summary": "A forest fire is reported in the hills behind the village, with visible flames near the first houses and strong wind pushing the threat toward the settlement. The combination of active flames near structures and high winds indicates a high severity situation with an immediate threat to residential buildings.",
+      "reported": [
+        {
+          "text": "Smoke is rising from the hills behind the village",
+          "source": "report"
+        },
+        {
+          "text": "Flames are visible near the first houses",
+          "source": "report"
+        },
+        {
+          "text": "A strong wind is blowing toward the village",
+          "source": "report"
+        }
+      ],
+      "image_status": "unusable",
+      "observed": [],
+      "knowledge": {
+        "coverage": "partial",
+        "guidance": [
+          {
+            "text": "If you are under a wildfire warning, get to safety right away. Leave if told to do so, and leave immediately if the authorities tell you to evacuate. Listen for emergency information and alerts from your community's alerting systems. Use N95 masks to keep particles out of the air you breathe. If you are trapped, call the emergency services and give your location, but be aware that the emergency response could be delayed or impossible; turn on lights to help people find you.",
+            "entry_id": "FI-09",
+            "chunk_id": "en/fire_kb.md::section::8",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "If a fire is threatening and there are two conflicting pieces of advice: evacuate and leave immediately if the authorities tell you to do so, and listen for emergency information and alerts. A person who sees a fire starting should alert the rescue services and take shelter in a house cleared of vegetation until rescuers arrive. A car is not a safe shelter because it could burn.",
+            "entry_id": "FI-13",
+            "chunk_id": "en/fire_kb.md::section::10",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Pour se protéger dans son habitation avant l'arrivée du feu, rentrez le tuyau d'arrosage, bouchées les aérations et le bas des portes pour que les fumées toxiques et les flammèches ne puissent pas pénétrer dans l'habitation, et couvrez-vous le nez et la bouche d'un linge humide pour vous protéger de la fumée.",
+            "entry_id": "FI-16",
+            "chunk_id": "fr/fire_kb.md::section::4",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "This advice concerns smoke, not approaching flames. If flames approach or the authorities order an evacuation, the evacuation order takes priority.",
+            "entry_id": "FI-05",
+            "chunk_id": "en/fire_kb.md::section::4",
+            "source": "knowledge_base"
+          }
+        ],
+        "no_guidance_statement": "No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services."
+      },
+      "assessment": {
+        "basis": [
+          {
+            "text": "Flames are visible near the first houses.",
+            "source": "report"
+          },
+          {
+            "text": "A strong wind is blowing toward the village.",
+            "source": "report"
+          },
+          {
+            "text": "The combination of visible flames near structures and strong wind directing the threat toward the village indicates an immediate threat to buildings.",
+            "source": "model_inference"
+          }
+        ],
+        "risks": [
+          {
+            "text": "Fire spreading to residential buildings in the village.",
+            "source": "report"
+          },
+          {
+            "text": "Rapid escalation of the fire due to strong winds.",
+            "source": "report"
+          }
+        ],
+        "possibly_affected": [
+          {
+            "text": "Houses near the hills (first houses)",
+            "source": "report"
+          },
+          {
+            "text": "Residents in the immediate area (number unknown)",
+            "source": "report"
+          }
+        ],
+        "conflicts": []
+      },
+      "recommendations": [
+        {
+          "text": "Listen for emergency information and alerts from community alerting systems; leave immediately if authorities order evacuation.",
+          "entry_id": "FI-09",
+          "chunk_id": "en/fire_kb.md::section::8",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "If trapped, call emergency services and give location, but be aware response could be delayed; turn on lights to help rescuers find you.",
+          "entry_id": "FI-09",
+          "chunk_id": "en/fire_kb.md::section::8",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "A person seeing the fire should alert rescue services and take shelter in a house cleared of vegetation until rescuers arrive.",
+          "entry_id": "FI-13",
+          "chunk_id": "en/fire_kb.md::section::10",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "A car is not a safe shelter because it could burn.",
+          "entry_id": "FI-13",
+          "chunk_id": "en/fire_kb.md::section::10",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "To protect oneself in a dwelling before the fire arrives: bring in hoses, block vents and bottom of doors to prevent smoke and embers from entering, and cover nose and mouth with a damp cloth.",
+          "entry_id": "FI-16",
+          "chunk_id": "fr/fire_kb.md::section::4",
+          "source": "knowledge_base"
+        }
+      ]
+    },
+    "validation": {
+      "status": "fail",
+      "violations": [
+        {
+          "check": "schema",
+          "message": "(root): 'uncertainties' is a required property"
+        },
+        {
+          "check": "schema",
+          "message": "(root): 'information_needed' is a required property"
+        },
+        {
+          "check": "schema",
+          "message": "(root): 'disclaimer' is a required property"
+        },
+        {
+          "check": "schema",
+          "message": "(root): 'report_markdown' is a required property"
+        }
+      ],
+      "repaired": true
+    },
+    "degraded_steps": [
+      {
+        "step": "vision",
+        "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b no image support; groq:qwen/qwen3.8-27b no image support; groq:openai/gpt-oss-20b no image support; openrouter:nvidia/nemotron-3-super-120b-a12b:free no image support; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-fla"
+      },
+      {
+        "step": "validation",
+        "reason": "schema: (root): 'uncertainties' is a required property | schema: (root): 'information_needed' is a required property | schema: (root): 'disclaimer' is a required property | schema: (root): 'report_markdown' is a required property"
+      }
+    ],
+    "knowledge_coverage": "partial",
+    "retrieved_entry_ids": [
+      "FI-11",
+      "FI-13",
+      "FI-16",
+      "FI-09",
+      "FI-04",
+      "FI-05",
+      "FI-19",
+      "FI-10",
+      "FI-02",
+      "FI-21",
+      "FI-23",
+      "FI-24"
+    ],
+    "models_used": [
+      {
+        "step": "incident",
+        "provider": "groq",
+        "model": "qwen/qwen3.8-27b",
+        "seconds": 0.82,
+        "failed_attempts": []
+      },
+      {
+        "step": "vision",
+        "provider": null,
+        "model": null,
+        "seconds": 0,
+        "failed_attempts": []
+      },
+      {
+        "step": "RAG queries",
+        "provider": "groq",
+        "model": "qwen/qwen3.8-27b",
+        "seconds": 0.62,
+        "failed_attempts": []
+      },
+      {
+        "step": "knowledge",
+        "provider": "groq",
+        "model": "qwen/qwen3.8-27b",
+        "seconds": 2.04,
+        "failed_attempts": [
+          "groq:qwen/qwen3.8-27b rate limit"
+        ]
+      },
+      {
+        "step": "risk",
+        "provider": "groq",
+        "model": "qwen/qwen3.8-27b",
+        "seconds": 2.3,
+        "failed_attempts": [
+          "groq:qwen/qwen3.8-27b rate limit"
+        ]
+      },
+      {
+        "step": "report",
+        "provider": "groq",
+        "model": "qwen/qwen3.8-27b",
+        "seconds": 4.56,
+        "failed_attempts": [
+          "groq:qwen/qwen3.8-27b rate limit"
+        ]
+      },
+      {
+        "step": "repaired report",
+        "provider": "groq",
+        "model": "qwen/qwen3.8-27b",
+        "seconds": 4.67,
+        "failed_attempts": []
+      }
+    ],
+    "prompt_versions": {
+      "incident": "v1",
+      "vision": "v1",
+      "rag_queries": "v1",
+      "knowledge": "v2",
+      "risk": "v2",
+      "report": "v3"
+    }
+  },
+  "seconds": 417.8,
+  "incident_type": "forest_fire",
+  "severity": "high",
+  "degraded_steps": [
+    {
+      "step": "vision",
+      "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b no image support; groq:qwen/qwen3.8-27b no image support; groq:openai/gpt-oss-20b no image support; openrouter:nvidia/nemotron-3-super-120b-a12b:free no image support; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-fla"
+    },
+    {
+      "step": "validation",
+      "reason": "schema: (root): 'uncertainties' is a required property | schema: (root): 'information_needed' is a required property | schema: (root): 'disclaimer' is a required property | schema: (root): 'report_markdown' is a required property"
+    }
+  ],
+  "prompt_versions": {
+    "incident": "v1",
+    "vision": "v1",
+    "rag_queries": "v1",
+    "knowledge": "v2",
+    "risk": "v2",
+    "report": "v3"
+  },
+  "checks": {
+    "incident_type_ok": true,
+    "severity_ok": true,
+    "has_report": false
+  },
+  "run": 2
+}

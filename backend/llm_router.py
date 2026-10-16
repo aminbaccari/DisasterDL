@@ -16,7 +16,7 @@ async def llm(request: Request):
     body = await request.json()
     image = {"mime": body["image_mime"], "b64": body["image_b64"]} if body.get("image_b64") and body.get("image_mime") else None
     return await run_in_threadpool(llm_chain.complete, body.get("system", ""), body.get("user", ""), body.get("json", True), image,
-                                   None, 90, bool(body.get("retry")))
+                                   None, None, bool(body.get("retry")))
 
 
 @router.get("/llm/status")

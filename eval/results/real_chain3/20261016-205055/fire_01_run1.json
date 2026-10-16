@@ -1,0 +1,236 @@
+{
+  "incident_id": "fire_01",
+  "image_status": "sent",
+  "status_code": 200,
+  "raw_response": {
+    "status": "degraded",
+    "incident_type": "forest_fire",
+    "severity": "high",
+    "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T19:59:11.253Z\nIncident type: forest_fire | Location: hills behind the village | Severity (system assessment): high\n\n## Summary\nA forest fire is reported on the hills behind the village, with flames visible near houses and strong wind blowing toward the settlement. The system assesses the severity as high due to the immediate threat to buildings and people. Reliable visual confirmation is currently unavailable due to a technical failure in image analysis.\n\n## 1. What was reported\n* Smoke is rising from the hills behind the village (reported).\n* Flames are visible near the first houses (reported).\n* A strong wind is blowing toward the village (reported).\n\n## 2. What was observed in the image\nNo image could be analysed due to a technical failure in the vision processing system. Therefore, no visual observations are available to confirm or contradict the report.\n\n## 3. Relevant information from the knowledge base\n* FI-04: People with heart or lung conditions, the elderly, smokers, and children may be most affected by the toxicity of smoke near an active fire.\n* FI-05: In the event of approaching flames, an evacuation order takes priority over shelter-in-place advice, which only applies to smoke-only episodes without nearby flames.\n* FI-16: Before the arrival of the fire, it is advised to prevent the penetration of toxic smoke and embers by sealing vents and the bottom of doors, and to cover the nose and mouth with a damp cloth to protect from smoke.\n\nCoverage is partial. No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nThe severity is assessed as high. This is based on the report of visible flames near houses and strong wind blowing toward the village (reported). The model inference indicates that the combination of these factors poses an immediate threat to buildings and people. The main risks are the rapid spread of fire to residential buildings (report) and exposure to toxic smoke and embers (model_inference). Elements possibly affected include houses near the fire front (report) and people in the village, especially vulnerable groups (knowledge_base). There are no conflicts between sources.\n\n## 5. Missing information and uncertainties\n* Exact location of the fire\n* Spread direction and rate\n* Number of people in the village\n* Whether an evacuation has started\n* Emergency contact details\n* Current fire containment status\n\nThe exact position of the fire relative to the village could not be verified due to the image analysis failure.\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+    "report": {
+      "language": "en",
+      "location": "hills behind the village",
+      "severity": "high",
+      "summary": "A forest fire is reported on the hills behind the village, with flames visible near houses and strong wind blowing toward the settlement. The system assesses the severity as high due to the immediate threat to buildings and people. Reliable visual confirmation is currently unavailable due to a technical failure in image analysis.",
+      "reported": [
+        {
+          "text": "Smoke is rising from the hills behind the village",
+          "source": "report"
+        },
+        {
+          "text": "Flames are visible near the first houses",
+          "source": "report"
+        },
+        {
+          "text": "A strong wind is blowing toward the village",
+          "source": "report"
+        }
+      ],
+      "image_status": "unusable",
+      "observed": [],
+      "knowledge": {
+        "coverage": "partial",
+        "guidance": [
+          {
+            "text": "Toute personne souffrant d'affections cardiaques ou pulmonaires, les personnes âgées, les fumeurs et les enfants peuvent être les plus touchés par la toxicité de la suie et des fumées proches d'un feu actif.",
+            "entry_id": "FI-04",
+            "chunk_id": "en/fire_kb.md::section::4",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "En cas d'arrivée des flammes, l'ordre d'évacuation a priorité sur les conseils de confinement, qui ne concernent que les épisodes de fumée sans flammes proches.",
+            "entry_id": "FI-05",
+            "chunk_id": "en/fire_kb.md::section::4",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Pour se protéger avant l'arrivée du feu, il est conseillé d'empêcher la pénétration des fumées toxiques et des flammèches en bouchant les aérations et le bas des portes, et de se couvrir le nez et la bouche d'un linge humide pour se protéger de la fumée.",
+            "entry_id": "FI-16",
+            "chunk_id": "fr/fire_kb.md::section::4",
+            "source": "knowledge_base"
+          }
+        ],
+        "no_guidance_statement": "No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services."
+      },
+      "assessment": {
+        "basis": [
+          {
+            "text": "Flames are visible near the first houses",
+            "source": "report"
+          },
+          {
+            "text": "A strong wind is blowing toward the village",
+            "source": "report"
+          },
+          {
+            "text": "The combination of visible flames near residential structures and wind direction poses an immediate threat to buildings and people.",
+            "source": "model_inference"
+          }
+        ],
+        "risks": [
+          {
+            "text": "Rapid spread of fire to residential buildings",
+            "source": "report"
+          },
+          {
+            "text": "Exposure to toxic smoke and embers",
+            "source": "model_inference"
+          }
+        ],
+        "possibly_affected": [
+          {
+            "text": "Houses near the fire front",
+            "source": "report"
+          },
+          {
+            "text": "People in the village, especially those with cardiovascular or respiratory conditions, the elderly, smokers, and children",
+            "source": "knowledge_base"
+          }
+        ],
+        "conflicts": []
+      },
+      "recommendations": [
+        {
+          "text": "If an evacuation order is issued, it takes priority over shelter-in-place advice, which only applies to smoke-only episodes without nearby flames.",
+          "entry_id": "FI-05",
+          "chunk_id": "en/fire_kb.md::section::4",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "People with heart or lung conditions, the elderly, smokers, and children may be most affected by the toxicity of smoke near an active fire.",
+          "entry_id": "FI-04",
+          "chunk_id": "en/fire_kb.md::section::4",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Before the arrival of the fire, it is advised to prevent the penetration of toxic smoke and embers by sealing vents and the bottom of doors, and to cover the nose and mouth with a damp cloth to protect from smoke.",
+          "entry_id": "FI-16",
+          "chunk_id": "fr/fire_kb.md::section::4",
+          "source": "knowledge_base"
+        }
+      ],
+      "uncertainties": [
+        "The provided image could not be used because the vision analysis failed due to lack of image support in the available models.",
+        "No image was successfully analysed to verify the position of the fire relative to the village.",
+        "The exact location of the fire within the area is unknown.",
+        "The spread direction and rate of the fire are unknown.",
+        "It is unknown whether an evacuation has already started."
+      ],
+      "information_needed": [
+        "Exact location of the fire",
+        "Spread direction and rate",
+        "Number of people in the village",
+        "Whether an evacuation has started",
+        "Emergency contact details",
+        "Current fire containment status"
+      ],
+      "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+      "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T19:59:11.253Z\nIncident type: forest_fire | Location: hills behind the village | Severity (system assessment): high\n\n## Summary\nA forest fire is reported on the hills behind the village, with flames visible near houses and strong wind blowing toward the settlement. The system assesses the severity as high due to the immediate threat to buildings and people. Reliable visual confirmation is currently unavailable due to a technical failure in image analysis.\n\n## 1. What was reported\n* Smoke is rising from the hills behind the village (reported).\n* Flames are visible near the first houses (reported).\n* A strong wind is blowing toward the village (reported).\n\n## 2. What was observed in the image\nNo image could be analysed due to a technical failure in the vision processing system. Therefore, no visual observations are available to confirm or contradict the report.\n\n## 3. Relevant information from the knowledge base\n* FI-04: People with heart or lung conditions, the elderly, smokers, and children may be most affected by the toxicity of smoke near an active fire.\n* FI-05: In the event of approaching flames, an evacuation order takes priority over shelter-in-place advice, which only applies to smoke-only episodes without nearby flames.\n* FI-16: Before the arrival of the fire, it is advised to prevent the penetration of toxic smoke and embers by sealing vents and the bottom of doors, and to cover the nose and mouth with a damp cloth to protect from smoke.\n\nCoverage is partial. No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nThe severity is assessed as high. This is based on the report of visible flames near houses and strong wind blowing toward the village (reported). The model inference indicates that the combination of these factors poses an immediate threat to buildings and people. The main risks are the rapid spread of fire to residential buildings (report) and exposure to toxic smoke and embers (model_inference). Elements possibly affected include houses near the fire front (report) and people in the village, especially vulnerable groups (knowledge_base). There are no conflicts between sources.\n\n## 5. Missing information and uncertainties\n* Exact location of the fire\n* Spread direction and rate\n* Number of people in the village\n* Whether an evacuation has started\n* Emergency contact details\n* Current fire containment status\n\nThe exact position of the fire relative to the village could not be verified due to the image analysis failure.\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+    },
+    "validation": {
+      "status": "pass",
+      "violations": [],
+      "repaired": false
+    },
+    "degraded_steps": [
+      {
+        "step": "vision",
+        "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b no image support; groq:qwen/qwen3.8-27b no image support; groq:openai/gpt-oss-20b no image support; openrouter:nvidia/nemotron-3-super-120b-a12b:free no image support; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-fla"
+      },
+      {
+        "step": "RAG queries",
+        "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b cooling down; groq:qwen/qwen3.8-27b rate limit; groq:openai/gpt-oss-20b cooling down; openrouter:nvidia/nemotron-3-super-120b-a12b:free cooling down; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-flash cooling down; o"
+      }
+    ],
+    "knowledge_coverage": "partial",
+    "retrieved_entry_ids": [
+      "FI-04",
+      "FI-05",
+      "FI-16",
+      "FI-12"
+    ],
+    "models_used": [
+      {
+        "step": "incident",
+        "provider": "groq",
+        "model": "qwen/qwen3.8-27b",
+        "seconds": 0.73,
+        "failed_attempts": []
+      },
+      {
+        "step": "vision",
+        "provider": null,
+        "model": null,
+        "seconds": 0,
+        "failed_attempts": []
+      },
+      {
+        "step": "RAG queries",
+        "provider": null,
+        "model": null,
+        "seconds": 0.17,
+        "failed_attempts": [
+          "groq:qwen/qwen3.8-27b rate limit"
+        ]
+      },
+      {
+        "step": "knowledge",
+        "provider": "groq",
+        "model": "qwen/qwen3.8-27b",
+        "seconds": 1.53,
+        "failed_attempts": []
+      },
+      {
+        "step": "risk",
+        "provider": "groq",
+        "model": "qwen/qwen3.8-27b",
+        "seconds": 2.24,
+        "failed_attempts": [
+          "groq:qwen/qwen3.8-27b rate limit"
+        ]
+      },
+      {
+        "step": "report",
+        "provider": "groq",
+        "model": "qwen/qwen3.8-27b",
+        "seconds": 4.37,
+        "failed_attempts": []
+      }
+    ],
+    "prompt_versions": {
+      "incident": "v1",
+      "vision": "v1",
+      "rag_queries": "v1",
+      "knowledge": "v2",
+      "risk": "v2",
+      "report": "v3"
+    }
+  },
+  "seconds": 311.7,
+  "incident_type": "forest_fire",
+  "severity": "high",
+  "degraded_steps": [
+    {
+      "step": "vision",
+      "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b no image support; groq:qwen/qwen3.8-27b no image support; groq:openai/gpt-oss-20b no image support; openrouter:nvidia/nemotron-3-super-120b-a12b:free no image support; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-fla"
+    },
+    {
+      "step": "RAG queries",
+      "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b cooling down; groq:qwen/qwen3.8-27b rate limit; groq:openai/gpt-oss-20b cooling down; openrouter:nvidia/nemotron-3-super-120b-a12b:free cooling down; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-flash cooling down; o"
+    }
+  ],
+  "prompt_versions": {
+    "incident": "v1",
+    "vision": "v1",
+    "rag_queries": "v1",
+    "knowledge": "v2",
+    "risk": "v2",
+    "report": "v3"
+  },
+  "checks": {
+    "incident_type_ok": true,
+    "severity_ok": true,
+    "has_report": true
+  },
+  "run": 1
+}

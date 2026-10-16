@@ -33,9 +33,14 @@ class Base(unittest.TestCase):
         chain.reset_cooldowns()
         self.env = mock.patch.dict(os.environ, KEYS, clear=False)
         self.env.start()
+        self.wait = mock.patch.object(chain, "MAX_WAIT", self.max_wait)  # waiting is tested in TestWaiting only
+        self.wait.start()
         self.calls = []
 
+    max_wait = 0
+
     def tearDown(self):
+        self.wait.stop()
         self.env.stop()
 
     def run_chain(self, answers, **kwargs):
@@ -157,3 +162,70 @@ class TestRouter(Base):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestTimeouts(Base):
+    def test_text_and_image_calls_get_different_timeouts(self):
+        seen = []
+
+        def fake_post(url, headers, body, timeout):
+            seen.append(timeout)
+            return gemini_ok('{"a": 1}')
+
+        with mock.patch.object(chain, "http_post", fake_post):
+            chain.complete("s", "u", chain=[("gemini", "g")])
+            chain.complete("s", "u", chain=[("gemini", "g")], image={"mime": "image/png", "b64": "AA=="})
+        self.assertEqual(seen, [chain.TIMEOUT_TEXT, chain.TIMEOUT_IMAGE])
+
+    def test_a_slow_model_times_out_and_the_next_one_answers(self):
+        import requests
+        out = self.run_chain([requests.ReadTimeout("slow"), openai_ok('{"n": 1}')])
+        self.assertEqual(out["x_llm"]["provider"], "groq")
+        self.assertEqual(out["x_llm"]["attempts"][0]["reason"], "ReadTimeout")
+
+
+class TestWaiting(Base):
+    max_wait = 90
+
+    def run_with_sleep(self, answers, chain_=None):
+        slept = []
+        queue = list(answers)
+
+        def fake_post(url, headers, body, timeout):
+            self.calls.append(url)
+            return queue.pop(0)
+
+        with mock.patch.object(chain, "http_post", fake_post), mock.patch.object(chain.time, "sleep", lambda s: (slept.append(s), chain.reset_cooldowns())):
+            out = chain.complete("s", "u", chain=chain_ or [("groq", "q-1")])
+        return out, slept
+
+    def test_per_minute_limit_is_waited_out_and_retried(self):
+        limited = FakeResponse(429, {"error": {}}, headers={"retry-after": "7"})
+        out, slept = self.run_with_sleep([limited, openai_ok('{"w": 1}')])
+        self.assertEqual(out["x_llm"]["model"], "q-1")
+        self.assertEqual(len(slept), 1)
+        self.assertAlmostEqual(slept[0], 8.5, places=0)  # retry-after 7 s + 1 s margin + 0.5 s
+        self.assertIn("waited_seconds", out["x_llm"])
+
+    def test_retry_after_is_used_instead_of_a_full_minute(self):
+        wait, reason = chain.classify(429, FakeResponse(429, {"error": {}}, headers={"retry-after": "3"}))
+        self.assertEqual((wait, reason), (4, "rate limit"))
+        self.assertEqual(chain.classify(429, FakeResponse(429, {"error": {}}))[0], chain.COOLDOWN_RATE_LIMIT)
+
+    def test_daily_quota_is_never_waited_for(self):
+        daily = FakeResponse(429, {"error": {"details": [{"retryDelay": "29705s"}]}}, text="per day quota")
+        out, slept = self.run_with_sleep([daily])
+        self.assertIn("error", out)
+        self.assertEqual(slept, [])
+
+    def test_gives_up_when_the_wait_is_too_long(self):
+        out, slept = self.run_with_sleep([FakeResponse(429, {"error": {}}, headers={"retry-after": "400"})])
+        self.assertIn("error", out)
+        self.assertEqual(slept, [])
+
+    def test_a_second_failure_after_waiting_returns_the_error_with_all_attempts(self):
+        limited = FakeResponse(429, {"error": {}}, headers={"retry-after": "2"})
+        out, slept = self.run_with_sleep([limited, FakeResponse(503, {})])
+        self.assertIn("error", out)
+        self.assertEqual(len(slept), 1)
+        self.assertTrue(any(a["status"] == "waited" for a in out["x_llm"]["attempts"]))

@@ -106,7 +106,7 @@ def main():
     parser.add_argument("--url", required=True, help="n8n webhook URL (test or production)")
     parser.add_argument("--runs", type=int, default=1)
     parser.add_argument("--only", nargs="+", help="incident ids to run")
-    parser.add_argument("--timeout", type=int, default=180, help="seconds per request")
+    parser.add_argument("--timeout", type=int, default=600, help="seconds per request")
     parser.add_argument("--allow-missing-images", action="store_true")
     parser.add_argument("--incidents-dir", default=str(ROOT / "eval" / "incidents"))
     parser.add_argument("--images-dir", default=str(ROOT / "vision" / "test_images"))

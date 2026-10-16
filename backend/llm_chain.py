@@ -44,6 +44,9 @@ VISION_HINTS = ("gemini", "llama-4", "vision", "-vl", "gpt-4o", "pixtral", "qwen
 COOLDOWN_RATE_LIMIT = 65       # seconds, a per-minute limit
 COOLDOWN_DAILY = 6 * 3600      # seconds, a per-day quota or an exhausted free tier
 COOLDOWN_SERVER = 30           # 5xx, timeouts, connection errors
+MAX_WAIT = 90                 # seconds: longest wait for a cooling model before giving up
+TIMEOUT_TEXT = 45             # seconds per model for a text call
+TIMEOUT_IMAGE = 120           # seconds per model for a call with an image
 COOLDOWN_BROKEN = 3600         # 400/401/403/404: wrong model name or key, do not retry soon
 
 _LOCK = threading.Lock()
@@ -124,7 +127,10 @@ def classify(status_code, response=None):
     if status_code == 429:
         wait = _retry_seconds(response) if response is not None else None
         daily = "perday" in text.replace("_", "").replace(" ", "").replace("-", "") or "per day" in text or "daily" in text or (wait is not None and wait > 600)
-        return (max(wait or 0, COOLDOWN_DAILY) if daily else max(wait or 0, COOLDOWN_RATE_LIMIT)), ("daily quota exhausted" if daily else "rate limit")
+        if daily:
+            return max(wait or 0, COOLDOWN_DAILY), "daily quota exhausted"
+        # a per-minute limit: use the provider's own retry delay when it gives one (Groq: a few seconds), else a minute
+        return (wait + 1 if wait else COOLDOWN_RATE_LIMIT), "rate limit"
     if status_code in (500, 502, 503, 504):
         return COOLDOWN_SERVER, f"server error {status_code}"
     return COOLDOWN_BROKEN, f"http {status_code}"
@@ -165,13 +171,16 @@ def clean_json_text(text):
     return re.sub(r"\s*```$", "", text).strip()
 
 
-def complete(system, user, json_mode=True, image=None, chain=None, timeout=90, rotate=False):
-    """Ask the chain. image = {"mime": "image/png", "b64": "..."} or None. rotate=True starts at the second usable model
+def _complete_once(system, user, json_mode=True, image=None, chain=None, timeout=None, rotate=False):
+    """One pass over the chain. image = {"mime": "image/png", "b64": "..."} or None. rotate=True starts at the second usable model
     (n8n sets it on its retry, so a model that just gave an unusable answer is not asked again first).
 
     Returns a Gemini-shaped dict, or {"error": {...}} when every model failed. Both carry "x_llm" with the attempts.
     """
     chain = parse_chain() if chain is None else chain
+    # Per-model limit: a slow model must fall through to the next one. 2026-10-16: OpenRouter nemotron took 40 to 208 s per call
+    # and made whole runs last up to 348 s. Image calls get longer, the only vision model left on 2026-10-16 needed 80 s.
+    timeout = timeout or (TIMEOUT_IMAGE if image else TIMEOUT_TEXT)
     attempts, started, skipped_first = [], time.time(), False
     for provider, model in chain:
         tag = {"provider": provider, "model": model}
@@ -222,6 +231,37 @@ def complete(system, user, json_mode=True, image=None, chain=None, timeout=90, r
     reasons = "; ".join(f"{a['provider']}:{a['model']} {a.get('reason', a['status'])}" for a in attempts) or "the chain is empty"
     return {"error": {"code": 503, "message": "every model in the chain failed or was skipped: " + reasons[:600]},
             "x_llm": {"provider": None, "model": None, "seconds": round(time.time() - started, 2), "attempts": attempts}}
+
+
+def soonest_available(chain, image=None):
+    """Seconds until the first model that has a key (and accepts the image) stops cooling down, or None when no model qualifies."""
+    now, waits = time.time(), []
+    for provider, model in chain:
+        if has_key(provider) and not (image and not accepts_image(provider, model)):
+            waits.append(max(0.0, _COOLDOWN.get(f"{provider}:{model}", 0) - now))
+    return min(waits) if waits else None
+
+
+def complete(system, user, json_mode=True, image=None, chain=None, timeout=None, rotate=False):
+    """Ask the chain; when every model is cooling down after a per-minute limit, wait for the first one and ask once more.
+
+    2026-10-16: with the free tiers of Groq, OpenRouter and Gemini all limited at once, calls failed instantly and a whole
+    pipeline run degraded in 0.2 s. Waiting up to MAX_WAIT seconds turns a per-minute limit into a delay. A daily quota
+    (cooldown of hours) is never waited for. x_llm.waited_seconds records the wait.
+    """
+    chain = parse_chain() if chain is None else chain
+    answer = _complete_once(system, user, json_mode, image, chain, timeout, rotate)
+    if "error" not in answer:
+        return answer
+    wait = soonest_available(chain, image)
+    if wait is None or wait > MAX_WAIT:
+        return answer
+    sleep_for = wait + 0.5
+    time.sleep(sleep_for)
+    second = _complete_once(system, user, json_mode, image, chain, timeout, False)
+    second["x_llm"]["attempts"] = answer["x_llm"]["attempts"] + [{"status": "waited", "reason": f"all models cooling down, waited {sleep_for:.1f} s"}] + second["x_llm"]["attempts"]
+    second["x_llm"]["waited_seconds"] = round(sleep_for, 1)
+    return second
 
 
 def encode_image(raw_bytes, mime):

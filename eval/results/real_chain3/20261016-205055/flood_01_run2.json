@@ -1,0 +1,53 @@
+{
+  "incident_id": "flood_01",
+  "image_status": "sent",
+  "status_code": 200,
+  "raw_response": {
+    "status": "degraded",
+    "incident_type": "unclear",
+    "severity": "undetermined",
+    "report_markdown": "# Informations supplémentaires nécessaires\n\nLe rapport ne permet pas de classer l'incident ni d'évaluer sa gravité. Aucune hypothèse n'a été faite.\n\n- Everything: the report could not be analysed automatically",
+    "missing_information": [
+      "Everything: the report could not be analysed automatically"
+    ],
+    "report": null,
+    "validation": null,
+    "degraded_steps": [
+      {
+        "step": "incident understanding",
+        "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b cooling down; groq:qwen/qwen3.8-27b rate limit; groq:openai/gpt-oss-20b cooling down; openrouter:nvidia/nemotron-3-super-120b-a12b:free cooling down; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-flash cooling down; o"
+      }
+    ],
+    "prompt_versions": {
+      "incident": "v1",
+      "vision": "v1",
+      "rag_queries": "v1",
+      "knowledge": "v2",
+      "risk": "v2",
+      "report": "v3"
+    }
+  },
+  "seconds": 112.6,
+  "incident_type": "unclear",
+  "severity": "undetermined",
+  "degraded_steps": [
+    {
+      "step": "incident understanding",
+      "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b cooling down; groq:qwen/qwen3.8-27b rate limit; groq:openai/gpt-oss-20b cooling down; openrouter:nvidia/nemotron-3-super-120b-a12b:free cooling down; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-flash cooling down; o"
+    }
+  ],
+  "prompt_versions": {
+    "incident": "v1",
+    "vision": "v1",
+    "rag_queries": "v1",
+    "knowledge": "v2",
+    "risk": "v2",
+    "report": "v3"
+  },
+  "checks": {
+    "incident_type_ok": false,
+    "severity_ok": false,
+    "has_report": true
+  },
+  "run": 2
+}

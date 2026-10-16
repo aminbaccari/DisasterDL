@@ -42,3 +42,8 @@ Template:
 - Change made to the prompt: none. A v2 rule is a candidate (a relative description without a place name gives null), but it could not be tested because the free-tier daily quota was exhausted, and the prompt must not be changed without a before and after run.
 - Result after the change: not applicable.
 - Technique involved: constraint (candidate).
+
+## Observed on real runs, no new version written yet (2026-10-16)
+- report v3, knowledge v2, risk v2 (first real runs, docs/EVIDENCE_LOG.md, batch C): knowledge v2 and risk v2 produced valid outputs with entry ids in the 6 reports that completed. Report v3 was valid in 4 of 6 reports. Two reports from qwen3.8-27b lacked uncertainties, information_needed, disclaimer and report_markdown (status flagged, the repair pass did not help). Candidate change: state that every field of the schema is required and add one complete output example. Not changed: the quota is exhausted, so a before and after run is not possible today.
+- incident v1: location still copied as a relative phrase (fire_01: "hills behind the village" in 2 of 2 completed runs), and free text in English for a French incident (edge_01 missing_information). Candidate v2: location null unless a named place appears, free text in the incident language.
+- vision v1: one real run (fire_01 image), the output matched its schema and listed only visible things. No failure observed, too few runs to say more.
