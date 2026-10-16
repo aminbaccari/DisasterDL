@@ -1,8 +1,13 @@
 venv/
+.venv/
 .env
 __pycache__/
-data/raw/
-data/processed/
+.pytest_cache/
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
 chroma/
 chroma_db/
-outputs/
+outputs/*
+!outputs/.gitkeep
