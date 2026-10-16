@@ -6,7 +6,8 @@ python-dotenv
 pyyaml
 httpx
 chromadb
-sentence-transformers
+torch
+transformers
 pymupdf
 pillow
 imagehash
