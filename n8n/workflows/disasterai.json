@@ -2757,7 +2757,8 @@
       },
       "generated_by": "scripts/build_workflow.py",
       "gemini_url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
-      "rag_url": "http://host.docker.internal:8010"
+      "rag_url": "http://host.docker.internal:8010",
+      "pace_seconds": 0
     }
   },
   "id": "disasterai-pipeline",
