@@ -1,0 +1,1 @@
+run stopped by hand after 7 of 36 runs: fire_01 'before' took 1558 s and only one model (qwen3.8-27b) still had quota

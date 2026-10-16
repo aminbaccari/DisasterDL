@@ -1,0 +1,168 @@
+{
+ "incident_id": "fire_01",
+ "image_status": "sent",
+ "status_code": 200,
+ "raw_response": {
+  "status": "degraded",
+  "incident_type": "forest_fire",
+  "severity": "high",
+  "report_markdown": "",
+  "report": null,
+  "risk": {
+   "severity": "high",
+   "severity_basis": [
+    {
+     "statement": "Flames are visible near the first houses",
+     "source": "report"
+    },
+    {
+     "statement": "A strong wind is blowing toward the village",
+     "source": "report"
+    },
+    {
+     "statement": "The incident type is reported as a forest fire with high confidence",
+     "source": "report"
+    }
+   ],
+   "main_risks": [
+    {
+     "risk": "Immediate threat to structures from advancing flames",
+     "basis": "Flames are visible near the first houses",
+     "source": "report"
+    },
+    {
+     "risk": "Rapid fire spread due to environmental conditions",
+     "basis": "Strong wind is blowing toward the village",
+     "source": "report"
+    },
+    {
+     "risk": "Threat to residents due to proximity of fire and wind direction",
+     "basis": "Flames are near houses and wind is blowing toward the village",
+     "source": "model_inference"
+    }
+   ],
+   "possibly_affected": [
+    {
+     "element": "Residential buildings near the fire",
+     "source": "report"
+    },
+    {
+     "element": "Residents in the village",
+     "source": "report"
+    }
+   ],
+   "conflicts_between_sources": [],
+   "considerations": [
+    {
+     "text": "Authorities may issue evacuation orders; residents should listen for emergency information and alerts and leave immediately if ordered to evacuate.",
+     "citation": {
+      "chunk_id": "en/fire_kb.md::section::8",
+      "source": "fire_kb.md",
+      "page": 1,
+      "entry_id": "FI-09"
+     }
+    },
+    {
+     "text": "If flames approach or authorities order an evacuation, the evacuation order takes priority over staying indoors to control the environment.",
+     "citation": {
+      "chunk_id": "en/fire_kb.md::section::4",
+      "source": "fire_kb.md",
+      "page": 1,
+      "entry_id": "FI-05"
+     }
+    },
+    {
+     "text": "For an approaching fire, the general guidance is to follow the orders of the authorities and emergency services, as specific guidance for flames reaching a house is not available in this knowledge base.",
+     "citation": {
+      "chunk_id": "en/fire_kb.md::section::1",
+      "source": "fire_kb.md",
+      "page": 1,
+      "entry_id": "FI-01"
+     }
+    },
+    {
+     "text": "If a fire is first seen starting, the guidance suggests alerting rescue services and taking shelter in a house cleared of vegetation until rescuers arrive, noting a car is not safe.",
+     "citation": {
+      "chunk_id": "en/fire_kb.md::section::10",
+      "source": "fire_kb.md",
+      "page": 1,
+      "entry_id": "FI-13"
+     }
+    }
+   ],
+   "uncertainties": [
+    "No image was analysed.",
+    "Exact geographic location or name of the village is unknown.",
+    "Name of the reporter or emergency contact is unknown.",
+    "Confirmed number of affected buildings or residents is unknown.",
+    "Current behavior of the fire (steady vs. running) is unknown.",
+    "Status of local evacuation orders is unknown.",
+    "Knowledge base has specific gaps regarding wind-driven fire behavior and scenarios where flames are already reaching houses."
+   ],
+   "information_needed": [
+    "Exact geographic location or name of the village",
+    "Name of the reporter or emergency contact",
+    "Confirmed number of affected buildings or residents",
+    "Current behavior of the fire (steady vs. running)",
+    "Status of local evacuation orders"
+   ]
+  },
+  "validation": {
+   "status": "fail",
+   "violations": [
+    {
+     "check": "schema",
+     "message": "report is not an object"
+    }
+   ],
+   "repaired": true
+  },
+  "degraded_steps": [
+   {
+    "step": "vision",
+    "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b no image support; groq:qwen/qwen3.8-27b no image support; groq:openai/gpt-oss-20b no image support; openrouter:nvidia/nemotron-3-super-120b-a12b:free no image support; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-fla"
+   },
+   {
+    "step": "report",
+    "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b cooling down; groq:qwen/qwen3.8-27b ConnectionError; groq:openai/gpt-oss-20b cooling down; openrouter:nvidia/nemotron-3-super-120b-a12b:free cooling down; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-flash cooling do"
+   }
+  ],
+  "knowledge_coverage": "partial",
+  "prompt_versions": {
+   "incident": "v1",
+   "vision": "v1",
+   "rag_queries": "v1",
+   "knowledge": "v2",
+   "risk": "v2",
+   "report": "v3"
+  }
+ },
+ "seconds": 1557.9,
+ "incident_type": "forest_fire",
+ "severity": "high",
+ "degraded_steps": [
+  {
+   "step": "vision",
+   "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b no image support; groq:qwen/qwen3.8-27b no image support; groq:openai/gpt-oss-20b no image support; openrouter:nvidia/nemotron-3-super-120b-a12b:free no image support; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-fla"
+  },
+  {
+   "step": "report",
+   "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b cooling down; groq:qwen/qwen3.8-27b ConnectionError; groq:openai/gpt-oss-20b cooling down; openrouter:nvidia/nemotron-3-super-120b-a12b:free cooling down; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-flash cooling do"
+  }
+ ],
+ "prompt_versions": {
+  "incident": "v1",
+  "vision": "v1",
+  "rag_queries": "v1",
+  "knowledge": "v2",
+  "risk": "v2",
+  "report": "v3"
+ },
+ "checks": {
+  "incident_type_ok": true,
+  "severity_ok": true,
+  "has_report": false
+ },
+ "run": 1,
+ "variant": "before"
+}

@@ -1,0 +1,49 @@
+{
+ "incident_id": "edge_01_vague",
+ "image_status": "none",
+ "status_code": 200,
+ "raw_response": {
+  "status": "needs_more_information",
+  "incident_type": "unclear",
+  "severity": "undetermined",
+  "report_markdown": "# Informations supplémentaires nécessaires\n\nLe rapport ne permet pas de classer l'incident ni d'évaluer sa gravité. Aucune hypothèse n'a été faite.\n\nImage : aucune image n'a été fournie.\nBase de connaissances : aucune recherche effectuée, le type d'incident n'est pas clair.\n\n- Nature exacte du problème\n- Localisation précise\n- Nombre de personnes affectées ou blessées\n- État des infrastructures ou du port\n- Coordonnées du déclarant\n- Mesures d'urgence déjà prises",
+  "missing_information": [
+   "Nature exacte du problème",
+   "Localisation précise",
+   "Nombre de personnes affectées ou blessées",
+   "État des infrastructures ou du port",
+   "Coordonnées du déclarant",
+   "Mesures d'urgence déjà prises"
+  ],
+  "report": null,
+  "validation": null,
+  "degraded_steps": [],
+  "prompt_versions": {
+   "incident": "v2",
+   "vision": "v1",
+   "rag_queries": "v1",
+   "knowledge": "v2",
+   "risk": "v2",
+   "report": "v4"
+  }
+ },
+ "seconds": 2.3,
+ "incident_type": "unclear",
+ "severity": "undetermined",
+ "degraded_steps": [],
+ "prompt_versions": {
+  "incident": "v2",
+  "vision": "v1",
+  "rag_queries": "v1",
+  "knowledge": "v2",
+  "risk": "v2",
+  "report": "v4"
+ },
+ "checks": {
+  "incident_type_ok": true,
+  "severity_ok": true,
+  "has_report": true
+ },
+ "run": 1,
+ "variant": "after"
+}

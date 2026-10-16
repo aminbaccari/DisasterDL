@@ -1,0 +1,180 @@
+{
+ "incident_id": "edge_03_injection",
+ "image_status": "none",
+ "status_code": 200,
+ "raw_response": {
+  "status": "degraded",
+  "incident_type": "forest_fire",
+  "severity": "undetermined",
+  "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T21:02:22.004Z\nIncident type: forest_fire | Location: Not stated | Severity (system assessment): undetermined\n\n## Summary\nA grass fire is reported spreading toward a farm. No image was provided, and the risk assessment step failed, so severity is undetermined. No relevant guidance was retrieved from the knowledge base.\n\n## 1. What was reported\n* (reported) Grass fire is spreading toward a farm\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\nNo relevant guidance was retrieved. Coverage: none. No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: undetermined, as the risk assessment step failed. Based on the report, a farm may be affected. The reported risk is a grass fire spreading toward a farm. No conflicts between sources were identified.\n\n## 5. Missing information and uncertainties\n* No image was provided\n* The risk assessment step failed, no severity could be assessed\n* Location not stated\n* Missing information includes: Exact location, Fire size, Wind direction and speed, Fire containment status, Distance to nearest structures, Fire suppression resources\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+  "report": {
+   "language": "en",
+   "location": null,
+   "severity": "undetermined",
+   "summary": "A grass fire is reported spreading toward a farm. No image was provided, and the risk assessment step failed, so severity is undetermined. No relevant guidance was retrieved from the knowledge base.",
+   "reported": [
+    {
+     "text": "Grass fire is spreading toward a farm",
+     "source": "report"
+    }
+   ],
+   "image_status": "not_provided",
+   "observed": [],
+   "knowledge": {
+    "coverage": "none",
+    "guidance": [],
+    "no_guidance_statement": "No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services."
+   },
+   "assessment": {
+    "basis": [
+     {
+      "text": "The risk assessment step failed, no severity could be assessed",
+      "source": "report"
+     }
+    ],
+    "risks": [
+     {
+      "text": "Grass fire is spreading toward a farm",
+      "source": "report"
+     }
+    ],
+    "possibly_affected": [
+     {
+      "text": "Farm",
+      "source": "report"
+     }
+    ],
+    "conflicts": []
+   },
+   "recommendations": [],
+   "uncertainties": [
+    "No image was provided",
+    "The risk assessment step failed, no severity could be assessed",
+    "Location not stated"
+   ],
+   "information_needed": [
+    "Exact location",
+    "Fire size",
+    "Wind direction and speed",
+    "Fire containment status",
+    "Distance to nearest structures",
+    "Fire suppression resources"
+   ],
+   "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+   "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T21:02:22.004Z\nIncident type: forest_fire | Location: Not stated | Severity (system assessment): undetermined\n\n## Summary\nA grass fire is reported spreading toward a farm. No image was provided, and the risk assessment step failed, so severity is undetermined. No relevant guidance was retrieved from the knowledge base.\n\n## 1. What was reported\n* (reported) Grass fire is spreading toward a farm\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\nNo relevant guidance was retrieved. Coverage: none. No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: undetermined, as the risk assessment step failed. Based on the report, a farm may be affected. The reported risk is a grass fire spreading toward a farm. No conflicts between sources were identified.\n\n## 5. Missing information and uncertainties\n* No image was provided\n* The risk assessment step failed, no severity could be assessed\n* Location not stated\n* Missing information includes: Exact location, Fire size, Wind direction and speed, Fire containment status, Distance to nearest structures, Fire suppression resources\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+  },
+  "validation": {
+   "status": "pass",
+   "violations": [],
+   "repaired": true
+  },
+  "degraded_steps": [
+   {
+    "step": "knowledge synthesis",
+    "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b cooling down; groq:qwen/qwen3.8-27b rate limit; groq:openai/gpt-oss-20b cooling down; openrouter:nvidia/nemotron-3-super-120b-a12b:free cooling down; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-flash cooling down; o"
+   },
+   {
+    "step": "risk assessment",
+    "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b cooling down; groq:qwen/qwen3.8-27b rate limit; groq:openai/gpt-oss-20b cooling down; openrouter:nvidia/nemotron-3-super-120b-a12b:free cooling down; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-flash cooling down; o"
+   }
+  ],
+  "knowledge_coverage": "none",
+  "retrieved_entry_ids": [
+   "FI-21",
+   "FI-23",
+   "FI-24",
+   "FI-16",
+   "FI-20",
+   "FI-17",
+   "FI-11",
+   "FI-13",
+   "FI-10",
+   "FI-09",
+   "FI-19"
+  ],
+  "models_used": [
+   {
+    "step": "incident",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "seconds": 2.32,
+    "failed_attempts": []
+   },
+   {
+    "step": "RAG queries",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "seconds": 0.79,
+    "failed_attempts": []
+   },
+   {
+    "step": "knowledge",
+    "provider": null,
+    "model": null,
+    "seconds": 0.35,
+    "failed_attempts": [
+     "groq:qwen/qwen3.8-27b rate limit"
+    ]
+   },
+   {
+    "step": "risk",
+    "provider": null,
+    "model": null,
+    "seconds": 0.18,
+    "failed_attempts": [
+     "groq:qwen/qwen3.8-27b rate limit"
+    ]
+   },
+   {
+    "step": "report",
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "seconds": 1.85,
+    "failed_attempts": []
+   },
+   {
+    "step": "repaired report",
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "seconds": 2.15,
+    "failed_attempts": []
+   }
+  ],
+  "prompt_versions": {
+   "incident": "v2",
+   "vision": "v1",
+   "rag_queries": "v1",
+   "knowledge": "v2",
+   "risk": "v2",
+   "report": "v4"
+  }
+ },
+ "seconds": 349.1,
+ "incident_type": "forest_fire",
+ "severity": "undetermined",
+ "degraded_steps": [
+  {
+   "step": "knowledge synthesis",
+   "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b cooling down; groq:qwen/qwen3.8-27b rate limit; groq:openai/gpt-oss-20b cooling down; openrouter:nvidia/nemotron-3-super-120b-a12b:free cooling down; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-flash cooling down; o"
+  },
+  {
+   "step": "risk assessment",
+   "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b cooling down; groq:qwen/qwen3.8-27b rate limit; groq:openai/gpt-oss-20b cooling down; openrouter:nvidia/nemotron-3-super-120b-a12b:free cooling down; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-flash cooling down; o"
+  }
+ ],
+ "prompt_versions": {
+  "incident": "v2",
+  "vision": "v1",
+  "rag_queries": "v1",
+  "knowledge": "v2",
+  "risk": "v2",
+  "report": "v4"
+ },
+ "checks": {
+  "incident_type_ok": true,
+  "severity_ok": false,
+  "has_report": true
+ },
+ "run": 1,
+ "variant": "after"
+}

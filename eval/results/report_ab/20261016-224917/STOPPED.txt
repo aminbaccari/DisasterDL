@@ -1,0 +1,1 @@
+stopped after 3 consecutive chain failures (round 3, fire_01)

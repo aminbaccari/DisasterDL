@@ -131,3 +131,49 @@ Model calls take 0.4 to 7 s on Groq. Whole runs of 100 to 430 s are waiting for 
 - A failed Vision step is reported as an unusable image (open, see edge_02): the workflow fallback sets `image_usable: false`, which the report states as a fact.
 - Report v3 answered by qwen3.8-27b returned objects without `uncertainties`, `information_needed`, `disclaimer` and `report_markdown` in 2 of 6 reports (fire_01 run 2, flood_01 run 1). The repair pass (same model) did not fix it, status `flagged`.
 - Validator false positive on `Location: ** Not specified` (fixed, test added). The 12 baseline rows were scored before this fix and are not re-scored.
+
+## Before and after: incident v1 / report v3 against incident v2 / report v4 (2026-10-16 night)
+
+The planned test (six incidents, three runs, two workflows, same chain) could not be completed. Two partial tests were done instead. Neither supports a conclusion about quality; they show what happened. Quota state: only the Groq models had quota (gemini 3.5 and 3.6 flash, OpenRouter nemotron and gemma still reported their daily quota exhausted when the test started, so no vision-capable model answered and the Vision step failed in every image run of both variants).
+
+### 1. Full pipeline, two n8n workflows (`eval/results/before_after/20261016-215945`)
+
+Workflows built with `scripts/build_workflow.py --prompt incident=...v1 --prompt report=...v3` (BEFORE, `incident_before`) and the defaults (AFTER, `incident_after`), side by side in the n8n test container, same chain, variants interleaved. The run was stopped by hand after 8 of 36 runs: the BEFORE fire_01 run took 1,558 s (every Groq model but qwen3.8-27b was out of quota and the chain was waiting on per-minute limits), so the remaining 28 runs would have taken hours with an exhausted chain. One round, four incidents with both variants (edge_01, edge_02, edge_03, fire_01 for AFTER; fire_01 BEFORE lost to quota):
+
+| Measure (one run per cell) | BEFORE v1 / v3 | AFTER v2 / v4 |
+|----------------------------|----------------|----------------|
+| report location is a named place or null | 0 of 2 (edge_02 "main road", edge_03 "farm") | 3 of 3 (all null) |
+| French incident: free text in French (edge_01) | no (share of French words 0.08) | yes (1.00) |
+| image_status matches what happened | 2 of 2 | 3 of 3 |
+| repair pass used | 2 of 2 | 2 of 3 |
+| completed report | 2 of 3 not lost to quota | 3 of 4 |
+
+n is 2 to 4 per cell and each cell is one run. This is an observation, not a result. The measures are computed by `scripts/before_after.py analyse` from the saved responses. The language measure is a word-list heuristic.
+
+### 2. Paired agent-level test of the report prompt (`eval/results/report_ab/20261016-224917`)
+
+`scripts/report_ab.py`: the report agent's inputs (incident, knowledge, risk JSON, image_status) are built once per incident with MOCK upstream agents and real retrieval, so v3 and v4 see identical text. Only the report call is real: one pinned model (groq qwen3.8-27b), calls paced 65 s apart, variants interleaved, three rounds over five incidents. Image incidents carry image_status `analysis_failed`. The run stopped after 3 consecutive chain failures (rate limit) at round 3.
+
+| | v3 | v4 |
+|---|----|----|
+| calls | 13 | 12 |
+| lost to a rate limit (chain error) | 4 | 7 |
+| answered | 9 | 5 |
+| JSON matched the report schema (of answered) | 9 of 9 | 5 of 5 |
+| passed `/validate` (of answered) | 2 of 9 | 5 of 5 |
+| failed `/validate` on image_status | 7 of 9 | 0 of 5 |
+| report copied the v4 format example | not applicable | 0 of 5 |
+| pairs where both prompts answered | 3 | 3 |
+
+In the 3 matched pairs (edge_02 run 1, fire_01 run 1, flood_01 run 2) v3 failed on image_status and v4 passed every check.
+
+How to read this:
+- The image_status difference is built in: report v3 does not receive image_status, the validator now compares the report with it. It shows that the v4 input and the new check do their job, not that v4 writes better reports.
+- v3 did not reproduce the earlier schema failure (missing uncertainties, information_needed, disclaimer, report_markdown): 0 of 9 here against 2 of 6 in the pipeline batch C, so the v4 "all fields required" rule is not shown to be needed, nor shown to help.
+- v4 was lost to rate limits more often (7 of 12 against 4 of 13): its prompt is longer (the format example), and the free tier limits tokens per minute. That is a real cost of the example on a free tier.
+- One model, three rounds, 3 matched pairs: no statistical weight.
+
+### What this changes
+
+- Incident v2 and report v4 stay untested drafts in `prompts/CHANGELOG.md` with the observations above. The incident v2 location and language observations (section 1) point the right way but rest on one run per cell.
+- A full test needs a paid tier or a day with fresh quotas on at least two providers. The scripts are ready: `scripts/before_after.py run` for the pipeline, `scripts/report_ab.py` for the paired report test.

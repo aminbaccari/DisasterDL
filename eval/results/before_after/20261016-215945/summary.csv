@@ -1,0 +1,9 @@
+variant,incident,run,seconds,status,quota_failure,completed,schema_fail,repaired,image_ok,location,location_ok,language_share,language_ok
+before,edge_01_vague,1,3.8,needs_more_information,False,False,,,,,,0.08,False
+before,edge_02_conflict,1,18.7,degraded,False,True,False,True,True,main road,False,,
+before,edge_03_injection,1,69.8,ok,False,True,False,True,True,farm,False,,
+before,fire_01,1,1557.9,degraded,True,False,,,,,,,
+after,edge_01_vague,1,2.3,needs_more_information,False,False,,,,,,1.0,True
+after,edge_02_conflict,1,60.4,degraded,False,True,False,True,True,,True,,
+after,edge_03_injection,1,349.1,degraded,False,True,False,True,True,,True,,
+after,fire_01,1,86.3,degraded,False,True,False,False,True,,True,,

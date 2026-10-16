@@ -1,0 +1,101 @@
+{
+ "row": {
+  "variant": "A",
+  "prompt": "report/v3.md",
+  "incident": "structural_01",
+  "run": 2,
+  "seconds": 2.5,
+  "answered_by": "groq:qwen/qwen3.8-27b",
+  "chain_error": false,
+  "schema_ok": true,
+  "validate_ok": false,
+  "checks": "image_status",
+  "image_ok": false,
+  "fields_missing": "",
+  "copied_example": false
+ },
+ "report": {
+  "language": "en",
+  "location": null,
+  "severity": "critical",
+  "summary": "A portion of a five-storey apartment building has collapsed, with dust reported covering the street. Neighbours indicate that residents may still be inside, though this is unconfirmed. No image was available to corroborate these observations.",
+  "reported": [
+   {
+    "text": "Part of a five-storey apartment building has collapsed",
+    "source": "report"
+   },
+   {
+    "text": "Dust covers the street",
+    "source": "report"
+   },
+   {
+    "text": "Neighbours say some residents may still be inside (second-hand, unconfirmed)",
+    "source": "report"
+   }
+  ],
+  "image_status": "not_provided",
+  "observed": [],
+  "knowledge": {
+   "coverage": "good",
+   "guidance": [
+    {
+     "text": "Environmental hazards in a damaged building can be ranked in tiers.",
+     "entry_id": "ST-19",
+     "chunk_id": "en/structural_kb.md::section::17",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Damaged parapets, chimneys, canopies and similar elements are falling hazards.",
+     "entry_id": "ST-26",
+     "chunk_id": "en/structural_kb.md::section::23",
+     "source": "knowledge_base"
+    }
+   ],
+   "no_guidance_statement": null
+  },
+  "assessment": {
+   "basis": [
+    {
+     "text": "Part of a five-storey apartment building has collapsed",
+     "source": "report"
+    },
+    {
+     "text": "Dust covers the street",
+     "source": "report"
+    },
+    {
+     "text": "Neighbours say some residents may still be inside (second-hand, unconfirmed)",
+     "source": "report"
+    }
+   ],
+   "risks": [
+    {
+     "text": "Partial collapse with possibly trapped residents, reported second-hand",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [],
+   "conflicts": []
+  },
+  "recommendations": [
+   {
+    "text": "Responders may wish to weigh: Environmental hazards in a damaged building can be ranked in tiers.",
+    "entry_id": "ST-19",
+    "chunk_id": "en/structural_kb.md::section::17",
+    "source": "knowledge_base"
+   }
+  ],
+  "uncertainties": [
+   "Location not stated"
+  ],
+  "information_needed": [
+   "Exact location",
+   "Number of residents possibly inside",
+   "Extent of the damage",
+   "Gas or fire hazards"
+  ],
+  "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+  "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T12:00:00Z\nIncident type: structural_emergency | Location: Not stated | Severity (system assessment): critical\n\n## Summary\nA portion of a five-storey apartment building has collapsed, with dust reported covering the street. Neighbours indicate that residents may still be inside, though this is unconfirmed. No image was available to corroborate these observations.\n\n## 1. What was reported\n- Part of a five-storey apartment building has collapsed (reported)\n- Dust covers the street (reported)\n- Neighbours say some residents may still be inside (second-hand, unconfirmed) (reported)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\n- Environmental hazards in a damaged building can be ranked in tiers. (ST-19) (knowledge_base)\n- Damaged parapets, chimneys, canopies and similar elements are falling hazards. (ST-26) (knowledge_base)\n\n## 4. System assessment\nThe system has assessed the severity as critical. This is based on the reported partial collapse of a five-storey structure, the observed dust covering the street, and unconfirmed reports of potentially trapped residents. The main risk identified is the potential for trapped individuals within the collapsed section. No conflicts between sources were identified, but all observations require immediate verification by emergency services.\n\n## 5. Missing information and uncertainties\n- Exact location\n- Number of residents possibly inside\n- Extent of the damage\n- Gas or fire hazards\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+ },
+ "error": null
+}

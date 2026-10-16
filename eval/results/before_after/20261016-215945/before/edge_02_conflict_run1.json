@@ -1,0 +1,215 @@
+{
+ "incident_id": "edge_02_conflict",
+ "image_status": "sent",
+ "status_code": 200,
+ "raw_response": {
+  "status": "degraded",
+  "incident_type": "flood",
+  "severity": "moderate",
+  "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T20:59:51.859Z\nIncident type: flood | Location: main road | Severity (system assessment): moderate\n\n## Summary\nFlooding has been reported on a main road with water rising quickly. No immediate threat to people or structures was mentioned, but the situation could potentially worsen.\n\n## 1. What was reported\n- Flooding on the main road (reported)\n- Water is rising quickly (reported)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\n- During sudden intense flooding with rising water and without official instructions, do not travel through the water and move to an upper floor. (entry FL-13, source knowledge_base)\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: moderate. Evidence: Flooding is occurring on a main road (report); The water is rising quickly (report); There is no specific threat to people or structures mentioned (report). Main risks: Escalation of threat due to rising water levels (report); Inability of individuals to safely navigate the area due to sudden and intense flooding (model_inference). Possibly affected: Transportation on the main road (report); Individuals in the affected area (knowledge_base). No conflicts between sources.\n\n## 5. Missing information and uncertainties\n- No image was analysed.\n- The exact location of the flooding is unknown.\n- The current water depth and flow speed are undetermined.\n- The number of people affected is unknown.\n- The status of any evacuation orders is unknown.\n- No relevant guidance retrieved for flooded roads specifically, water depth, or flow speed relevance.\n- No relevant guidance retrieved regarding the status of nearby infrastructure.\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+  "report": {
+   "language": "en",
+   "location": "main road",
+   "severity": "moderate",
+   "summary": "Flooding has been reported on a main road with water rising quickly. No immediate threat to people or structures was mentioned, but the situation could potentially worsen.",
+   "reported": [
+    {
+     "text": "Flooding on the main road",
+     "source": "report"
+    },
+    {
+     "text": "Water is rising quickly",
+     "source": "report"
+    }
+   ],
+   "image_status": "analysis_failed",
+   "observed": [],
+   "knowledge": {
+    "coverage": "partial",
+    "guidance": [
+     {
+      "text": "During sudden intense flooding with rising water and without official instructions, do not travel through the water and move to an upper floor.",
+      "entry_id": "FL-13",
+      "chunk_id": "en/flood_kb.md::section::5",
+      "source": "knowledge_base"
+     }
+    ],
+    "no_guidance_statement": "No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services."
+   },
+   "assessment": {
+    "basis": [
+     {
+      "text": "Flooding is occurring on a main road.",
+      "source": "report"
+     },
+     {
+      "text": "The water is rising quickly.",
+      "source": "report"
+     },
+     {
+      "text": "There is no specific threat to people or structures mentioned.",
+      "source": "report"
+     }
+    ],
+    "risks": [
+     {
+      "text": "Escalation of threat due to rising water levels.",
+      "source": "report"
+     },
+     {
+      "text": "Inability of individuals to safely navigate the area due to sudden and intense flooding.",
+      "source": "model_inference"
+     }
+    ],
+    "possibly_affected": [
+     {
+      "text": "Transportation on the main road",
+      "source": "report"
+     },
+     {
+      "text": "Individuals in the affected area",
+      "source": "knowledge_base"
+     }
+    ],
+    "conflicts": []
+   },
+   "recommendations": [
+    {
+     "text": "Responders may want to consider that during sudden intense flooding, it is advised not to travel through the water and to move to an upper floor.",
+     "entry_id": "FL-13",
+     "chunk_id": "en/flood_kb.md::section::5",
+     "source": "knowledge_base"
+    }
+   ],
+   "uncertainties": [
+    "No image was analysed.",
+    "The exact location of the flooding is unknown.",
+    "The current water depth and flow speed are undetermined.",
+    "The number of people affected is unknown.",
+    "The status of any evacuation orders is unknown.",
+    "No relevant guidance retrieved for flooded roads specifically, water depth, or flow speed relevance.",
+    "No relevant guidance retrieved regarding the status of nearby infrastructure."
+   ],
+   "information_needed": [
+    "Exact location of flooding",
+    "Water depth",
+    "Flow speed",
+    "Number of people affected",
+    "Evacuation orders or status",
+    "Impact on nearby infrastructure"
+   ],
+   "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+   "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T20:59:51.859Z\nIncident type: flood | Location: main road | Severity (system assessment): moderate\n\n## Summary\nFlooding has been reported on a main road with water rising quickly. No immediate threat to people or structures was mentioned, but the situation could potentially worsen.\n\n## 1. What was reported\n- Flooding on the main road (reported)\n- Water is rising quickly (reported)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\n- During sudden intense flooding with rising water and without official instructions, do not travel through the water and move to an upper floor. (entry FL-13, source knowledge_base)\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: moderate. Evidence: Flooding is occurring on a main road (report); The water is rising quickly (report); There is no specific threat to people or structures mentioned (report). Main risks: Escalation of threat due to rising water levels (report); Inability of individuals to safely navigate the area due to sudden and intense flooding (model_inference). Possibly affected: Transportation on the main road (report); Individuals in the affected area (knowledge_base). No conflicts between sources.\n\n## 5. Missing information and uncertainties\n- No image was analysed.\n- The exact location of the flooding is unknown.\n- The current water depth and flow speed are undetermined.\n- The number of people affected is unknown.\n- The status of any evacuation orders is unknown.\n- No relevant guidance retrieved for flooded roads specifically, water depth, or flow speed relevance.\n- No relevant guidance retrieved regarding the status of nearby infrastructure.\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+  },
+  "validation": {
+   "status": "pass",
+   "violations": [],
+   "repaired": true
+  },
+  "degraded_steps": [
+   {
+    "step": "vision",
+    "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b no image support; groq:qwen/qwen3.8-27b no image support; groq:openai/gpt-oss-20b no image support; openrouter:nvidia/nemotron-3-super-120b-a12b:free no image support; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-fla"
+   }
+  ],
+  "knowledge_coverage": "partial",
+  "retrieved_entry_ids": [
+   "FL-03",
+   "FL-12",
+   "FL-06",
+   "FL-17",
+   "FL-13",
+   "FL-02",
+   "FL-08",
+   "FL-26"
+  ],
+  "models_used": [
+   {
+    "step": "incident",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "seconds": 1.82,
+    "failed_attempts": []
+   },
+   {
+    "step": "vision",
+    "provider": null,
+    "model": null,
+    "seconds": 0,
+    "failed_attempts": []
+   },
+   {
+    "step": "RAG queries",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "seconds": 0.92,
+    "failed_attempts": []
+   },
+   {
+    "step": "knowledge",
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "seconds": 1.31,
+    "failed_attempts": [
+     "groq:openai/gpt-oss-120b rate limit"
+    ]
+   },
+   {
+    "step": "risk",
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "seconds": 1.63,
+    "failed_attempts": []
+   },
+   {
+    "step": "report",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "seconds": 4.83,
+    "failed_attempts": []
+   },
+   {
+    "step": "repaired report",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "seconds": 2.92,
+    "failed_attempts": [
+     "groq:openai/gpt-oss-120b daily quota exhausted",
+     "groq:qwen/qwen3.8-27b rate limit"
+    ]
+   }
+  ],
+  "prompt_versions": {
+   "incident": "v1",
+   "vision": "v1",
+   "rag_queries": "v1",
+   "knowledge": "v2",
+   "risk": "v2",
+   "report": "v3"
+  }
+ },
+ "seconds": 18.7,
+ "incident_type": "flood",
+ "severity": "moderate",
+ "degraded_steps": [
+  {
+   "step": "vision",
+   "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b no image support; groq:qwen/qwen3.8-27b no image support; groq:openai/gpt-oss-20b no image support; openrouter:nvidia/nemotron-3-super-120b-a12b:free no image support; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-fla"
+  }
+ ],
+ "prompt_versions": {
+  "incident": "v1",
+  "vision": "v1",
+  "rag_queries": "v1",
+  "knowledge": "v2",
+  "risk": "v2",
+  "report": "v3"
+ },
+ "checks": {
+  "incident_type_ok": true,
+  "severity_ok": true,
+  "has_report": true
+ },
+ "run": 1,
+ "variant": "before"
+}

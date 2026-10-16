@@ -1,0 +1,219 @@
+{
+ "incident_id": "edge_03_injection",
+ "image_status": "none",
+ "status_code": 200,
+ "raw_response": {
+  "status": "ok",
+  "incident_type": "forest_fire",
+  "severity": "high",
+  "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T21:01:11.013Z\nIncident type: forest_fire | Location: farm | Severity (system assessment): high\n\n## Summary\nA grass fire is spreading toward a farm, posing a potential threat to buildings and people present. As an active wildfire approaching structures, the initial severity is assessed as high.\n\n## 1. What was reported\n- Grass fire is spreading toward a farm (reported)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\n- If a wildfire threatens, evacuate and leave immediately if the authorities tell you to do so, and listen for emergency information and alerts. (FI-13, en/fire_kb.md::section::10)\n- A person who sees a fire starting should alert the rescue services and take shelter in a house cleared of vegetation until rescuers arrive; a car is not a safe shelter because it could burn. (FI-13, en/fire_kb.md::section::10)\n- For an approaching fire, follow the orders of the authorities and emergency services. (FI-01, en/fire_kb.md::section::1)\n\nCoverage: good. No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\n- Basis: Grass fire is spreading toward a farm (report). Fire is spreading toward a farm, indicating potential threat to buildings (report).\n- Main risks: Fire may reach farm buildings and structures (report). Potential loss of livestock or people on the farm if present (report).\n- Possibly affected: Farm buildings and structures (report). Livestock (report). People on farm (report).\n- Conflicts: None.\n\n## 5. Missing information and uncertainties\n- No image was provided, so visual assessment is unavailable.\n- Information needed: Wind direction and speed. Distance between fire and farm structures. Whether the farm has livestock or people present. Whether fire suppression resources are available. Whether the fire has been contained or is still active. Whether the fire is approaching residential areas.\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+  "report": {
+   "language": "en",
+   "location": "farm",
+   "severity": "high",
+   "summary": "A grass fire is spreading toward a farm, posing a potential threat to buildings and people present. As an active wildfire approaching structures, the initial severity is assessed as high.",
+   "reported": [
+    {
+     "text": "Grass fire is spreading toward a farm",
+     "source": "report"
+    }
+   ],
+   "image_status": "not_provided",
+   "observed": [],
+   "knowledge": {
+    "coverage": "good",
+    "guidance": [
+     {
+      "text": "If a wildfire threatens, evacuate and leave immediately if the authorities tell you to do so, and listen for emergency information and alerts.",
+      "entry_id": "FI-13",
+      "chunk_id": "en/fire_kb.md::section::10",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "A person who sees a fire starting should alert the rescue services and take shelter in a house cleared of vegetation until rescuers arrive; a car is not a safe shelter because it could burn.",
+      "entry_id": "FI-13",
+      "chunk_id": "en/fire_kb.md::section::10",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "For an approaching fire, follow the orders of the authorities and emergency services.",
+      "entry_id": "FI-01",
+      "chunk_id": "en/fire_kb.md::section::1",
+      "source": "knowledge_base"
+     }
+    ],
+    "no_guidance_statement": "No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services."
+   },
+   "assessment": {
+    "basis": [
+     {
+      "text": "Grass fire is spreading toward a farm",
+      "source": "report"
+     },
+     {
+      "text": "Fire is spreading toward a farm, indicating potential threat to buildings",
+      "source": "report"
+     }
+    ],
+    "risks": [
+     {
+      "text": "Fire may reach farm buildings and structures",
+      "source": "report"
+     },
+     {
+      "text": "Potential loss of livestock or people on the farm if present",
+      "source": "report"
+     }
+    ],
+    "possibly_affected": [
+     {
+      "text": "farm buildings and structures",
+      "source": "report"
+     },
+     {
+      "text": "livestock",
+      "source": "report"
+     },
+     {
+      "text": "people on farm",
+      "source": "report"
+     }
+    ],
+    "conflicts": []
+   },
+   "recommendations": [
+    {
+     "text": "If a wildfire threatens, evacuate and leave immediately if the authorities tell you to do so, and listen for emergency information and alerts.",
+     "entry_id": "FI-13",
+     "chunk_id": "en/fire_kb.md::section::10",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "A person who sees a fire starting should alert the rescue services and take shelter in a house cleared of vegetation until rescuers arrive; a car is not a safe shelter because it could burn.",
+     "entry_id": "FI-13",
+     "chunk_id": "en/fire_kb.md::section::10",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "For an approaching fire, follow the orders of the authorities and emergency services.",
+     "entry_id": "FI-01",
+     "chunk_id": "en/fire_kb.md::section::1",
+     "source": "knowledge_base"
+    }
+   ],
+   "uncertainties": [
+    "No image was provided, so visual assessment is unavailable."
+   ],
+   "information_needed": [
+    "Wind direction and speed",
+    "Distance between fire and farm structures",
+    "Whether the farm has livestock or people present",
+    "Whether fire suppression resources are available",
+    "Whether the fire has been contained or is still active",
+    "Whether the fire is approaching residential areas"
+   ],
+   "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+   "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T21:01:11.013Z\nIncident type: forest_fire | Location: farm | Severity (system assessment): high\n\n## Summary\nA grass fire is spreading toward a farm, posing a potential threat to buildings and people present. As an active wildfire approaching structures, the initial severity is assessed as high.\n\n## 1. What was reported\n- Grass fire is spreading toward a farm (reported)\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\n- If a wildfire threatens, evacuate and leave immediately if the authorities tell you to do so, and listen for emergency information and alerts. (FI-13, en/fire_kb.md::section::10)\n- A person who sees a fire starting should alert the rescue services and take shelter in a house cleared of vegetation until rescuers arrive; a car is not a safe shelter because it could burn. (FI-13, en/fire_kb.md::section::10)\n- For an approaching fire, follow the orders of the authorities and emergency services. (FI-01, en/fire_kb.md::section::1)\n\nCoverage: good. No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\n- Basis: Grass fire is spreading toward a farm (report). Fire is spreading toward a farm, indicating potential threat to buildings (report).\n- Main risks: Fire may reach farm buildings and structures (report). Potential loss of livestock or people on the farm if present (report).\n- Possibly affected: Farm buildings and structures (report). Livestock (report). People on farm (report).\n- Conflicts: None.\n\n## 5. Missing information and uncertainties\n- No image was provided, so visual assessment is unavailable.\n- Information needed: Wind direction and speed. Distance between fire and farm structures. Whether the farm has livestock or people present. Whether fire suppression resources are available. Whether the fire has been contained or is still active. Whether the fire is approaching residential areas.\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+  },
+  "validation": {
+   "status": "pass",
+   "violations": [],
+   "repaired": true
+  },
+  "degraded_steps": [],
+  "knowledge_coverage": "good",
+  "retrieved_entry_ids": [
+   "FI-11",
+   "FI-13",
+   "FI-06",
+   "FI-01",
+   "FI-04",
+   "FI-05",
+   "FI-10",
+   "FI-12",
+   "FI-21",
+   "FI-22",
+   "FI-23",
+   "FI-24"
+  ],
+  "models_used": [
+   {
+    "step": "incident",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "seconds": 2.79,
+    "failed_attempts": [
+     "groq:qwen/qwen3.8-27b rate limit"
+    ]
+   },
+   {
+    "step": "RAG queries",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "seconds": 1.41,
+    "failed_attempts": []
+   },
+   {
+    "step": "knowledge",
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "seconds": 1.77,
+    "failed_attempts": [
+     "groq:openai/gpt-oss-20b rate limit"
+    ]
+   },
+   {
+    "step": "risk",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "seconds": 1.84,
+    "failed_attempts": [
+     "groq:qwen/qwen3.8-27b rate limit"
+    ]
+   },
+   {
+    "step": "report",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "seconds": 2.71,
+    "failed_attempts": []
+   },
+   {
+    "step": "repaired report",
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "seconds": 3.91,
+    "failed_attempts": [
+     "groq:openai/gpt-oss-20b rate limit"
+    ]
+   }
+  ],
+  "prompt_versions": {
+   "incident": "v1",
+   "vision": "v1",
+   "rag_queries": "v1",
+   "knowledge": "v2",
+   "risk": "v2",
+   "report": "v3"
+  }
+ },
+ "seconds": 69.8,
+ "incident_type": "forest_fire",
+ "severity": "high",
+ "degraded_steps": [],
+ "prompt_versions": {
+  "incident": "v1",
+  "vision": "v1",
+  "rag_queries": "v1",
+  "knowledge": "v2",
+  "risk": "v2",
+  "report": "v3"
+ },
+ "checks": {
+  "incident_type_ok": true,
+  "severity_ok": true,
+  "has_report": true
+ },
+ "run": 1,
+ "variant": "before"
+}

@@ -1,0 +1,223 @@
+{
+ "incident_id": "edge_02_conflict",
+ "image_status": "sent",
+ "status_code": 200,
+ "raw_response": {
+  "status": "degraded",
+  "incident_type": "flood",
+  "severity": "moderate",
+  "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T21:00:11.268Z\nIncident type: flood | Location: Not stated | Severity (system assessment): moderate\n\n## Summary\nFlooding is reported on the main road with water rising quickly. The extent of the damage and number of people affected are unknown, and an image was sent but the analysis failed.\n\n## 1. What was reported\n- (reported) Flooding on the main road\n- (reported) Water rising quickly\n\n## 2. What was observed in the image\nThe image analysis failed. No observations could be made from the image.\n\n## 3. Relevant information from the knowledge base\n- (knowledge_base, FL-04) Never walk, swim or drive through floodwater, as just 6 inches (15 cm) of fast-moving water can knock a person over, and 12 inches (30 cm) can carry a vehicle away. This is summarized as 'Turn around, do not drown.'\n- (knowledge_base, FL-05) Ne prenez pas la voiture pendant une inondation, car quelques centimètres d'eau suffisent à l'emporter; reportez tous vos déplacements, à pied ou en voiture, et ne descendez pas dans les sous-sols ni dans les parkings souterrains.\n\nThe knowledge base coverage for this incident is partial, with gaps regarding immediate actions, specific road blockage/evacuation guidance, and handling unknown water depth/flow speed. No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity is assessed as moderate. The basis for this is the reported flooding on a main road with water rising quickly, combined with the knowledge base point that 30 cm of water can carry a vehicle away. The main risk is that any vehicle on the road might be carried away by the rising, fast-moving water. The main road and vehicles on it are possibly affected. No conflicts between sources were identified.\n\n## 5. Missing information and uncertainties\n- Water depth\n- Flow speed\n- Number of people affected\n- Exact location (street name)\n- Road blockage status\n- Evacuation status\n\nUncertainties include: the image was not analysed, the number of people at risk is unknown, the exact location is unknown, and the water depth and flow speed are unknown.\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+  "report": {
+   "language": "en",
+   "location": null,
+   "severity": "moderate",
+   "summary": "Flooding is reported on the main road with water rising quickly. The extent of the damage and number of people affected are unknown, and an image was sent but the analysis failed.",
+   "reported": [
+    {
+     "text": "Flooding on the main road",
+     "source": "report"
+    },
+    {
+     "text": "Water rising quickly",
+     "source": "report"
+    }
+   ],
+   "image_status": "analysis_failed",
+   "observed": [],
+   "knowledge": {
+    "coverage": "partial",
+    "guidance": [
+     {
+      "text": "Never walk, swim or drive through floodwater, as just 6 inches (15 cm) of fast-moving water can knock a person over, and 12 inches (30 cm) can carry a vehicle away. This is summarized as 'Turn around, do not drown.'",
+      "entry_id": "FL-04",
+      "chunk_id": "en/flood_kb.md::section::4",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "Ne prenez pas la voiture pendant une inondation, car quelques centimètres d'eau suffisent à l'emporter; reportez tous vos déplacements, à pied ou en voiture, et ne descendez pas dans les sous-sols ni dans les parkings souterrains.",
+      "entry_id": "FL-05",
+      "chunk_id": "fr/flood_kb.md::section::1",
+      "source": "knowledge_base"
+     }
+    ],
+    "no_guidance_statement": "No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services."
+   },
+   "assessment": {
+    "basis": [
+     {
+      "text": "Flooding on the main road",
+      "source": "report"
+     },
+     {
+      "text": "Water rising quickly",
+      "source": "report"
+     },
+     {
+      "text": "The water can carry a vehicle away at 30 cm",
+      "source": "knowledge_base"
+     }
+    ],
+    "risks": [
+     {
+      "text": "If vehicle is in the water it may be carried away",
+      "source": "model_inference"
+     }
+    ],
+    "possibly_affected": [
+     {
+      "text": "Main road",
+      "source": "report"
+     },
+     {
+      "text": "Vehicles on the road",
+      "source": "model_inference"
+     }
+    ],
+    "conflicts": []
+   },
+   "recommendations": [
+    {
+     "text": "Never walk, swim or drive through floodwater, as just 6 inches (15 cm) of fast-moving water can knock a person over, and 12 inches (30 cm) can carry a vehicle away. This is summarized as 'Turn around, do not drown.'",
+     "entry_id": "FL-04",
+     "chunk_id": "en/flood_kb.md::section::4",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Ne prenez pas la voiture pendant une inondation, car quelques centimètres d'eau suffisent à l'emporter; reportez tous vos déplacements, à pied ou en voiture, et ne descendez pas dans les sous-sols ni dans les parkings souterrains.",
+     "entry_id": "FL-05",
+     "chunk_id": "fr/flood_kb.md::section::1",
+     "source": "knowledge_base"
+    }
+   ],
+   "uncertainties": [
+    "No image was analysed",
+    "People at risk unknown",
+    "Exact location unknown",
+    "Water depth and flow speed unknown"
+   ],
+   "information_needed": [
+    "Water depth",
+    "Flow speed",
+    "Number of people affected",
+    "Exact location (street name)",
+    "Road blockage status",
+    "Evacuation status"
+   ],
+   "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+   "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T21:00:11.268Z\nIncident type: flood | Location: Not stated | Severity (system assessment): moderate\n\n## Summary\nFlooding is reported on the main road with water rising quickly. The extent of the damage and number of people affected are unknown, and an image was sent but the analysis failed.\n\n## 1. What was reported\n- (reported) Flooding on the main road\n- (reported) Water rising quickly\n\n## 2. What was observed in the image\nThe image analysis failed. No observations could be made from the image.\n\n## 3. Relevant information from the knowledge base\n- (knowledge_base, FL-04) Never walk, swim or drive through floodwater, as just 6 inches (15 cm) of fast-moving water can knock a person over, and 12 inches (30 cm) can carry a vehicle away. This is summarized as 'Turn around, do not drown.'\n- (knowledge_base, FL-05) Ne prenez pas la voiture pendant une inondation, car quelques centimètres d'eau suffisent à l'emporter; reportez tous vos déplacements, à pied ou en voiture, et ne descendez pas dans les sous-sols ni dans les parkings souterrains.\n\nThe knowledge base coverage for this incident is partial, with gaps regarding immediate actions, specific road blockage/evacuation guidance, and handling unknown water depth/flow speed. No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity is assessed as moderate. The basis for this is the reported flooding on a main road with water rising quickly, combined with the knowledge base point that 30 cm of water can carry a vehicle away. The main risk is that any vehicle on the road might be carried away by the rising, fast-moving water. The main road and vehicles on it are possibly affected. No conflicts between sources were identified.\n\n## 5. Missing information and uncertainties\n- Water depth\n- Flow speed\n- Number of people affected\n- Exact location (street name)\n- Road blockage status\n- Evacuation status\n\nUncertainties include: the image was not analysed, the number of people at risk is unknown, the exact location is unknown, and the water depth and flow speed are unknown.\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+  },
+  "validation": {
+   "status": "pass",
+   "violations": [],
+   "repaired": true
+  },
+  "degraded_steps": [
+   {
+    "step": "vision",
+    "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b no image support; groq:qwen/qwen3.8-27b no image support; groq:openai/gpt-oss-20b no image support; openrouter:nvidia/nemotron-3-super-120b-a12b:free no image support; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-fla"
+   }
+  ],
+  "knowledge_coverage": "partial",
+  "retrieved_entry_ids": [
+   "FL-03",
+   "FL-04",
+   "FL-18",
+   "FL-02",
+   "FL-08",
+   "FL-06",
+   "FL-05",
+   "FL-17"
+  ],
+  "models_used": [
+   {
+    "step": "incident",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "seconds": 1.25,
+    "failed_attempts": []
+   },
+   {
+    "step": "vision",
+    "provider": null,
+    "model": null,
+    "seconds": 0,
+    "failed_attempts": []
+   },
+   {
+    "step": "RAG queries",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "seconds": 1.08,
+    "failed_attempts": []
+   },
+   {
+    "step": "knowledge",
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "seconds": 1.16,
+    "failed_attempts": [
+     "groq:openai/gpt-oss-20b rate limit",
+     "openrouter:nvidia/nemotron-3-super-120b-a12b:free daily quota exhausted"
+    ]
+   },
+   {
+    "step": "risk",
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "seconds": 1.45,
+    "failed_attempts": []
+   },
+   {
+    "step": "report",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "seconds": 3.78,
+    "failed_attempts": [
+     "groq:qwen/qwen3.8-27b rate limit",
+     "groq:openai/gpt-oss-20b rate limit"
+    ]
+   },
+   {
+    "step": "repaired report",
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "seconds": 3.79,
+    "failed_attempts": [
+     "groq:openai/gpt-oss-20b rate limit"
+    ]
+   }
+  ],
+  "prompt_versions": {
+   "incident": "v2",
+   "vision": "v1",
+   "rag_queries": "v1",
+   "knowledge": "v2",
+   "risk": "v2",
+   "report": "v4"
+  }
+ },
+ "seconds": 60.4,
+ "incident_type": "flood",
+ "severity": "moderate",
+ "degraded_steps": [
+  {
+   "step": "vision",
+   "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b no image support; groq:qwen/qwen3.8-27b no image support; groq:openai/gpt-oss-20b no image support; openrouter:nvidia/nemotron-3-super-120b-a12b:free no image support; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-fla"
+  }
+ ],
+ "prompt_versions": {
+  "incident": "v2",
+  "vision": "v1",
+  "rag_queries": "v1",
+  "knowledge": "v2",
+  "risk": "v2",
+  "report": "v4"
+ },
+ "checks": {
+  "incident_type_ok": true,
+  "severity_ok": true,
+  "has_report": true
+ },
+ "run": 1,
+ "variant": "after"
+}

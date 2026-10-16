@@ -1,0 +1,102 @@
+{
+ "row": {
+  "variant": "A",
+  "prompt": "report/v3.md",
+  "incident": "flood_01",
+  "run": 2,
+  "seconds": 68.6,
+  "answered_by": "groq:qwen/qwen3.8-27b",
+  "chain_error": false,
+  "schema_ok": true,
+  "validate_ok": false,
+  "checks": "image_status",
+  "image_ok": false,
+  "fields_missing": "",
+  "copied_example": false
+ },
+ "report": {
+  "language": "fr",
+  "location": "Nabeul",
+  "severity": "high",
+  "summary": "Fortes inondations signalées dans un quartier résidentiel de Nabeul, entravant la circulation sur plusieurs routes. La montée continue de l'eau constitue une préoccupation majeure pour la sécurité des lieux habités. Aucune image n'a été fournie pour confirmer visuellement l'étendue des dégâts.",
+  "reported": [
+   {
+    "text": "Fortes inondations dans un quartier résidentiel de Nabeul",
+    "source": "report"
+   },
+   {
+    "text": "Plusieurs routes sont bloquées",
+    "source": "report"
+   },
+   {
+    "text": "L'eau continue de monter",
+    "source": "report"
+   }
+  ],
+  "image_status": "not_provided",
+  "observed": [],
+  "knowledge": {
+   "coverage": "good",
+   "guidance": [
+    {
+     "text": "Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.",
+     "entry_id": "FL-08",
+     "chunk_id": "fr/flood_kb.md::section::4",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "After a flood: if you evacuated, wait for officials to say it is safe before going home.",
+     "entry_id": "FL-17",
+     "chunk_id": "en/flood_kb.md::section::10",
+     "source": "knowledge_base"
+    }
+   ],
+   "no_guidance_statement": null
+  },
+  "assessment": {
+   "basis": [
+    {
+     "text": "Inondations résidentielles actives",
+     "source": "report"
+    },
+    {
+     "text": "Routes bloquées par l'eau",
+     "source": "report"
+    },
+    {
+     "text": "Montée continue du niveau d'eau",
+     "source": "report"
+    }
+   ],
+   "risks": [
+    {
+     "text": "Obstruction de la circulation et risque pour les habitants en raison de la montée des eaux",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [],
+   "conflicts": []
+  },
+  "recommendations": [
+   {
+    "text": "Intervenants : prenez en compte — Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.",
+    "entry_id": "FL-08",
+    "chunk_id": "fr/flood_kb.md::section::4",
+    "source": "knowledge_base"
+   }
+  ],
+  "uncertainties": [
+   "Hauteur d'eau inconnue",
+   "Nombre de personnes touchées inconnu",
+   "Débit du courant inconnu"
+  ],
+  "information_needed": [
+   "Hauteur d'eau",
+   "Nombre de personnes touchées",
+   "Débit du courant"
+  ],
+  "disclaimer": "Ce rapport est une aide à la décision produite par un prototype d'IA. Il ne remplace pas les services d'urgence et ne constitue pas une décision officielle. L'échelle de gravité est une échelle de travail de ce prototype.",
+  "report_markdown": "# Évaluation préliminaire de l'incident\nGénéré le : 2026-10-16T12:00:00Z\nType d'incident : inondation | Localisation : Nabeul | Sévérité (évaluation système) : high\n\n## Résumé\nDes inondations sévères affectent un quartier résidentiel de Nabeul, bloquant plusieurs routes. La persistance de la montée des eaux rend la situation préoccupante. Une analyse image du site de l'incident n'est pas disponible.\n\n## 1. Signalements rapportés\n* Fortes inondations dans un quartier résidentiel de Nabeul (signalé)\n* Plusieurs routes sont bloquées (signalé)\n* L'eau continue de monter (signalé)\n\n## 2. Observations issues de l'image\nAucune image n'a été fournie pour ce rapport.\n\n## 3. Informations pertinentes issues de la base de connaissances\n* FL-08 : Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie. (couverture : bonne)\n* FL-17 : Après une inondation : si vous vous êtes évacués, attendez que les autorités signalent que c'est sûr avant de rentrer chez vous. (couverture : bonne)\nAucune consigne manque dans la base de connaissances pour ces éléments.\n\n## 4. Évaluation par le système\nSévérité : high, basée sur l'impact résidentiel (signalé), l'obstruction des routes et la progression des eaux (signalé). Les risques principaux concernent les habitants dans un environnement aquatique actif. Aucun conflit inter-source n'a été identifié.\n\n## 5. Informations manquantes et incertitudes\nHauteur d'eau inconnue ; nombre de personnes touchées inconnu ; débit du courant inconnu.\n\n## À propos de ce rapport\nCe rapport est une aide à la décision produite par un prototype d'IA. Il ne remplace pas les services d'urgence et ne constitue pas une décision officielle. L'échelle de gravité est une échelle de travail de ce prototype."
+ },
+ "error": null
+}

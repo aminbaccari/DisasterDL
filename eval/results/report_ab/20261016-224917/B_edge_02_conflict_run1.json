@@ -1,0 +1,98 @@
+{
+ "row": {
+  "variant": "B",
+  "prompt": "report/v4.md",
+  "incident": "edge_02_conflict",
+  "run": 1,
+  "seconds": 2.6,
+  "answered_by": "groq:qwen/qwen3.8-27b",
+  "chain_error": false,
+  "schema_ok": true,
+  "validate_ok": true,
+  "checks": "",
+  "image_ok": true,
+  "fields_missing": "",
+  "copied_example": false
+ },
+ "report": {
+  "language": "en",
+  "location": null,
+  "severity": "high",
+  "summary": "Flooding is reported on a main road with water rising quickly. An image was submitted but analysis failed due to a technical error. The system assesses the severity as high.",
+  "reported": [
+   {
+    "text": "Flooding on the main road",
+    "source": "report"
+   },
+   {
+    "text": "Water is rising quickly",
+    "source": "report"
+   }
+  ],
+  "image_status": "analysis_failed",
+  "observed": [],
+  "knowledge": {
+   "coverage": "good",
+   "guidance": [
+    {
+     "text": "Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.",
+     "entry_id": "FL-08",
+     "chunk_id": "fr/flood_kb.md::section::4",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Evacuation during river floods, storm surge and coastal flooding: review your evacuation plan so you can leave quickly if officials advise you to evacuate.",
+     "entry_id": "FL-03",
+     "chunk_id": "en/flood_kb.md::section::3",
+     "source": "knowledge_base"
+    }
+   ],
+   "no_guidance_statement": null
+  },
+  "assessment": {
+   "basis": [
+    {
+     "text": "Flooding on the main road",
+     "source": "report"
+    },
+    {
+     "text": "Water is rising quickly",
+     "source": "report"
+    },
+    {
+     "text": "Smoke on the horizon",
+     "source": "image"
+    }
+   ],
+   "risks": [
+    {
+     "text": "Water reported rising quickly on a main road",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [],
+   "conflicts": [
+    "The report says flooding but the image shows a dry road and smoke, no water"
+   ]
+  },
+  "recommendations": [
+   {
+    "text": "Responders may wish to weigh: Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.",
+    "entry_id": "FL-08",
+    "chunk_id": "fr/flood_kb.md::section::4",
+    "source": "knowledge_base"
+   }
+  ],
+  "uncertainties": [
+   "Location not stated"
+  ],
+  "information_needed": [
+   "Exact location",
+   "Water depth",
+   "Number of people affected"
+  ],
+  "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+  "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T12:00:00Z\nIncident type: flood | Location: Not stated | Severity (system assessment): high\n\n## Summary\nFlooding is reported on a main road with water rising quickly. An image was submitted but its analysis failed due to a technical error. The system assesses severity as high based on the reported rapid water rise.\n\n## 1. What was reported\n- Flooding on the main road (reported)\n- Water is rising quickly (reported)\n\n## 2. What was observed in the image\nAn image was sent but the analysis step failed for a technical reason.\n\n## 3. Relevant information from the knowledge base\n- Entry FL-08: Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie. (knowledge_base)\n- Entry FL-03: Evacuation during river floods, storm surge and coastal flooding: review your evacuation plan so you can leave quickly if officials advise you to evacuate. (knowledge_base)\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: high.\nBasis:\n- Flooding on the main road (reported)\n- Water is rising quickly (reported)\n- Smoke on the horizon (image) - *Note: This basis item appears in risk_json but conflicts with image_status.*\nRisks:\n- Water reported rising quickly on a main road (reported)\nConflicts:\n- The report says flooding but the image shows a dry road and smoke, no water\n\n## 5. Missing information and uncertainties\n- Exact location\n- Water depth\n- Number of people affected\n- Location not stated\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+ },
+ "error": null
+}

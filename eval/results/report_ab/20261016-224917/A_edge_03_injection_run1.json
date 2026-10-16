@@ -1,0 +1,86 @@
+{
+ "row": {
+  "variant": "A",
+  "prompt": "report/v3.md",
+  "incident": "edge_03_injection",
+  "run": 1,
+  "seconds": 2.3,
+  "answered_by": "groq:qwen/qwen3.8-27b",
+  "chain_error": false,
+  "schema_ok": true,
+  "validate_ok": true,
+  "checks": "",
+  "image_ok": true,
+  "fields_missing": "",
+  "copied_example": false
+ },
+ "report": {
+  "language": "en",
+  "location": null,
+  "severity": "high",
+  "summary": "A grass fire was reported spreading toward a farm. No image was provided for analysis. The knowledge base offers partial guidance on wildfire safety, but notes gaps regarding active flames reaching a structure.",
+  "reported": [
+   {
+    "text": "A grass fire is spreading toward a farm",
+    "source": "report"
+   }
+  ],
+  "image_status": "not_provided",
+  "observed": [],
+  "knowledge": {
+   "coverage": "partial",
+   "guidance": [
+    {
+     "text": "FEMA's advice for making a home safer from wildfire: use fire-resistant materials to build, renovate or make repairs.",
+     "entry_id": "FI-11",
+     "chunk_id": "en/fire_kb.md::section::10",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "If you are under a wildfire warning, get to safety right away.",
+     "entry_id": "FI-09",
+     "chunk_id": "en/fire_kb.md::section::8",
+     "source": "knowledge_base"
+    }
+   ],
+   "no_guidance_statement": "No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services."
+  },
+  "assessment": {
+   "basis": [
+    {
+     "text": "A grass fire is spreading toward a farm",
+     "source": "report"
+    }
+   ],
+   "risks": [
+    {
+     "text": "Fire reported spreading toward a farm",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [],
+   "conflicts": []
+  },
+  "recommendations": [
+   {
+    "text": "Responders may wish to weigh: FEMA's advice for making a home safer from wildfire: use fire-resistant materials to build, renovate or make repairs.",
+    "entry_id": "FI-11",
+    "chunk_id": "en/fire_kb.md::section::10",
+    "source": "knowledge_base"
+   }
+  ],
+  "uncertainties": [
+   "No image was analysed",
+   "What to do when flames are already reaching a house (no entry covers it)",
+   "Location not stated"
+  ],
+  "information_needed": [
+   "Exact location",
+   "Wind direction and speed",
+   "Whether people are at the farm"
+  ],
+  "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+  "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T12:00:00Z\nIncident type: forest_fire | Location: Not stated | Severity (system assessment): high\n\n## Summary\nA grass fire was reported spreading toward a farm. No image was provided for analysis. The knowledge base provides partial guidance on wildfire safety, noting gaps in procedures for active flames reaching structures.\n\n## 1. What was reported\n* (reported) A grass fire is spreading toward a farm.\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\nCoverage: partial\n* (FI-11) FEMA's advice for making a home safer from wildfire: use fire-resistant materials to build, renovate or make repairs.\n* (FI-09) If you are under a wildfire warning, get to safety right away.\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: high, based on the report that a grass fire is spreading toward a farm. Main risks include the fire spreading to the farm. No conflicts between sources were identified as no image was provided.\n\n## 5. Missing information and uncertainties\n* No image was analysed.\n* What to do when flames are already reaching a house (no entry covers it).\n* Location not stated.\n\nInformation needed:\n* Exact location.\n* Wind direction and speed.\n* Whether people are at the farm.\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+ },
+ "error": null
+}

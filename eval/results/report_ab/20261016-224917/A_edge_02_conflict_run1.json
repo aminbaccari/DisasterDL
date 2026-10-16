@@ -1,0 +1,94 @@
+{
+ "row": {
+  "variant": "A",
+  "prompt": "report/v3.md",
+  "incident": "edge_02_conflict",
+  "run": 1,
+  "seconds": 68.5,
+  "answered_by": "groq:qwen/qwen3.8-27b",
+  "chain_error": false,
+  "schema_ok": true,
+  "validate_ok": false,
+  "checks": "image_status",
+  "image_ok": false,
+  "fields_missing": "",
+  "copied_example": false
+ },
+ "report": {
+  "language": "en",
+  "location": null,
+  "severity": "high",
+  "summary": "A flood incident was reported on a main road with water rising quickly. The system assessed the severity as high due to the reported rapid rise in water levels. No image was provided to corroborate the visual situation.",
+  "reported": [
+   {
+    "text": "Flooding on the main road",
+    "source": "report"
+   },
+   {
+    "text": "Water is rising quickly",
+    "source": "report"
+   }
+  ],
+  "image_status": "not_provided",
+  "observed": [],
+  "knowledge": {
+   "coverage": "good",
+   "guidance": [
+    {
+     "text": "Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.",
+     "entry_id": "FL-08",
+     "chunk_id": "fr/flood_kb.md::section::4",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Evacuation during river floods, storm surge and coastal flooding: review your evacuation plan so you can leave quickly if officials advise you to evacuate.",
+     "entry_id": "FL-03",
+     "chunk_id": "en/flood_kb.md::section::3",
+     "source": "knowledge_base"
+    }
+   ],
+   "no_guidance_statement": null
+  },
+  "assessment": {
+   "basis": [
+    {
+     "text": "Flooding on the main road",
+     "source": "report"
+    },
+    {
+     "text": "Water is rising quickly",
+     "source": "report"
+    }
+   ],
+   "risks": [
+    {
+     "text": "Water reported rising quickly on a main road",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [],
+   "conflicts": [
+    "The report states there is flooding, but the image source referenced in the risk assessment indicated a dry road and smoke with no water."
+   ]
+  },
+  "recommendations": [
+   {
+    "text": "Responders may wish to weigh: Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.",
+    "entry_id": "FL-08",
+    "chunk_id": "fr/flood_kb.md::section::4",
+    "source": "knowledge_base"
+   }
+  ],
+  "uncertainties": [
+   "Location not stated"
+  ],
+  "information_needed": [
+   "Exact location",
+   "Water depth",
+   "Number of people affected"
+  ],
+  "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+  "report_markdown": "Preliminary incident assessment\nGenerated: 2026-10-16T12:00:00Z\nIncident type: flood | Location: Not stated | Severity (system assessment): high\n\nSummary\nA flood incident was reported on a main road with water rising quickly. The system assessed the severity as high due to the reported rapid rise in water levels. No image was provided to corroborate the visual situation.\n\n1. What was reported\n- (reported) Flooding on the main road\n- (reported) Water is rising quickly\n\n2. What was observed in the image\nNo image was provided.\n\n3. Relevant information from the knowledge base\n- (knowledge_base, FL-08) Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.\n- (knowledge_base, FL-03) Evacuation during river floods, storm surge and coastal flooding: review your evacuation plan so you can leave quickly if officials advise you to evacuate.\n\n4. System assessment\nSeverity: high\n- (report) Flooding on the main road\n- (report) Water is rising quickly\nMain risks: Water reported rising quickly on a main road (report).\nConflicts: The report states there is flooding, but the image source referenced in the risk assessment indicated a dry road and smoke with no water.\n\n5. Missing information and uncertainties\n- Exact location\n- Water depth\n- Number of people affected\n- Location not stated\n\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+ },
+ "error": null
+}

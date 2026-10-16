@@ -1,0 +1,239 @@
+{
+ "incident_id": "fire_01",
+ "image_status": "sent",
+ "status_code": 200,
+ "raw_response": {
+  "status": "degraded",
+  "incident_type": "forest_fire",
+  "severity": "high",
+  "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T21:34:09.660Z\nIncident type: forest_fire | Location: Not stated | Severity (system assessment): high\n\n## Summary\nA forest fire is reported near a village, with visible flames near houses and a strong wind. No image was successfully analysed, and knowledge base guidance is partial.\n\n## 1. What was reported\n* (reported) Smoke is rising from the hills behind the village\n* (reported) Flames are visible near the first houses\n* (reported) A strong wind is blowing toward the village\n* (reported) Flames are visible near the first houses and a strong wind is blowing toward the village.\n* (reported) People at risk are mentioned\n\n## 2. What was observed in the image\nNo image was successfully analysed due to a technical failure in the vision step.\n\n## 3. Relevant information from the knowledge base\n* **FI-21** (fr/fire_kb.md::section::7): En cas d'alerte feu de forêt, mettez-vous en sécurité immédiatement. Partez si l'on vous le demande, et partez sans attendre si les autorités vous ordonnent d'évacuer. Écoutez les informations et les alertes d'urgence diffusées par les systèmes d'alerte de votre commune.\n* **FI-14** (fr/fire_kb.md::section::2): Si vous êtes témoin d'un début d'incendie, donnez l'alerte aux services de secours et essayez de localiser le feu. En attendant l'intervention des secours, mettez-vous à l'abri dans une habitation débroussaillée : la voiture n'est pas un abri sûr car elle pourrait brûler. Restez informé de la situation et suivez les consignes des secours ou de la mairie.\n* **FI-13** (en/fire_kb.md::section::10): If the authorities order an evacuation, leave. The sources do not say when to leave rather than shelter in a cleared house, and give no further instructions for flames already reaching a house.\n\nCoverage is **partial**. No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\n**Severity:** high\n**Basis:** Flames are visible near the first houses (report); A strong wind is blowing toward the village (report).\n**Main risks:** Rapid fire spread to residential structures (model_inference); Threat to human life (report).\n**Possibly affected:** Houses in the village, villagers/residents (report).\n\n## 5. Missing information and uncertainties\n* No image was analysed (vision_json is null).\n* No relevant guidance was retrieved for the specific scenario of flames already reaching houses regarding immediate evacuation vs. sheltering.\n\n**Missing information needed:** \n* Exact location of the fire\n* Number of structures or people threatened\n* Current spread direction and speed\n* Presence of injuries or trapped persons\n* Status of emergency response or evacuation\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+  "report": {
+   "language": "en",
+   "location": null,
+   "severity": "high",
+   "summary": "A forest fire is reported near a village, with visible flames near houses and a strong wind. No image was successfully analysed, and knowledge base guidance is partial.",
+   "reported": [
+    {
+     "text": "Smoke is rising from the hills behind the village",
+     "source": "report"
+    },
+    {
+     "text": "Flames are visible near the first houses",
+     "source": "report"
+    },
+    {
+     "text": "A strong wind is blowing toward the village",
+     "source": "report"
+    },
+    {
+     "text": "Flames are visible near the first houses and a strong wind is blowing toward the village.",
+     "source": "report"
+    },
+    {
+     "text": "People at risk are mentioned",
+     "source": "report"
+    }
+   ],
+   "image_status": "analysis_failed",
+   "observed": [],
+   "knowledge": {
+    "coverage": "partial",
+    "guidance": [
+     {
+      "text": "En cas d'alerte feu de forêt, mettez-vous en sécurité immédiatement. Partez si l'on vous le demande, et partez sans attendre si les autorités vous ordonnent d'évacuer. Écoutez les informations et les alertes d'urgence diffusées par les systèmes d'alerte de votre commune.",
+      "entry_id": "FI-21",
+      "chunk_id": "fr/fire_kb.md::section::7",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "Si vous êtes témoin d'un début d'incendie, donnez l'alerte aux services de secours et essayez de localiser le feu. En attendant l'intervention des secours, mettez-vous à l'abri dans une habitation débroussaillée : la voiture n'est pas un abri sûr car elle pourrait brûler. Restez informé de la situation et suivez les consignes des secours ou de la mairie.",
+      "entry_id": "FI-14",
+      "chunk_id": "fr/fire_kb.md::section::2",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "If the authorities order an evacuation, leave. The sources do not say when to leave rather than shelter in a cleared house, and give no further instructions for flames already reaching a house.",
+      "entry_id": "FI-13",
+      "chunk_id": "en/fire_kb.md::section::10",
+      "source": "knowledge_base"
+     }
+    ],
+    "no_guidance_statement": "No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services."
+   },
+   "assessment": {
+    "basis": [
+     {
+      "text": "Flames are visible near the first houses",
+      "source": "report"
+     },
+     {
+      "text": "A strong wind is blowing toward the village",
+      "source": "report"
+     }
+    ],
+    "risks": [
+     {
+      "text": "Rapid fire spread to residential structures",
+      "source": "model_inference"
+     },
+     {
+      "text": "Threat to human life",
+      "source": "report"
+     }
+    ],
+    "possibly_affected": [
+     {
+      "text": "Houses in the village",
+      "source": "report"
+     },
+     {
+      "text": "Villagers/residents",
+      "source": "report"
+     }
+    ],
+    "conflicts": []
+   },
+   "recommendations": [
+    {
+     "text": "Individuals who witness the start of a fire should alert rescue services and try to localize the fire.",
+     "entry_id": "FI-14",
+     "chunk_id": "fr/fire_kb.md::section::2",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "While waiting for rescue services, sheltering in a cleared house is suggested, noting that cars are not a safe shelter as they may burn.",
+     "entry_id": "FI-14",
+     "chunk_id": "fr/fire_kb.md::section::2",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Residents should stay informed and follow instructions from rescue services or the town hall.",
+     "entry_id": "FI-14",
+     "chunk_id": "fr/fire_kb.md::section::2",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "If authorities order an evacuation, individuals should leave, as sources do not specify conditions for when to leave versus sheltering in a cleared house when flames are already reaching a house.",
+     "entry_id": "FI-13",
+     "chunk_id": "en/fire_kb.md::section::10",
+     "source": "knowledge_base"
+    }
+   ],
+   "uncertainties": [
+    "No image was analysed (vision_json is null).",
+    "No relevant guidance was retrieved for the specific scenario of flames already reaching houses regarding immediate evacuation vs. sheltering."
+   ],
+   "information_needed": [
+    "Exact location of the fire",
+    "Number of structures or people threatened",
+    "Current spread direction and speed",
+    "Presence of injuries or trapped persons",
+    "Status of emergency response or evacuation"
+   ],
+   "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+   "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-16T21:34:09.660Z\nIncident type: forest_fire | Location: Not stated | Severity (system assessment): high\n\n## Summary\nA forest fire is reported near a village, with visible flames near houses and a strong wind. No image was successfully analysed, and knowledge base guidance is partial.\n\n## 1. What was reported\n* (reported) Smoke is rising from the hills behind the village\n* (reported) Flames are visible near the first houses\n* (reported) A strong wind is blowing toward the village\n* (reported) Flames are visible near the first houses and a strong wind is blowing toward the village.\n* (reported) People at risk are mentioned\n\n## 2. What was observed in the image\nNo image was successfully analysed due to a technical failure in the vision step.\n\n## 3. Relevant information from the knowledge base\n* **FI-21** (fr/fire_kb.md::section::7): En cas d'alerte feu de forêt, mettez-vous en sécurité immédiatement. Partez si l'on vous le demande, et partez sans attendre si les autorités vous ordonnent d'évacuer. Écoutez les informations et les alertes d'urgence diffusées par les systèmes d'alerte de votre commune.\n* **FI-14** (fr/fire_kb.md::section::2): Si vous êtes témoin d'un début d'incendie, donnez l'alerte aux services de secours et essayez de localiser le feu. En attendant l'intervention des secours, mettez-vous à l'abri dans une habitation débroussaillée : la voiture n'est pas un abri sûr car elle pourrait brûler. Restez informé de la situation et suivez les consignes des secours ou de la mairie.\n* **FI-13** (en/fire_kb.md::section::10): If the authorities order an evacuation, leave. The sources do not say when to leave rather than shelter in a cleared house, and give no further instructions for flames already reaching a house.\n\nCoverage is **partial**. No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\n**Severity:** high\n**Basis:** Flames are visible near the first houses (report); A strong wind is blowing toward the village (report).\n**Main risks:** Rapid fire spread to residential structures (model_inference); Threat to human life (report).\n**Possibly affected:** Houses in the village, villagers/residents (report).\n\n## 5. Missing information and uncertainties\n* No image was analysed (vision_json is null).\n* No relevant guidance was retrieved for the specific scenario of flames already reaching houses regarding immediate evacuation vs. sheltering.\n\n**Missing information needed:** \n* Exact location of the fire\n* Number of structures or people threatened\n* Current spread direction and speed\n* Presence of injuries or trapped persons\n* Status of emergency response or evacuation\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+  },
+  "validation": {
+   "status": "pass",
+   "violations": [],
+   "repaired": false
+  },
+  "degraded_steps": [
+   {
+    "step": "vision",
+    "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b no image support; groq:qwen/qwen3.8-27b no image support; groq:openai/gpt-oss-20b no image support; openrouter:nvidia/nemotron-3-super-120b-a12b:free no image support; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-fla"
+   }
+  ],
+  "knowledge_coverage": "partial",
+  "retrieved_entry_ids": [
+   "FI-21",
+   "FI-11",
+   "FI-13",
+   "FI-04",
+   "FI-05",
+   "FI-14",
+   "FI-22",
+   "FI-20",
+   "FI-06",
+   "FI-10"
+  ],
+  "models_used": [
+   {
+    "step": "incident",
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "seconds": 5.87,
+    "failed_attempts": []
+   },
+   {
+    "step": "vision",
+    "provider": null,
+    "model": null,
+    "seconds": 0,
+    "failed_attempts": []
+   },
+   {
+    "step": "RAG queries",
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "seconds": 4.78,
+    "failed_attempts": []
+   },
+   {
+    "step": "knowledge",
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "seconds": 4.1,
+    "failed_attempts": []
+   },
+   {
+    "step": "risk",
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "seconds": 3.2,
+    "failed_attempts": []
+   },
+   {
+    "step": "report",
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "seconds": 5.2,
+    "failed_attempts": [
+     "groq:qwen/qwen3.8-27b rate limit"
+    ]
+   }
+  ],
+  "prompt_versions": {
+   "incident": "v2",
+   "vision": "v1",
+   "rag_queries": "v1",
+   "knowledge": "v2",
+   "risk": "v2",
+   "report": "v4"
+  }
+ },
+ "seconds": 86.3,
+ "incident_type": "forest_fire",
+ "severity": "high",
+ "degraded_steps": [
+  {
+   "step": "vision",
+   "reason": "(after one retry) Gemini request failed: every model in the chain failed or was skipped: groq:openai/gpt-oss-120b no image support; groq:qwen/qwen3.8-27b no image support; groq:openai/gpt-oss-20b no image support; openrouter:nvidia/nemotron-3-super-120b-a12b:free no image support; gemini:gemini-3.6-flash cooling down; gemini:gemini-3.5-fla"
+  }
+ ],
+ "prompt_versions": {
+  "incident": "v2",
+  "vision": "v1",
+  "rag_queries": "v1",
+  "knowledge": "v2",
+  "risk": "v2",
+  "report": "v4"
+ },
+ "checks": {
+  "incident_type_ok": true,
+  "severity_ok": true,
+  "has_report": true
+ },
+ "run": 1,
+ "variant": "after"
+}

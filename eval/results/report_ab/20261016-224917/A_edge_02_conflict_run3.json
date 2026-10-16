@@ -1,0 +1,22 @@
+{
+ "row": {
+  "variant": "A",
+  "prompt": "report/v3.md",
+  "incident": "edge_02_conflict",
+  "run": 3,
+  "seconds": 65.8,
+  "answered_by": "",
+  "chain_error": true,
+  "schema_ok": false,
+  "validate_ok": false,
+  "checks": "",
+  "image_ok": "",
+  "fields_missing": "",
+  "copied_example": ""
+ },
+ "report": null,
+ "error": {
+  "code": 503,
+  "message": "every model in the chain failed or was skipped: groq:qwen/qwen3.8-27b rate limit"
+ }
+}

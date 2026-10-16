@@ -1,0 +1,106 @@
+{
+ "row": {
+  "variant": "B",
+  "prompt": "report/v4.md",
+  "incident": "flood_01",
+  "run": 2,
+  "seconds": 3.2,
+  "answered_by": "groq:qwen/qwen3.8-27b",
+  "chain_error": false,
+  "schema_ok": true,
+  "validate_ok": true,
+  "checks": "",
+  "image_ok": true,
+  "fields_missing": "",
+  "copied_example": false
+ },
+ "report": {
+  "language": "fr",
+  "location": "Nabeul",
+  "severity": "high",
+  "summary": "Des inondations importantes sont signalées dans un quartier résidentiel de Nabeul, bloquant plusieurs routes. L'eau continue de monter. L'analyse d'une image a été tentée mais a abouti à une erreur technique.",
+  "reported": [
+   {
+    "text": "Fortes inondations dans un quartier résidentiel de Nabeul",
+    "source": "report"
+   },
+   {
+    "text": "Plusieurs routes sont bloquées",
+    "source": "report"
+   },
+   {
+    "text": "L'eau continue de monter",
+    "source": "report"
+   }
+  ],
+  "image_status": "analysis_failed",
+  "observed": [],
+  "knowledge": {
+   "coverage": "good",
+   "guidance": [
+    {
+     "text": "Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.",
+     "entry_id": "FL-08",
+     "chunk_id": "fr/flood_kb.md::section::4",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "After a flood: if you evacuated, wait for officials to say it is safe before going home.",
+     "entry_id": "FL-17",
+     "chunk_id": "en/flood_kb.md::section::10",
+     "source": "knowledge_base"
+    }
+   ],
+   "no_guidance_statement": null
+  },
+  "assessment": {
+   "basis": [
+    {
+     "text": "Fortes inondations dans un quartier résidentiel de Nabeul",
+     "source": "report"
+    },
+    {
+     "text": "Plusieurs routes sont bloquées",
+     "source": "report"
+    },
+    {
+     "text": "L'eau continue de monter",
+     "source": "report"
+    },
+    {
+     "text": "Eau brunâtre couvrant la chaussée",
+     "source": "image"
+    }
+   ],
+   "risks": [
+    {
+     "text": "Routes bloquées et eau qui monte dans un quartier résidentiel",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [],
+   "conflicts": []
+  },
+  "recommendations": [
+   {
+    "text": "Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.",
+    "entry_id": "FL-08",
+    "chunk_id": "fr/flood_kb.md::section::4",
+    "source": "knowledge_base"
+   }
+  ],
+  "uncertainties": [
+   "Une analyse d'image a été tentée mais a échoué pour une raison technique ; aucune observation de l'image n'est disponible.",
+   "Le nombre exact de routes bloquées n'est pas précisé.",
+   "Le niveau d'inondation est décrit qualitativement sans précision métrique."
+  ],
+  "information_needed": [
+   "Hauteur d'eau",
+   "Nombre de personnes touchées",
+   "Débit du courant"
+  ],
+  "disclaimer": "Ce rapport est une aide à la décision produite par un prototype d'IA. Il ne remplace pas les services d'urgence et ne constitue pas une décision officielle. L'échelle de gravité est une échelle de travail de ce prototype.",
+  "report_markdown": "# Évaluation préliminaire de l'incident\nGénéré : 2026-10-16T12:00:00Z\nType d'incident : inondation | Localisation : Nabeul | Gravité (évaluation automatique) : high\n\n## Résumé\nDes inondations importantes sont signalées dans un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et le niveau de l'eau continue de monter. La gravité de la situation est évaluée comme élevée.\n\n## 1. Ce qui a été signalé\n- (Signalé) Fortes inondations dans un quartier résidentiel de Nabeul.\n- (Signalé) Plusieurs routes sont bloquées.\n- (Signalé) L'eau continue de monter.\n\n## 2. Ce qui a été observé sur l'image\nAucune observation d'image n'est disponible en raison d'un échec technique de l'analyse.\n\n## 3. Informations pertinentes issues de la base de connaissances\n- (RB-FL-08, fr/flood_kb.md::section::4) Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.\n- (RB-FL-17, en/flood_kb.md::section::10) After a flood: if you evacuated, wait for officials to say it is safe before going home.\n\n## 4. Évaluation système\nLa gravité est évaluée comme élevée sur la base du fait que des routes sont bloquées et que l'eau continue de monter dans un quartier résidentiel.\n\n## 5. Informations manquantes et incertitudes\n- La hauteur de l'eau n'est pas connue.\n- Le nombre de personnes affectées n'est pas précis.\n- Le débit du courant n'est pas renseigné.\n- Aucune observation d'image n'est disponible.\n\n## À propos de ce rapport\nCe rapport est une aide à la décision produite par un prototype d'IA. Il ne remplace pas les services d'urgence et ne constitue pas une décision officielle. L'échelle de gravité est une échelle de travail de ce prototype."
+ },
+ "error": null
+}
