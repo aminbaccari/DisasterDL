@@ -19,12 +19,12 @@ ROOT = Path(__file__).resolve().parent.parent
 
 # agent -> prompt file, relative to prompts/. Changing a version means changing this table and rebuilding.
 PROMPTS = {
-    "incident": "incident_understanding/v1.md",
+    "incident": "incident_understanding/v2.md",
     "vision": "vision/v1.md",
     "rag_queries": "rag_query/v1.md",
     "knowledge": "rag_query/v2_synthesis.md",
     "risk": "risk_assessment/v2.md",
-    "report": "report/v3.md",
+    "report": "report/v4.md",
 }
 VERSIONS = {agent: re.search(r"v\d+", Path(path).stem).group(0) for agent, path in PROMPTS.items()}
 
@@ -38,7 +38,7 @@ PLACEHOLDERS = {
                   "passages_json": "JSON.stringify($('Merge passages').first().json.passages)"},
     "risk": {"incident_json": f"JSON.stringify({CTX}.incident)", "vision_json_or_null": f"JSON.stringify({CTX}.vision)",
              "knowledge_json": f"JSON.stringify({CTX}.knowledge)"},
-    "report": {"output_language": f"{CTX}.output_language", "generated_at": f"{CTX}.generated_at",
+    "report": {"output_language": f"{CTX}.output_language", "generated_at": f"{CTX}.generated_at", "image_status": f"{CTX}.image_status",
                "incident_json": f"JSON.stringify({CTX}.incident)", "vision_json_or_null": f"JSON.stringify({CTX}.vision)",
                "knowledge_json": f"JSON.stringify({CTX}.knowledge)", "risk_json": "JSON.stringify($('Risk ready').first().json.risk)"},
 }
@@ -152,16 +152,20 @@ const inc = $input.first().json;
 const norm = $('Normalise input').first().json;
 const fr = norm.output_language === 'fr';
 const missing = (inc.missing_information || []);
+const image = norm.has_image
+  ? (fr ? 'Image : une image a été reçue mais n\'a pas été analysée, le rapport est trop vague pour la comparer.' : 'Image: an image was received but not analysed, the report is too vague to compare it with.')
+  : (fr ? 'Image : aucune image n\'a été fournie.' : 'Image: no image was provided.');
+const search = fr ? 'Base de connaissances : aucune recherche effectuée, le type d\'incident n\'est pas clair.' : 'Knowledge base: no search was made, the incident type is unclear.';
 const md = fr
-  ? '# Informations supplémentaires nécessaires\n\nLe rapport ne permet pas de classer l\'incident ni d\'évaluer sa gravité. Aucune hypothèse n\'a été faite.\n\n' + missing.map(m => '- ' + m).join('\n')
-  : '# More information needed\n\nThe report does not allow the incident to be classified or its severity to be assessed. Nothing was guessed.\n\n' + missing.map(m => '- ' + m).join('\n');
+  ? '# Informations supplémentaires nécessaires\n\nLe rapport ne permet pas de classer l\'incident ni d\'évaluer sa gravité. Aucune hypothèse n\'a été faite.\n\n' + image + '\n' + search + '\n\n' + missing.map(m => '- ' + m).join('\n')
+  : '# More information needed\n\nThe report does not allow the incident to be classified or its severity to be assessed. Nothing was guessed.\n\n' + image + '\n' + search + '\n\n' + missing.map(m => '- ' + m).join('\n');
 return [{ json: { status: inc.parse_error ? 'degraded' : 'needs_more_information', incident_type: inc.incident_type, severity: 'undetermined', report_markdown: md,
   missing_information: missing, report: null, validation: null, degraded_steps: inc._degraded || [], prompt_versions: PV } }];
 """
 
 NO_IMAGE = r"""
 const n = $('Normalise input').first().json;
-return [{ json: { vision: null, vision_skipped: n.image_note || 'No image was provided', degraded_a: n.image_note ? [{ step: 'vision', reason: n.image_note }] : [] } }];
+return [{ json: { vision: null, vision_status: 'not_provided', vision_skipped: n.image_note || 'No image was provided', degraded_a: n.image_note ? [{ step: 'vision', reason: n.image_note }] : [] } }];
 """
 
 PARSE_VISION = READ_MODEL + r"""
@@ -177,10 +181,10 @@ function problem(o) {
 const r = readModel($input.first().json);
 const why = r.err || problem(r.value);
 if (why) {
-  return [{ json: { vision: { image_usable: false, quality_issues: ['The vision step failed: ' + why], scene_summary: '', observations: [], visible_text: [],
-    consistent_with_report: 'cannot_tell', inconsistencies: [], not_determinable: [] }, degraded_a: [{ step: 'vision', reason: why }], _failed: true } }];
+  // The step failed: this is not an unusable image. vision stays null (nothing was analysed) and the status says why.
+  return [{ json: { vision: null, vision_status: 'analysis_failed', degraded_a: [{ step: 'vision', reason: why }], _failed: true } }];
 }
-return [{ json: { vision: r.value, degraded_a: [], _failed: false } }];
+return [{ json: { vision: r.value, vision_status: r.value.image_usable ? 'analysed' : 'unusable', degraded_a: [], _failed: false } }];
 """
 
 PARSE_QUERIES = READ_MODEL + r"""
@@ -248,7 +252,7 @@ const m = $input.first().json;
 const inc = $('Incident ready').first().json;
 const norm = $('Normalise input').first().json;
 const { _degraded, ...incident } = inc;
-return [{ json: { incident, vision: m.vision === undefined ? null : m.vision, knowledge: m.knowledge, retrieval: m.retrieval,
+return [{ json: { incident, vision: m.vision === undefined ? null : m.vision, image_status: m.vision_status || 'not_provided', knowledge: m.knowledge, retrieval: m.retrieval,
   output_language: norm.output_language, generated_at: norm.generated_at, incident_text: norm.incident_text,
   degraded: [...(_degraded || []), ...(m.degraded_a || []), ...(m.degraded_b || [])] } }];
 """
@@ -480,7 +484,7 @@ def build(args):
     L(rready, "Prompt report " + v["report"]); L("Prompt report " + v["report"], pfirst)
     b.if_("Report produced?", "={{ $json.report !== null }}", 43 * X, 300)
     validate_body = ("={{ JSON.stringify({ report: $json.report, retrieval: $('Assemble context').first().json.retrieval, incident_text: $('Assemble context').first().json.incident_text, "
-                     "incident: $('Assemble context').first().json.incident, vision: $('Assemble context').first().json.vision }) }}")
+                     "incident: $('Assemble context').first().json.incident, vision: $('Assemble context').first().json.vision, image_status: $('Assemble context').first().json.image_status }) }}")
     b.http_json("Validate report", "={{ $('Config').first().json.rag_url + '/validate' }}", validate_body, 44 * X, 220)
     b.if_("Validation passed?", "={{ $json.status === 'pass' }}", 45 * X, 220)
     b.code("Build response", "const SOURCE = 'Report ready', VALIDATION = true, REPAIRED = false;\n" + BUILD_RESPONSE, 46 * X, 140, v)
@@ -534,6 +538,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--rag-url", default="http://host.docker.internal:8010")
     parser.add_argument("--path", default="incident", help="webhook path")
+    parser.add_argument("--prompt", action="append", default=[], metavar="AGENT=FILE",
+                        help="use another prompt file for one agent, for before and after tests, for example --prompt incident=incident_understanding/v1.md --prompt report=report/v3.md")
     parser.add_argument("--pace-seconds", type=int, default=0,
                         help="wait this long before every model call. Default 0: the chain already moves to the next model on a rate limit.")
     parser.add_argument("--out-dir", default=str(ROOT / "n8n" / "workflows"))
@@ -541,6 +547,12 @@ def main():
     out = Path(args.out_dir)
     out.mkdir(parents=True, exist_ok=True)
     Builder.pace_seconds = args.pace_seconds
+    for item in args.prompt:
+        agent, _, path = item.partition("=")
+        if agent not in PROMPTS or not (ROOT / "prompts" / path).exists():
+            raise SystemExit(f"--prompt {item}: unknown agent or file not found under prompts/")
+        PROMPTS[agent] = path
+        VERSIONS[agent] = re.search(r"v\d+", Path(path).stem).group(0)
     main_wf = build(args)
     (out / "disasterai.json").write_text(json.dumps(main_wf, ensure_ascii=False, indent=2), encoding="utf-8")
     (out / "disasterai_error.json").write_text(json.dumps(build_error_workflow(), ensure_ascii=False, indent=2), encoding="utf-8")

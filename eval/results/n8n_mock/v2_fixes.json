@@ -1,0 +1,40 @@
+{
+ "normal/fire_with_image": {
+  "label": "MOCK",
+  "status": "ok",
+  "image_status": "analysed",
+  "validation": "pass",
+  "violations": [],
+  "degraded": [],
+  "markdown_head": "# Preliminary incident assessment\nIncident type: forest_fire | Location: Not stated | Severity (system assessment): high\n\n## Summary\nSmoke rising from the hills behind the village; Flames visible near the first houses\n\n## 2. What was observed in the image\nA dense smoke column rising from the hillside; Orange flames at the base of the smoke, on the slope; Several houses at the foot of the slope\n\n## 3. Relevant informa"
+ },
+ "normal/vague_no_image": {
+  "label": "MOCK",
+  "status": "needs_more_information",
+  "image_status": null,
+  "validation": null,
+  "violations": [],
+  "degraded": [],
+  "markdown_head": "# Informations supplémentaires nécessaires\n\nLe rapport ne permet pas de classer l'incident ni d'évaluer sa gravité. Aucune hypothèse n'a été faite.\n\nImage : aucune image n'a été fournie.\nBase de connaissances : aucune recherche effectuée, le type d'incident n'est pas clair.\n\n- Type d'incident\n- Y a-t-il des personnes en danger\n- Lieu précis"
+ },
+ "normal/vague_with_image": {
+  "label": "MOCK",
+  "status": "needs_more_information",
+  "image_status": null,
+  "validation": null,
+  "violations": [],
+  "degraded": [],
+  "markdown_head": "# Informations supplémentaires nécessaires\n\nLe rapport ne permet pas de classer l'incident ni d'évaluer sa gravité. Aucune hypothèse n'a été faite.\n\nImage : une image a été reçue mais n'a pas été analysée, le rapport est trop vague pour la comparer.\nBase de connaissances : aucune recherche effectuée, le type d'incident n'est pas clair.\n\n- Type d'incident\n- Y a-t-il des personnes en danger\n- Lieu précis"
+ },
+ "vision_fail/fire_with_image": {
+  "label": "MOCK",
+  "status": "degraded",
+  "image_status": "analysis_failed",
+  "validation": "pass",
+  "violations": [],
+  "degraded": [
+   "vision: (after one retry) Gemini request failed: every model in the "
+  ],
+  "markdown_head": "# Preliminary incident assessment\nIncident type: forest_fire | Location: Not stated | Severity (system assessment): high\n\n## Summary\nSmoke rising from the hills behind the village; Flames visible near the first houses\n\n## 2. What was observed in the image\nNo image was provided.\n\n## 3. Relevant information from the knowledge base\nCoverage: partial\n- FEMA's advice for making a home safer from wildfire: use fire-resista"
+ }
+}

@@ -11,6 +11,7 @@ Request body:
   incident_text   the raw text of the incident
   incident        Incident Understanding JSON (optional, used for the injection check)
   vision          Vision JSON or null (optional, used for the conflict check)
+  image_status    analysed | not_provided | analysis_failed | unusable (optional, set by the workflow, the report must repeat it)
 """
 import json
 import re
@@ -226,7 +227,15 @@ def check_injection(report, incident_text, incident):
     return problems
 
 
-CHECKS = ["schema", "citations", "scope", "forbidden_instructions", "location", "no_guidance", "conflict", "injection"]
+def check_image_status(report, expected):
+    """The workflow knows whether an image was sent and whether the Vision step worked. The report must say the same.
+    2026-10-16: a failed Vision step was reported as 'unusable image' (edge_02)."""
+    if expected and report.get("image_status") != expected:
+        return [f"image_status is {report.get('image_status')!r} but the workflow status is {expected!r}"]
+    return []
+
+
+CHECKS = ["schema", "citations", "scope", "forbidden_instructions", "location", "no_guidance", "conflict", "injection", "image_status"]
 
 
 def validate(payload, fire_entries=None):
@@ -245,6 +254,7 @@ def validate(payload, fire_entries=None):
             ("no_guidance", check_no_guidance(report, retrieval, fire_entries)),
             ("conflict", check_conflict(report, payload.get("vision"))),
             ("injection", check_injection(report, incident_text, payload.get("incident"))),
+            ("image_status", check_image_status(report, payload.get("image_status"))),
         ]
         violations = [{"check": name, "message": m} for name, messages in runs for m in messages]
     return {"status": "pass" if not violations else "fail", "violations": violations}

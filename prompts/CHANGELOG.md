@@ -47,3 +47,17 @@ Template:
 - report v3, knowledge v2, risk v2 (first real runs, docs/EVIDENCE_LOG.md, batch C): knowledge v2 and risk v2 produced valid outputs with entry ids in the 6 reports that completed. Report v3 was valid in 4 of 6 reports. Two reports from qwen3.8-27b lacked uncertainties, information_needed, disclaimer and report_markdown (status flagged, the repair pass did not help). Candidate change: state that every field of the schema is required and add one complete output example. Not changed: the quota is exhausted, so a before and after run is not possible today.
 - incident v1: location still copied as a relative phrase (fire_01: "hills behind the village" in 2 of 2 completed runs), and free text in English for a French incident (edge_01 missing_information). Candidate v2: location null unless a named place appears, free text in the incident language.
 - vision v1: one real run (fire_01 image), the output matched its schema and listed only visible things. No failure observed, too few runs to say more.
+
+## incident_understanding v1 to v2 (2026-10-16 evening, written, NOT yet tested)
+- Test input that failed: fire_01 through the n8n workflow with real models, `location.text` = "hills behind the village" in the completed runs (docs/EVIDENCE_LOG.md, batch C and n8n execution 25). edge_01 (French): missing_information written in English.
+- What went wrong (actual output): `"location": {"text": "hills behind the village", "precision": "area"}`; edge_01 list "Type of incident", "Exact location", ... under a French heading.
+- Change made to the prompt: prompts/incident_understanding/v2.md. Rule 4: a location is a named place, relative phrases give null and stay in reported_facts. Rule 6: free-text fields in the report language. The second few-shot example no longer has a location ("downtown" is generic).
+- Result after the change: NOT TESTED. Planned: same six incidents, same model, three runs each with v1 and v3-style workflow (`scripts/build_workflow.py --prompt incident=incident_understanding/v1.md`) against v2, count locations that are not named places and free text in the wrong language. Run after the free-tier quota resets.
+- Technique involved: constraint.
+
+## report v3 to v4 (2026-10-16 evening, written, NOT yet tested)
+- Test input that failed: flood_01 run 1 and fire_01 run 2 (batch C, qwen3.8-27b): report JSON lacked uncertainties, information_needed, disclaimer and report_markdown, status flagged, repair did not fix. edge_02 (both runs): a failed Vision step was reported as "No usable image was provided".
+- What went wrong (actual output): `schema: (root): 'uncertainties' is a required property` (and three more); `image_status: unusable` with the image not analysed.
+- Change made to the prompt: prompts/report/v4.md adds an <image_status> input with a value analysis_failed (rule: never call the image unusable), a rule that every schema field is required, and one complete format example of an invented incident (checked by tests to satisfy the schema and the guardrails). The workflow now sends image_status and `/validate` checks that the report repeats it.
+- Result after the change: NOT TESTED on a model. Planned: the same incidents on the same model, count schema failures and wrong image_status with v3 and v4. Watch for the model copying the example.
+- Technique involved: JSON schema, few-shot (one example), constraint.

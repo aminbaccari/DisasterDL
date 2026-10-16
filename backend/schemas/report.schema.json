@@ -13,7 +13,7 @@
     "severity": {"enum": ["low", "moderate", "high", "critical", "undetermined"]},
     "summary": {"type": "string"},
     "reported": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
-    "image_status": {"enum": ["analysed", "not_provided", "unusable"]},
+    "image_status": {"enum": ["analysed", "not_provided", "analysis_failed", "unusable"]},
     "observed": {
       "type": "array",
       "items": {

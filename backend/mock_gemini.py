@@ -207,7 +207,9 @@ def mock_report(user_text):
     location = incident.get("location", {}).get("text")
     guidance = [{"text": g["point"], "entry_id": g["citation"]["entry_id"], "chunk_id": g["citation"]["chunk_id"], "source": "knowledge_base"} for g in knowledge.get("relevant_guidance", [])]
     needs_statement = knowledge.get("coverage") in ("partial", "none") or bool(knowledge.get("gaps"))
-    status = "not_provided" if vision is None else ("analysed" if vision.get("image_usable") else "unusable")
+    given = _between(user_text, "image_status")
+    status = given if given in ("analysed", "not_provided", "analysis_failed", "unusable") else (
+        "not_provided" if vision is None else ("analysed" if vision.get("image_usable") else "unusable"))
     report = {
         "language": lang, "location": location, "severity": risk.get("severity", "undetermined"),
         "summary": "; ".join(incident.get("reported_facts", [])[:2]) or ("Rapport trop vague." if lang == "fr" else "The report is too vague."),
@@ -222,7 +224,8 @@ def mock_report(user_text):
         "recommendations": [{"text": c["text"], "entry_id": c["citation"]["entry_id"], "chunk_id": c["citation"]["chunk_id"], "source": "knowledge_base"} for c in risk.get("considerations", [])],
         "uncertainties": risk.get("uncertainties", []), "information_needed": risk.get("information_needed", []), "disclaimer": DISCLAIMER[lang],
     }
-    notes = "Aucune image fournie." if lang == "fr" else "No image was provided."
+    notes = {"analysis_failed": ("Une image a été fournie mais son analyse a échoué (panne technique)." if lang == "fr" else "An image was provided but its analysis failed for a technical reason."),
+             "unusable": ("L'image n'est pas exploitable." if lang == "fr" else "The image could not be used.")}.get(status, "Aucune image fournie." if lang == "fr" else "No image was provided.")
     report["report_markdown"] = (
         f"# Preliminary incident assessment\nIncident type: {incident.get('incident_type')} | Location: {location or 'Not stated'} | Severity (system assessment): {report['severity']}\n\n"
         f"## Summary\n{report['summary']}\n\n## 2. What was observed in the image\n{'; '.join(o['text'] for o in report['observed']) or notes}\n\n"
@@ -247,7 +250,7 @@ def agent_for_system(system_text):
     return None
 
 
-MODE = "normal"  # normal | invalid_json | http500 | bad_report | bad_report_always (set with --mode, to exercise the workflow failure paths)
+MODE = "normal"  # normal | invalid_json | http500 | vision_fail | bad_report | bad_report_always (set with --mode, to exercise the workflow failure paths)
 
 
 def handle_generate(body):
@@ -258,6 +261,8 @@ def handle_generate(body):
     agent = agent_for_system(system)
     if agent is None:
         return {"error": {"code": 400, "message": "MOCK: unknown agent"}}
+    if MODE == "vision_fail" and agent == "vision":
+        return {"error": {"code": 500, "message": "MOCK: simulated failure of the vision step only"}}
     if MODE == "http500":
         return {"error": {"code": 500, "message": "MOCK: simulated Gemini failure"}}
     text = mock_agent(agent, user)
@@ -289,7 +294,7 @@ class Handler(BaseHTTPRequestHandler):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port", type=int, default=8020)
-    parser.add_argument("--mode", default="normal", choices=["normal", "invalid_json", "http500", "bad_report", "bad_report_always"])
+    parser.add_argument("--mode", default="normal", choices=["normal", "invalid_json", "http500", "vision_fail", "bad_report", "bad_report_always"])
     args = parser.parse_args()
     MODE = args.mode
     print(f"MOCK Gemini endpoint on http://localhost:{args.port} (not a language model)")

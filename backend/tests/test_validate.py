@@ -202,6 +202,25 @@ class TestValidate(unittest.TestCase):
         self.assertNotIn("injection", checks(run(p)))
 
 
+class TestImageStatus(unittest.TestCase):
+    def test_failed_vision_step_must_not_be_reported_as_unusable(self):
+        # n8n run of 2026-10-16: the Vision step failed, the report said 'unusable image'
+        p = base()
+        p["image_status"] = "analysis_failed"
+        p["vision"] = None
+        p["report"]["image_status"] = "unusable"
+        p["report"]["observed"] = []
+        self.assertIn("image_status", checks(run(p)))
+
+    def test_matching_status_passes(self):
+        p = base()
+        p["image_status"] = "analysed"
+        self.assertNotIn("image_status", checks(run(p)))
+
+    def test_status_is_optional_for_old_callers(self):
+        self.assertNotIn("image_status", checks(run(base())))
+
+
 class TestEntriesFile(unittest.TestCase):
     def test_fire_action_entries_read_from_the_knowledge_base(self):
         ids = v.fire_action_entries()

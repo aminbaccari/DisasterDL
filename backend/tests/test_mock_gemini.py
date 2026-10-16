@@ -71,6 +71,7 @@ class TestRouting(unittest.TestCase):
         expected = {
             "incident_understanding/v1.md": "incident", "vision/v1.md": "vision", "rag_query/v1.md": "rag_queries",
             "rag_query/v2_synthesis.md": "knowledge", "risk_assessment/v2.md": "risk", "report/v3.md": "report",
+            "incident_understanding/v2.md": "incident", "report/v4.md": "report",
         }
         for path, agent in expected.items():
             self.assertEqual(mock.agent_for_system(system_prompt(path)), agent, path)
