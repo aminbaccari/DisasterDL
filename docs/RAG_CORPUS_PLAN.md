@@ -10,10 +10,10 @@ Status column meaning:
 
 | # | Topic | Language | Source and document | Status | Notes |
 |---|-------|----------|---------------------|--------|-------|
-| 1 | Forest fire | FR | ONPC (Tunisian civil protection) fire prevention recommendations, reported by La Presse on 9 July 2026 | opened (news article) | Tunisian context, emergency number 198. It is a news report, so look for the official ONPC page and prefer that. |
-| 2 | Forest fire | EN | FEMA P-2143, Be Prepared for a Wildfire (Aug 2023) | opened | One-page flyer, thin but clean. No license text stated in the copy opened. |
+| 1 | Forest fire | FR | ONPC (Tunisian civil protection) fire prevention recommendations, reported by La Presse on 9 July 2026 | opened (news article) | Tunisian context, emergency number 198. It is a news report. Used on 2026-10-16 as FI-12 (via allAfrica, original ONPC communique not found), tagged as journalism. |
+| 2 | Forest fire | EN | FEMA P-2143, Be Prepared for a Wildfire (Aug 2023) | opened | Not obtained. The ready.gov copy is FEMA V-1013 (May 2018), used instead as FI-09 to FI-11, FI-13, FI-18, FI-19. |
 | 3 | Forest fire | EN | Ready.gov wildfire page or full FEMA wildfire guide | lead | Download from ready.gov directly, not from a county mirror. |
-| 4 | Forest fire | FR | French government "feux de forêt" guidance (georisques.gouv.fr or interieur.gouv.fr) | lead | Must confirm an official, citable document exists. |
+| 4 | Forest fire | FR | French government "feux de forêt" guidance (georisques.gouv.fr or interieur.gouv.fr) | lead | Used on 2026-10-16: ecologie.gouv.fr page (updated 3 June 2026) as FI-14 to FI-17, FI-20. |
 | 5 | Flood | EN | FEMA or Ready.gov flood hazard information sheet | lead | Several mirrors found. Use the original from fema.gov or ready.gov. |
 | 6 | Flood | EN | Red Cross flood safety checklist | lead | Use the Red Cross original, not a mirror. |
 | 7 | Flood | FR | French government "inondation, que faire" guidance | lead | Same check as item 4. |

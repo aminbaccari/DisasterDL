@@ -6,7 +6,7 @@ Nothing in this plan has been built or run yet. Items I could not confirm from t
 
 - One workflow, triggered by a webhook, that runs from incident to final report with no manual step.
 - All LLM and vision calls go through the HTTP Request node to the Gemini generateContent endpoint. Reason: the n8n Google Gemini node page does not say whether it supports a system prompt or JSON output mode, while the Gemini API reference documents both. One request template then serves all five agents. If the team prefers the n8n Gemini node, check its parameters in the editor first.
-- The RAG service (FastAPI) runs on the host and is called at http://host.docker.internal:8000, which docker-compose.yml already enables.
+- The RAG service (FastAPI) runs on the host and is called at http://host.docker.internal:8010, which docker-compose.yml already enables.
 - Every agent output is parsed and checked in a small Code node, with a safe fallback, so one bad LLM answer does not crash the run.
 - The API key lives in an n8n credential (Header Auth with header name x-goog-api-key), not inside nodes, so exported workflow JSON does not leak it.
 
@@ -54,7 +54,7 @@ Branch A, vision:
 
 Branch B, knowledge:
    - HTTP Request (Gemini: RAG queries), Code (Parse queries and split into one item per query).
-   - HTTP Request (RAG search) once per query: POST http://host.docker.internal:8000/search with {"query": ..., "k": 4, "topic": <rag_topic>}.
+   - HTTP Request (RAG search) once per query: POST http://host.docker.internal:8010/search with {"query": ..., "k": 4, "topic": <rag_topic>}.
    - Code (Merge and dedupe by chunk_id, keep the best score).
    - IF (Any passages). False: set knowledge to {"relevant_guidance": [], "ignored_chunks": [], "coverage": "none", "gaps": ["No passages retrieved"]} with no LLM call. True: HTTP Request (Gemini: synthesis), Code (Parse knowledge).
 

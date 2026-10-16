@@ -56,7 +56,7 @@ Run from the project root, after adding documents to rag/corpus/en and rag/corpu
 
 - Build the index with both chunking strategies: python -m rag.ingest --strategy both
 - Evaluate retrieval: copy rag/eval/queries_template.csv to rag/eval/queries.csv, fill in 15 to 20 queries, then run python -m rag.evaluate --strategy both
-- Start the service for n8n: uvicorn rag.service:app --port 8000, then POST to /search with {"query": "...", "k": 4, "topic": "flood"}. n8n in Docker reaches it at http://host.docker.internal:8000
+- Start the service for n8n: uvicorn rag.service:app --port 8010, then POST to /search with {"query": "...", "k": 4, "topic": "flood"}. n8n in Docker reaches it at http://host.docker.internal:8010
 - Run the unit tests: python -m unittest discover -s rag/tests -t .
 
 The first ingest downloads the embedding model, so it needs internet access.

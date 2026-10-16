@@ -1,9 +1,9 @@
 """RAG HTTP service called by n8n.
 
 Run from the project root:
-    uvicorn rag.service:app --port 8000
+    uvicorn rag.service:app --port 8010
 
-From the n8n container, the service is reachable at http://host.docker.internal:8000
+From the n8n container, the service is reachable at http://host.docker.internal:8010
 (see docker-compose.yml).
 """
 import os

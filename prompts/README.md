@@ -12,6 +12,7 @@ Status of all v1 prompts: drafts, not yet run. No failure or result is recorded 
 | RAG knowledge synthesis | rag_query/v1_synthesis.md | JSON |
 | Risk Assessment | risk_assessment/v1.md | JSON |
 | Report | report/v1.md | Markdown |
+| Report (partial-coverage wording) | report/v2.md, untested draft | Markdown |
 
 The RAG agent has two prompts: one writes bilingual search queries, one selects and restates the retrieved passages with citations. The synthesis step is optional. A simple variant passes the raw chunks straight to the Risk agent. Comparing the two on the same test incidents is a good piece of evidence for the multi-agent section.
 

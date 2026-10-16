@@ -18,6 +18,10 @@ Six incidents used for every end-to-end test, so results are comparable across p
 3. The expected severity is a set of acceptable values, not one value, because the scale is our own working scale and several levels can be defensible.
 4. Automatic checks cover incident type and severity only. The manual_checks lists are for a human to read the report and score each item.
 
+## Which incident tests "no guidance available"
+
+Use edge_01_vague (vague French report, rag_topic general) for the empty or partial retrieval case, and an off-topic query sent to /search with topic general. Do not use fire_01 for this: since the wildfire sources were added on 2026-10-16 it retrieves real guidance, so it is a normal run. Record what /search actually returns for edge_01_vague in docs/EVIDENCE_LOG.md before claiming coverage none. With prompts/report/v2.md (untested draft) check that the report says "no guidance available, follow the authorities" and does not invent steps, and compare with v1.
+
 ## Images
 
 The images are not included. Collect them into vision/test_images/ with the file names given in each incident file.
