@@ -1,0 +1,307 @@
+{
+ "incident_id": "edge_02_conflict",
+ "steps": {
+  "incident": {
+   "incident_type": "flood",
+   "type_confidence": "high",
+   "location": {
+    "text": null,
+    "precision": "unknown"
+   },
+   "reported_facts": [
+    "Flooding on the main road",
+    "Water is rising quickly"
+   ],
+   "initial_severity": "high",
+   "severity_reason": "Water reported rising quickly on a main road",
+   "people_at_risk_mentioned": "unknown",
+   "missing_information": [
+    "Exact location",
+    "Water depth",
+    "Number of people affected"
+   ],
+   "language": "en",
+   "rag_topic": "flood",
+   "notes": null
+  },
+  "vision": {
+   "image_usable": true,
+   "quality_issues": [],
+   "scene_summary": "A dry road with smoke on the horizon.",
+   "observations": [
+    {
+     "category": "smoke",
+     "description": "Smoke on the horizon",
+     "confidence": "medium"
+    },
+    {
+     "category": "infrastructure",
+     "description": "A dry road surface",
+     "confidence": "high"
+    }
+   ],
+   "visible_text": [],
+   "consistent_with_report": "no",
+   "inconsistencies": [
+    "The report says flooding but the image shows a dry road and smoke, no water"
+   ],
+   "not_determinable": [
+    "Cause of the smoke",
+    "Location"
+   ]
+  },
+  "rag_queries": {
+   "queries": [
+    {
+     "text": "what to do when a hazard threatens people and buildings",
+     "language": "en",
+     "need": "safety actions"
+    },
+    {
+     "text": "evacuation when authorities give an order",
+     "language": "en",
+     "need": "evacuation"
+    },
+    {
+     "text": "consignes de sécurité pour les habitants",
+     "language": "fr",
+     "need": "safety actions"
+    }
+   ]
+  },
+  "knowledge": {
+   "relevant_guidance": [
+    {
+     "point": "Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.",
+     "citation": {
+      "chunk_id": "fr/flood_kb.md::section::4",
+      "source": "flood_kb.md",
+      "page": 1,
+      "entry_id": "FL-08"
+     }
+    },
+    {
+     "point": "Evacuation during river floods, storm surge and coastal flooding: review your evacuation plan so you can leave quickly if officials advise you to evacuate.",
+     "citation": {
+      "chunk_id": "en/flood_kb.md::section::3",
+      "source": "flood_kb.md",
+      "page": 1,
+      "entry_id": "FL-03"
+     }
+    }
+   ],
+   "ignored_chunks": [
+    "en/flood_kb.md::section::10",
+    "en/flood_kb.md::section::18",
+    "en/flood_kb.md::section::5",
+    "en/flood_kb.md::section::6",
+    "en/flood_kb.md::section::11",
+    "fr/flood_kb.md::section::3"
+   ],
+   "coverage": "good",
+   "gaps": []
+  },
+  "risk": {
+   "severity": "high",
+   "severity_basis": [
+    {
+     "statement": "Flooding on the main road",
+     "source": "report"
+    },
+    {
+     "statement": "Water is rising quickly",
+     "source": "report"
+    },
+    {
+     "statement": "Smoke on the horizon",
+     "source": "image"
+    }
+   ],
+   "main_risks": [
+    {
+     "risk": "Water reported rising quickly on a main road",
+     "basis": "Reported facts",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [],
+   "conflicts_between_sources": [
+    "The report says flooding but the image shows a dry road and smoke, no water"
+   ],
+   "considerations": [
+    {
+     "text": "Responders may wish to weigh: Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.",
+     "citation": {
+      "chunk_id": "fr/flood_kb.md::section::4",
+      "source": "flood_kb.md",
+      "page": 1,
+      "entry_id": "FL-08"
+     }
+    }
+   ],
+   "uncertainties": [
+    "Location not stated"
+   ],
+   "information_needed": [
+    "Exact location",
+    "Water depth",
+    "Number of people affected"
+   ]
+  },
+  "report": {
+   "language": "en",
+   "location": null,
+   "severity": "high",
+   "summary": "Flooding on the main road; Water is rising quickly",
+   "reported": [
+    {
+     "text": "Flooding on the main road",
+     "source": "report"
+    },
+    {
+     "text": "Water is rising quickly",
+     "source": "report"
+    }
+   ],
+   "image_status": "analysed",
+   "observed": [
+    {
+     "text": "Smoke on the horizon",
+     "confidence": "medium",
+     "source": "image"
+    },
+    {
+     "text": "A dry road surface",
+     "confidence": "high",
+     "source": "image"
+    }
+   ],
+   "knowledge": {
+    "coverage": "good",
+    "guidance": [
+     {
+      "text": "Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.",
+      "entry_id": "FL-08",
+      "chunk_id": "fr/flood_kb.md::section::4",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "Evacuation during river floods, storm surge and coastal flooding: review your evacuation plan so you can leave quickly if officials advise you to evacuate.",
+      "entry_id": "FL-03",
+      "chunk_id": "en/flood_kb.md::section::3",
+      "source": "knowledge_base"
+     }
+    ],
+    "no_guidance_statement": null
+   },
+   "assessment": {
+    "basis": [
+     {
+      "text": "Flooding on the main road",
+      "source": "report"
+     },
+     {
+      "text": "Water is rising quickly",
+      "source": "report"
+     },
+     {
+      "text": "Smoke on the horizon",
+      "source": "image"
+     }
+    ],
+    "risks": [
+     {
+      "text": "Water reported rising quickly on a main road",
+      "source": "report"
+     }
+    ],
+    "possibly_affected": [],
+    "conflicts": [
+     "The report says flooding but the image shows a dry road and smoke, no water"
+    ]
+   },
+   "recommendations": [
+    {
+     "text": "Responders may wish to weigh: Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.",
+     "entry_id": "FL-08",
+     "chunk_id": "fr/flood_kb.md::section::4",
+     "source": "knowledge_base"
+    }
+   ],
+   "uncertainties": [
+    "Location not stated"
+   ],
+   "information_needed": [
+    "Exact location",
+    "Water depth",
+    "Number of people affected"
+   ],
+   "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+   "report_markdown": "# Preliminary incident assessment\nIncident type: flood | Location: Not stated | Severity (system assessment): high\n\n## Summary\nFlooding on the main road; Water is rising quickly\n\n## 2. What was observed in the image\nSmoke on the horizon; A dry road surface\n\n## 3. Relevant information from the knowledge base\nCoverage: good\n- Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie. (FL-08)\n- Evacuation during river floods, storm surge and coastal flooding: review your evacuation plan so you can leave quickly if officials advise you to evacuate. (FL-03)\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.\n"
+  }
+ },
+ "retrieval": [
+  {
+   "chunk_id": "fr/flood_kb.md::section::4",
+   "entry_ids": [
+    "FL-08"
+   ],
+   "score": 0.8781
+  },
+  {
+   "chunk_id": "en/flood_kb.md::section::3",
+   "entry_ids": [
+    "FL-03"
+   ],
+   "score": 0.8709
+  },
+  {
+   "chunk_id": "en/flood_kb.md::section::10",
+   "entry_ids": [
+    "FL-17"
+   ],
+   "score": 0.8653
+  },
+  {
+   "chunk_id": "en/flood_kb.md::section::18",
+   "entry_ids": [
+    "FL-25"
+   ],
+   "score": 0.8645
+  },
+  {
+   "chunk_id": "en/flood_kb.md::section::5",
+   "entry_ids": [
+    "FL-12",
+    "FL-13"
+   ],
+   "score": 0.8565
+  },
+  {
+   "chunk_id": "en/flood_kb.md::section::6",
+   "entry_ids": [
+    "FL-12"
+   ],
+   "score": 0.8528
+  },
+  {
+   "chunk_id": "en/flood_kb.md::section::11",
+   "entry_ids": [
+    "FL-18"
+   ],
+   "score": 0.8526
+  },
+  {
+   "chunk_id": "fr/flood_kb.md::section::3",
+   "entry_ids": [
+    "FL-07"
+   ],
+   "score": 0.847
+  }
+ ],
+ "validate": {
+  "status": "pass",
+  "violations": []
+ },
+ "schema_problems": []
+}

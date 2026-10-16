@@ -1,0 +1,336 @@
+{
+ "incident_id": "fire_01",
+ "steps": {
+  "incident": {
+   "incident_type": "forest_fire",
+   "type_confidence": "high",
+   "location": {
+    "text": null,
+    "precision": "unknown"
+   },
+   "reported_facts": [
+    "Smoke rising from the hills behind the village",
+    "Flames visible near the first houses",
+    "Strong wind blowing toward the village"
+   ],
+   "initial_severity": "high",
+   "severity_reason": "Flames reported near the first houses with a wind blowing toward the village",
+   "people_at_risk_mentioned": "unknown",
+   "missing_information": [
+    "Exact location",
+    "Distance between the flames and the houses",
+    "Whether an evacuation has started",
+    "Whether people are trapped or injured"
+   ],
+   "language": "en",
+   "rag_topic": "fire",
+   "notes": null
+  },
+  "vision": {
+   "image_usable": true,
+   "quality_issues": [],
+   "scene_summary": "Hillside with a smoke column above vegetation and a few houses in the foreground.",
+   "observations": [
+    {
+     "category": "smoke",
+     "description": "A dense smoke column rising from the hillside",
+     "confidence": "high"
+    },
+    {
+     "category": "flames",
+     "description": "Orange flames at the base of the smoke, on the slope",
+     "confidence": "medium"
+    },
+    {
+     "category": "infrastructure",
+     "description": "Several houses at the foot of the slope",
+     "confidence": "high"
+    }
+   ],
+   "visible_text": [],
+   "consistent_with_report": "yes",
+   "inconsistencies": [],
+   "not_determinable": [
+    "Wind speed and direction",
+    "Distance between the flames and the houses",
+    "Number of people",
+    "Cause of the fire"
+   ]
+  },
+  "rag_queries": {
+   "queries": [
+    {
+     "text": "what to do when a hazard threatens people and buildings",
+     "language": "en",
+     "need": "safety actions"
+    },
+    {
+     "text": "evacuation when authorities give an order",
+     "language": "en",
+     "need": "evacuation"
+    },
+    {
+     "text": "consignes de sécurité pour les habitants",
+     "language": "fr",
+     "need": "safety actions"
+    }
+   ]
+  },
+  "knowledge": {
+   "relevant_guidance": [
+    {
+     "point": "FEMA's advice for making a home safer from wildfire: use fire-resistant materials to build, renovate or make repairs.",
+     "citation": {
+      "chunk_id": "en/fire_kb.md::section::10",
+      "source": "fire_kb.md",
+      "page": 1,
+      "entry_id": "FI-11"
+     }
+    },
+    {
+     "point": "If you are under a wildfire warning, get to safety right away.",
+     "citation": {
+      "chunk_id": "en/fire_kb.md::section::8",
+      "source": "fire_kb.md",
+      "page": 1,
+      "entry_id": "FI-09"
+     }
+    }
+   ],
+   "ignored_chunks": [
+    "en/fire_kb.md::section::11",
+    "fr/fire_kb.md::section::9",
+    "en/fire_kb.md::section::4",
+    "en/fire_kb.md::section::5",
+    "fr/fire_kb.md::section::8",
+    "fr/fire_kb.md::section::2"
+   ],
+   "coverage": "partial",
+   "gaps": [
+    "What to do when flames are already reaching a house (no entry covers it)"
+   ]
+  },
+  "risk": {
+   "severity": "high",
+   "severity_basis": [
+    {
+     "statement": "Smoke rising from the hills behind the village",
+     "source": "report"
+    },
+    {
+     "statement": "Flames visible near the first houses",
+     "source": "report"
+    },
+    {
+     "statement": "Strong wind blowing toward the village",
+     "source": "report"
+    },
+    {
+     "statement": "A dense smoke column rising from the hillside",
+     "source": "image"
+    }
+   ],
+   "main_risks": [
+    {
+     "risk": "Flames reported near the first houses with a wind blowing toward the village",
+     "basis": "Reported facts",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [],
+   "conflicts_between_sources": [],
+   "considerations": [
+    {
+     "text": "Responders may wish to weigh: FEMA's advice for making a home safer from wildfire: use fire-resistant materials to build, renovate or make repairs.",
+     "citation": {
+      "chunk_id": "en/fire_kb.md::section::10",
+      "source": "fire_kb.md",
+      "page": 1,
+      "entry_id": "FI-11"
+     }
+    }
+   ],
+   "uncertainties": [
+    "What to do when flames are already reaching a house (no entry covers it)",
+    "Location not stated"
+   ],
+   "information_needed": [
+    "Exact location",
+    "Distance between the flames and the houses",
+    "Whether an evacuation has started",
+    "Whether people are trapped or injured"
+   ]
+  },
+  "report": {
+   "language": "en",
+   "location": null,
+   "severity": "high",
+   "summary": "Smoke rising from the hills behind the village; Flames visible near the first houses",
+   "reported": [
+    {
+     "text": "Smoke rising from the hills behind the village",
+     "source": "report"
+    },
+    {
+     "text": "Flames visible near the first houses",
+     "source": "report"
+    },
+    {
+     "text": "Strong wind blowing toward the village",
+     "source": "report"
+    }
+   ],
+   "image_status": "analysed",
+   "observed": [
+    {
+     "text": "A dense smoke column rising from the hillside",
+     "confidence": "high",
+     "source": "image"
+    },
+    {
+     "text": "Orange flames at the base of the smoke, on the slope",
+     "confidence": "medium",
+     "source": "image"
+    },
+    {
+     "text": "Several houses at the foot of the slope",
+     "confidence": "high",
+     "source": "image"
+    }
+   ],
+   "knowledge": {
+    "coverage": "partial",
+    "guidance": [
+     {
+      "text": "FEMA's advice for making a home safer from wildfire: use fire-resistant materials to build, renovate or make repairs.",
+      "entry_id": "FI-11",
+      "chunk_id": "en/fire_kb.md::section::10",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "If you are under a wildfire warning, get to safety right away.",
+      "entry_id": "FI-09",
+      "chunk_id": "en/fire_kb.md::section::8",
+      "source": "knowledge_base"
+     }
+    ],
+    "no_guidance_statement": "No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services."
+   },
+   "assessment": {
+    "basis": [
+     {
+      "text": "Smoke rising from the hills behind the village",
+      "source": "report"
+     },
+     {
+      "text": "Flames visible near the first houses",
+      "source": "report"
+     },
+     {
+      "text": "Strong wind blowing toward the village",
+      "source": "report"
+     },
+     {
+      "text": "A dense smoke column rising from the hillside",
+      "source": "image"
+     }
+    ],
+    "risks": [
+     {
+      "text": "Flames reported near the first houses with a wind blowing toward the village",
+      "source": "report"
+     }
+    ],
+    "possibly_affected": [],
+    "conflicts": []
+   },
+   "recommendations": [
+    {
+     "text": "Responders may wish to weigh: FEMA's advice for making a home safer from wildfire: use fire-resistant materials to build, renovate or make repairs.",
+     "entry_id": "FI-11",
+     "chunk_id": "en/fire_kb.md::section::10",
+     "source": "knowledge_base"
+    }
+   ],
+   "uncertainties": [
+    "What to do when flames are already reaching a house (no entry covers it)",
+    "Location not stated"
+   ],
+   "information_needed": [
+    "Exact location",
+    "Distance between the flames and the houses",
+    "Whether an evacuation has started",
+    "Whether people are trapped or injured"
+   ],
+   "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+   "report_markdown": "# Preliminary incident assessment\nIncident type: forest_fire | Location: Not stated | Severity (system assessment): high\n\n## Summary\nSmoke rising from the hills behind the village; Flames visible near the first houses\n\n## 2. What was observed in the image\nA dense smoke column rising from the hillside; Orange flames at the base of the smoke, on the slope; Several houses at the foot of the slope\n\n## 3. Relevant information from the knowledge base\nCoverage: partial\n- FEMA's advice for making a home safer from wildfire: use fire-resistant materials to build, renovate or make repairs. (FI-11)\n- If you are under a wildfire warning, get to safety right away. (FI-09)\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.\n"
+  }
+ },
+ "retrieval": [
+  {
+   "chunk_id": "en/fire_kb.md::section::10",
+   "entry_ids": [
+    "FI-11",
+    "FI-13"
+   ],
+   "score": 0.8702
+  },
+  {
+   "chunk_id": "en/fire_kb.md::section::8",
+   "entry_ids": [
+    "FI-09"
+   ],
+   "score": 0.8606
+  },
+  {
+   "chunk_id": "en/fire_kb.md::section::11",
+   "entry_ids": [
+    "FI-11"
+   ],
+   "score": 0.8564
+  },
+  {
+   "chunk_id": "fr/fire_kb.md::section::9",
+   "entry_ids": [
+    "FI-21"
+   ],
+   "score": 0.8561
+  },
+  {
+   "chunk_id": "en/fire_kb.md::section::4",
+   "entry_ids": [
+    "FI-04",
+    "FI-05"
+   ],
+   "score": 0.8556
+  },
+  {
+   "chunk_id": "en/fire_kb.md::section::5",
+   "entry_ids": [
+    "FI-06"
+   ],
+   "score": 0.8555
+  },
+  {
+   "chunk_id": "fr/fire_kb.md::section::8",
+   "entry_ids": [
+    "FI-21",
+    "FI-23",
+    "FI-24"
+   ],
+   "score": 0.8544
+  },
+  {
+   "chunk_id": "fr/fire_kb.md::section::2",
+   "entry_ids": [
+    "FI-14"
+   ],
+   "score": 0.8531
+  }
+ ],
+ "validate": {
+  "status": "pass",
+  "violations": []
+ },
+ "schema_problems": []
+}

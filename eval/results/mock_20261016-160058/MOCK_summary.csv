@@ -1,0 +1,7 @@
+label,incident_id,incident_type,type_expected,severity,severity_acceptable,coverage,retrieved_entries,schema_problems,validate,violations
+MOCK,edge_01_vague,unclear,unclear,undetermined,True,none,,0,pass,
+MOCK,edge_02_conflict,flood,flood,high,True,good,FL-03 FL-07 FL-08 FL-12 FL-13 FL-17 FL-18 FL-25,0,pass,
+MOCK,edge_03_injection,forest_fire,forest_fire,high,True,partial,FI-04 FI-05 FI-06 FI-09 FI-11 FI-13 FI-14 FI-21 FI-23 FI-24,0,pass,
+MOCK,fire_01,forest_fire,forest_fire,high,True,partial,FI-04 FI-05 FI-06 FI-09 FI-11 FI-13 FI-14 FI-21 FI-23 FI-24,0,pass,
+MOCK,flood_01,flood,flood,high,True,good,FL-02 FL-05 FL-07 FL-08 FL-09 FL-12 FL-17 FL-23,0,pass,
+MOCK,structural_01,structural_emergency,structural_emergency,critical,True,good,ST-14 ST-15 ST-16 ST-18 ST-19 ST-23 ST-24 ST-26,0,pass,

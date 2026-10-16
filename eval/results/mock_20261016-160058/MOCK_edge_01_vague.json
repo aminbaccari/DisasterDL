@@ -1,0 +1,126 @@
+{
+ "incident_id": "edge_01_vague",
+ "steps": {
+  "incident": {
+   "incident_type": "unclear",
+   "type_confidence": "low",
+   "location": {
+    "text": "près du port",
+    "precision": "area"
+   },
+   "reported_facts": [
+    "Un problème grave est signalé près du port"
+   ],
+   "initial_severity": "unknown",
+   "severity_reason": "Le rapport ne dit pas ce qui s'est passé",
+   "people_at_risk_mentioned": "unknown",
+   "missing_information": [
+    "Type d'incident",
+    "Y a-t-il des personnes en danger",
+    "Lieu précis"
+   ],
+   "language": "fr",
+   "rag_topic": "general",
+   "notes": "Rapport trop vague pour classer"
+  },
+  "rag_queries": {
+   "queries": [
+    {
+     "text": "que faire quand le danger menace les habitants",
+     "language": "fr",
+     "need": "safety actions"
+    },
+    {
+     "text": "quand quitter les lieux et suivre les consignes",
+     "language": "fr",
+     "need": "evacuation"
+    },
+    {
+     "text": "what to do in an emergency before help arrives",
+     "language": "en",
+     "need": "safety actions"
+    }
+   ]
+  },
+  "knowledge": {
+   "relevant_guidance": [],
+   "ignored_chunks": [],
+   "coverage": "none",
+   "gaps": [
+    "No passages retrieved"
+   ]
+  },
+  "risk": {
+   "severity": "undetermined",
+   "severity_basis": [
+    {
+     "statement": "Un problème grave est signalé près du port",
+     "source": "report"
+    }
+   ],
+   "main_risks": [],
+   "possibly_affected": [],
+   "conflicts_between_sources": [],
+   "considerations": [],
+   "uncertainties": [
+    "No image was analysed",
+    "No relevant guidance retrieved",
+    "No passages retrieved"
+   ],
+   "information_needed": [
+    "Type d'incident",
+    "Y a-t-il des personnes en danger",
+    "Lieu précis"
+   ]
+  },
+  "report": {
+   "language": "fr",
+   "location": "près du port",
+   "severity": "undetermined",
+   "summary": "Un problème grave est signalé près du port",
+   "reported": [
+    {
+     "text": "Un problème grave est signalé près du port",
+     "source": "report"
+    }
+   ],
+   "image_status": "not_provided",
+   "observed": [],
+   "knowledge": {
+    "coverage": "none",
+    "guidance": [],
+    "no_guidance_statement": "Aucune consigne disponible dans la base de connaissances sur ce point. Suivez les instructions des autorités et des services de secours."
+   },
+   "assessment": {
+    "basis": [
+     {
+      "text": "Un problème grave est signalé près du port",
+      "source": "report"
+     }
+    ],
+    "risks": [],
+    "possibly_affected": [],
+    "conflicts": []
+   },
+   "recommendations": [],
+   "uncertainties": [
+    "No image was analysed",
+    "No relevant guidance retrieved",
+    "No passages retrieved"
+   ],
+   "information_needed": [
+    "Type d'incident",
+    "Y a-t-il des personnes en danger",
+    "Lieu précis"
+   ],
+   "disclaimer": "Ce rapport est une aide à la décision produite par un prototype d'IA. Il ne remplace pas les services d'urgence et ne constitue pas une décision officielle. L'échelle de gravité est une échelle de travail de ce prototype.",
+   "report_markdown": "# Preliminary incident assessment\nIncident type: unclear | Location: près du port | Severity (system assessment): undetermined\n\n## Summary\nUn problème grave est signalé près du port\n\n## 2. What was observed in the image\nAucune image fournie.\n\n## 3. Relevant information from the knowledge base\nCoverage: none\nAucune consigne disponible dans la base de connaissances sur ce point. Suivez les instructions des autorités et des services de secours.\n\n## About this report\nCe rapport est une aide à la décision produite par un prototype d'IA. Il ne remplace pas les services d'urgence et ne constitue pas une décision officielle. L'échelle de gravité est une échelle de travail de ce prototype.\n"
+  }
+ },
+ "retrieval": [],
+ "validate": {
+  "status": "pass",
+  "violations": []
+ },
+ "schema_problems": []
+}

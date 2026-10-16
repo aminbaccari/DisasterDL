@@ -1,0 +1,316 @@
+{
+ "incident_id": "structural_01",
+ "steps": {
+  "incident": {
+   "incident_type": "structural_emergency",
+   "type_confidence": "high",
+   "location": {
+    "text": null,
+    "precision": "unknown"
+   },
+   "reported_facts": [
+    "Part of a five-storey apartment building has collapsed",
+    "Dust covers the street",
+    "Neighbours say some residents may still be inside (second-hand, unconfirmed)"
+   ],
+   "initial_severity": "critical",
+   "severity_reason": "Partial collapse with possibly trapped residents, reported second-hand",
+   "people_at_risk_mentioned": "yes",
+   "missing_information": [
+    "Exact location",
+    "Number of residents possibly inside",
+    "Extent of the damage",
+    "Gas or fire hazards"
+   ],
+   "language": "en",
+   "rag_topic": "structural",
+   "notes": null
+  },
+  "vision": {
+   "image_usable": true,
+   "quality_issues": [],
+   "scene_summary": "Façade d'un immeuble partiellement effondrée avec poussière dans la rue.",
+   "observations": [
+    {
+     "category": "structural_damage",
+     "description": "Partie de la façade et des étages effondrée",
+     "confidence": "high"
+    },
+    {
+     "category": "other",
+     "description": "Poussière dans la rue",
+     "confidence": "medium"
+    }
+   ],
+   "visible_text": [],
+   "consistent_with_report": "yes",
+   "inconsistencies": [],
+   "not_determinable": [
+    "Structural integrity of the rest of the building",
+    "Number of people inside",
+    "Gas leaks"
+   ]
+  },
+  "rag_queries": {
+   "queries": [
+    {
+     "text": "what to do when a hazard threatens people and buildings",
+     "language": "en",
+     "need": "safety actions"
+    },
+    {
+     "text": "evacuation when authorities give an order",
+     "language": "en",
+     "need": "evacuation"
+    },
+    {
+     "text": "consignes de sécurité pour les habitants",
+     "language": "fr",
+     "need": "safety actions"
+    }
+   ]
+  },
+  "knowledge": {
+   "relevant_guidance": [
+    {
+     "point": "Environmental hazards in a damaged building can be ranked in tiers.",
+     "citation": {
+      "chunk_id": "en/structural_kb.md::section::17",
+      "source": "structural_kb.md",
+      "page": 1,
+      "entry_id": "ST-19"
+     }
+    },
+    {
+     "point": "Damaged parapets, chimneys, canopies and similar elements are falling hazards.",
+     "citation": {
+      "chunk_id": "en/structural_kb.md::section::23",
+      "source": "structural_kb.md",
+      "page": 1,
+      "entry_id": "ST-26"
+     }
+    }
+   ],
+   "ignored_chunks": [
+    "en/structural_kb.md::section::14",
+    "en/structural_kb.md::section::16",
+    "en/structural_kb.md::section::20",
+    "en/structural_kb.md::section::21",
+    "en/structural_kb.md::section::13",
+    "en/structural_kb.md::section::0"
+   ],
+   "coverage": "good",
+   "gaps": []
+  },
+  "risk": {
+   "severity": "critical",
+   "severity_basis": [
+    {
+     "statement": "Part of a five-storey apartment building has collapsed",
+     "source": "report"
+    },
+    {
+     "statement": "Dust covers the street",
+     "source": "report"
+    },
+    {
+     "statement": "Neighbours say some residents may still be inside (second-hand, unconfirmed)",
+     "source": "report"
+    },
+    {
+     "statement": "Partie de la façade et des étages effondrée",
+     "source": "image"
+    }
+   ],
+   "main_risks": [
+    {
+     "risk": "Partial collapse with possibly trapped residents, reported second-hand",
+     "basis": "Reported facts",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [],
+   "conflicts_between_sources": [],
+   "considerations": [
+    {
+     "text": "Responders may wish to weigh: Environmental hazards in a damaged building can be ranked in tiers.",
+     "citation": {
+      "chunk_id": "en/structural_kb.md::section::17",
+      "source": "structural_kb.md",
+      "page": 1,
+      "entry_id": "ST-19"
+     }
+    }
+   ],
+   "uncertainties": [
+    "Location not stated"
+   ],
+   "information_needed": [
+    "Exact location",
+    "Number of residents possibly inside",
+    "Extent of the damage",
+    "Gas or fire hazards"
+   ]
+  },
+  "report": {
+   "language": "en",
+   "location": null,
+   "severity": "critical",
+   "summary": "Part of a five-storey apartment building has collapsed; Dust covers the street",
+   "reported": [
+    {
+     "text": "Part of a five-storey apartment building has collapsed",
+     "source": "report"
+    },
+    {
+     "text": "Dust covers the street",
+     "source": "report"
+    },
+    {
+     "text": "Neighbours say some residents may still be inside (second-hand, unconfirmed)",
+     "source": "report"
+    }
+   ],
+   "image_status": "analysed",
+   "observed": [
+    {
+     "text": "Partie de la façade et des étages effondrée",
+     "confidence": "high",
+     "source": "image"
+    },
+    {
+     "text": "Poussière dans la rue",
+     "confidence": "medium",
+     "source": "image"
+    }
+   ],
+   "knowledge": {
+    "coverage": "good",
+    "guidance": [
+     {
+      "text": "Environmental hazards in a damaged building can be ranked in tiers.",
+      "entry_id": "ST-19",
+      "chunk_id": "en/structural_kb.md::section::17",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "Damaged parapets, chimneys, canopies and similar elements are falling hazards.",
+      "entry_id": "ST-26",
+      "chunk_id": "en/structural_kb.md::section::23",
+      "source": "knowledge_base"
+     }
+    ],
+    "no_guidance_statement": null
+   },
+   "assessment": {
+    "basis": [
+     {
+      "text": "Part of a five-storey apartment building has collapsed",
+      "source": "report"
+     },
+     {
+      "text": "Dust covers the street",
+      "source": "report"
+     },
+     {
+      "text": "Neighbours say some residents may still be inside (second-hand, unconfirmed)",
+      "source": "report"
+     },
+     {
+      "text": "Partie de la façade et des étages effondrée",
+      "source": "image"
+     }
+    ],
+    "risks": [
+     {
+      "text": "Partial collapse with possibly trapped residents, reported second-hand",
+      "source": "report"
+     }
+    ],
+    "possibly_affected": [],
+    "conflicts": []
+   },
+   "recommendations": [
+    {
+     "text": "Responders may wish to weigh: Environmental hazards in a damaged building can be ranked in tiers.",
+     "entry_id": "ST-19",
+     "chunk_id": "en/structural_kb.md::section::17",
+     "source": "knowledge_base"
+    }
+   ],
+   "uncertainties": [
+    "Location not stated"
+   ],
+   "information_needed": [
+    "Exact location",
+    "Number of residents possibly inside",
+    "Extent of the damage",
+    "Gas or fire hazards"
+   ],
+   "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+   "report_markdown": "# Preliminary incident assessment\nIncident type: structural_emergency | Location: Not stated | Severity (system assessment): critical\n\n## Summary\nPart of a five-storey apartment building has collapsed; Dust covers the street\n\n## 2. What was observed in the image\nPartie de la façade et des étages effondrée; Poussière dans la rue\n\n## 3. Relevant information from the knowledge base\nCoverage: good\n- Environmental hazards in a damaged building can be ranked in tiers. (ST-19)\n- Damaged parapets, chimneys, canopies and similar elements are falling hazards. (ST-26)\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.\n"
+  }
+ },
+ "retrieval": [
+  {
+   "chunk_id": "en/structural_kb.md::section::17",
+   "entry_ids": [
+    "ST-19"
+   ],
+   "score": 0.8715
+  },
+  {
+   "chunk_id": "en/structural_kb.md::section::23",
+   "entry_ids": [
+    "ST-26"
+   ],
+   "score": 0.8662
+  },
+  {
+   "chunk_id": "en/structural_kb.md::section::14",
+   "entry_ids": [
+    "ST-16"
+   ],
+   "score": 0.8633
+  },
+  {
+   "chunk_id": "en/structural_kb.md::section::16",
+   "entry_ids": [
+    "ST-18"
+   ],
+   "score": 0.8607
+  },
+  {
+   "chunk_id": "en/structural_kb.md::section::20",
+   "entry_ids": [
+    "ST-23"
+   ],
+   "score": 0.8528
+  },
+  {
+   "chunk_id": "en/structural_kb.md::section::21",
+   "entry_ids": [
+    "ST-24"
+   ],
+   "score": 0.8476
+  },
+  {
+   "chunk_id": "en/structural_kb.md::section::13",
+   "entry_ids": [
+    "ST-14",
+    "ST-15"
+   ],
+   "score": 0.8426
+  },
+  {
+   "chunk_id": "en/structural_kb.md::section::0",
+   "entry_ids": [],
+   "score": 0.8164
+  }
+ ],
+ "validate": {
+  "status": "pass",
+  "violations": []
+ },
+ "schema_problems": []
+}

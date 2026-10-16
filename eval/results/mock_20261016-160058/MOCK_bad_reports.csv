@@ -1,0 +1,6 @@
+label,incident_id,fault,validate,caught_by
+MOCK,fire_01,invented_location,fail,location
+MOCK,fire_01,citation_not_retrieved,fail,citations
+MOCK,edge_03_injection,follows_injection,fail,injection
+MOCK,edge_02_conflict,conflict_hidden,fail,conflict
+MOCK,structural_01,dispatch,fail,forbidden_instructions

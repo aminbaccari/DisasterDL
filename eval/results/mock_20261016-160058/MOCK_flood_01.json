@@ -1,0 +1,310 @@
+{
+ "incident_id": "flood_01",
+ "steps": {
+  "incident": {
+   "incident_type": "flood",
+   "type_confidence": "high",
+   "location": {
+    "text": "Nabeul",
+    "precision": "area"
+   },
+   "reported_facts": [
+    "Fortes inondations dans un quartier résidentiel de Nabeul",
+    "Plusieurs routes sont bloquées",
+    "L'eau continue de monter"
+   ],
+   "initial_severity": "high",
+   "severity_reason": "Routes bloquées et eau qui monte dans un quartier résidentiel",
+   "people_at_risk_mentioned": "unknown",
+   "missing_information": [
+    "Hauteur d'eau",
+    "Nombre de personnes touchées",
+    "Débit du courant"
+   ],
+   "language": "fr",
+   "rag_topic": "flood",
+   "notes": null
+  },
+  "vision": {
+   "image_usable": true,
+   "quality_issues": [],
+   "scene_summary": "Rue résidentielle recouverte d'eau.",
+   "observations": [
+    {
+     "category": "flood_water",
+     "description": "Eau brunâtre couvrant la chaussée",
+     "confidence": "high"
+    },
+    {
+     "category": "vehicles",
+     "description": "Une voiture partiellement dans l'eau",
+     "confidence": "medium"
+    }
+   ],
+   "visible_text": [],
+   "consistent_with_report": "yes",
+   "inconsistencies": [],
+   "not_determinable": [
+    "Hauteur d'eau",
+    "Nombre de personnes",
+    "Sens du courant"
+   ]
+  },
+  "rag_queries": {
+   "queries": [
+    {
+     "text": "que faire quand le danger menace les habitants",
+     "language": "fr",
+     "need": "safety actions"
+    },
+    {
+     "text": "quand quitter les lieux et suivre les consignes",
+     "language": "fr",
+     "need": "evacuation"
+    },
+    {
+     "text": "what to do in an emergency before help arrives",
+     "language": "en",
+     "need": "safety actions"
+    }
+   ]
+  },
+  "knowledge": {
+   "relevant_guidance": [
+    {
+     "point": "Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.",
+     "citation": {
+      "chunk_id": "fr/flood_kb.md::section::4",
+      "source": "flood_kb.md",
+      "page": 1,
+      "entry_id": "FL-08"
+     }
+    },
+    {
+     "point": "After a flood: if you evacuated, wait for officials to say it is safe before going home.",
+     "citation": {
+      "chunk_id": "en/flood_kb.md::section::10",
+      "source": "flood_kb.md",
+      "page": 1,
+      "entry_id": "FL-17"
+     }
+    }
+   ],
+   "ignored_chunks": [
+    "en/flood_kb.md::section::2",
+    "fr/flood_kb.md::section::3",
+    "en/flood_kb.md::section::6",
+    "fr/flood_kb.md::section::5",
+    "en/flood_kb.md::section::16",
+    "fr/flood_kb.md::section::1"
+   ],
+   "coverage": "good",
+   "gaps": []
+  },
+  "risk": {
+   "severity": "high",
+   "severity_basis": [
+    {
+     "statement": "Fortes inondations dans un quartier résidentiel de Nabeul",
+     "source": "report"
+    },
+    {
+     "statement": "Plusieurs routes sont bloquées",
+     "source": "report"
+    },
+    {
+     "statement": "L'eau continue de monter",
+     "source": "report"
+    },
+    {
+     "statement": "Eau brunâtre couvrant la chaussée",
+     "source": "image"
+    }
+   ],
+   "main_risks": [
+    {
+     "risk": "Routes bloquées et eau qui monte dans un quartier résidentiel",
+     "basis": "Reported facts",
+     "source": "report"
+    }
+   ],
+   "possibly_affected": [],
+   "conflicts_between_sources": [],
+   "considerations": [
+    {
+     "text": "Responders may wish to weigh: Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.",
+     "citation": {
+      "chunk_id": "fr/flood_kb.md::section::4",
+      "source": "flood_kb.md",
+      "page": 1,
+      "entry_id": "FL-08"
+     }
+    }
+   ],
+   "uncertainties": [],
+   "information_needed": [
+    "Hauteur d'eau",
+    "Nombre de personnes touchées",
+    "Débit du courant"
+   ]
+  },
+  "report": {
+   "language": "fr",
+   "location": "Nabeul",
+   "severity": "high",
+   "summary": "Fortes inondations dans un quartier résidentiel de Nabeul; Plusieurs routes sont bloquées",
+   "reported": [
+    {
+     "text": "Fortes inondations dans un quartier résidentiel de Nabeul",
+     "source": "report"
+    },
+    {
+     "text": "Plusieurs routes sont bloquées",
+     "source": "report"
+    },
+    {
+     "text": "L'eau continue de monter",
+     "source": "report"
+    }
+   ],
+   "image_status": "analysed",
+   "observed": [
+    {
+     "text": "Eau brunâtre couvrant la chaussée",
+     "confidence": "high",
+     "source": "image"
+    },
+    {
+     "text": "Une voiture partiellement dans l'eau",
+     "confidence": "medium",
+     "source": "image"
+    }
+   ],
+   "knowledge": {
+    "coverage": "good",
+    "guidance": [
+     {
+      "text": "Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.",
+      "entry_id": "FL-08",
+      "chunk_id": "fr/flood_kb.md::section::4",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "After a flood: if you evacuated, wait for officials to say it is safe before going home.",
+      "entry_id": "FL-17",
+      "chunk_id": "en/flood_kb.md::section::10",
+      "source": "knowledge_base"
+     }
+    ],
+    "no_guidance_statement": null
+   },
+   "assessment": {
+    "basis": [
+     {
+      "text": "Fortes inondations dans un quartier résidentiel de Nabeul",
+      "source": "report"
+     },
+     {
+      "text": "Plusieurs routes sont bloquées",
+      "source": "report"
+     },
+     {
+      "text": "L'eau continue de monter",
+      "source": "report"
+     },
+     {
+      "text": "Eau brunâtre couvrant la chaussée",
+      "source": "image"
+     }
+    ],
+    "risks": [
+     {
+      "text": "Routes bloquées et eau qui monte dans un quartier résidentiel",
+      "source": "report"
+     }
+    ],
+    "possibly_affected": [],
+    "conflicts": []
+   },
+   "recommendations": [
+    {
+     "text": "Responders may wish to weigh: Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie.",
+     "entry_id": "FL-08",
+     "chunk_id": "fr/flood_kb.md::section::4",
+     "source": "knowledge_base"
+    }
+   ],
+   "uncertainties": [],
+   "information_needed": [
+    "Hauteur d'eau",
+    "Nombre de personnes touchées",
+    "Débit du courant"
+   ],
+   "disclaimer": "Ce rapport est une aide à la décision produite par un prototype d'IA. Il ne remplace pas les services d'urgence et ne constitue pas une décision officielle. L'échelle de gravité est une échelle de travail de ce prototype.",
+   "report_markdown": "# Preliminary incident assessment\nIncident type: flood | Location: Nabeul | Severity (system assessment): high\n\n## Summary\nFortes inondations dans un quartier résidentiel de Nabeul; Plusieurs routes sont bloquées\n\n## 2. What was observed in the image\nEau brunâtre couvrant la chaussée; Une voiture partiellement dans l'eau\n\n## 3. Relevant information from the knowledge base\nCoverage: good\n- Inondation : restez toujours informé et écoutez les consignes des secours et de la mairie. (FL-08)\n- After a flood: if you evacuated, wait for officials to say it is safe before going home. (FL-17)\n\n## About this report\nCe rapport est une aide à la décision produite par un prototype d'IA. Il ne remplace pas les services d'urgence et ne constitue pas une décision officielle. L'échelle de gravité est une échelle de travail de ce prototype.\n"
+  }
+ },
+ "retrieval": [
+  {
+   "chunk_id": "fr/flood_kb.md::section::4",
+   "entry_ids": [
+    "FL-08"
+   ],
+   "score": 0.8696
+  },
+  {
+   "chunk_id": "en/flood_kb.md::section::10",
+   "entry_ids": [
+    "FL-17"
+   ],
+   "score": 0.8688
+  },
+  {
+   "chunk_id": "en/flood_kb.md::section::2",
+   "entry_ids": [
+    "FL-02"
+   ],
+   "score": 0.86
+  },
+  {
+   "chunk_id": "fr/flood_kb.md::section::3",
+   "entry_ids": [
+    "FL-07"
+   ],
+   "score": 0.8596
+  },
+  {
+   "chunk_id": "en/flood_kb.md::section::6",
+   "entry_ids": [
+    "FL-12"
+   ],
+   "score": 0.8594
+  },
+  {
+   "chunk_id": "fr/flood_kb.md::section::5",
+   "entry_ids": [
+    "FL-09"
+   ],
+   "score": 0.8582
+  },
+  {
+   "chunk_id": "en/flood_kb.md::section::16",
+   "entry_ids": [
+    "FL-23"
+   ],
+   "score": 0.8575
+  },
+  {
+   "chunk_id": "fr/flood_kb.md::section::1",
+   "entry_ids": [
+    "FL-05"
+   ],
+   "score": 0.8531
+  }
+ ],
+ "validate": {
+  "status": "pass",
+  "violations": []
+ },
+ "schema_problems": []
+}
