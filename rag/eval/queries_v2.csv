@@ -1,0 +1,19 @@
+query_id,query,language,disaster_type,expected_source_document,expected_phrase,expected_entry_id,notes
+v01,residents see flames close to the first houses and the wind pushes the fire toward them,en,fire,,,FI-09|FI-13|FI-14|FI-21|FI-24,need flames_approaching (fire_01)
+v02,"le feu avance vers les maisons du village, faut-il rester à l'intérieur ou partir",fr,fire,,,FI-13|FI-24|FI-14|FI-21,need evacuate and shelter
+v03,what to put in a go-bag and which routes to know before a wildfire,en,fire,,,FI-10|FI-22,need before and kit
+v04,protéger sa maison avec une zone dégagée de feuilles et de broussailles autour,fr,fire,,,FI-17|FI-23|FI-11,need defensible_space
+v05,"after the blaze is out, can people go back and walk on the burned ground",en,fire,,,FI-19|FI-20|FI-26|FI-03,need return
+v06,"l'eau monte vite et les routes sont coupées dans mon quartier, où aller",fr,flood,,,FL-07|FL-13|FL-05|FL-08,need rising_water and roads_blocked (flood_01)
+v07,is tap water and refrigerated food safe to consume after the flood waters go down,en,flood,,,FL-16,"need after, health"
+v08,combien de temps pour sécher une maison inondée avant l'apparition de moisissures,fr,flood,,,FL-19|FL-20,"cross-language: French query, English-only entries"
+v09,danger du monoxyde de carbone avec un groupe électrogène après une inondation,fr,flood,,,FL-21,"cross-language: French query, English-only entry"
+v10,what should an emergency kit for three days contain,en,flood,,,FL-10|FL-11,"cross-language: English query, French-only entries"
+v11,what protective clothing for cleaning mud out of a flooded house,en,flood,,,FL-18,need cleanup
+v12,"puis-je rentrer chez moi après l'évacuation, des câbles électriques sont tombés",fr,flood,,,FL-17,"need after, power"
+v13,"an apartment block partly collapsed and people may be trapped, should neighbours go inside",en,structural,,,ST-05|ST-17,need trapped_people and entry (structural_01)
+v14,how wide should the safety perimeter be around a damaged tall building,en,structural,,,ST-07|ST-08|ST-12|ST-10,need cordon and distance
+v15,who is allowed to declare a damaged building safe or unsafe,en,structural,,,ST-01|ST-03,need authority
+v16,"que signifient les affiches rouge, jaune et vert sur un immeuble endommagé",fr,structural,,,ST-03,"cross-language: French query, English-only entry"
+v17,wildfire smoke and elderly people with lung disease,en,fire,,,FI-04|FI-05|FI-18|FI-25,need smoke and health
+v18,que recommande la protection civile tunisienne pour éviter les départs de feu,fr,fire,,,FI-12,need tunisia_context
