@@ -61,6 +61,16 @@ Run from the project root, after adding documents to rag/corpus/en and rag/corpu
 
 The first ingest downloads the embedding model, so it needs internet access.
 
+## Backend, guardrails and the n8n workflow
+
+- `backend/` holds the agent output schemas (`backend/schemas/*.schema.json` with examples), the `/validate` guardrails (`backend/validate.py`, mounted in the same FastAPI app as `/search`) and a MOCK Gemini for offline tests (`backend/mock_gemini.py`).
+- Backend tests: python -m unittest discover -s backend/tests -t .
+- Generate the n8n workflow from the prompt files: python scripts/build_workflow.py (options: --model, --pace-seconds, --gemini-base). Static check: python scripts/check_workflow.py. Result in n8n/workflows/. It was run in n8n only with a MOCK Gemini and a few real calls, see docs/EVIDENCE_LOG.md.
+- Offline replay of the six incidents (agents are MOCK, retrieval and /validate are real): python scripts/replay_mock.py
+- Failure paths in a running n8n with the MOCK Gemini: python scripts/failure_paths_mock.py --url <webhook url>
+- Single-prompt baseline: python scripts/baseline_single_prompt.py --dry-run (a real run needs a key and quota).
+- Sprint plan: docs/SPRINT_PLAN.md. What is untested and what comes next: docs/NEXT_STEPS.md.
+
 ## End-to-end tests
 
 Once the n8n workflow exists, run the six fixed incidents in eval/incidents/ (see its README for the images you need to collect first):
