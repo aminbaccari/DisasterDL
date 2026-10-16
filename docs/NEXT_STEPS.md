@@ -61,3 +61,13 @@ The professor's list of 8 sections is not in the repository, so no full mapping 
 5. Does the demo run on the team's n8n instance? The container named `n8n` that ran before the Docker restart was missing afterwards, its volume `n8n_data` exists.
 6. Should the `.env.example` file come back? README and CLAUDE.md still tell people to copy it.
 7. Is the severity scale (our own working scale) described as such in the slides?
+
+## Update 2026-10-17: re-run list for when free-tier quotas are back
+
+Decision of the team: incident prompt v2 and report prompt v4 stay untested drafts (`prompts/CHANGELOG.md`). The default workflow built by `scripts/build_workflow.py` still points at those drafts; to run the tested prompts use `--prompt incident=incident_understanding/v1.md --prompt report=report/v3.md`.
+
+1. Check the models first: `python scripts/llm_ping.py --json` and `python scripts/llm_ping.py --model gemini:gemini-3.6-flash --image`. A useful run needs at least two providers with quota and one vision-capable model.
+2. Full pipeline before and after: build both workflows with different `--workflow-id` and `--path`, import them (`n8n import:workflow`, `publish:workflow`, restart), then `python scripts/before_after.py run --before-url .../webhook/incident_before --after-url .../webhook/incident_after --runs 3` and `python scripts/before_after.py analyse <folder>`.
+3. Paired report test on one pinned model: `python scripts/report_ab.py --runs 3 --chain <provider:model> --pace-seconds 65` (the pause is for tokens-per-minute limits).
+4. Score the manual checks of the new runs with `scripts/show_run.py`, log in `docs/EVIDENCE_LOG.md`, and turn the CHANGELOG "NOT TESTED" lines into before and after entries.
+5. Still open from `docs/SPRINT_STATUS.md`: log the first validation attempt before the repair pass, coverage honesty for fire (F5), re-score the baseline with the fixed validator, update the mock replay after the latest workflow changes.
