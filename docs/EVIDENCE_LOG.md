@@ -177,3 +177,31 @@ How to read this:
 
 - Incident v2 and report v4 stay untested drafts in `prompts/CHANGELOG.md` with the observations above. The incident v2 location and language observations (section 1) point the right way but rest on one run per cell.
 - A full test needs a paid tier or a day with fresh quotas on at least two providers. The scripts are ready: `scripts/before_after.py run` for the pipeline, `scripts/report_ab.py` for the paired report test.
+
+## Local vision model: qwen3-vl in Docker, 2026-10-17
+
+Setup (done by the team's choice: no Windows install, Docker image `ollama/ollama:0.34.0` already on the machine): the container `ollama-c` with `--gpus all`, the models in a bind mount on C: (`C:\Users\ASUS\ollama-models`), `OLLAMA_KEEP_ALIVE=24h`, port 11434. The GPU was detected (CUDA, RTX 3050 6 GiB) and the loaded model runs 100% on the GPU (`ollama ps`: 3.5 GB, context 4096).
+
+What went wrong first, in order:
+1. C: was full (0.12 GB free at the start of the day). Docker's virtual disk could not grow, the first pull failed with an input/output error, the engine crashed. After the team freed space (61.9 GB free) I restarted Docker. Docker then refused to start because of two stale socket files (`%LOCALAPPDATA%\Docker\run\sailor-ingest.sock`, `%LOCALAPPDATA%\docker-secrets-engine\engine.sock`) left by the crashes. They could not be deleted, so I renamed their folders to `run.stale-*` and `docker-secrets-engine.stale-*` (nothing deleted, both can be restored). Docker started.
+2. The pull failed with `x509: certificate signed by unknown authority`. The network traffic is re-signed by the antivirus (Avast Web/Mail Shield Root), which Windows trusts but the container does not. This is the same cause as the Python certificate errors seen earlier. Verification was not turned off. The public root certificate was exported from the Windows store (thumbprint E8935BCB0EAF6BF775B6B7444CF17F405AB3458F, expires 2040-01-01) to `C:\Users\ASUS\ollama-ca\avast-web-shield-root.pem`, mounted read-only in the container, `SSL_CERT_DIR=/extra-ca:/etc/ssl/certs`. The container now trusts that one root in addition to the normal ones.
+3. The default tag `qwen3-vl:4b` is a thinking model: through the OpenAI-style endpoint it returned an empty `content` (the text went to `reasoning`) and used its 300 tokens thinking. All 8 benchmark calls were rejected by the chain as "not a JSON object" (`eval/results/vision_bench/20261017-125659`, about 71 s each). `reasoning_effort: none` and `think: false` did not switch it off on that endpoint. The tag `qwen3-vl:4b-instruct` (also 3.3 GB) answers normally.
+
+Benchmark: `scripts/vision_bench.py --model ollama:qwen3-vl:4b-instruct --runs 2` on the four test images with `prompts/vision/v1.md` (`eval/results/vision_bench/20261017-132058`, 8 calls):
+
+| Measure | Result |
+|---------|--------|
+| answered, JSON valid | 8 of 8 |
+| schema valid (`vision.schema.json`) | 7 of 8 (structural_01 run 1 used the category "dust", not in the enum) |
+| latency, first call after the model switch (cold, model loading from the bind mount) | 71.7 s |
+| latency, warm calls | 8.8 to 13.8 s (7 calls) |
+| ping with an image and JSON, warm | 4.3 s |
+
+I compared each answer with the images by eye. This is a small manual check, 8 answers, one reader:
+- Correct and useful: fire_01 (night hillside fire, smoke, flames, light trails, and "no houses visible" against the report, 2 of 2). flood_01 (brown water to the ground floors, no people, 2 of 2). edge_02 run 1 (backyard under hazy sky, "report says flooding on a main road, image shows a backyard"). structural_01 (collapsed multi-storey building, "five-storey in the report, two or three storeys visible").
+- False observations that follow the report text: edge_02 run 2 reported "a grassy field in the distance appears flooded" (flood_water, medium) although the image shows no water, which turned the conflict into "partly consistent". structural_01 run 1 listed "dust visible in the air", the report text says dust and the image does not show it clearly. In the end-to-end run below the edge_02 report again carried "a wide, shallow area of water is visible in the background field". So 3 of 10 edge_02 and structural_01 answers contain an observation that matches the report and not the picture. This is the confirmation bias named in the hypotheses of `prompts/vision/v1.md`, and supports the proposed vision v2 (image only).
+- Other defects: observations of absence ("No people are visible", "No visible vehicles") listed as observations with high confidence. The model also compared the flood photo with the report's place ("Nabeul ... architecture suggests a European town"), which rule 5 of the prompt says not to infer. `visible_text` lists "STOP" three times for a scene where I see a red no-entry sign and an arrow, so it is probably a misread.
+
+End to end with the local model (`eval/results/vision_chain_e2e/20261017-132919`, n8n workflow `incident`, `VISION_CHAIN=ollama:qwen3-vl:4b-instruct,gemini:...,openrouter:...`, text models answered by Groq and OpenRouter): the Vision step answered in both image runs (9.8 s and 10.4 s, `image_status: analysed`, no vision quota used). fire_01 report: conflict "flames near the first houses but no houses are visible" shown, status degraded (2 guidance points removed because the cited entry was not in the cited chunk), validation passed after one repair. edge_02 report: status ok, validation passed after one repair, conflict shown but with the false "shallow water in a yard" framing. Whole runs 136.8 s and 131.5 s: the repair step took 109 s and 102 s because the retry rotation put it on OpenRouter nemotron (slow). This was one run per incident with prompts incident v2 and report v4 (untested drafts), so it shows that the vision path works end to end, not that the reports are good.
+
+Not done: Hugging Face hosted models (no HF_TOKEN), other candidate models (`qwen3-vl:2b-instruct`, `gemma3:4b`), the image-only prompt v2 and its before and after run, more than four images.

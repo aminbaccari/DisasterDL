@@ -1,0 +1,287 @@
+{
+  "incident_id": "fire_01",
+  "image_status": "sent",
+  "status_code": 200,
+  "raw_response": {
+    "status": "degraded",
+    "incident_type": "forest_fire",
+    "severity": "high",
+    "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-17T12:31:31.579Z\nIncident type: forest_fire | Location: Not stated | Severity (system assessment): high\n\n## Summary\nA forest fire is reported near a village, with smoke rising from the hills and flames visible near the first houses. A strong wind is blowing toward the village, increasing the threat to people and structures. The image shows a large wildfire on a hillside at night with thick smoke and bright flames.\n\n## 1. What was reported\n- Smoke is rising from the hills behind the village (reported)\n- Flames are visible near the first houses (reported)\n- A strong wind is blowing toward the village (reported)\n\n## 2. What was observed in the image\n- A large wildfire is burning on a hillside at night, with bright orange flames and smoke illuminating the sky. Below the fire, a dark body of water reflects the glow. A highway structure is visible in the foreground. (high)\n- Thick, dark smoke dominates the sky, illuminated by the fire's glow. (high)\n- Bright orange and yellow flames are visible across the hillside, indicating active fire. (high)\n- The fire appears to be consuming vegetation on a hill or mountain slope. (high)\n- A highway sign or support structure is visible in the foreground, silhouetted against the fire's glow. (medium)\nInconsistency with report: Report says flames are visible near the first houses, but no houses are visible in the image.\n\n## 3. Relevant information from the knowledge base\nCoverage: good\n- En cas d'alerte feu de forêt, portez des masques N95, conservez les documents importants dans un coffre ignifugé et gardez des copies numériques protégées par mot de passe. (FI-21, fr/fire_kb.md::section::8)\n- Si vous êtes témoin d'un début d'incendie, alertez les services de secours, localisez le feu et mettez-vous à l'abri dans une habitation débroussaillée en attendant les secours. (FI-14, fr/fire_kb.md::section::2)\n- Sign up for the community warning system, know evacuation routes, have multiple ways out, and gather emergency supplies including N95 masks, medication, and important documents. (FI-10, en/fire_kb.md::section::9)\n- Avant l'arrivée du feu, fermez le tuyau d'arrosage, bouchez les aérations et le bas des portes, et couvrez votre nez et votre bouche d'un linge humide pour vous protéger de la fumée. (FI-16, fr/fire_kb.md::section::4)\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: high. Basis: Report states fire is near houses and wind is blowing toward the village, indicating a high threat to people and structures (report); Image shows a large wildfire on a hillside with bright orange flames and thick smoke, indicating active fire that could spread (image). Main risks: Fire could spread to residential areas and threaten houses (report); Strong wind may accelerate fire spread toward the village (report); Smoke inhalation risk for nearby residents (image). Possibly affected: Residential houses/village (report); Vegetation on hillside (image); Highway infrastructure (sign or support structure) (image). Conflicts: Report says flames are visible near the first houses, but no houses are visible in the image.\n\n## 5. Missing information and uncertainties\nUncertainties: Image analysis could not determine wind direction, scale, village location, number of people, or structural integrity of buildings; Report does not provide current wind speed, precise fire size, or official evacuation orders.\nInformation needed: Exact fire location (coordinates or address); Current wind speed and direction details; Size and spread rate of the fire; Number of houses or people directly affected; Official evacuation orders or shelter information; Confirmation of wind direction toward the village (from image); Scale or distance of fire from viewpoint; Specific location of the village; Number of people present; Structural integrity of any visible buildings.\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+    "report": {
+      "language": "en",
+      "location": null,
+      "severity": "high",
+      "summary": "A forest fire is reported near a village, with smoke rising from the hills and flames visible near the first houses. A strong wind is blowing toward the village, increasing the threat to people and structures. The image shows a large wildfire on a hillside at night with thick smoke and bright flames.",
+      "reported": [
+        {
+          "text": "Smoke is rising from the hills behind the village",
+          "source": "report"
+        },
+        {
+          "text": "Flames are visible near the first houses",
+          "source": "report"
+        },
+        {
+          "text": "A strong wind is blowing toward the village",
+          "source": "report"
+        }
+      ],
+      "image_status": "analysed",
+      "observed": [
+        {
+          "text": "A large wildfire is burning on a hillside at night, with bright orange flames and smoke illuminating the sky. Below the fire, a dark body of water reflects the glow. A highway structure is visible in the foreground.",
+          "confidence": "high",
+          "source": "image"
+        },
+        {
+          "text": "Thick, dark smoke dominates the sky, illuminated by the fire's glow.",
+          "confidence": "high",
+          "source": "image"
+        },
+        {
+          "text": "Bright orange and yellow flames are visible across the hillside, indicating active fire.",
+          "confidence": "high",
+          "source": "image"
+        },
+        {
+          "text": "The fire appears to be consuming vegetation on a hill or mountain slope.",
+          "confidence": "high",
+          "source": "image"
+        },
+        {
+          "text": "A highway sign or support structure is visible in the foreground, silhouetted against the fire's glow.",
+          "confidence": "medium",
+          "source": "image"
+        }
+      ],
+      "knowledge": {
+        "coverage": "good",
+        "guidance": [
+          {
+            "text": "En cas d'alerte feu de forêt, portez des masques N95, conservez les documents importants dans un coffre ignifugé et gardez des copies numériques protégées par mot de passe.",
+            "entry_id": "FI-21",
+            "chunk_id": "fr/fire_kb.md::section::8",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Si vous êtes témoin d'un début d'incendie, alertez les services de secours, localisez le feu et mettez-vous à l'abri dans une habitation débroussaillée en attendant les secours.",
+            "entry_id": "FI-14",
+            "chunk_id": "fr/fire_kb.md::section::2",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Sign up for the community warning system, know evacuation routes, have multiple ways out, and gather emergency supplies including N95 masks, medication, and important documents.",
+            "entry_id": "FI-10",
+            "chunk_id": "en/fire_kb.md::section::9",
+            "source": "knowledge_base"
+          },
+          {
+            "text": "Avant l'arrivée du feu, fermez le tuyau d'arrosage, bouchez les aérations et le bas des portes, et couvrez votre nez et votre bouche d'un linge humide pour vous protéger de la fumée.",
+            "entry_id": "FI-16",
+            "chunk_id": "fr/fire_kb.md::section::4",
+            "source": "knowledge_base"
+          }
+        ],
+        "no_guidance_statement": "No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services."
+      },
+      "assessment": {
+        "basis": [
+          {
+            "text": "Report states fire is near houses and wind is blowing toward the village, indicating a high threat to people and structures",
+            "source": "report"
+          },
+          {
+            "text": "Image shows a large wildfire on a hillside with bright orange flames and thick smoke, indicating active fire that could spread",
+            "source": "image"
+          }
+        ],
+        "risks": [
+          {
+            "text": "Fire could spread to residential areas and threaten houses",
+            "source": "report"
+          },
+          {
+            "text": "Strong wind may accelerate fire spread toward the village",
+            "source": "report"
+          },
+          {
+            "text": "Smoke inhalation risk for nearby residents",
+            "source": "image"
+          }
+        ],
+        "possibly_affected": [
+          {
+            "text": "Residential houses/village",
+            "source": "report"
+          },
+          {
+            "text": "Vegetation on hillside",
+            "source": "image"
+          },
+          {
+            "text": "Highway infrastructure (sign or support structure)",
+            "source": "image"
+          }
+        ],
+        "conflicts": [
+          "Report says flames are visible near the first houses, but no houses are visible in the image."
+        ]
+      },
+      "recommendations": [
+        {
+          "text": "En cas d'alerte feu de forêt, portez des masques N95, conservez les documents importants dans un coffre ignifugé et gardez des copies numériques protégées par mot de passe.",
+          "entry_id": "FI-21",
+          "chunk_id": "fr/fire_kb.md::section::8",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Si vous êtes témoin d'un début d'incendie, alertez les services de secours, localisez le feu et mettez-vous à l'abri dans une habitation débroussaillée en attendant les secours.",
+          "entry_id": "FI-14",
+          "chunk_id": "fr/fire_kb.md::section::2",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Sign up for the community warning system, know evacuation routes, have multiple ways out, and gather emergency supplies including N95 masks, medication, and important documents.",
+          "entry_id": "FI-10",
+          "chunk_id": "en/fire_kb.md::section::9",
+          "source": "knowledge_base"
+        },
+        {
+          "text": "Avant l'arrivée du feu, fermez le tuyau d'arrosage, bouchez les aérations et le bas des portes, et couvrez votre nez et votre bouche d'un linge humide pour vous protéger de la fumée.",
+          "entry_id": "FI-16",
+          "chunk_id": "fr/fire_kb.md::section::4",
+          "source": "knowledge_base"
+        }
+      ],
+      "uncertainties": [
+        "Image analysis could not determine wind direction, scale, village location, number of people, or structural integrity of buildings",
+        "Report does not provide current wind speed, precise fire size, or official evacuation orders"
+      ],
+      "information_needed": [
+        "Exact fire location (coordinates or address)",
+        "Current wind speed and direction details",
+        "Size and spread rate of the fire",
+        "Number of houses or people directly affected",
+        "Official evacuation orders or shelter information",
+        "Confirmation of wind direction toward the village (from image)",
+        "Scale or distance of fire from viewpoint",
+        "Specific location of the village",
+        "Number of people present",
+        "Structural integrity of any visible buildings"
+      ],
+      "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+      "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-17T12:31:31.579Z\nIncident type: forest_fire | Location: Not stated | Severity (system assessment): high\n\n## Summary\nA forest fire is reported near a village, with smoke rising from the hills and flames visible near the first houses. A strong wind is blowing toward the village, increasing the threat to people and structures. The image shows a large wildfire on a hillside at night with thick smoke and bright flames.\n\n## 1. What was reported\n- Smoke is rising from the hills behind the village (reported)\n- Flames are visible near the first houses (reported)\n- A strong wind is blowing toward the village (reported)\n\n## 2. What was observed in the image\n- A large wildfire is burning on a hillside at night, with bright orange flames and smoke illuminating the sky. Below the fire, a dark body of water reflects the glow. A highway structure is visible in the foreground. (high)\n- Thick, dark smoke dominates the sky, illuminated by the fire's glow. (high)\n- Bright orange and yellow flames are visible across the hillside, indicating active fire. (high)\n- The fire appears to be consuming vegetation on a hill or mountain slope. (high)\n- A highway sign or support structure is visible in the foreground, silhouetted against the fire's glow. (medium)\nInconsistency with report: Report says flames are visible near the first houses, but no houses are visible in the image.\n\n## 3. Relevant information from the knowledge base\nCoverage: good\n- En cas d'alerte feu de forêt, portez des masques N95, conservez les documents importants dans un coffre ignifugé et gardez des copies numériques protégées par mot de passe. (FI-21, fr/fire_kb.md::section::8)\n- Si vous êtes témoin d'un début d'incendie, alertez les services de secours, localisez le feu et mettez-vous à l'abri dans une habitation débroussaillée en attendant les secours. (FI-14, fr/fire_kb.md::section::2)\n- Sign up for the community warning system, know evacuation routes, have multiple ways out, and gather emergency supplies including N95 masks, medication, and important documents. (FI-10, en/fire_kb.md::section::9)\n- Avant l'arrivée du feu, fermez le tuyau d'arrosage, bouchez les aérations et le bas des portes, et couvrez votre nez et votre bouche d'un linge humide pour vous protéger de la fumée. (FI-16, fr/fire_kb.md::section::4)\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: high. Basis: Report states fire is near houses and wind is blowing toward the village, indicating a high threat to people and structures (report); Image shows a large wildfire on a hillside with bright orange flames and thick smoke, indicating active fire that could spread (image). Main risks: Fire could spread to residential areas and threaten houses (report); Strong wind may accelerate fire spread toward the village (report); Smoke inhalation risk for nearby residents (image). Possibly affected: Residential houses/village (report); Vegetation on hillside (image); Highway infrastructure (sign or support structure) (image). Conflicts: Report says flames are visible near the first houses, but no houses are visible in the image.\n\n## 5. Missing information and uncertainties\nUncertainties: Image analysis could not determine wind direction, scale, village location, number of people, or structural integrity of buildings; Report does not provide current wind speed, precise fire size, or official evacuation orders.\nInformation needed: Exact fire location (coordinates or address); Current wind speed and direction details; Size and spread rate of the fire; Number of houses or people directly affected; Official evacuation orders or shelter information; Confirmation of wind direction toward the village (from image); Scale or distance of fire from viewpoint; Specific location of the village; Number of people present; Structural integrity of any visible buildings.\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+    },
+    "validation": {
+      "status": "pass",
+      "violations": [],
+      "repaired": true
+    },
+    "degraded_steps": [
+      {
+        "step": "knowledge synthesis",
+        "reason": "2 guidance point(s) removed: the cited entry is not in the cited chunk"
+      }
+    ],
+    "knowledge_coverage": "good",
+    "retrieved_entry_ids": [
+      "FI-26",
+      "FI-20",
+      "FI-21",
+      "FI-23",
+      "FI-24",
+      "FI-14",
+      "FI-11",
+      "FI-13",
+      "FI-10",
+      "FI-16",
+      "FI-17"
+    ],
+    "models_used": [
+      {
+        "step": "incident",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 1.45,
+        "failed_attempts": []
+      },
+      {
+        "step": "vision",
+        "provider": "ollama",
+        "model": "qwen3-vl:4b-instruct",
+        "seconds": 9.82,
+        "failed_attempts": []
+      },
+      {
+        "step": "RAG queries",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 1.38,
+        "failed_attempts": []
+      },
+      {
+        "step": "knowledge",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 5.33,
+        "failed_attempts": []
+      },
+      {
+        "step": "risk",
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "seconds": 3.99,
+        "failed_attempts": []
+      },
+      {
+        "step": "report",
+        "provider": "groq",
+        "model": "qwen/qwen3.8-27b",
+        "seconds": 4.98,
+        "failed_attempts": [
+          "groq:openai/gpt-oss-120b rate limit"
+        ]
+      },
+      {
+        "step": "repaired report",
+        "provider": "openrouter",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "seconds": 109.34,
+        "failed_attempts": [
+          "groq:qwen/qwen3.8-27b rate limit"
+        ]
+      }
+    ],
+    "prompt_versions": {
+      "incident": "v2",
+      "vision": "v1",
+      "rag_queries": "v1",
+      "knowledge": "v2",
+      "risk": "v2",
+      "report": "v4"
+    }
+  },
+  "seconds": 136.8,
+  "incident_type": "forest_fire",
+  "severity": "high",
+  "degraded_steps": [
+    {
+      "step": "knowledge synthesis",
+      "reason": "2 guidance point(s) removed: the cited entry is not in the cited chunk"
+    }
+  ],
+  "prompt_versions": {
+    "incident": "v2",
+    "vision": "v1",
+    "rag_queries": "v1",
+    "knowledge": "v2",
+    "risk": "v2",
+    "report": "v4"
+  },
+  "checks": {
+    "incident_type_ok": true,
+    "severity_ok": true,
+    "has_report": true
+  },
+  "run": 1
+}

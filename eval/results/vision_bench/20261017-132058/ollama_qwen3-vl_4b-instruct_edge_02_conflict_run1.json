@@ -1,0 +1,53 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 1,
+  "seconds": 71.7,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "consistent_with_report": "no",
+  "image_usable": true,
+  "schema_errors": ""
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A backyard or garden area with a fence, potted plants, a shed, and a gravel path, viewed through trees against a hazy sky with the sun low in the sky.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Hazy, uniform sky suggesting smoke or atmospheric haze from a distant fire.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees, bushes, and potted plants in the foreground and background.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Wooden fence, utility pole with power lines, small metal shed, and a gravel path.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Orange safety barrier in the background, possibly indicating a construction or hazardous area.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "no",
+  "inconsistencies": [
+   "Report describes flooding on a main road, but the image shows a backyard/garden scene with no visible flooding or road."
+  ],
+  "not_determinable": [
+   "Water depth, presence of people, structural integrity, cause of smoke or haze, distance to road, scale of incident"
+  ]
+ }
+}

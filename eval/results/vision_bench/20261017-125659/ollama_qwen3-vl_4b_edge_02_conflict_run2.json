@@ -1,0 +1,19 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b",
+  "prompt": "vision/v1.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 2,
+  "seconds": 71.6,
+  "answered": false,
+  "json_valid": false,
+  "schema_valid": false,
+  "n_observations": "",
+  "consistent_with_report": "",
+  "image_usable": "",
+  "error": "answer is not a JSON object"
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": null
+}

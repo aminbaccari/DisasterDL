@@ -1,0 +1,9 @@
+model,prompt,incident,image,run,seconds,answered,json_valid,schema_valid,n_observations,consistent_with_report,image_usable,schema_errors
+ollama:qwen3-vl:4b-instruct,vision/v1.md,edge_02_conflict,edge_02_conflict.jpg,1,71.7,True,True,True,4,no,True,
+ollama:qwen3-vl:4b-instruct,vision/v1.md,edge_02_conflict,edge_02_conflict.jpg,2,9.8,True,True,True,4,partly,True,
+ollama:qwen3-vl:4b-instruct,vision/v1.md,fire_01,fire_01.jpg,1,12.4,True,True,True,5,partly,True,
+ollama:qwen3-vl:4b-instruct,vision/v1.md,fire_01,fire_01.jpg,2,8.8,True,True,True,4,partly,True,
+ollama:qwen3-vl:4b-instruct,vision/v1.md,flood_01,flood_01.jpg,1,11.3,True,True,True,4,no,True,
+ollama:qwen3-vl:4b-instruct,vision/v1.md,flood_01,flood_01.jpg,2,10.5,True,True,True,5,partly,True,
+ollama:qwen3-vl:4b-instruct,vision/v1.md,structural_01,structural_01.jpg,1,13.8,True,True,False,7,partly,True,"'dust' is not one of ['smoke', 'flames', 'flood_water', 'structural_damage', 'in"
+ollama:qwen3-vl:4b-instruct,vision/v1.md,structural_01,structural_01.jpg,2,11.8,True,True,True,6,partly,True,

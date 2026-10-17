@@ -261,7 +261,7 @@ class TestVisionChainAndLocalProviders(Base):
 
     def test_ollama_gets_the_long_timeout_for_a_cold_start(self):
         _, seen = self.run_vision([openai_ok('{"v": 1}')], {"VISION_CHAIN": "ollama:qwen3-vl:4b"})
-        self.assertEqual(seen[0][3], chain.TIMEOUT_IMAGE)
+        self.assertEqual(seen[0][3], chain.TIMEOUT_LOCAL)
 
     def test_hf_uses_the_router_and_the_token(self):
         env = {"VISION_CHAIN": "hf:Qwen/Qwen3-VL-8B-Instruct", "HF_TOKEN": "hf_secret_value"}

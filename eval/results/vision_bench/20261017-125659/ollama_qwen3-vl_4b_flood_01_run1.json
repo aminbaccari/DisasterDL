@@ -1,0 +1,19 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b",
+  "prompt": "vision/v1.md",
+  "incident": "flood_01",
+  "image": "flood_01.jpg",
+  "run": 1,
+  "seconds": 73.4,
+  "answered": false,
+  "json_valid": false,
+  "schema_valid": false,
+  "n_observations": "",
+  "consistent_with_report": "",
+  "image_usable": "",
+  "error": "answer is not a JSON object"
+ },
+ "incident_text": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.",
+ "result": null
+}

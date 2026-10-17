@@ -1,0 +1,19 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b",
+  "prompt": "vision/v1.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 1,
+  "seconds": 73.2,
+  "answered": false,
+  "json_valid": false,
+  "schema_valid": false,
+  "n_observations": "",
+  "consistent_with_report": "",
+  "image_usable": "",
+  "error": "answer is not a JSON object"
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": null
+}

@@ -1,0 +1,65 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "flood_01",
+  "image": "flood_01.jpg",
+  "run": 2,
+  "seconds": 10.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "consistent_with_report": "partly",
+  "image_usable": true,
+  "schema_errors": ""
+ },
+ "incident_text": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A street with multiple buildings partially submerged in muddy floodwater. Water levels are high, reaching the bases of the buildings.",
+  "observations": [
+   {
+    "category": "flood_water",
+    "description": "Brown, muddy water covering the street, reaching the ground level of buildings and partially submerging lower entrances.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Buildings show no visible structural damage, but their lower floors are flooded.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Street signs (including a stop sign and directional arrow) are visible, partially submerged. A traffic light pole is also visible in the water.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A white object, possibly a bag or trash, is floating in the water on the left side.",
+    "confidence": "medium"
+   },
+   {
+    "category": "people",
+    "description": "No people are visible in the image.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [
+   "Stop",
+   "Arrow",
+   "AT"
+  ],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "The report mentions 'Nabeul', but the architectural style and street signs do not match Nabeul, Tunisia. Image depicts European-style buildings with 'AT' signage, possibly Italian or similar region."
+  ],
+  "not_determinable": [
+   "Cause of the flooding",
+   "Number of people affected",
+   "Exact water depth",
+   "Scale of the incident"
+  ]
+ }
+}

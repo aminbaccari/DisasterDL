@@ -1,0 +1,19 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b",
+  "prompt": "vision/v1.md",
+  "incident": "structural_01",
+  "image": "structural_01.jpg",
+  "run": 1,
+  "seconds": 71.9,
+  "answered": false,
+  "json_valid": false,
+  "schema_valid": false,
+  "n_observations": "",
+  "consistent_with_report": "",
+  "image_usable": "",
+  "error": "answer is not a JSON object"
+ },
+ "incident_text": "Part of a five-storey apartment building has collapsed. Dust covers the street and neighbours say some residents may still be inside.",
+ "result": null
+}

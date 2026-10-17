@@ -1,0 +1,68 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "structural_01",
+  "image": "structural_01.jpg",
+  "run": 2,
+  "seconds": 11.8,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "consistent_with_report": "partly",
+  "image_usable": true,
+  "schema_errors": ""
+ },
+ "incident_text": "Part of a five-storey apartment building has collapsed. Dust covers the street and neighbours say some residents may still be inside.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A multi-storey building is partially collapsed with debris scattered around. Dust is visible on the street, and the scene includes damaged infrastructure and trees in the background.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "A multi-storey building has suffered significant structural damage, with large sections of the facade and roof collapsed and debris piled on the ground.",
+    "confidence": "high"
+   },
+   {
+    "category": "flood_water",
+    "description": "No visible water or flooding in the immediate area.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A street pole is standing, and a portion of a green-painted building is visible on the left. A white sack is in the foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "A tree is visible in the background, and some greenery is visible among the debris.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "No clear vehicles visible in the image.",
+    "confidence": "medium"
+   },
+   {
+    "category": "people",
+    "description": "No clearly identifiable people in the image. No visible individuals are in immediate danger or within the debris.",
+    "confidence": "low"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "Report says 'some residents may still be inside' but image does not show any visible people or signs of active rescue efforts."
+  ],
+  "not_determinable": [
+   "Number of people",
+   "Exact scale or distance of the collapse",
+   "Structural integrity of the building",
+   "Cause of the collapse",
+   "Water depth or presence of floodwater",
+   "Whether the building is five-storey (as reported)"
+  ]
+ }
+}

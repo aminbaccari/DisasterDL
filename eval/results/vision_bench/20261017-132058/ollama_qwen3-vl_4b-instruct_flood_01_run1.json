@@ -1,0 +1,61 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "flood_01",
+  "image": "flood_01.jpg",
+  "run": 1,
+  "seconds": 11.3,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "consistent_with_report": "no",
+  "image_usable": true,
+  "schema_errors": ""
+ },
+ "incident_text": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A street in a town is flooded with muddy water, submerging the lower floors of multi-story buildings and street signs.",
+  "observations": [
+   {
+    "category": "flood_water",
+    "description": "Brown, muddy water covers the street, reaching the lower levels of buildings and partially submerging street signs and infrastructure.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Multi-story buildings with storefronts on the ground floor; some have visible signs and awnings. A 'STOP' sign and directional arrow sign are partially submerged.",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "No people are visible in the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "No visible structural damage to buildings other than water submersion.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [
+   "STOP",
+   "STOP",
+   "STOP"
+  ],
+  "consistent_with_report": "no",
+  "inconsistencies": [
+   "Report mentions Nabeul, but the architecture and signage suggest a European town, not Nabeul (which is in Tunisia)."
+  ],
+  "not_determinable": [
+   "Depth of water relative to building entrances",
+   "Number of buildings or streets affected",
+   "Cause of flooding",
+   "Weather conditions",
+   "Precise location within the town"
+  ]
+ }
+}

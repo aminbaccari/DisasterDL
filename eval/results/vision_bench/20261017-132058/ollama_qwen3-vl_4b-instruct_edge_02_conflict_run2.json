@@ -1,0 +1,57 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 2,
+  "seconds": 9.8,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "consistent_with_report": "partly",
+  "image_usable": true,
+  "schema_errors": ""
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A residential backyard with a garden, fence, and shed, viewed through a hazy sky with a low sun. In the distance, a field and trees are visible, with power lines crossing the frame.",
+  "observations": [
+   {
+    "category": "flood_water",
+    "description": "A grassy field in the distance appears to be flooded or waterlogged, with shallow water visible beyond a fence.",
+    "confidence": "medium"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A utility pole with wires, a metal shed with a blue barrel, a wooden fence, and a gravel path.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees and bushes fill the background and sides of the scene, with potted flowers in the foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A low sun visible through haze; an orange barrier in the field suggests some barrier or construction.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "Image shows a backyard and field, not a main road. No clear evidence of water rising quickly on a road."
+  ],
+  "not_determinable": [
+   "Water depth and extent of flooding on a road",
+   "Specific location of the scene",
+   "Whether there are people present or in danger",
+   "Cause of the flooding",
+   "Scale of the flooding"
+  ]
+ }
+}

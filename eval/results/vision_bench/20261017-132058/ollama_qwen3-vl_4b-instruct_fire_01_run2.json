@@ -1,0 +1,58 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 2,
+  "seconds": 8.8,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "consistent_with_report": "partly",
+  "image_usable": true,
+  "schema_errors": ""
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large wildfire is burning on a hillside at night, with bright orange flames and smoke visible against a dark sky. The fire's glow illuminates the water in the foreground.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Dark, billowing smoke rising from the hillside fire, illuminated by the flames.",
+    "confidence": "high"
+   },
+   {
+    "category": "flames",
+    "description": "Bright orange and yellow flames visible along the ridge of the hill, with some smaller flames scattered.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Silhouette of a highway sign post in the foreground.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "Light streaks in the foreground, suggesting vehicle movement or long exposure photography.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "Report mentions 'flames are visible near the first houses', but no houses or buildings are visible in the image."
+  ],
+  "not_determinable": [
+   "Presence of people",
+   "Wind direction",
+   "Scale or distance of fire",
+   "Water depth",
+   "Structural integrity of structures",
+   "Cause of fire"
+  ]
+ }
+}

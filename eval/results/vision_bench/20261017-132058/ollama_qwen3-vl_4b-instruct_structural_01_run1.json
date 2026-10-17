@@ -1,0 +1,72 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "structural_01",
+  "image": "structural_01.jpg",
+  "run": 1,
+  "seconds": 13.8,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": false,
+  "n_observations": 7,
+  "consistent_with_report": "partly",
+  "image_usable": true,
+  "schema_errors": "'dust' is not one of ['smoke', 'flames', 'flood_water', 'structural_damage', 'in"
+ },
+ "incident_text": "Part of a five-storey apartment building has collapsed. Dust covers the street and neighbours say some residents may still be inside.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A multi-storey building has collapsed, with debris scattered around. Dust is visible on the street, and the structure is heavily damaged with exposed interiors.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "A multi-storey building is partially collapsed, with exposed interior rooms and debris scattered around.",
+    "confidence": "high"
+   },
+   {
+    "category": "flood_water",
+    "description": "No visible standing water or flooding.",
+    "confidence": "high"
+   },
+   {
+    "category": "dust",
+    "description": "Dust is visible on the street and in the air, especially near the collapsed building.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "A tree is visible in the middle ground, partially behind debris.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A street lamp pole is standing upright, and a damaged building facade is visible on the left.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "No visible vehicles in the immediate foreground or midground.",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "People are visible in the distant background, but their positions suggest they are not in immediate danger from the collapse.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "Report describes a 'five-storey' building; the image shows only two or three storeys clearly visible, with upper floors mostly collapsed and obscured."
+  ],
+  "not_determinable": [
+   "Number of people present or potentially trapped",
+   "Scale of the collapse",
+   "Exact height or storeys",
+   "Cause of collapse",
+   "Structural integrity of remaining building"
+  ]
+ }
+}

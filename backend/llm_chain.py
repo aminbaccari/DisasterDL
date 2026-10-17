@@ -35,7 +35,7 @@ import time
 import requests
 
 try:  # use the operating system certificate store when available (some networks re-sign TLS traffic with a local CA)
-    import truststore
+    import truststore#type:ignore
     truststore.inject_into_ssl()
 except ImportError:
     pass
@@ -61,6 +61,7 @@ COOLDOWN_SERVER = 30           # 5xx, timeouts, connection errors
 MAX_WAIT = 90                 # seconds: longest wait for a cooling model before giving up
 TIMEOUT_TEXT = 45             # seconds per model for a text call
 TIMEOUT_IMAGE = 120           # seconds per model for a call with an image
+TIMEOUT_LOCAL = 300           # seconds for a local model: the first call loads it into memory (89 s measured for qwen3-vl:4b from a bind mount)
 COOLDOWN_BROKEN = 3600         # 400/401/403/404: wrong model name or key, do not retry soon
 
 _LOCK = threading.Lock()
@@ -244,7 +245,7 @@ def _complete_once(system, user, json_mode=True, image=None, chain=None, timeout
                               else _openai_request(provider, model, system, user, json_mode, image))
         t0 = time.time()
         try:
-            response = http_post(url, headers, body, max(timeout, TIMEOUT_IMAGE) if provider in LOCAL_PROVIDERS else timeout)
+            response = http_post(url, headers, body, max(timeout, TIMEOUT_LOCAL) if provider in LOCAL_PROVIDERS else timeout)
         except requests.RequestException as exc:
             cool_down(provider, model, COOLDOWN_SERVER)
             attempts.append({**tag, "status": "error", "seconds": round(time.time() - t0, 2), "reason": type(exc).__name__})

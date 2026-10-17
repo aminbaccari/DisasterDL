@@ -1,0 +1,61 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 1,
+  "seconds": 12.4,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "consistent_with_report": "partly",
+  "image_usable": true,
+  "schema_errors": ""
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large fire is burning on a hillside at night, with bright orange flames and smoke billowing into the dark sky. The fire appears to be spreading across vegetation, and the glow illuminates the horizon. In the foreground, a dark body of water and a roadside barrier are visible.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Bright orange and yellow flames visible on the hillside, illuminating the surrounding area.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Thick, dark smoke rising from the fire and spreading horizontally across the sky.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees and bushes on the hillside appear to be burning or smoldering.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A roadside barrier structure is visible in the foreground, and the lighting suggests a road or highway.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "Light streaks in the foreground suggest vehicle motion or long exposure photography.",
+    "confidence": "low"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "Report mentions 'flames are visible near the first houses,' but no houses are visible in the image; the fire is on a hillside."
+  ],
+  "not_determinable": [
+   "Smoke direction and wind direction relative to the village",
+   "Presence or absence of people",
+   "Scale or distance of the fire",
+   "Exact location of the village"
+  ]
+ }
+}

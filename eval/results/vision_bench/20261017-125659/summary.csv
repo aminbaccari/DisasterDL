@@ -1,0 +1,9 @@
+model,prompt,incident,image,run,seconds,answered,json_valid,schema_valid,n_observations,consistent_with_report,image_usable,error
+ollama:qwen3-vl:4b,vision/v1.md,edge_02_conflict,edge_02_conflict.jpg,1,205.2,False,False,False,,,,answer is not a JSON object
+ollama:qwen3-vl:4b,vision/v1.md,edge_02_conflict,edge_02_conflict.jpg,2,71.6,False,False,False,,,,answer is not a JSON object
+ollama:qwen3-vl:4b,vision/v1.md,fire_01,fire_01.jpg,1,73.2,False,False,False,,,,answer is not a JSON object
+ollama:qwen3-vl:4b,vision/v1.md,fire_01,fire_01.jpg,2,71.2,False,False,False,,,,answer is not a JSON object
+ollama:qwen3-vl:4b,vision/v1.md,flood_01,flood_01.jpg,1,73.4,False,False,False,,,,answer is not a JSON object
+ollama:qwen3-vl:4b,vision/v1.md,flood_01,flood_01.jpg,2,71.1,False,False,False,,,,answer is not a JSON object
+ollama:qwen3-vl:4b,vision/v1.md,structural_01,structural_01.jpg,1,71.9,False,False,False,,,,answer is not a JSON object
+ollama:qwen3-vl:4b,vision/v1.md,structural_01,structural_01.jpg,2,72.8,False,False,False,,,,answer is not a JSON object
