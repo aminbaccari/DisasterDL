@@ -1,0 +1,64 @@
+{
+  "note": "Pre-registered 2026-10-17 BEFORE any run of scripts/rag_query_vs_direct.py. Twelve invented witness reports (not the six fixed incidents), written by one reader from the entry titles of the knowledge base, not from retrieval results. Each case lists the NEEDS a good knowledge-agent input must cover; a need is met when at least one passage in the final 8 carries one of its any_of entry ids. Ids FI-21..26, FL-27..33 and ST-27..32 are French translations of English entries and count as the same guidance. Expectations were not tuned after seeing results; if one proves wrong it is reported as a flaw of this file. Stopping rule: 12 cases, 3 runs of the query agent each, no extra runs.",
+  "cases": [
+    {"id": "c01", "language": "en", "topic": "fire",
+     "text": "Wildfire on the ridge above our village. A strong wind is pushing it toward the houses and people are loading their cars.",
+     "needs": [
+       {"need": "evacuate or alert", "any_of": ["FI-09", "FI-21", "FI-13", "FI-24", "FI-14"]},
+       {"need": "flames close to houses", "any_of": ["FI-01", "FI-13", "FI-24"]}]},
+    {"id": "c02", "language": "fr", "topic": "fire",
+     "text": "Un feu de broussailles s'approche d'un lotissement. Beaucoup de fumée, et des personnes âgées sont dans les maisons.",
+     "needs": [
+       {"need": "smoke and vulnerable people", "any_of": ["FI-04", "FI-05", "FI-18", "FI-25"]},
+       {"need": "evacuate or shelter", "any_of": ["FI-09", "FI-21", "FI-13", "FI-24", "FI-14"]}]},
+    {"id": "c03", "language": "en", "topic": "fire",
+     "text": "The fire has been put out but embers are still glowing on the ground. Residents want to go back to their houses.",
+     "needs": [
+       {"need": "returning after a fire", "any_of": ["FI-19", "FI-20", "FI-26", "FI-03"]}]},
+    {"id": "c04", "language": "fr", "topic": "fire",
+     "text": "Nous habitons près de la forêt et voulons préparer la maison avant l'été. Que faut-il faire autour de la maison et que prévoir pour partir vite.",
+     "needs": [
+       {"need": "defensible space", "any_of": ["FI-17", "FI-23", "FI-11"]},
+       {"need": "go-bag and routes", "any_of": ["FI-10", "FI-22"]}]},
+    {"id": "c05", "language": "fr", "topic": "flood",
+     "text": "L'oued déborde, l'eau entre dans les rez-de-chaussée et les routes sont coupées. Des voitures sont emportées.",
+     "needs": [
+       {"need": "do not drive or walk in water", "any_of": ["FL-05", "FL-14", "FL-04", "FL-27"]},
+       {"need": "shelter upstairs, stay informed", "any_of": ["FL-07", "FL-13", "FL-06", "FL-08"]}]},
+    {"id": "c06", "language": "en", "topic": "flood",
+     "text": "The water went down in our street. We came back: power lines are down, the basement is wet and the food in the fridge got warm.",
+     "needs": [
+       {"need": "return and power lines", "any_of": ["FL-17", "FL-30"]},
+       {"need": "food and drinking water", "any_of": ["FL-16", "FL-29"]}]},
+    {"id": "c07", "language": "fr", "topic": "flood",
+     "text": "La maison est restée inondée trois jours. Il y a de la moisissure et nous utilisons un groupe électrogène dans le garage.",
+     "needs": [
+       {"need": "mold and drying", "any_of": ["FL-19", "FL-20", "FL-32"]},
+       {"need": "carbon monoxide", "any_of": ["FL-21", "FL-33"]}]},
+    {"id": "c08", "language": "en", "topic": "flood",
+     "text": "The river is rising fast. Residents on the ground floor are not sure whether to switch off gas and electricity or to leave.",
+     "needs": [
+       {"need": "gas and electricity", "any_of": ["FL-12", "FL-28"]},
+       {"need": "stay or leave", "any_of": ["FL-13", "FL-07", "FL-03", "FL-08"]}]},
+    {"id": "c09", "language": "en", "topic": "structural",
+     "text": "A residential building partly collapsed after an explosion. Neighbours want to go inside to look for people and there is a smell of gas.",
+     "needs": [
+       {"need": "entering a damaged building", "any_of": ["ST-05", "ST-27"]},
+       {"need": "gas leak", "any_of": ["ST-17", "ST-31"]}]},
+    {"id": "c10", "language": "fr", "topic": "structural",
+     "text": "Un immeuble de six étages penche après un séisme. La police se demande à quelle distance éloigner les gens.",
+     "needs": [
+       {"need": "cordon distance", "any_of": ["ST-07", "ST-08", "ST-29", "ST-09"]},
+       {"need": "leaning building and aftershocks", "any_of": ["ST-15", "ST-14", "ST-06"]}]},
+    {"id": "c11", "language": "fr", "topic": "structural",
+     "text": "Des morceaux de façade tombent sur le trottoir devant un immeuble abîmé. Des commerçants veulent rouvrir leurs boutiques.",
+     "needs": [
+       {"need": "falling debris", "any_of": ["ST-12", "ST-32", "ST-26"]},
+       {"need": "impact of the cordon, controlled access", "any_of": ["ST-22", "ST-23", "ST-13"]}]},
+    {"id": "c12", "language": "en", "topic": "structural",
+     "text": "After the earthquake an inspector put a red sign on our apartment block. The residents want to get their belongings.",
+     "needs": [
+       {"need": "placards", "any_of": ["ST-03", "ST-28"]},
+       {"need": "entering a damaged building", "any_of": ["ST-05", "ST-27", "ST-23"]}]}
+  ]
+}
