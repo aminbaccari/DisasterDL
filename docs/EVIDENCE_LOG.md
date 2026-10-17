@@ -275,3 +275,45 @@ Union with the text-side comparison (risk v3 on vision v2, previous section): th
 - D6: the response built after the repair pass carries `validation.first_violations` (what the first validation said). Workflow regenerated, static check passes (78 nodes). Not run in n8n.
 - Failed Vision step reported as unusable image: closed in the docs, see `docs/SPRINT_STATUS.md`.
 - D7 not fixed: a test needs the real edge_03 output; none was added.
+
+
+## Phase 2: French structural and flood entries, third query set, RAG-query agent against a direct query (2026-10-17)
+
+Real runs on the local index (multilingual-e5, no LLM) for retrieval, and real calls to `groq:openai/gpt-oss-120b` for the agent comparison. Order of work, kept so that the tests are not tuned: `rag/eval/queries_v3.csv` (24 queries) was committed before any French entry existed and before any run (commit d0fe3f7); the "before" results were saved and committed (40086b0); the entries were added; the index rebuilt; the "after" results saved. `rag/eval/incident_cases_v1.json` (12 cases, needs per case) was committed before the comparison script ran (c1c426c).
+
+### 1. New French entries (unreviewed translations)
+
+13 entries by the project team, all marked "Not reviewed by a French reader": `rag/corpus/fr/flood_kb.md` FL-27 to FL-33 (translations of FL-04, FL-12, FL-16, FL-17, FL-18, FL-19, FL-21) and the new `rag/corpus/fr/structural_kb.md` ST-27 to ST-32 (translations of ST-05, ST-03, ST-07, ST-01, ST-17, ST-12). Metric equivalents in parentheses were added by the team and flagged as team notes. `rag/corpus/SOURCES.md` updated. The translations are my own work as the assistant, one pass, no second reader and the knowledge-base QA tools were not run on them. The index has 89 section chunks (was 78). New test `rag/tests/test_corpus_consistency.py` (5 tests: ids unique, each translation points at an existing English entry, files listed in SOURCES.md, evaluation files only name existing ids).
+
+### 2. Retrieval, queries v3 (24 queries: 6 English, 18 French), section chunking
+
+| Setting | hit@1 | hit@3 | hit@5 | MRR | French hit@5 |
+|---------|-------|-------|-------|-----|--------------|
+| topic filter, before | 0.58 | 0.79 | 0.83 | 0.68 | 0.78 |
+| topic filter, after (workflow setting) | 0.62 | 0.79 | 0.88 | 0.72 | 0.83 |
+| no filter, before | 0.33 | 0.50 | 0.54 | 0.42 | 0.39 |
+| no filter, after | 0.58 | 0.79 | 0.83 | 0.68 | 0.78 |
+
+English queries did not change (hit@1 0.83, hit@5 1.00, 6 queries). Fixed chunking: hit@5 0.42 to 0.83. With the topic filter the gain is 1 query (21 of 24 against 20 of 24 hit@5), so it is small and within noise for 24 queries; without the filter it is large because the French entries now exist in the filtered topics.
+
+Per query (topic filter): four French queries went from a miss or a late hit to rank 1 or 2 (f01, f03, f04, f07); f03 and f04 were misses before. Three got worse: s03 (cordon distance) and s04 (who decides) went from rank 1 to rank 4, and the control f12 (propane tank, English-only entry FL-24) went from rank 2 to a miss. Cause, read from the results: the six French structural entries now fill the top of every French structural query (s03 returns ST-32, ST-27, ST-28 first), and the French flood translations crowd out English-only entries (f12 returns FL-11, FL-32, FL-33). Two controls were misses before and after (f10 FL-25, f11 FL-26): English-only entries that French queries do not reach, translating them is the open fix.
+
+### 3. Retrieval, queries v2 (18 queries, the earlier blind set), rerun on the new index
+
+Strict id matching as run: section with topic filter hit@5 0.94 before, 0.78 after; French hit@5 1.00 to 0.62. This is NOT a loss of quality. Four French queries (v08, v09, v12, v16) now return the French translation of the expected English entry (FL-32, FL-33, FL-30, ST-28), whose id v2 does not list. With the translation ids counted as equivalent to their English originals (checked with `scripts/retrieval_equivalent_ids.py`, my rule written after seeing the drop, so treat it as a post hoc reading): 17 of 18 hit@5, the same as before (the one miss is v13); v08 and v16 move from a miss to rank 1. The v2 file was not edited.
+
+### 4. RAG-query agent against a direct query (`scripts/rag_query_vs_direct.py`, `eval/results/rag_query_vs_direct/20261017-224627`)
+
+12 invented witness reports, 6 English and 6 French, 2 to 4 hand-written needs each, one pinned model (groq gpt-oss-120b) for the incident agent (prompt incident v2, the workflow default, an untested draft) and the query agent (rag_query v1), 3 runs of the agent per case, same retrieval as the workflow (section, topic filter, best 8 of 3 queries with k=4 for the agent, k=8 for one direct query).
+
+| Condition | Needs met, 12 cases | Needs met, 10 cases with a topic | Cases with every need met (10 cases) |
+|-----------|---------------------|-----------------------------------|--------------------------------------|
+| direct, raw report text | 18 of 23 | 18 of 20 | 8 of 10 |
+| direct, type and reported facts | 19 of 23 | 19 of 20 | 9 of 10 |
+| RAG-query agent (3 runs) | 54 of 69 | 54 of 60 | 24 of 30 |
+
+Per case, agent (mean of 3 runs) against the direct query built from the facts: better in 1 case (c02), same in 9, worse in 2 (c06: 1 need against 2 in all 3 runs, c11: 1.67 against 2). The agent wrote no place name in its queries (0 of 36). Reading the queries of c06: the agent wrote queries about "downed power lines" and "wet basement" and one French query on evacuation, which pulled FL-17 but not FL-16 (food); the direct query listed all four facts and got both.
+
+Two cases (c03: fire already out, embers; c04: preparing a house before summer) got no search topic because the incident agent typed them `other` and `unclear`, so no condition retrieved anything for them (0 of 2 and 0 of 2 needs in every condition). c04 is not an incident, so it is a flaw of my case design; c03 is a real gap: after-the-fire questions are not routed to the knowledge base that has entries on them (FI-19, FI-20, FI-26).
+
+Reading: on this sample the agent does not beat the direct query. 90% of the needs against 90% to 95% at 10 usable cases, a ceiling effect, with 12 cases it cannot show a difference of one or two needs. The agent costs one extra model call per run (about 1.4 s on Groq in earlier logs) and three searches. No evidence here justifies keeping or dropping it; a larger set with harder cases is needed. Limits: one model, invented cases and needs from one reader, the incident prompt is an untested draft, direct queries ran once (they are deterministic), the agent 3 times.

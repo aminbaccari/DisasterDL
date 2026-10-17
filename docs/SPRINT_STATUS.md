@@ -7,7 +7,9 @@ Checked against `docs/SPRINT_PLAN.md` (written 2026-10-16), the commits (23 on `
 | Sprint | Task in the plan | Status | Evidence | What is left |
 |--------|------------------|--------|----------|--------------|
 | 0 | `docs/SPRINT_PLAN.md` | Done | file, commit f56b979 | Update its task list with the added work (chain, vision proposal) |
-| 1 | Blind retrieval queries (`rag/eval/queries_v2.csv`) | Done | committed before it was run | A third set for structural and French flood |
+| 1 | Blind retrieval queries (`rag/eval/queries_v2.csv`) | Done | committed before it was run | none |
+| 1 | Third query set (`rag/eval/queries_v3.csv`, 24 queries) and French structural and flood entries | Done 2026-10-17 | committed before the entries and the run; hit@5 0.83 to 0.88 with the filter, see `docs/EVIDENCE_LOG.md` | French reader for FL-27..33 and ST-27..32; French versions of FL-25, FL-26, FL-24 (control queries still miss) |
+| 1 | RAG-query agent against a direct query | Done 2026-10-17, no difference shown | `scripts/rag_query_vs_direct.py`, 12 cases, 90% against 90 to 95% of needs met | Larger harder case set; fix D11 |
 | 1 | Entry-id matching in `rag/metrics.py`, `rag/evaluate.py`, tests | Done | 6 tests in `rag/tests/` | none |
 | 1 | Retrieval evaluation, fixed against section, k = 1, 3, 5 | Done | section hit@1 0.78, MRR 0.81, fixed 0.44 and 0.59 (18 queries) | Misses v08, v12, v13, v16 analysed, not fixed |
 | 2 | Agent contracts (6 schemas, examples, mismatch list) | Done | `backend/schemas/`, `docs/CONTRACT_MISMATCHES.md` | none |
@@ -43,6 +45,8 @@ Checked against `docs/SPRINT_PLAN.md` (written 2026-10-16), the commits (23 on `
 |----|--------|----------|---------------|
 | D1 | Vision step missing in nearly all image runs | `eval/results/real_chain*` | Fixed for the local path 2026-10-17 (vision step answered in 2 of 2 image runs), `docs/VISION_ARCHITECTURE.md` |
 | D9 | Vision model echoes the report text (false observations) | edge_02, structural_01, 3 of 10 | proposed vision v2 (image only) |
+| D11 | Post-fire questions get no knowledge search: incident typed `other`, topic general, no retrieval | c03 in `eval/results/rag_query_vs_direct/20261017-224627` | not fixed: incident prompt or routing rule needed |
+| D12 | French translations crowd out English-only entries for French queries | f12 (propane tank) rank 2 to miss; s03, s04 rank 1 to 4 | not fixed: translate more entries or cap one result per language |
 | D10 | Repair pass slow: the retry rotation sends it to OpenRouter nemotron (100+ s) | `eval/results/vision_chain_e2e` | `docs/BOTTLENECKS.md` item 3 |
 | D2 | Location copied as a relative phrase (v1) | fire_01, 2 of 2 completed runs | incident v2 draft, untested |
 | D3 | Free text in English for a French incident | edge_01 | incident v2 draft, untested |

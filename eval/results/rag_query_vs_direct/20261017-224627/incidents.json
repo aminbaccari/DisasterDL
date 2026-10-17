@@ -1,0 +1,322 @@
+{
+ "c01": {
+  "incident_type": "forest_fire",
+  "type_confidence": "high",
+  "location": {
+   "text": null,
+   "precision": "unknown"
+  },
+  "reported_facts": [
+   "Wildfire on the ridge above our village",
+   "A strong wind is pushing it toward the houses",
+   "people are loading their cars"
+  ],
+  "initial_severity": "high",
+  "severity_reason": "Fire is being driven toward houses by strong wind and people are evacuating, indicating a clear threat to lives and property",
+  "people_at_risk_mentioned": "yes",
+  "missing_information": [
+   "Exact coordinates of the fire",
+   "Wind speed and direction details",
+   "Number of houses and people directly threatened",
+   "Current size and spread rate of the fire",
+   "Availability of firefighting resources",
+   "Water sources or access routes for responders"
+  ],
+  "language": "en",
+  "rag_topic": "fire",
+  "notes": null
+ },
+ "c02": {
+  "incident_type": "forest_fire",
+  "type_confidence": "high",
+  "location": {
+   "text": null,
+   "precision": "unknown"
+  },
+  "reported_facts": [
+   "Feu de broussailles s'approche d'un lotissement",
+   "Beaucoup de fumée",
+   "Des personnes âgées sont dans les maisons"
+  ],
+  "initial_severity": "high",
+  "severity_reason": "Feu qui s'approche du lotissement avec beaucoup de fumée et des personnes âgées à l'intérieur des maisons, ce qui représente une menace élevée",
+  "people_at_risk_mentioned": "yes",
+  "missing_information": [
+   "Direction et vitesse du vent",
+   "Distance exacte entre le feu et les habitations",
+   "Localisation précise du feu",
+   "Nombre de personnes affectées",
+   "État des évacuations",
+   "Ressources d'intervention disponibles"
+  ],
+  "language": "fr",
+  "rag_topic": "fire",
+  "notes": null
+ },
+ "c03": {
+  "incident_type": "other",
+  "type_confidence": "high",
+  "location": {
+   "text": null,
+   "precision": "unknown"
+  },
+  "reported_facts": [
+   "The fire has been put out but embers are still glowing on the ground",
+   "Residents want to go back to their houses"
+  ],
+  "initial_severity": "low",
+  "severity_reason": "Fire reported as extinguished with only embers remaining and no injuries or spreading mentioned",
+  "people_at_risk_mentioned": "no",
+  "missing_information": [
+   "Exact location of the fire",
+   "Number of houses affected",
+   "Official clearance for residents to return",
+   "Presence of any hot spots or remaining flames",
+   "Wind conditions that could reignite embers",
+   "Any injuries or casualties"
+  ],
+  "language": "en",
+  "rag_topic": "general",
+  "notes": null
+ },
+ "c04": {
+  "incident_type": "unclear",
+  "type_confidence": "high",
+  "location": {
+   "text": null,
+   "precision": "unknown"
+  },
+  "reported_facts": [
+   "Nous habitons près de la forêt",
+   "Nous voulons préparer la maison avant l'été",
+   "Demande de quoi faire autour de la maison et prévoir pour partir vite"
+  ],
+  "initial_severity": "unknown",
+  "severity_reason": "Le rapport ne décrit aucun incident, seulement une demande de conseils, donc aucune gravité n’est indiquée",
+  "people_at_risk_mentioned": "no",
+  "missing_information": [
+   "Nature exacte de la menace éventuelle",
+   "Localisation précise de la maison",
+   "Mesures déjà prises",
+   "Ressources disponibles",
+   "Coordonnées du demandeur"
+  ],
+  "language": "fr",
+  "rag_topic": "general",
+  "notes": "Rapport ne décrit pas d’incident réel, seulement une demande de prévention"
+ },
+ "c05": {
+  "incident_type": "flood",
+  "type_confidence": "high",
+  "location": {
+   "text": null,
+   "precision": "unknown"
+  },
+  "reported_facts": [
+   "L'oued déborde",
+   "l'eau entre dans les rez-de-chaussée",
+   "les routes sont coupées",
+   "Des voitures sont emportées"
+  ],
+  "initial_severity": "high",
+  "severity_reason": "Eau qui déborde, pénètre les rez-de-chaussée, routes coupées et voitures emportées, indiquant une menace importante pour les personnes et les bâtiments",
+  "people_at_risk_mentioned": "no",
+  "missing_information": [
+   "Profondeur de l'eau",
+   "Vitesse du courant",
+   "Nombre de personnes affectées ou en danger",
+   "État des évacuations",
+   "Localisation précise du débordement",
+   "Accès pour les secours"
+  ],
+  "language": "fr",
+  "rag_topic": "flood",
+  "notes": null
+ },
+ "c06": {
+  "incident_type": "flood",
+  "type_confidence": "high",
+  "location": {
+   "text": null,
+   "precision": "unknown"
+  },
+  "reported_facts": [
+   "The water went down in our street",
+   "Power lines are down",
+   "The basement is wet",
+   "The food in the fridge got warm"
+  ],
+  "initial_severity": "moderate",
+  "severity_reason": "Water in the street and wet basement indicate flooding; power lines are down and food warming show impact on utilities and property",
+  "people_at_risk_mentioned": "no",
+  "missing_information": [
+   "Exact location (address or coordinates)",
+   "Water depth and flow rate",
+   "Number of people affected or trapped",
+   "Cause of the water intrusion",
+   "Status of electricity and safety of power lines",
+   "Whether evacuation or assistance is needed"
+  ],
+  "language": "en",
+  "rag_topic": "flood",
+  "notes": null
+ },
+ "c07": {
+  "incident_type": "flood",
+  "type_confidence": "high",
+  "location": {
+   "text": null,
+   "precision": "unknown"
+  },
+  "reported_facts": [
+   "La maison est restée inondée trois jours",
+   "Il y a de la moisissure",
+   "Nous utilisons un groupe électrogène dans le garage"
+  ],
+  "initial_severity": "moderate",
+  "severity_reason": "Maison inondée depuis trois jours, présence de moisissure et utilisation d’un groupe électrogène, mais aucun danger ou blessure mentionné",
+  "people_at_risk_mentioned": "no",
+  "missing_information": [
+   "Profondeur de l'eau",
+   "Étendue des dégâts",
+   "Nombre de personnes affectées",
+   "État des installations électriques",
+   "Accès au domicile",
+   "Besoin d'évacuation ou d'assistance médicale"
+  ],
+  "language": "fr",
+  "rag_topic": "flood",
+  "notes": null
+ },
+ "c08": {
+  "incident_type": "flood",
+  "type_confidence": "high",
+  "location": {
+   "text": null,
+   "precision": "unknown"
+  },
+  "reported_facts": [
+   "The river is rising fast",
+   "Residents on the ground floor are not sure whether to switch off gas and electricity or to leave"
+  ],
+  "initial_severity": "high",
+  "severity_reason": "River rising fast indicates a flood threat to residents, who are uncertain about safety measures",
+  "people_at_risk_mentioned": "yes",
+  "missing_information": [
+   "Exact location of the river and affected area",
+   "Water depth and flow rate",
+   "Number of people affected or needing evacuation",
+   "Whether any areas have already been flooded",
+   "Availability of evacuation routes or shelters",
+   "Contact details for emergency services"
+  ],
+  "language": "en",
+  "rag_topic": "flood",
+  "notes": null
+ },
+ "c09": {
+  "incident_type": "structural_emergency",
+  "type_confidence": "high",
+  "location": {
+   "text": null,
+   "precision": "unknown"
+  },
+  "reported_facts": [
+   "A residential building partly collapsed after an explosion",
+   "Neighbours want to go inside to look for people",
+   "there is a smell of gas"
+  ],
+  "initial_severity": "high",
+  "severity_reason": "Building partially collapsed and gas smell indicate risk of trapped people and possible explosion or poisoning",
+  "people_at_risk_mentioned": "yes",
+  "missing_information": [
+   "Exact location of the building (address or coordinates)",
+   "Number of people inside or missing",
+   "Extent of structural damage and stability of the remaining structure",
+   "Presence and severity of the gas leak",
+   "Whether any injuries have been reported",
+   "Contact details of the reporter or emergency services on scene"
+  ],
+  "language": "en",
+  "rag_topic": "structural",
+  "notes": null
+ },
+ "c10": {
+  "incident_type": "structural_emergency",
+  "type_confidence": "high",
+  "location": {
+   "text": null,
+   "precision": "unknown"
+  },
+  "reported_facts": [
+   "Un immeuble de six étages penche après un séisme",
+   "La police se demande à quelle distance éloigner les gens"
+  ],
+  "initial_severity": "high",
+  "severity_reason": "L'immeuble penché représente une menace pour les occupants et la police s'interroge sur la distance à garder entre les personnes et le bâtiment",
+  "people_at_risk_mentioned": "yes",
+  "missing_information": [
+   "Emplacement exact du bâtiment",
+   "Nombre d'occupants ou de personnes à l'intérieur",
+   "État de stabilité de la structure",
+   "Mesures d'évacuation déjà prises",
+   "Accès des équipes de secours",
+   "Possibilité de déclenchement d'un effondrement"
+  ],
+  "language": "fr",
+  "rag_topic": "structural",
+  "notes": null
+ },
+ "c11": {
+  "incident_type": "structural_emergency",
+  "type_confidence": "high",
+  "location": {
+   "text": null,
+   "precision": "unknown"
+  },
+  "reported_facts": [
+   "Des morceaux de façade tombent sur le trottoir devant un immeuble abîmé",
+   "Des commerçants veulent rouvrir leurs boutiques"
+  ],
+  "initial_severity": "moderate",
+  "severity_reason": "Des morceaux de façade tombent sur le trottoir devant un immeuble abîmé, indiquant un risque localisé pour les piétons et des dommages au bâtiment, mais aucun blessé n’est signalé.",
+  "people_at_risk_mentioned": "no",
+  "missing_information": [
+   "Adresse exacte du bâtiment",
+   "État de stabilité de la façade",
+   "Nombre de personnes présentes ou blessées",
+   "Présence éventuelle de personnes piégées à l'intérieur",
+   "Étendue des dommages au bâtiment",
+   "Coordonnées du signalement ou du responsable"
+  ],
+  "language": "fr",
+  "rag_topic": "structural",
+  "notes": null
+ },
+ "c12": {
+  "incident_type": "structural_emergency",
+  "type_confidence": "high",
+  "location": {
+   "text": null,
+   "precision": "unknown"
+  },
+  "reported_facts": [
+   "After the earthquake an inspector put a red sign on our apartment block",
+   "The residents want to get their belongings"
+  ],
+  "initial_severity": "moderate",
+  "severity_reason": "Red sign placed on the apartment block after the earthquake indicates possible structural risk; residents want to retrieve belongings but no injuries or casualties are mentioned",
+  "people_at_risk_mentioned": "no",
+  "missing_information": [
+   "Exact address or coordinates of the apartment block",
+   "Extent of structural damage to the building",
+   "Number of occupants or residents in the block",
+   "Whether any injuries or casualties have occurred",
+   "Whether authorities have ordered evacuation or declared the building unsafe",
+   "Access routes for responders and any obstacles"
+  ],
+  "language": "en",
+  "rag_topic": "structural",
+  "notes": null
+ }
+}
