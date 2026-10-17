@@ -1,0 +1,32 @@
+{
+ "row": {
+  "incident": "structural_01",
+  "run": 1,
+  "n_questions": 2,
+  "n_no": 1,
+  "n_yes": 1,
+  "n_unclear": 0,
+  "expected_conflict_found": "",
+  "false_alarm": "",
+  "place_question": false,
+  "seconds": 4.9,
+  "error": ""
+ },
+ "checks": [
+  {
+   "claim": "Part of a five-storey apartment building has collapsed",
+   "question": "Is the collapsed part of the apartment building visible in the image?",
+   "answer": "yes",
+   "evidence": "Building on right is collapsed with debris and exposed interiors."
+  },
+  {
+   "claim": "Dust covers the street",
+   "question": "Is dust covering the street visible in the image?",
+   "answer": "no",
+   "evidence": "Street has rubble and debris, no visible dust covering."
+  }
+ ],
+ "conflicts": [
+  "Report: Dust covers the street. Image: not visible (Street has rubble and debris, no visible dust covering.)."
+ ]
+}

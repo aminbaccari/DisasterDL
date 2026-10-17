@@ -1,0 +1,33 @@
+{
+ "row": {
+  "incident": "edge_02_conflict",
+  "run": 1,
+  "n_questions": 2,
+  "n_no": 2,
+  "n_yes": 0,
+  "n_unclear": 0,
+  "expected_conflict_found": true,
+  "false_alarm": false,
+  "place_question": false,
+  "seconds": 18.1,
+  "error": ""
+ },
+ "checks": [
+  {
+   "claim": "Flooding on the main road",
+   "question": "Is floodwater visible on the main road in the image?",
+   "answer": "no",
+   "evidence": "Gravel path visible, no floodwater on main road."
+  },
+  {
+   "claim": "Water is rising quickly",
+   "question": "Is water visible on the main road in the image?",
+   "answer": "no",
+   "evidence": "Gravel path visible, no water on main road."
+  }
+ ],
+ "conflicts": [
+  "Report: Flooding on the main road. Image: not visible (Gravel path visible, no floodwater on main road.).",
+  "Report: Water is rising quickly. Image: not visible (Gravel path visible, no water on main road.)."
+ ]
+}

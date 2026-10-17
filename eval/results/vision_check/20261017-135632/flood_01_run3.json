@@ -1,0 +1,38 @@
+{
+ "row": {
+  "incident": "flood_01",
+  "run": 3,
+  "n_questions": 3,
+  "n_no": 1,
+  "n_yes": 2,
+  "n_unclear": 0,
+  "expected_conflict_found": "",
+  "false_alarm": true,
+  "place_question": false,
+  "seconds": 5.6,
+  "error": ""
+ },
+ "checks": [
+  {
+   "claim": "Fortes inondations dans un quartier résidentiel de Nabeul",
+   "question": "Is floodwater visible in the image?",
+   "answer": "yes",
+   "evidence": "brown floodwater covers entire street, submerging lower building levels"
+  },
+  {
+   "claim": "Plusieurs routes sont bloquées",
+   "question": "Are blocked roads visible in the image?",
+   "answer": "no",
+   "evidence": "no roads visible, only flooded street with buildings"
+  },
+  {
+   "claim": "L'eau continue de monter",
+   "question": "Is rising water visible in the image?",
+   "answer": "yes",
+   "evidence": "water level rises to base of buildings, indicating rising water"
+  }
+ ],
+ "conflicts": [
+  "Report: Plusieurs routes sont bloquées. Image: not visible (no roads visible, only flooded street with buildings)."
+ ]
+}

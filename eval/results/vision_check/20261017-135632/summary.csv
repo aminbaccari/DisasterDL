@@ -1,0 +1,13 @@
+incident,run,n_questions,n_no,n_yes,n_unclear,expected_conflict_found,false_alarm,place_question,seconds,error
+edge_02_conflict,1,2,2,0,0,True,False,False,18.1,
+fire_01,1,2,1,1,0,True,True,False,9.3,
+flood_01,1,3,1,2,0,,True,False,16.9,
+structural_01,1,2,1,1,0,,,False,4.9,
+edge_02_conflict,2,1,1,0,0,True,False,False,3.2,
+fire_01,2,2,1,1,0,True,True,False,4.5,
+flood_01,2,3,1,2,0,,True,False,5.2,
+structural_01,2,2,1,1,0,,,False,4.5,
+edge_02_conflict,3,1,1,0,0,True,False,False,1.9,
+fire_01,3,2,1,1,0,True,True,False,3.9,
+flood_01,3,3,1,2,0,,True,False,5.6,
+structural_01,3,2,1,1,0,,,False,4.5,

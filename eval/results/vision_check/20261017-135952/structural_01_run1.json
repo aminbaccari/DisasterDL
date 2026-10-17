@@ -1,0 +1,26 @@
+{
+ "row": {
+  "n_no": 0,
+  "expected_conflict_found": "",
+  "false_alarms": "",
+  "incident": "structural_01",
+  "run": 1,
+  "questions_prompt": "vision_questions/v2.md",
+  "check_prompt": "vision_check/v2.md",
+  "n_questions": 1,
+  "n_yes": 1,
+  "n_unclear": 0,
+  "place_question": false,
+  "seconds": 3.0,
+  "error": ""
+ },
+ "checks": [
+  {
+   "claim": "Part of a five-storey apartment building has collapsed",
+   "question": "Is a collapsed building visible in the image?",
+   "answer": "yes",
+   "evidence": "Building on right is collapsed, surrounded by rubble."
+  }
+ ],
+ "conflicts": []
+}

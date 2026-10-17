@@ -1,0 +1,26 @@
+{
+ "row": {
+  "n_no": 0,
+  "expected_conflict_found": "",
+  "false_alarms": 0,
+  "incident": "flood_01",
+  "run": 2,
+  "questions_prompt": "vision_questions/v2.md",
+  "check_prompt": "vision_check/v2.md",
+  "n_questions": 1,
+  "n_yes": 1,
+  "n_unclear": 0,
+  "place_question": false,
+  "seconds": 3.0,
+  "error": ""
+ },
+ "checks": [
+  {
+   "claim": "Fortes inondations dans un quartier résidentiel de Nabeul",
+   "question": "Is floodwater visible in the image?",
+   "answer": "yes",
+   "evidence": "Brown floodwater covers street, reaching building bases."
+  }
+ ],
+ "conflicts": []
+}

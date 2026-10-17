@@ -1,0 +1,34 @@
+{
+ "row": {
+  "n_no": 1,
+  "expected_conflict_found": "",
+  "false_alarms": "",
+  "incident": "structural_01",
+  "run": 2,
+  "questions_prompt": "vision_questions/v2.md",
+  "check_prompt": "vision_check/v2.md",
+  "n_questions": 2,
+  "n_yes": 1,
+  "n_unclear": 0,
+  "place_question": false,
+  "seconds": 4.5,
+  "error": ""
+ },
+ "checks": [
+  {
+   "claim": "Part of a five-storey apartment building has collapsed",
+   "question": "Is a collapsed building visible in the image?",
+   "answer": "yes",
+   "evidence": "Building on right is collapsed, surrounded by rubble and debris"
+  },
+  {
+   "claim": "Neighbours say some residents may still be inside (second-hand, unconfirmed)",
+   "question": "Are any people visible in the image?",
+   "answer": "no",
+   "evidence": "No visible people in the image"
+  }
+ ],
+ "conflicts": [
+  "Report: Neighbours say some residents may still be inside (second-hand, unconfirmed). Image: not visible (No visible people in the image)."
+ ]
+}

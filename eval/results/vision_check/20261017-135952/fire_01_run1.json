@@ -1,0 +1,46 @@
+{
+ "row": {
+  "n_no": 1,
+  "expected_conflict_found": true,
+  "false_alarms": 0,
+  "incident": "fire_01",
+  "run": 1,
+  "questions_prompt": "vision_questions/v2.md",
+  "check_prompt": "vision_check/v2.md",
+  "n_questions": 4,
+  "n_yes": 3,
+  "n_unclear": 0,
+  "place_question": false,
+  "seconds": 6.1,
+  "error": ""
+ },
+ "checks": [
+  {
+   "claim": "Smoke rising from the hills behind the village",
+   "question": "Is smoke visible in the image?",
+   "answer": "yes",
+   "evidence": "Large plume of smoke rising from fire on hillside"
+  },
+  {
+   "claim": "Smoke rising from the hills behind the village",
+   "question": "Are hills visible in the image?",
+   "answer": "yes",
+   "evidence": "Hills are visible with fire and smoke"
+  },
+  {
+   "claim": "Flames visible near the first houses",
+   "question": "Are flames visible in the image?",
+   "answer": "yes",
+   "evidence": "Bright orange flames visible on hills"
+  },
+  {
+   "claim": "Flames visible near the first houses",
+   "question": "Are houses visible in the image?",
+   "answer": "no",
+   "evidence": "No houses visible, only fire, smoke, and water body"
+  }
+ ],
+ "conflicts": [
+  "Report: Flames visible near the first houses. Image: not visible (No houses visible, only fire, smoke, and water body)."
+ ]
+}

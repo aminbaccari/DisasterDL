@@ -243,3 +243,28 @@ Reading: moving the comparison to the text side removes the place-name false ala
 - Keep vision v2 and risk v3 as drafts. They look better on cleanliness and false alarms and worse on one real detection (missing houses).
 - Candidate fix, not tried: a narrow second vision call that asks only a yes/no question about an object the report names ("Is a house visible?"), instead of free comparison. It keeps the image-only description and restores the absence check.
 - A larger run: more images (the ground truth needs about 12), 5 runs each, a second vision model, then judge the false-observation rate again.
+
+## A narrow second vision call: yes/no questions about objects the report names (2026-10-17)
+
+Design, prototype only (`scripts/vision_check_test.py`, not in the n8n workflow): (1) a text agent writes at most 4 yes/no questions from the reported facts (`prompts/vision_questions/`), (2) the local vision model answers them from the image alone (`prompts/vision_check/`), (3) plain code turns every "no" into a conflict ("Report: ... Image: not visible"), "unclear" gives nothing. Goal: restore the check that vision v2 (image only) cannot do, for example "flames near the first houses" against an image without houses. Models: vision `ollama:qwen3-vl:4b-instruct` (real), question writer `groq:openai/gpt-oss-120b` (real), incident JSON canned MOCK (same for every run). 3 runs per image. Expectations were written in the script before the first run: fire_01 and edge_02 must give the conflict on the house or flood question, flood_01 must give none.
+
+| Version | Incident | Expected conflict found | False alarms (runs with at least one) |
+|---------|----------|-------------------------|-----------------------------------------|
+| questions v1 + check v1 (`eval/results/vision_check/20261017-135632`) | edge_02_conflict | 3 of 3 | 0 of 3 |
+| | fire_01 | 3 of 3 | 0 of 3 |
+| | flood_01 | n/a | 3 of 3 |
+| questions v2 + check v2 (`eval/results/vision_check/20261017-135952`) | edge_02_conflict | 3 of 3 | 0 of 3 |
+| | fire_01 | 3 of 3 | 0 of 3 |
+| | flood_01 | n/a | 2 of 3 |
+
+structural_01 is not scored; the answers are in the result files (dust "no" in 3 of 3 with v1, no conflict with v2 except "people visible: no" once).
+
+What happened, read from the saved answers:
+- The lost conflict is restored. With v1 the question writer asked one compound question ("Are flames visible near the first houses?") and the answer was no, in run 1 with the evidence "houses are in dark foreground" (houses that are not in the image). With v2 the question became "Are houses or buildings visible in the image?" and the answer was no 3 of 3 with sensible evidence ("no houses visible, only fire, smoke, and water body"), while the questions about smoke and flames were answered yes.
+- The false-alarm criterion is NOT met. flood_01 gave a conflict in 3 of 3 runs with v1 ("Are blocked roads visible?" answered no, evidence "roads are submerged, no visible road surfaces") and in 2 of 3 with v2 ("Are roads visible in the image?" answered no, same evidence). The answers are literally true (the road surface is under water) but the conflict "report says roads are blocked, the image does not show roads" is misleading: the water is what blocks the road. It is the same count as the 3 of 3 false alarms of the place-name conflicts that risk v3 removed, now with a different cause: a question about something that the event itself hides.
+- Questions never asked about the place (0 of 24 question sets), and no yes-bias was seen: every "yes" in these 24 answer sets matches the image as I see it.
+- Cost: one text call (about 1 s on Groq) and one vision call of 3 to 6 s per incident.
+
+Overfitting warning: v2 of both prompts was written after reading the v1 results on the same four images, so the v2 column is not an independent test. A third iteration (a rule against questions about roads, streets or ground that the event can cover) would probably remove the remaining flood_01 false alarms, but it would be tuned to this sample, so I did not make it. Needs more images (about 12) and runs before the check goes into the workflow.
+
+Union with the text-side comparison (risk v3 on vision v2, previous section): the check adds the missing house conflict (fire_01 1 of 3 to 3 of 3) and adds 2 of 3 false alarms on flood_01 (0 of 3 to 2 of 3). Net: not yet worth the extra call. Decision left to the team.

@@ -1,0 +1,32 @@
+{
+ "row": {
+  "incident": "fire_01",
+  "run": 1,
+  "n_questions": 2,
+  "n_no": 1,
+  "n_yes": 1,
+  "n_unclear": 0,
+  "expected_conflict_found": true,
+  "false_alarm": true,
+  "place_question": false,
+  "seconds": 9.3,
+  "error": ""
+ },
+ "checks": [
+  {
+   "claim": "Smoke rising from the hills behind the village",
+   "question": "Is smoke visible near the hills behind the village in the image?",
+   "answer": "yes",
+   "evidence": "Bright orange smoke and fire visible behind dark hills"
+  },
+  {
+   "claim": "Flames visible near the first houses",
+   "question": "Are flames visible near the first houses in the image?",
+   "answer": "no",
+   "evidence": "No flames near first houses; houses are in dark foreground"
+  }
+ ],
+ "conflicts": [
+  "Report: Flames visible near the first houses. Image: not visible (No flames near first houses; houses are in dark foreground)."
+ ]
+}
