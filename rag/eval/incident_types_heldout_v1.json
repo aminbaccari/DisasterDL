@@ -1,0 +1,95 @@
+{
+  "note": "Held-out set for D11, written 2026-10-17 BEFORE incident prompt v3 existed and before any run on it. Question: does the incident agent type aftermath and preparation reports with the right disaster type (so that the knowledge base is searched), without typing non-disaster reports as a disaster? Pre-registered success (incident v3 against v2, same pinned model, 3 runs per case): (1) positives typed correctly in at least 22 of 24 runs; (2) negatives typed forest_fire, flood or structural in 0 of 18 runs; (3) the six fixed incidents of eval/incidents keep their expected type in every run. If v3 fails (2) or (3) it is not adopted whatever it does on (1).",
+  "positives": [
+    {
+      "id": "h01",
+      "expected_type": "forest_fire",
+      "text": "The wildfire passed through our valley yesterday. The flames are out but the ground is still smoking. Can the children play near the burned area?"
+    },
+    {
+      "id": "h02",
+      "expected_type": "forest_fire",
+      "text": "L'incendie de forêt est éteint mais il reste des braises. Les habitants veulent rentrer chez eux ce soir."
+    },
+    {
+      "id": "h03",
+      "expected_type": "flood",
+      "text": "The flood has gone down but our house is full of mud and the walls are wet. How do we clean it safely?"
+    },
+    {
+      "id": "h04",
+      "expected_type": "flood",
+      "text": "L'eau s'est retirée après la crue. Nous rentrons chez nous et il y a des fils électriques par terre."
+    },
+    {
+      "id": "h05",
+      "expected_type": "structural_emergency",
+      "text": "The earthquake is over. Our apartment block has cracks in the walls and an inspector put a yellow sign on the door. Can we stay?"
+    },
+    {
+      "id": "h06",
+      "expected_type": "structural_emergency",
+      "text": "Après l'explosion, des morceaux du balcon menacent de tomber sur la rue. Que doit faire la mairie ?"
+    },
+    {
+      "id": "h07",
+      "expected_type": "forest_fire",
+      "text": "We live next to a pine forest. What should we do to protect our house before the fire season?"
+    },
+    {
+      "id": "h08",
+      "expected_type": "flood",
+      "text": "Nous vivons près d'un oued. Comment préparer la famille avant la saison des pluies ?"
+    }
+  ],
+  "negatives": [
+    {
+      "id": "n01",
+      "allowed_types": [
+        "other",
+        "unclear"
+      ],
+      "text": "A car crashed into a shop window on the main street and the driver is injured."
+    },
+    {
+      "id": "n02",
+      "allowed_types": [
+        "other",
+        "unclear"
+      ],
+      "text": "Il y a une coupure de courant dans tout le quartier depuis ce matin."
+    },
+    {
+      "id": "n03",
+      "allowed_types": [
+        "other",
+        "unclear"
+      ],
+      "text": "A man collapsed in the street and is not breathing, please send an ambulance."
+    },
+    {
+      "id": "n04",
+      "allowed_types": [
+        "other",
+        "unclear"
+      ],
+      "text": "Il y a un problème grave près du port, venez vite."
+    },
+    {
+      "id": "n05",
+      "allowed_types": [
+        "other",
+        "unclear"
+      ],
+      "text": "The neighbour's party is too loud again, it has gone on all night."
+    },
+    {
+      "id": "n06",
+      "allowed_types": [
+        "other",
+        "unclear"
+      ],
+      "text": "A chemical truck overturned on the highway and a liquid is leaking onto the road."
+    }
+  ]
+}
