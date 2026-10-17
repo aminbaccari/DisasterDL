@@ -268,3 +268,10 @@ What happened, read from the saved answers:
 Overfitting warning: v2 of both prompts was written after reading the v1 results on the same four images, so the v2 column is not an independent test. A third iteration (a rule against questions about roads, streets or ground that the event can cover) would probably remove the remaining flood_01 false alarms, but it would be tuned to this sample, so I did not make it. Needs more images (about 12) and runs before the check goes into the workflow.
 
 Union with the text-side comparison (risk v3 on vision v2, previous section): the check adds the missing house conflict (fire_01 1 of 3 to 3 of 3) and adds 2 of 3 false alarms on flood_01 (0 of 3 to 2 of 3). Net: not yet worth the extra call. Decision left to the team.
+
+## Fixes without model calls, 2026-10-17 (offline tests only, no real run)
+
+- D5: `/validate` now flags `knowledge.coverage = good` when the retrieval topic is fire and FI-01 is among the retrieved entries. 3 new unit tests (flagged, partial passes, other topic unaffected). 116 backend tests pass. Effect on real reports unknown: no real fire report has been validated with this rule.
+- D6: the response built after the repair pass carries `validation.first_violations` (what the first validation said). Workflow regenerated, static check passes (78 nodes). Not run in n8n.
+- Failed Vision step reported as unusable image: closed in the docs, see `docs/SPRINT_STATUS.md`.
+- D7 not fixed: a test needs the real edge_03 output; none was added.

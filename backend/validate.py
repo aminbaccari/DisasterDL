@@ -30,6 +30,8 @@ FIRE_ACTION_NEEDS = {"evacuate", "flames_approaching", "home_protection"}
 FIRE_ACTION_FALLBACK = {"FI-09", "FI-10", "FI-11", "FI-13", "FI-14", "FI-16", "FI-17", "FI-21", "FI-22", "FI-23", "FI-24"}
 # The one national number allowed, and the entry that carries it (ONPC report, Tunisian civil protection).
 TUNISIAN_NUMBER = ("198", "FI-12")
+# The fire scope note: the base holds nothing on flames already reaching a house.
+SCOPE_NOTE_FIRE = "FI-01"
 
 
 def fire_action_entries(path=ENTRIES_JSON):
@@ -182,6 +184,10 @@ def check_no_guidance(report, retrieval, fire_entries):
                 problems.append(f"evacuation or protection step without a covering entry: {text[:80]!r}")
     if knowledge.get("coverage") in ("partial", "none") and not statement:
         problems.append("coverage is partial or none but there is no no_guidance_statement")
+    # D5 (fire_01, batch A): FI-01 is the scope note saying the knowledge base has nothing on flames already reaching a house.
+    # When it is retrieved for a fire incident, coverage 'good' overstates what the base can support.
+    if retrieval.get("topic") == "fire" and SCOPE_NOTE_FIRE in ids and knowledge.get("coverage") == "good":
+        problems.append(f"coverage is 'good' although {SCOPE_NOTE_FIRE} (fire scope note: no guidance for flames reaching a house) was retrieved")
     return problems
 
 

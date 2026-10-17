@@ -306,6 +306,8 @@ const v = VALIDATION ? $input.first().json : null;
 const validation = !v ? { status: 'not_run', violations: [], repaired: REPAIRED }
   : (v.error ? { status: 'unavailable', violations: [{ check: 'validate', message: 'the /validate service did not answer: ' + String(v.error.message || '').slice(0, 150) }], repaired: REPAIRED }
   : { status: v.status, violations: v.violations || [], repaired: REPAIRED });
+// D6: when the repair pass ran, keep what the FIRST validation said, so the reason for the repair is not lost.
+if (REPAIRED) { try { validation.first_violations = $('Validate report').first().json.violations || []; } catch (e) { validation.first_violations = []; } }
 const degraded = [...ctx.degraded, ...(risk.degraded_c || []), ...(parsed.degraded_d || [])];
 if (!parsed.report) {
   return [{ json: { status: 'degraded', incident_type: ctx.incident.incident_type, severity: risk.risk.severity, report_markdown: '', report: null, risk: risk.risk,
