@@ -26,7 +26,7 @@ Checked against `docs/SPRINT_PLAN.md` (written 2026-10-16), the commits (23 on `
 | extra | Four CC BY test images | Done | `vision/test_images/SOURCES.md` | About 12 images for a vision benchmark |
 | extra | Incident v2 and report v4 drafts, before/after scripts | Written, tested partly | `scripts/before_after.py`, `scripts/report_ab.py`, partial results | Full re-run with fresh quotas |
 | extra | Bottlenecks list and vision proposal | Written 2026-10-17 | `docs/BOTTLENECKS.md`, `docs/VISION_ARCHITECTURE.md` | Team decisions |
-| extra | Vision chain code (`VISION_CHAIN`, `task`, ollama and hf providers) | Done 2026-10-17, offline tests only | 11 tests, 95 backend tests pass | Install Ollama and pull a model (needs approval), `scripts/vision_bench.py`, benchmark images |
+| extra | Vision chain (`VISION_CHAIN`, `task`, ollama and hf providers) | Done 2026-10-17: code, 11 tests, and a real local model | `qwen3-vl:4b-instruct` in Docker, `scripts/vision_bench.py` 8 calls, 2 end-to-end image runs, `docs/EVIDENCE_LOG.md` | Image-only vision prompt v2, about 12 benchmark images, a second model, HF provider untested (no token) |
 
 ## Acceptance criteria of the sprint plan
 
@@ -41,7 +41,9 @@ Checked against `docs/SPRINT_PLAN.md` (written 2026-10-16), the commits (23 on `
 
 | Id | Defect | Evidence | Where handled |
 |----|--------|----------|---------------|
-| D1 | Vision step missing in nearly all image runs | `eval/results/real_chain*` | `docs/VISION_ARCHITECTURE.md` |
+| D1 | Vision step missing in nearly all image runs | `eval/results/real_chain*` | Fixed for the local path 2026-10-17 (vision step answered in 2 of 2 image runs), `docs/VISION_ARCHITECTURE.md` |
+| D9 | Vision model echoes the report text (false observations) | edge_02, structural_01, 3 of 10 | proposed vision v2 (image only) |
+| D10 | Repair pass slow: the retry rotation sends it to OpenRouter nemotron (100+ s) | `eval/results/vision_chain_e2e` | `docs/BOTTLENECKS.md` item 3 |
 | D2 | Location copied as a relative phrase (v1) | fire_01, 2 of 2 completed runs | incident v2 draft, untested |
 | D3 | Free text in English for a French incident | edge_01 | incident v2 draft, untested |
 | D4 | Report JSON missing fields from one model | 2 of 6 in batch C, 0 of 9 in the paired test | report v4 draft, untested |

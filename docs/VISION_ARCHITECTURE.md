@@ -1,6 +1,6 @@
 # Proposal: a separate vision model for the Vision agent (2026-10-17)
 
-Status (2026-10-17): the team approved the local-first plan. Step 1 of the implementation plan is DONE (code and tests, nothing downloaded, no model run): `VISION_CHAIN`, the `task` field of `/llm`, the `ollama` and `hf` providers, `scripts/llm_ping.py --task vision`, 11 new unit tests with a fake HTTP layer. Steps 2 to 6 are open and need the downloads below to be approved.
+Status (2026-10-17): the team approved the local-first plan. Step 1 of the implementation plan is DONE (code and tests, nothing downloaded, no model run): `VISION_CHAIN`, the `task` field of `/llm`, the `ollama` and `hf` providers, `scripts/llm_ping.py --task vision`, 11 new unit tests with a fake HTTP layer. Steps 2 and 3 are DONE (2026-10-17, see the end of this file and `docs/EVIDENCE_LOG.md`): the model runs in Docker with a GPU and the Vision step works end to end. Steps 4 to 6 are open.
 
 Step 2 attempt (2026-10-17, Docker route approved by the team, no Windows install): the existing image `ollama/ollama:0.34.0` started with `--gpus all` and detected the GPU (CUDA, RTX 3050 6 GiB, driver 13.0) in a container `ollama-disasterai` with volume `ollama_disasterai`. The pull of `qwen3-vl:4b` failed at 0 percent of 3.3 GB with an input/output error, then the Docker engine stopped answering. After `docker desktop restart` the engine came back, but a test write to the volume reported "No space left on device" inside Docker's virtual disk (`docker_data.vhdx`, 20.1 GB on the host; C: itself has only 0.12 GB free, so the virtual disk cannot grow), and the engine became unresponsive again. The model was not downloaded and no vision call was made. Likely cause: the Windows disk C: is full, so Docker's virtual disk cannot grow and writes fail (the images, for example `ollama/ollama:0.34.0` at 9.2 GB, are inside that disk). This is a diagnosis from symptoms, not confirmed. The bind-mount plan does not help while C: has no room: the model needs about 3.3 GB plus room for Docker to work. The same engine instability happened earlier in the session (2026-10-16, engine stopped without a command of ours). Model facts (size, licence, hosting) were read from the Hugging Face API and the Ollama library pages on 2026-10-17. No model was run, so quality claims below are expectations, not results.
 
@@ -97,3 +97,16 @@ Rough effort: steps 1 to 3 half a day, step 4 one day, steps 5 and 6 one day. Th
 2. Approve installing Ollama and pulling `qwen3-vl:4b`?
 3. Approve changing the Vision prompt to image-only (v2) and moving the consistency check to the text side?
 4. Who selects and labels about 12 test images?
+
+## Result of the first local run (2026-10-17)
+
+- Model: `qwen3-vl:4b-instruct` (3.3 GB) in the Docker image `ollama/ollama:0.34.0` with `--gpus all`, models on a bind mount on C:. Warm latency 9 to 14 s per image, cold start 72 s, 100% on the 6 GiB GPU. The thinking variant `qwen3-vl:4b` does not work with this chain (empty message, answer in a separate `reasoning` field).
+- JSON valid 8 of 8, schema valid 7 of 8, conflict with the report detected for fire_01 (no houses) and structural_01 (storeys), flood_01 correct. False observations that echo the report text appeared in 3 of 10 edge_02 and structural_01 answers, which supports step 5 (image-only prompt, comparison done on the text side).
+- How to start it again: `docker start ollama-c` (the container restarts with Docker). To recreate it:
+
+```
+docker run -d --name ollama-c --restart unless-stopped --gpus all -p 11434:11434 -v "C:\Users\ASUS\ollama-models:/root/.ollama" -v "C:\Users\ASUS\ollama-ca:/extra-ca:ro" -e SSL_CERT_DIR=/extra-ca:/etc/ssl/certs -e OLLAMA_KEEP_ALIVE=24h ollama/ollama:0.34.0
+```
+
+  The `ollama-ca` mount is only needed on a network whose TLS is re-signed by a local root (Avast on this machine), see the evidence log. A model is pulled with `docker exec ollama-c ollama pull qwen3-vl:4b-instruct`.
+- Run the benchmark with `python scripts/vision_bench.py --model ollama:qwen3-vl:4b-instruct --runs 2`.

@@ -33,7 +33,7 @@ n8n owns the orchestration (branches, parallel paths, retries, error workflow). 
 ## Stack
 
 - Automation: n8n, self-hosted with Docker
-- Models: a fallback chain over Gemini, Groq and OpenRouter free tiers (`LLM_CHAIN` in `.env`, `backend/llm_chain.py`). Each response lists the model that answered every step (`models_used`). Image calls can use their own `VISION_CHAIN` (local Ollama, Hugging Face Inference Providers, then cloud models). The local and Hugging Face providers are coded and unit-tested but no vision model has been installed or run yet.
+- Models: a fallback chain over Gemini, Groq and OpenRouter free tiers (`LLM_CHAIN` in `.env`, `backend/llm_chain.py`). Each response lists the model that answered every step (`models_used`). Image calls can use their own `VISION_CHAIN` (local Ollama, Hugging Face Inference Providers, then cloud models). A local `qwen3-vl:4b-instruct` runs in Docker with the GPU (see `docs/VISION_ARCHITECTURE.md`); the Hugging Face provider is coded and unit-tested but not tried (no token).
 - Embeddings: multilingual-e5-small via sentence-transformers (local)
 - Vector store: ChromaDB (local), section chunking (chosen after evaluation)
 - Service: Python FastAPI on port 8010
@@ -68,6 +68,8 @@ n8n owns the orchestration (branches, parallel paths, retries, error workflow). 
 5. Run the environment check: `python scripts/check_env.py` (add `--skip-embeddings` to skip the first embedding model download).
 6. Check the models of the chain: `python scripts/llm_ping.py --list groq`, then `python scripts/llm_ping.py --json` (one call per model of `LLM_CHAIN`, never prints a key).
 
+Local vision model: run the `ollama/ollama` Docker image with `--gpus all`, pull `qwen3-vl:4b-instruct` (not the thinking tag `qwen3-vl:4b`) and set `VISION_CHAIN=ollama:qwen3-vl:4b-instruct,...`; exact commands in `docs/VISION_ARCHITECTURE.md`. Keep several GB free on C: or Docker fails.
+
 Notes from the development machine (Windows 11): if Python reports certificate errors, `pip install truststore` (the scripts use it when present); if importing sentence-transformers fails with a Keras 3 message, set `USE_TF=0` and `TRANSFORMERS_NO_TF=1`; with no internet set `HF_HUB_OFFLINE=1` after the first model download. Port 8000 was taken by another application, so the service uses 8010.
 
 ## Run it
@@ -96,7 +98,7 @@ The response is JSON: `status` (ok, needs_more_information, degraded, flagged, r
 ## Known limits
 
 - Free tiers: daily and per-minute quotas stop long runs. A pipeline run is about 7 model calls.
-- The Vision step needs a vision-capable model. `VISION_CHAIN` is implemented, the local model (Ollama, `qwen3-vl:4b` suggested) is not installed yet, see `docs/VISION_ARCHITECTURE.md`.
+- The Vision step needs a vision-capable model. `VISION_CHAIN` is implemented and the local model works (9 to 14 s per image warm, false observations that echo the report text were seen), see `docs/VISION_ARCHITECTURE.md`.
 - Fire guidance is limited (FI-01 says what the knowledge base does not cover). Tunisian guidance is one news report of an ONPC communique.
 - French fire entries FI-21 to FI-26 are team translations, not reviewed by an outside reader. Four OCR-only flood pages were not re-verified on the last QA run.
 - The severity scale (low, moderate, high, critical, undetermined) is a working scale of this prototype, not an official standard.
