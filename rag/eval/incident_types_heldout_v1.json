@@ -1,5 +1,5 @@
 {
-  "note": "Held-out set for D11, written 2026-10-17 BEFORE incident prompt v3 existed and before any run on it. Question: does the incident agent type aftermath and preparation reports with the right disaster type (so that the knowledge base is searched), without typing non-disaster reports as a disaster? Pre-registered success (incident v3 against v2, same pinned model, 3 runs per case): (1) positives typed correctly in at least 22 of 24 runs; (2) negatives typed forest_fire, flood or structural in 0 of 18 runs; (3) the six fixed incidents of eval/incidents keep their expected type in every run. If v3 fails (2) or (3) it is not adopted whatever it does on (1).",
+  "note": "Held-out set for D11, written 2026-10-17 BEFORE incident prompt v3 existed. Question: does the incident agent type aftermath and preparation reports with the right disaster type (so that the knowledge base is searched), without typing non-disaster reports as a disaster? REVISION, committed before v3 existed: the first baseline of v2 (eval/results/incident_type_check/20261017-230810) showed that v2 already types aftermath reports correctly (h01 to h06) and fails on preparation reports (h07, h08 typed unclear) and on n01 (a car through a shop window typed structural_emergency). h07, h08 and n01 are therefore seen cases; h09 to h12 and n07 to n10 were added as fresh cases. Revised pass criteria (v3 against v2, same pinned model, 2 runs, calls that returned an error are excluded and counted separately): (1) on the fresh positives h09 to h12, v3 is correct in at least 7 of 8 answered runs; (2) no negative (n01 to n10) is typed forest_fire, flood or structural in any answered run of v3; (3) the six fixed incidents keep their expected type in every answered run; (4) v3 is not worse than v2 on h01 to h06. If (2), (3) or (4) fail, v3 is not adopted whatever it does on (1). Results on the seen cases h07, h08, n01 are reported but are not evidence of generalisation.",
   "positives": [
     {
       "id": "h01",
@@ -40,6 +40,30 @@
       "id": "h08",
       "expected_type": "flood",
       "text": "Nous vivons près d'un oued. Comment préparer la famille avant la saison des pluies ?"
+    },
+    {
+      "id": "h09",
+      "expected_type": "flood",
+      "added": "after the v2 baseline, before v3 existed",
+      "text": "Our neighbourhood floods every winter. What can we do to get ready before it rains?"
+    },
+    {
+      "id": "h10",
+      "expected_type": "forest_fire",
+      "added": "after the v2 baseline, before v3 existed",
+      "text": "Nous voulons débroussailler autour de notre maison avant l'été. Quelles sont les règles de sécurité ?"
+    },
+    {
+      "id": "h11",
+      "expected_type": "structural_emergency",
+      "added": "after the v2 baseline, before v3 existed",
+      "text": "We are worried about our old building after the tremors. How do we know whether it is safe to go back inside?"
+    },
+    {
+      "id": "h12",
+      "expected_type": "forest_fire",
+      "added": "after the v2 baseline, before v3 existed",
+      "text": "Le feu est maîtrisé mais la fumée est encore épaisse dans le village. Est-ce dangereux pour les enfants ?"
     }
   ],
   "negatives": [
@@ -90,6 +114,42 @@
         "unclear"
       ],
       "text": "A chemical truck overturned on the highway and a liquid is leaking onto the road."
+    },
+    {
+      "id": "n07",
+      "allowed_types": [
+        "other",
+        "unclear"
+      ],
+      "added": "after the v2 baseline, before v3 existed",
+      "text": "A shop window was smashed by burglars last night and the till was emptied."
+    },
+    {
+      "id": "n08",
+      "allowed_types": [
+        "other",
+        "unclear"
+      ],
+      "added": "after the v2 baseline, before v3 existed",
+      "text": "A tree fell on a parked car during the storm and the car is crushed."
+    },
+    {
+      "id": "n09",
+      "allowed_types": [
+        "other",
+        "unclear"
+      ],
+      "added": "after the v2 baseline, before v3 existed",
+      "text": "Un cambriolage a eu lieu dans une pharmacie cette nuit."
+    },
+    {
+      "id": "n10",
+      "allowed_types": [
+        "other",
+        "unclear"
+      ],
+      "added": "after the v2 baseline, before v3 existed",
+      "text": "Several people have food poisoning after a wedding dinner."
     }
   ]
 }
