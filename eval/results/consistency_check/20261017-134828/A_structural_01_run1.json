@@ -1,0 +1,19 @@
+{
+ "row": {
+  "variant": "A",
+  "vision_prompt": "vision/v1.md",
+  "risk_prompt": "risk_assessment/v2.md",
+  "incident": "structural_01",
+  "run": 1,
+  "seconds": 12.0,
+  "answered": true,
+  "schema_ok": true,
+  "n_conflicts": 2,
+  "place_conflict": false
+ },
+ "conflicts": [
+  "Report states the building is five storeys tall, while the image only shows a partial structure that may not represent the full height",
+  "Report mentions dust covering the street, but the image cannot determine the presence of dust"
+ ],
+ "error": null
+}

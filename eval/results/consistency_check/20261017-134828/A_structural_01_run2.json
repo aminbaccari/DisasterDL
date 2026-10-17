@@ -1,0 +1,19 @@
+{
+ "row": {
+  "variant": "A",
+  "vision_prompt": "vision/v1.md",
+  "risk_prompt": "risk_assessment/v2.md",
+  "incident": "structural_01",
+  "run": 2,
+  "seconds": 11.4,
+  "answered": true,
+  "schema_ok": true,
+  "n_conflicts": 2,
+  "place_conflict": false
+ },
+ "conflicts": [
+  "Report mentions dust covering the street, but image does not show dust, only debris",
+  "Report suggests residents may still be inside, while image shows no visible people and cannot determine interior occupancy"
+ ],
+ "error": null
+}

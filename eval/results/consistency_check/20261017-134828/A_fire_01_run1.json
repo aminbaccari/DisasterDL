@@ -1,0 +1,18 @@
+{
+ "row": {
+  "variant": "A",
+  "vision_prompt": "vision/v1.md",
+  "risk_prompt": "risk_assessment/v2.md",
+  "incident": "fire_01",
+  "run": 1,
+  "seconds": 3.0,
+  "answered": true,
+  "schema_ok": true,
+  "n_conflicts": 1,
+  "place_conflict": false
+ },
+ "conflicts": [
+  "Report mentions flames near houses, but no houses are visible in the image."
+ ],
+ "error": null
+}

@@ -1,0 +1,55 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 1,
+  "seconds": 9.3,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large fire is burning on a hillside at night, casting a bright orange glow across the sky and water below. A road structure is visible in the foreground.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Bright orange and yellow flames are visible along the hillside, indicating active fire.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Large plumes of dark orange and red smoke are rising from the fire and filling the sky.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Dark water is visible in the foreground, reflecting the fire's glow.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A silhouetted road sign or support structure is visible in the foreground.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "location",
+   "distance from camera",
+   "fire size or scale",
+   "cause of fire",
+   "number of people"
+  ]
+ }
+}

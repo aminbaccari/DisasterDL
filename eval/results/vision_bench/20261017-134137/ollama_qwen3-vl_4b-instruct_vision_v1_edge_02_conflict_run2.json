@@ -1,0 +1,59 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 2,
+  "seconds": 9.9,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A backyard view with a smoky sky and a low, hazy sun, showing a garden, a shed, and distant trees. Utility poles and wires are visible, with a large area of open grassland or field behind a fence.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Hazy, uniform greyish-orange sky with visible smoke or haze, obscuring the sun.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Lush green trees and bushes in the foreground and midground, with potted flowers and plants on the right.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Wooden fence, a galvanized metal shed, utility poles, and power lines.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A bright, low sun visible through the haze, suggesting late afternoon or early evening.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "no",
+  "inconsistencies": [
+   "Report mentions 'flooding on the main road' with 'water rising quickly', but the image shows no visible water or flooding."
+  ],
+  "not_determinable": [
+   "Presence or absence of people",
+   "Cause of smoke",
+   "Structural integrity",
+   "Scale of flood or flood area",
+   "Distance to main road"
+  ]
+ }
+}

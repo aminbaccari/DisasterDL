@@ -1,0 +1,75 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "structural_01",
+  "image": "structural_01.jpg",
+  "run": 3,
+  "seconds": 12.4,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 7,
+  "schema_errors": "",
+  "false_categories": "flood_water",
+  "missing_required": "",
+  "absence_observations": 4,
+  "place_words": false
+ },
+ "incident_text": "Part of a five-storey apartment building has collapsed. Dust covers the street and neighbours say some residents may still be inside.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A multi-storey building is partially collapsed, with rubble scattered on the ground. Dust is visible in the air, and surrounding structures are intact but show signs of damage.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "A multi-storey building is severely damaged, with part of it collapsed and debris covering the ground.",
+    "confidence": "high"
+   },
+   {
+    "category": "flood_water",
+    "description": "No visible water; debris is dry and scattered on the ground.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "No visible smoke or flames.",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "No visible people in the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees and some greenery are visible nearby the collapsed building.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A street pole is partially visible. Adjacent buildings are intact but show minor damage.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "No vehicles visible in the image.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "Report mentions dust covering the street — visible in the image, but not as a prominent feature.",
+   "Report mentions residents may still be inside — no visible people in the image, so not confirmed."
+  ],
+  "not_determinable": [
+   "Cause of collapse",
+   "Number of floors in the collapsed building",
+   "Number of people inside",
+   "Scale of damage to other structures",
+   "Distance from the collapse site to other buildings"
+  ]
+ }
+}

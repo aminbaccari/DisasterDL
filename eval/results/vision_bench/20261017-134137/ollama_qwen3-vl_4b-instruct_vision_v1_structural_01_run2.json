@@ -1,0 +1,67 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "structural_01",
+  "image": "structural_01.jpg",
+  "run": 2,
+  "seconds": 11.0,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "flood_water",
+  "missing_required": "",
+  "absence_observations": 3,
+  "place_words": false
+ },
+ "incident_text": "Part of a five-storey apartment building has collapsed. Dust covers the street and neighbours say some residents may still be inside.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A multi-storey building is partially collapsed, with rubble scattered on the ground. The scene shows significant structural damage with visible debris and intact upper floors.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "A building has collapsed, with visible destruction to the upper floors and a large pile of rubble at its base.",
+    "confidence": "high"
+   },
+   {
+    "category": "flood_water",
+    "description": "No visible water, but the ground is covered in debris and dust.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A tall pole stands near the rubble, and a large white sack is visible on the ground. Other buildings are visible in the background.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "No clearly identifiable vehicles visible.",
+    "confidence": "low"
+   },
+   {
+    "category": "people",
+    "description": "No visible people in the image.",
+    "confidence": "low"
+   },
+   {
+    "category": "vegetation",
+    "description": "Green trees are visible in the background, suggesting the area is not completely urban.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "The report mentions residents may still be inside, but no people are visible in the image."
+  ],
+  "not_determinable": [
+   "Whether the building is five-storey",
+   "Whether people are present inside the building",
+   "Whether dust covers the street (only debris is visible, not dust)"
+  ]
+ }
+}

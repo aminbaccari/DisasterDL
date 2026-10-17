@@ -1,0 +1,23 @@
+{
+  "note": "Written by the assistant after looking at the four images on 2026-10-17, one reader. A team member should check it. 'required' = categories a good description must contain. 'absent' = categories whose presence in an answer is a false observation for this image (nothing of that kind is in the picture). Categories not listed are not scored. Used by scripts/vision_bench.py.",
+  "fire_01.jpg": {
+    "required": ["flames", "smoke"],
+    "absent": ["flood_water", "structural_damage", "people"],
+    "comment": "Night shot of a hillside fire above dark water (a lake or the sea, not a flood), a gantry or sign structure and light trails in the foreground. No house is visible."
+  },
+  "flood_01.jpg": {
+    "required": ["flood_water"],
+    "absent": ["flames", "smoke", "structural_damage", "people"],
+    "comment": "Brown water in a town square up to the ground floors of intact buildings, traffic signs, no people visible."
+  },
+  "structural_01.jpg": {
+    "required": ["structural_damage"],
+    "absent": ["flood_water", "flames"],
+    "comment": "Partly collapsed house with rubble and timber in front, cropped to remove people. Whether dust is visible in the air is unclear to me, so it is not scored."
+  },
+  "edge_02_conflict.jpg": {
+    "required": ["smoke"],
+    "absent": ["flood_water", "flames", "structural_damage"],
+    "comment": "Backyard with fence, shed, trees, a pole with wires and a hazy orange sun. No water on the ground, no road. Haze is from smoke (the photo is titled forest fire smoke)."
+  }
+}

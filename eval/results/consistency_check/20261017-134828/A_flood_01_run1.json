@@ -1,0 +1,19 @@
+{
+ "row": {
+  "variant": "A",
+  "vision_prompt": "vision/v1.md",
+  "risk_prompt": "risk_assessment/v2.md",
+  "incident": "flood_01",
+  "run": 1,
+  "seconds": 7.1,
+  "answered": true,
+  "schema_ok": true,
+  "n_conflicts": 2,
+  "place_conflict": true
+ },
+ "conflicts": [
+  "Report cites Nabeul (Tunisia) as location, while image appears to depict a European town.",
+  "Report mentions ongoing rise of water, image does not convey water level trend."
+ ],
+ "error": null
+}

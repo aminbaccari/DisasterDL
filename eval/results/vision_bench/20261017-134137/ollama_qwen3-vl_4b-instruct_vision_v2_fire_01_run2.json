@@ -1,0 +1,55 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 2,
+  "seconds": 9.1,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large fire burns at night on a hillside, casting an orange glow over the surrounding landscape and water. A road structure is visible in the foreground, with light trails suggesting vehicle movement.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Bright orange and yellow flames visible along the hillside.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Large plumes of dark smoke rising from the fire, illuminated by the flames.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Silhouetted road sign or support structure in the foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Light trails from moving vehicles in the foreground, indicating traffic.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of fire",
+   "scale or distance of fire",
+   "water depth",
+   "number of people",
+   "structural integrity of hillside"
+  ]
+ }
+}

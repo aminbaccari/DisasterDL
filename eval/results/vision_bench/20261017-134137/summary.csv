@@ -1,0 +1,25 @@
+model,prompt,incident,image,run,seconds,answered,json_valid,schema_valid,n_observations,schema_errors,false_categories,missing_required,absence_observations,place_words
+ollama:qwen3-vl:4b-instruct,vision/v1.md,edge_02_conflict,edge_02_conflict.jpg,1,12.4,True,True,True,5,,,,1,False
+ollama:qwen3-vl:4b-instruct,vision/v2.md,edge_02_conflict,edge_02_conflict.jpg,1,10.5,True,True,True,4,,,,0,False
+ollama:qwen3-vl:4b-instruct,vision/v1.md,fire_01,fire_01.jpg,1,11.1,True,True,False,5,"'water' is not one of ['smoke', 'flames', 'flood_water', 'structural_damage', 'i",,,0,False
+ollama:qwen3-vl:4b-instruct,vision/v2.md,fire_01,fire_01.jpg,1,9.3,True,True,True,4,,,,0,False
+ollama:qwen3-vl:4b-instruct,vision/v1.md,flood_01,flood_01.jpg,1,11.3,True,True,True,6,,"people,structural_damage",,4,True
+ollama:qwen3-vl:4b-instruct,vision/v2.md,flood_01,flood_01.jpg,1,10.3,True,True,True,5,,,,0,False
+ollama:qwen3-vl:4b-instruct,vision/v1.md,structural_01,structural_01.jpg,1,9.0,True,True,True,4,,,,0,False
+ollama:qwen3-vl:4b-instruct,vision/v2.md,structural_01,structural_01.jpg,1,9.2,True,True,True,5,,,,0,False
+ollama:qwen3-vl:4b-instruct,vision/v1.md,edge_02_conflict,edge_02_conflict.jpg,2,9.9,True,True,True,4,,,,0,False
+ollama:qwen3-vl:4b-instruct,vision/v2.md,edge_02_conflict,edge_02_conflict.jpg,2,8.8,True,True,True,4,,,,0,False
+ollama:qwen3-vl:4b-instruct,vision/v1.md,fire_01,fire_01.jpg,2,11.2,True,True,False,5,"'water' is not one of ['smoke', 'flames', 'flood_water', 'structural_damage', 'i",,,0,False
+ollama:qwen3-vl:4b-instruct,vision/v2.md,fire_01,fire_01.jpg,2,9.1,True,True,True,4,,,,0,False
+ollama:qwen3-vl:4b-instruct,vision/v1.md,flood_01,flood_01.jpg,2,9.0,True,True,True,3,,,,0,True
+ollama:qwen3-vl:4b-instruct,vision/v2.md,flood_01,flood_01.jpg,2,11.1,True,True,True,5,,,,2,False
+ollama:qwen3-vl:4b-instruct,vision/v1.md,structural_01,structural_01.jpg,2,11.0,True,True,True,6,,flood_water,,3,False
+ollama:qwen3-vl:4b-instruct,vision/v2.md,structural_01,structural_01.jpg,2,8.3,True,True,True,4,,,,0,False
+ollama:qwen3-vl:4b-instruct,vision/v1.md,edge_02_conflict,edge_02_conflict.jpg,3,9.7,True,True,True,4,,,,0,False
+ollama:qwen3-vl:4b-instruct,vision/v2.md,edge_02_conflict,edge_02_conflict.jpg,3,8.0,True,True,True,4,,,,0,False
+ollama:qwen3-vl:4b-instruct,vision/v1.md,fire_01,fire_01.jpg,3,9.7,True,True,True,5,,,,0,False
+ollama:qwen3-vl:4b-instruct,vision/v2.md,fire_01,fire_01.jpg,3,9.4,True,True,True,5,,,,0,False
+ollama:qwen3-vl:4b-instruct,vision/v1.md,flood_01,flood_01.jpg,3,10.8,True,True,True,5,,people,,2,True
+ollama:qwen3-vl:4b-instruct,vision/v2.md,flood_01,flood_01.jpg,3,9.7,True,True,True,4,,,,0,False
+ollama:qwen3-vl:4b-instruct,vision/v1.md,structural_01,structural_01.jpg,3,12.4,True,True,True,7,,flood_water,,4,False
+ollama:qwen3-vl:4b-instruct,vision/v2.md,structural_01,structural_01.jpg,3,9.8,True,True,True,5,,,,0,False

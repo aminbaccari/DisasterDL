@@ -1,0 +1,63 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 3,
+  "seconds": 9.7,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large wildfire is burning on a hillside at night, with bright orange and yellow flames and thick smoke. The fire is illuminating the sky and the water in the foreground.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Thick, dark smoke rising from the hillside, illuminated by fire, dominating the upper part of the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "flames",
+    "description": "Bright, intense orange and yellow flames visible along the hillside, with multiple fire points.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Dark silhouettes of vegetation or trees on the hillside being consumed by fire.",
+    "confidence": "medium"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A highway sign structure visible in the foreground, silhouetted against the fire glow.",
+    "confidence": "low"
+   },
+   {
+    "category": "other",
+    "description": "Reflection of fire on the water surface in the foreground.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "yes",
+  "inconsistencies": [],
+  "not_determinable": [
+   "wind direction and strength",
+   "distance to the village",
+   "structural integrity of buildings",
+   "scale of the fire",
+   "number of people",
+   "exact location of the village"
+  ]
+ }
+}

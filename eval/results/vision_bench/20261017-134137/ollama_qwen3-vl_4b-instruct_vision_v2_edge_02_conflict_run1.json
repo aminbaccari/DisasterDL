@@ -1,0 +1,54 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 1,
+  "seconds": 10.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A backyard view with a hazy sky, a setting sun, and trees, with a shed, garden, and fence in the foreground.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Hazy, smoky air filling the sky, reducing visibility and giving the sky a grayish-brown tint.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees and shrubs surrounding a backyard area, with potted plants and garden beds in the foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A wooden fence, a metal shed with blue railings, and utility poles with power lines.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A circular, orange-colored object visible in the mid-ground field (possibly a swing set or playground structure).",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of smoke",
+   "water depth",
+   "number of people",
+   "scale or distance"
+  ]
+ }
+}

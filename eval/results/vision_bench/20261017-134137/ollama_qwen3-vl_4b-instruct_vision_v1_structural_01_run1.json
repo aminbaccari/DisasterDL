@@ -1,0 +1,58 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "structural_01",
+  "image": "structural_01.jpg",
+  "run": 1,
+  "seconds": 9.0,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false
+ },
+ "incident_text": "Part of a five-storey apartment building has collapsed. Dust covers the street and neighbours say some residents may still be inside.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A multi-storey building is partially collapsed, with debris scattered across the street. Adjacent structures and a tree are visible in the background.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "A multi-storey building is visibly collapsed, with exposed interiors and rubble. Adjacent structures appear intact.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A street pole is standing, and some utility wires are visible in the sky.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "A green tree is visible in the background, behind the debris.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Some wooden planks and metal sheets are visible among the rubble.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "Report mentions 'five-storey' building — image shows only partial structure, possibly not the full five storeys."
+  ],
+  "not_determinable": [
+   "Presence of people inside the building",
+   "Whether dust covers the street",
+   "Scale of collapse or distance from viewer",
+   "Exact cause of collapse"
+  ]
+ }
+}

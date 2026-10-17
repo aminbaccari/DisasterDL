@@ -191,6 +191,7 @@ RESOLVES = re.compile(r"(the (image|photo|report) is (wrong|incorrect|right|corr
 def check_conflict(report, vision):
     if not vision:
         return []
+    # vision v2 does not compare with the report (the Risk agent does), so without these fields there is nothing to check here
     mismatch = vision.get("consistent_with_report") in ("no", "partly") or bool(vision.get("inconsistencies"))
     conflicts = report.get("assessment", {}).get("conflicts", [])
     problems = []

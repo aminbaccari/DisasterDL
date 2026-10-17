@@ -1,0 +1,49 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 2,
+  "seconds": 8.8,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A residential yard with a garden, fence, and shed, viewed under a hazy, smoky sky with the sun visible through haze.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Hazy, smoky atmosphere filling the sky, reducing visibility.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Utility pole with multiple power lines, and a metal shed with blue railings.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Dense green trees and bushes in the background and foreground, with a garden area containing potted plants and flowers.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A gravel path leading through the yard, with a blue barrel, stacked wood, and a green garden hose coiled nearby.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": []
+ }
+}

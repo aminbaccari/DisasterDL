@@ -1,0 +1,18 @@
+{
+ "row": {
+  "variant": "A",
+  "vision_prompt": "vision/v1.md",
+  "risk_prompt": "risk_assessment/v2.md",
+  "incident": "edge_02_conflict",
+  "run": 2,
+  "seconds": 3.2,
+  "answered": true,
+  "schema_ok": true,
+  "n_conflicts": 1,
+  "place_conflict": false
+ },
+ "conflicts": [
+  "Report describes active flooding on the main road with water rising quickly, while the analyzed image shows no visible water or flooding."
+ ],
+ "error": null
+}

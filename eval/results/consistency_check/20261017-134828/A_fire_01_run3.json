@@ -1,0 +1,19 @@
+{
+ "row": {
+  "variant": "A",
+  "vision_prompt": "vision/v1.md",
+  "risk_prompt": "risk_assessment/v2.md",
+  "incident": "fire_01",
+  "run": 3,
+  "seconds": 5.1,
+  "answered": false,
+  "schema_ok": false,
+  "n_conflicts": null,
+  "place_conflict": false
+ },
+ "conflicts": null,
+ "error": {
+  "code": 503,
+  "message": "every model in the chain failed or was skipped: groq:openai/gpt-oss-120b rate limit"
+ }
+}

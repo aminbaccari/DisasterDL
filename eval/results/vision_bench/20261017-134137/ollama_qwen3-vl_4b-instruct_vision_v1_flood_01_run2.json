@@ -1,0 +1,56 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "flood_01",
+  "image": "flood_01.jpg",
+  "run": 2,
+  "seconds": 9.0,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 3,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": true
+ },
+ "incident_text": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A street in a town is flooded with brown water, submerging the lower levels of multi-story buildings. A stop sign is visible on the right.",
+  "observations": [
+   {
+    "category": "flood_water",
+    "description": "Brown, murky water covers the entire street, reaching up to the bases of buildings and submerging ground-level entrances.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Multi-story buildings with shops on the ground floor, some with arched or recessed entrances. A stop sign is visible on the right.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Signs above some windows and a street lamp post are visible but not legible. A small white object is floating on the water near the left building.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [
+   "STOP",
+   "AZ",
+   "Piazza"
+  ],
+  "consistent_with_report": "no",
+  "inconsistencies": [
+   "The report mentions Nabeul, but the image shows a European-style town, not consistent with the report."
+  ],
+  "not_determinable": [
+   "Number of people",
+   "Cause of flood",
+   "Structural integrity of buildings"
+  ]
+ }
+}

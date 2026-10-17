@@ -1,0 +1,60 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 3,
+  "seconds": 9.7,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A backyard with a wooden fence, potted plants, and a shed, viewed through a hazy sky with a visible sun. In the distance, a grassy field and trees are visible under smoky or hazy conditions.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Hazy, smoke-like atmosphere across the sky, reducing visibility.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Green trees and bushes in the foreground and midground, with flowerpots in a garden area.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A wooden fence, a metal shed, utility poles with wires, and a gravel path.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A bright, round sun visible through the haze, suggesting dusk or dawn.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "no",
+  "inconsistencies": [
+   "Report mentions flooding on a main road, but image shows a backyard scene with no visible water or road flooding."
+  ],
+  "not_determinable": [
+   "Water depth or presence of flooding",
+   "Number of people",
+   "Structural integrity of any buildings or infrastructure",
+   "Cause of smoke or haze",
+   "Scale or distance of the scene",
+   "Time of day relative to report"
+  ]
+ }
+}

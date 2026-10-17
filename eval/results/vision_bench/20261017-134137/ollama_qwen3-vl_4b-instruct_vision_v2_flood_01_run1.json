@@ -1,0 +1,64 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "flood_01",
+  "image": "flood_01.jpg",
+  "run": 1,
+  "seconds": 10.3,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false
+ },
+ "incident_text": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A flooded town square with historic buildings partially submerged in brown water.",
+  "observations": [
+   {
+    "category": "flood_water",
+    "description": "Brown water covering the entire street and reaching up to the ground floors of buildings.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Multi-story buildings with storefronts at ground level, some with arched doorways and balconies.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Street signs including a red 'STOP' sign and a blue arrow sign visible on the right.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A street sign with 'AZ' visible on the facade of the central building.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "A small white object floating on the water to the left.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [
+   "AZ",
+   "STOP",
+   "AZ"
+  ],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "structural integrity",
+   "cause of flooding",
+   "scale or distance"
+  ]
+ }
+}

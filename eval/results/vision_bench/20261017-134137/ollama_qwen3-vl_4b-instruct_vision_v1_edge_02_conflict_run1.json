@@ -1,0 +1,64 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 1,
+  "seconds": 12.4,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 1,
+  "place_words": false
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A residential backyard with a garden, shed, and fence, viewed through a hazy sky with a visible sun. In the distance, a field and trees are visible under a smoky or hazy atmosphere.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Hazy, smoky atmosphere obscuring the sky, with the sun visible through it.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees and bushes in the foreground and midground, with potted flowers in the right foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Utility pole with wires, a shed, a fence, and a gravel path.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A blue barrel and a boat-like object are visible in the yard.",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "No people are visible in the image.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "no",
+  "inconsistencies": [
+   "Report mentions flooding on a main road with water rising quickly, but no water or flood is visible in the image."
+  ],
+  "not_determinable": [
+   "Water depth",
+   "Number of people",
+   "Structural integrity",
+   "Cause of fire",
+   "Scale or distance"
+  ]
+ }
+}

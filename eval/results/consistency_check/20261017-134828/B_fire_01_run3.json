@@ -1,0 +1,18 @@
+{
+ "row": {
+  "variant": "B",
+  "vision_prompt": "vision/v2.md",
+  "risk_prompt": "risk_assessment/v3.md",
+  "incident": "fire_01",
+  "run": 3,
+  "seconds": 9.3,
+  "answered": true,
+  "schema_ok": true,
+  "n_conflicts": 1,
+  "place_conflict": false
+ },
+ "conflicts": [
+  "Report: Flames visible near the first houses. Image: No visible houses or flames adjacent to houses; flames are shown on the hillside but house proximity is not evident."
+ ],
+ "error": null
+}

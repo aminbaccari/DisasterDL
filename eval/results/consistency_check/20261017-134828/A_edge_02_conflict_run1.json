@@ -1,0 +1,18 @@
+{
+ "row": {
+  "variant": "A",
+  "vision_prompt": "vision/v1.md",
+  "risk_prompt": "risk_assessment/v2.md",
+  "incident": "edge_02_conflict",
+  "run": 1,
+  "seconds": 2.4,
+  "answered": true,
+  "schema_ok": true,
+  "n_conflicts": 1,
+  "place_conflict": false
+ },
+ "conflicts": [
+  "Report describes flooding on a main road with rising water, but the image shows no water and depicts a residential backyard"
+ ],
+ "error": null
+}

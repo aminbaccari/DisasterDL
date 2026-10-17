@@ -205,3 +205,41 @@ I compared each answer with the images by eye. This is a small manual check, 8 a
 End to end with the local model (`eval/results/vision_chain_e2e/20261017-132919`, n8n workflow `incident`, `VISION_CHAIN=ollama:qwen3-vl:4b-instruct,gemini:...,openrouter:...`, text models answered by Groq and OpenRouter): the Vision step answered in both image runs (9.8 s and 10.4 s, `image_status: analysed`, no vision quota used). fire_01 report: conflict "flames near the first houses but no houses are visible" shown, status degraded (2 guidance points removed because the cited entry was not in the cited chunk), validation passed after one repair. edge_02 report: status ok, validation passed after one repair, conflict shown but with the false "shallow water in a yard" framing. Whole runs 136.8 s and 131.5 s: the repair step took 109 s and 102 s because the retry rotation put it on OpenRouter nemotron (slow). This was one run per incident with prompts incident v2 and report v4 (untested drafts), so it shows that the vision path works end to end, not that the reports are good.
 
 Not done: Hugging Face hosted models (no HF_TOKEN), other candidate models (`qwen3-vl:2b-instruct`, `gemma3:4b`), the image-only prompt v2 and its before and after run, more than four images.
+
+## Vision prompt v1 against v2, and the comparison on the text side (2026-10-17)
+
+Vision v2 does not receive the incident text (image only, no listing of absent things, no place guessing, fixed categories, at most six observations). Risk v3 does the comparison of the image observations with the reported facts. v1 and risk v2 are unchanged. Both new versions are drafts.
+
+### 1. Vision benchmark (`eval/results/vision_bench/20261017-134137`)
+
+`python scripts/vision_bench.py --model ollama:qwen3-vl:4b-instruct --runs 3 --prompt vision/v1.md --prompt vision/v2.md`: same local model, four test images, 3 runs, the two prompts interleaved on each image, 12 calls per prompt. Ground truth tags in `vision/test_images/GROUND_TRUTH.json`, written by one reader (me, after looking at the images), to be checked by a team member.
+
+| Measure | v1 (with the report) | v2 (image only) |
+|---------|----------------------|-----------------|
+| JSON valid | 12 of 12 | 12 of 12 |
+| schema valid | 10 of 12 | 12 of 12 |
+| false observation (category listed as absent for that image, absence statements excluded) | 0 of 12 | 0 of 12 |
+| required category missing | 0 of 12 | 0 of 12 |
+| observations that only say something is not there ("No people are visible") | 14 | 2 |
+| answer names a place or region (Nabeul, Europe ...) | 3 of 12 | 0 of 12 |
+| median latency, warm | 11.0 s | 9.4 s |
+
+Reading: v2 is cleaner (no absence statements, no place guessing, valid schema). The false observations seen on 2026-10-16 and in the first benchmark (edge_02 "a field appears flooded", structural_01 "dust in the air") did NOT recur in these 24 calls, so this benchmark does not show that v2 removes them: that effect is intermittent and needs more runs. My first version of the false-observation measure counted "No visible standing water" (category flood_water) as a false observation; I corrected the measure after reading the answers and re-scored both prompts (`--rescore`), the table above is the corrected one. By eye, one v2 answer looks doubtful: structural_01 run 3 lists "a white vehicle parked behind debris", which I cannot find in the image (not in the ground truth, so not scored).
+
+### 2. Comparison on the text side (`eval/results/consistency_check/20261017-134828`)
+
+`python scripts/consistency_check.py`: A = real vision v1 answers + risk v2, B = real vision v2 answers + risk v3. The incident and knowledge inputs are the canned MOCK ones, identical for A and B. Only the Risk call is a real model call: groq `gpt-oss-120b`, one pinned model, 3 runs per image and variant. Expectations were written in the script before the run.
+
+| Incident | Expectation | A: conflicts listed | B: conflicts listed |
+|----------|-------------|---------------------|---------------------|
+| edge_02_conflict (report: flooding on a main road, image: dry backyard) | conflict required | 3 of 3 | 3 of 3 |
+| flood_01 (report and image agree) | no conflict, a place-name conflict is a false alarm | 3 of 3, all three about "Nabeul against a European town" | 0 of 3 |
+| fire_01 (report: flames near the first houses, image: no houses) | not scored, a legitimate conflict exists | 2 of 2 answered (1 call lost to a model error) | 1 of 3 |
+| structural_01 (report: five storeys, residents inside, dust) | not scored | 3 of 3, mostly "the image cannot determine ..." | 1 of 3 (dust) |
+
+Reading: moving the comparison to the text side removes the place-name false alarms (3 of 3 to 0 of 3 on flood_01) and keeps the required detection on edge_02 (3 of 3 both). It also loses a legitimate conflict: "flames near the first houses, no houses visible" was found in 2 of 2 answered runs with v1 and in 1 of 3 with v2 and risk v3. Cause, from the saved answers: v2 does not list absences, so the text side cannot see that houses are missing, and risk v3 treats a missing detail as a conflict only if the image would show it. Most of the A conflicts for structural_01 are not contradictions ("the image cannot determine ...") and the useful one (five storeys) appeared once in 3 runs, so A's higher count is not all signal. Sample: 3 runs per cell, one text model, canned upstream inputs.
+
+### What to do with this
+- Keep vision v2 and risk v3 as drafts. They look better on cleanliness and false alarms and worse on one real detection (missing houses).
+- Candidate fix, not tried: a narrow second vision call that asks only a yes/no question about an object the report names ("Is a house visible?"), instead of free comparison. It keeps the image-only description and restores the absence check.
+- A larger run: more images (the ground truth needs about 12), 5 runs each, a second vision model, then judge the false-observation rate again.

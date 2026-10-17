@@ -1,0 +1,65 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 1,
+  "seconds": 11.1,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": false,
+  "n_observations": 5,
+  "schema_errors": "'water' is not one of ['smoke', 'flames', 'flood_water', 'structural_damage', 'i",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large wildfire is burning across a hillside at night, with bright orange flames and thick smoke visible against a dark sky. The fire appears to be spreading down the slope towards a body of water in the foreground.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Bright orange and yellow flames are visible across the hillside, concentrated in the upper right portion of the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Thick, dark smoke billows upward and to the left from the fire, illuminated by the flames.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "The fire is consuming what appears to be dry vegetation on a hillside.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A highway signpost is silhouetted in the foreground, and light trails from vehicles suggest movement on a road.",
+    "confidence": "medium"
+   },
+   {
+    "category": "water",
+    "description": "A dark body of water is visible in the foreground, reflecting the orange glow of the fire.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "Report mentions 'flames are visible near the first houses' but no houses are visible in the image."
+  ],
+  "not_determinable": [
+   "Wind direction and strength",
+   "Distance from fire to village or water",
+   "Scale of the fire",
+   "Number of people",
+   "Structural integrity of buildings",
+   "Cause of fire"
+  ]
+ }
+}

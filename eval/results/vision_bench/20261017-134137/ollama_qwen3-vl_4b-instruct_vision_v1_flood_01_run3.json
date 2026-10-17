@@ -1,0 +1,68 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "flood_01",
+  "image": "flood_01.jpg",
+  "run": 3,
+  "seconds": 10.8,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "people",
+  "missing_required": "",
+  "absence_observations": 2,
+  "place_words": true
+ },
+ "incident_text": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A street in a residential area is flooded with brown water, reaching up to the bases of multi-story buildings. Buildings have storefronts on the ground floor and appear intact. Traffic signs are visible.",
+  "observations": [
+   {
+    "category": "flood_water",
+    "description": "Brown, murky water covers the entire street, reaching the bottom of building facades.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Multi-story buildings with commercial storefronts on the ground floor, some with arched doorways and balconies.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Street signs including a stop sign and directional arrow sign are visible on the right side of the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "No vehicles visible in the flooded area.",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "No visible people in the image.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [
+   "STOP",
+   "AZ"
+  ],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "Report mentions 'Nabeul' but the image shows European-style architecture; location cannot be confirmed from the image."
+  ],
+  "not_determinable": [
+   "Cause of flooding",
+   "Duration of flooding",
+   "Number of people affected",
+   "Scale of the flood in terms of area or depth",
+   "Structural integrity of buildings",
+   "Whether roads are blocked beyond what is visible in the image"
+  ]
+ }
+}

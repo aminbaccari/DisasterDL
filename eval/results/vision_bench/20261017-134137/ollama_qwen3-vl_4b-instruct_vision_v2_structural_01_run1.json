@@ -1,0 +1,54 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "structural_01",
+  "image": "structural_01.jpg",
+  "run": 1,
+  "seconds": 9.2,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false
+ },
+ "incident_text": "Part of a five-storey apartment building has collapsed. Dust covers the street and neighbours say some residents may still be inside.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A collapsed multi-story building with debris scattered around, showing significant structural damage, with other buildings and trees visible in the background.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "A multi-story building is heavily damaged, with its roof and upper floors collapsed and rubble piled on the ground.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A damaged building with blue window frames and visible balconies, surrounded by debris.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A tall, dark pole stands next to the damaged building.",
+    "confidence": "medium"
+   },
+   {
+    "category": "vegetation",
+    "description": "A green tree is visible behind the debris pile.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A white sack is placed on a concrete block in the foreground.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": []
+ }
+}

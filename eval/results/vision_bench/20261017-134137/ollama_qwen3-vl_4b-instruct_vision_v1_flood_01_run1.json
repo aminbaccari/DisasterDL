@@ -1,0 +1,72 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "flood_01",
+  "image": "flood_01.jpg",
+  "run": 1,
+  "seconds": 11.3,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "people,structural_damage",
+  "missing_required": "",
+  "absence_observations": 4,
+  "place_words": true
+ },
+ "incident_text": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A street in a town is flooded with brown water, submerging the lower levels of multi-story buildings and street signs.",
+  "observations": [
+   {
+    "category": "flood_water",
+    "description": "Brown, murky water covers the entire street, reaching up to the bases of buildings and partially obscuring street signs.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Buildings show no visible structural collapse or damage, though their lower floors are submerged.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Street signs, including a red 'Stop' sign and a blue directional arrow, are partially submerged.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "No vehicles are visible in the flooded area.",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "No people are visible in the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "No visible vegetation in the scene.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [
+   "STOP",
+   "AZ"
+  ],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "Report mentions 'Nabeul', but the image appears to be of a European town, not Tunisia."
+  ],
+  "not_determinable": [
+   "Water depth",
+   "Number of people",
+   "Structural integrity",
+   "Cause of flood",
+   "Scale or distance"
+  ]
+ }
+}

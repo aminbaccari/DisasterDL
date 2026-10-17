@@ -1,0 +1,19 @@
+{
+ "row": {
+  "variant": "B",
+  "vision_prompt": "vision/v2.md",
+  "risk_prompt": "risk_assessment/v3.md",
+  "incident": "edge_02_conflict",
+  "run": 2,
+  "seconds": 14.7,
+  "answered": true,
+  "schema_ok": true,
+  "n_conflicts": 2,
+  "place_conflict": false
+ },
+ "conflicts": [
+  "Report: Flooding on the main road. Image: No water visible, shows a dry residential yard.",
+  "Report: Water is rising quickly. Image: No indication of rising water; scene appears dry."
+ ],
+ "error": null
+}

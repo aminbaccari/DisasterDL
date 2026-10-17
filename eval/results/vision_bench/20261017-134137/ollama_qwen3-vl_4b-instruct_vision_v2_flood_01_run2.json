@@ -1,0 +1,65 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "flood_01",
+  "image": "flood_01.jpg",
+  "run": 2,
+  "seconds": 11.1,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 2,
+  "place_words": false
+ },
+ "incident_text": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A town square flooded with muddy water, submerging the ground floors of several multi-story buildings.",
+  "observations": [
+   {
+    "category": "flood_water",
+    "description": "Muddy brown water covering the entire street, reaching the ground floors of buildings.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Multi-story buildings with arched doorways, windows, and balconies; one building has a sign that reads 'PUBBLICA RISCHIO ESECUZIONE' and another has 'A2' above windows.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "No vehicles visible in the flooded area.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "No visible vegetation.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A stop sign and direction sign are visible on the right side, partially submerged in water.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [
+   "PUBBLICA RISCHIO ESECUZIONE",
+   "A2",
+   "STOP",
+   "ONE WAY"
+  ],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "structural integrity",
+   "cause of flood",
+   "scale or distance of buildings"
+  ]
+ }
+}

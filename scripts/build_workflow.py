@@ -173,8 +173,8 @@ const CATS = ['smoke', 'flames', 'flood_water', 'structural_damage', 'infrastruc
 function problem(o) {
   if (!o || typeof o !== 'object' || Array.isArray(o)) return 'the answer is not a JSON object';
   if (typeof o.image_usable !== 'boolean') return 'image_usable is not a boolean';
-  if (!Array.isArray(o.observations) || !Array.isArray(o.not_determinable) || !Array.isArray(o.inconsistencies)) return 'observations, not_determinable or inconsistencies is not a list';
-  if (!['yes', 'partly', 'no', 'cannot_tell'].includes(o.consistent_with_report)) return 'consistent_with_report has an invalid value';
+  if (!Array.isArray(o.observations) || !Array.isArray(o.not_determinable) || ('inconsistencies' in o && !Array.isArray(o.inconsistencies))) return 'observations, not_determinable or inconsistencies is not a list';
+  if ('consistent_with_report' in o && !['yes', 'partly', 'no', 'cannot_tell'].includes(o.consistent_with_report)) return 'consistent_with_report has an invalid value';
   if (o.observations.some(x => !CATS.includes(x.category) || !['high', 'medium', 'low'].includes(x.confidence))) return 'an observation has an invalid category or confidence';
   return null;
 }

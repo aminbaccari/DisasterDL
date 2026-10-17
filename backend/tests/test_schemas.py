@@ -95,5 +95,28 @@ class TestPromptExamples(unittest.TestCase):
         self.assertNotIn('"text": "downtown"', text)
 
 
+
+class TestVisionV2Shape(unittest.TestCase):
+    def test_vision_v2_output_without_comparison_fields_validates(self):
+        schema, example = load("vision")
+        v2 = {k: v for k, v in example["output"].items() if k not in ("consistent_with_report", "inconsistencies")}
+        self.assertEqual(errors(schema, v2), [])
+
+    def test_vision_v1_output_still_validates(self):
+        schema, example = load("vision")
+        self.assertEqual(errors(schema, example["output"]), [])
+
+    def test_vision_v2_prompt_has_no_incident_placeholder(self):
+        text = (SCHEMAS.parent.parent / "prompts" / "vision" / "v2.md").read_text(encoding="utf-8")
+        self.assertNotIn("{{incident_text}}", text)
+        self.assertNotIn("<incident_report>", text.split("## Hypotheses")[0].split("## User message template")[1])
+
+    def test_vision_v2_prompt_does_not_ask_for_the_comparison(self):
+        text = (SCHEMAS.parent.parent / "prompts" / "vision" / "v2.md").read_text(encoding="utf-8")
+        system = text.split("## User message template")[0]
+        self.assertNotIn('"consistent_with_report"', system)
+        self.assertNotIn('"inconsistencies"', system)
+
+
 if __name__ == "__main__":
     unittest.main()

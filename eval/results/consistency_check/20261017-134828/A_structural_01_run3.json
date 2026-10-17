@@ -1,0 +1,19 @@
+{
+ "row": {
+  "variant": "A",
+  "vision_prompt": "vision/v1.md",
+  "risk_prompt": "risk_assessment/v2.md",
+  "incident": "structural_01",
+  "run": 3,
+  "seconds": 13.6,
+  "answered": true,
+  "schema_ok": true,
+  "n_conflicts": 2,
+  "place_conflict": false
+ },
+ "conflicts": [
+  "Report emphasizes dust covering the street prominently; image shows dust but not as a prominent feature.",
+  "Report mentions possible residents still inside; image shows no visible people, so presence cannot be confirmed."
+ ],
+ "error": null
+}

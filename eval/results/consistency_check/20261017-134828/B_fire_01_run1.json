@@ -1,0 +1,16 @@
+{
+ "row": {
+  "variant": "B",
+  "vision_prompt": "vision/v2.md",
+  "risk_prompt": "risk_assessment/v3.md",
+  "incident": "fire_01",
+  "run": 1,
+  "seconds": 13.4,
+  "answered": true,
+  "schema_ok": true,
+  "n_conflicts": 0,
+  "place_conflict": false
+ },
+ "conflicts": [],
+ "error": null
+}

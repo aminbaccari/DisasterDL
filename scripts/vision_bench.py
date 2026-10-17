@@ -1,14 +1,21 @@
-"""Run the Vision agent prompt on the test images with one pinned model and save the raw answers for a person to read.
+"""Run the Vision agent prompt(s) on the test images with one pinned model and save the raw answers.
 
-    python scripts/vision_bench.py --model ollama:qwen3-vl:4b --runs 2
-    python scripts/vision_bench.py --model ollama:qwen3-vl:4b --prompt vision/v1.md --only fire_01
+    python scripts/vision_bench.py --model ollama:qwen3-vl:4b-instruct --runs 3 --prompt vision/v1.md --prompt vision/v2.md
 
-Uses the vision prompt file as the n8n workflow does (system prompt and user template of prompts/vision/*.md) and the model chain code with a
-pinned model, so a result is attributable to one model. It measures what a machine can: JSON valid, schema valid (backend/schemas/vision.schema.json),
-latency per call, the first (cold) call separately. Whether the observations are TRUE needs a person looking at the image: the output file lists
-the observations next to the image name for that. Nothing here scores image understanding.
+Uses the prompt files as the n8n workflow does (system prompt and user template of prompts/vision/*.md; v1 gets the incident text in the user
+message, v2 does not) and the model chain code with a pinned model, so a result is attributable to one model. With several --prompt the calls are
+interleaved (same image, same run, prompt after prompt) so the model state is the same for all.
 
-Output: eval/results/vision_bench/<stamp>/<model>_<incident>_run<n>.json and summary.csv.
+Measures, all computed from the answers:
+  json_valid, schema_valid   backend/schemas/vision.schema.json
+  false_categories           observations whose category is listed as 'absent' for that image in vision/test_images/GROUND_TRUTH.json
+  missing_required           'required' categories with no observation
+  absence_observations       observations that only say something is not there ("No people are visible")
+  place_words                the answer names a place or region (Nabeul, Tunisia, Europe, Italy, Nepal ...), which the prompt forbids
+  latency                    seconds per call, the first call after loading a model is cold
+The ground truth was written by one reader (see that file). Whether an observation is TRUE beyond these tags needs a person looking at the image.
+
+Output: eval/results/vision_bench/<stamp>/ with one JSON per call and summary.csv.
 """
 import argparse
 import csv
@@ -29,64 +36,120 @@ import build_workflow as bw  # noqa: E402
 from backend import llm_chain  # noqa: E402
 
 SCHEMA = json.loads((ROOT / "backend" / "schemas" / "vision.schema.json").read_text(encoding="utf-8"))
+TRUTH = json.loads((ROOT / "vision" / "test_images" / "GROUND_TRUTH.json").read_text(encoding="utf-8"))
+ABSENCE = re.compile(r"^\s*(no|none|not)\b|\bno (visible|clear|obvious|identifiable)\b|\bnot (visible|present)\b", re.I)
+PLACES = re.compile(r"nabeul|tunis|tunisia|europ|ital(y|ian)|nepal|asia|africa|mediterranean|france|french", re.I)
+
+
+def load_prompt(path):
+    bw.PROMPTS["vision"] = path
+    return bw.read_prompt("vision")
+
+
+def measures(image_name, result):
+    truth = TRUTH.get(image_name, {})
+    # an observation that only says something is NOT there ("No visible standing water", category flood_water) is not a claim that it is there
+    observed = [o.get("category") for o in result.get("observations", []) if isinstance(o, dict) and not ABSENCE.search(o.get("description", ""))]
+    return {
+        "false_categories": ",".join(sorted({c for c in observed if c in truth.get("absent", [])})),
+        "missing_required": ",".join(c for c in truth.get("required", []) if c not in observed),
+        "absence_observations": sum(1 for o in result.get("observations", []) if isinstance(o, dict) and ABSENCE.search(o.get("description", ""))),
+        "place_words": bool(PLACES.search(json.dumps(result, ensure_ascii=False))),
+    }
+
+
+def table(rows, prompts):
+    print("prompt         calls  json  schema  false_obs(calls)  missing_req(calls)  absence_obs(total)  place_words(calls)  median_s")
+    for prompt in prompts:
+        r = [x for x in rows if x["prompt"] == prompt]
+        ok = [x for x in r if x["json_valid"]]
+        secs = sorted(x["seconds"] for x in r)
+        print(f"{prompt:<14} {len(r):<6} {len(ok):<5} {sum(bool(x['schema_valid']) for x in r):<7} {sum(1 for x in ok if x['false_categories']):<17} "
+              f"{sum(1 for x in ok if x['missing_required']):<19} {sum(x['absence_observations'] for x in ok):<19} {sum(1 for x in ok if x['place_words']):<19} {secs[len(secs) // 2]}")
+
+
+def rescore(folder):
+    """Recompute the measures from the saved answers, for example after the rule of a measure changed. No model call."""
+    rows = []
+    for f in sorted(folder.glob("*_run*.json")):
+        d = json.loads(f.read_text(encoding="utf-8"))
+        row = d["row"]
+        if d.get("result"):
+            row.update(measures(row["image"], d["result"]))
+        rows.append(row)
+    table(rows, sorted({r["prompt"] for r in rows}))
+    for r in rows:
+        if r["false_categories"]:
+            print("  false observation:", r["prompt"], r["incident"], "run", r["run"], r["false_categories"])
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--model", required=True, help="provider:model, one model")
+    parser.add_argument("--rescore", metavar="FOLDER", help="recompute the measures of a finished run from its saved answers and print the table (no model call)")
+    parser.add_argument("--model", help="provider:model, one model (required for a run)")
     parser.add_argument("--runs", type=int, default=1)
-    parser.add_argument("--prompt", default="vision/v1.md")
+    parser.add_argument("--prompt", action="append", help="prompt file under prompts/, repeatable (default vision/v1.md)")
     parser.add_argument("--only", nargs="+")
     args = parser.parse_args()
+    if args.rescore:
+        rescore(Path(args.rescore))
+        return
+    if not args.model:
+        sys.exit("--model is required")
     chain = llm_chain.parse_chain(args.model)
     if len(chain) != 1:
         sys.exit("--model must be one provider:model")
-    bw.PROMPTS["vision"] = args.prompt
-    system, template = bw.read_prompt("vision")
+    prompts = args.prompt or ["vision/v1.md"]
+    loaded = {p: load_prompt(p) for p in prompts}
     out = ROOT / "eval" / "results" / "vision_bench" / datetime.now().strftime("%Y%m%d-%H%M%S")
     out.mkdir(parents=True)
     rows = []
     incidents = [json.loads(p.read_text(encoding="utf-8")) for p in sorted((ROOT / "eval" / "incidents").glob("*.json"))]
-    for inc in incidents:
-        if not inc.get("image") or (args.only and inc["id"] not in args.only):
-            continue
-        image_path = ROOT / "vision" / "test_images" / inc["image"]
-        if not image_path.exists():
-            print("missing image", inc["image"])
-            continue
-        image = llm_chain.encode_image(image_path.read_bytes(), "image/jpeg")
-        user = re.sub(r"\{\{incident_text\}\}", inc["text"], template)
-        for run in range(1, args.runs + 1):
-            started = time.time()
-            answer = llm_chain._complete_once(system, user, True, image, chain, llm_chain.TIMEOUT_LOCAL, False, trusted=True)
-            seconds = round(time.time() - started, 1)
-            row = {"model": args.model, "prompt": args.prompt, "incident": inc["id"], "image": inc["image"], "run": run, "seconds": seconds,
-                   "answered": "error" not in answer, "json_valid": False, "schema_valid": False, "n_observations": "", "consistent_with_report": "", "image_usable": ""}
-            result = None
-            if "error" in answer:
-                row["error"] = answer["x_llm"]["attempts"][-1].get("reason", "") if answer["x_llm"]["attempts"] else answer["error"]["message"][:100]
-            else:
-                try:
-                    result = json.loads(answer["candidates"][0]["content"]["parts"][0]["text"])
-                    row["json_valid"] = True
-                    errors = list(jsonschema.Draft202012Validator(SCHEMA).iter_errors(result))
-                    row["schema_valid"] = not errors
-                    row["schema_errors"] = "; ".join(e.message[:80] for e in errors[:3])
-                    row["n_observations"] = len(result.get("observations", []))
-                    row["consistent_with_report"] = result.get("consistent_with_report", "")
-                    row["image_usable"] = result.get("image_usable", "")
-                except ValueError:
-                    pass
-            rows.append(row)
-            name = args.model.replace("/", "_").replace(":", "_")
-            (out / f"{name}_{inc['id']}_run{run}.json").write_text(json.dumps({"row": row, "incident_text": inc["text"], "result": result}, ensure_ascii=False, indent=1), encoding="utf-8")
-            print({k: row[k] for k in ("incident", "run", "seconds", "answered", "json_valid", "schema_valid", "n_observations", "consistent_with_report")}, flush=True)
+    for run in range(1, args.runs + 1):
+        for inc in incidents:
+            if not inc.get("image") or (args.only and inc["id"] not in args.only):
+                continue
+            image_path = ROOT / "vision" / "test_images" / inc["image"]
+            if not image_path.exists():
+                print("missing image", inc["image"])
+                continue
+            image = llm_chain.encode_image(image_path.read_bytes(), "image/jpeg")
+            for prompt in prompts:
+                system, template = loaded[prompt]
+                user = re.sub(r"\{\{incident_text\}\}", lambda m: inc["text"], template)
+                started = time.time()
+                answer = llm_chain._complete_once(system, user, True, image, chain, llm_chain.TIMEOUT_LOCAL, False, trusted=True)
+                seconds = round(time.time() - started, 1)
+                row = {"model": args.model, "prompt": prompt, "incident": inc["id"], "image": inc["image"], "run": run, "seconds": seconds,
+                       "answered": "error" not in answer, "json_valid": False, "schema_valid": False, "n_observations": "", "schema_errors": "",
+                       "false_categories": "", "missing_required": "", "absence_observations": "", "place_words": ""}
+                result = None
+                if "error" in answer:
+                    att = answer["x_llm"]["attempts"]
+                    row["schema_errors"] = (att[-1].get("reason", "") if att else answer["error"]["message"][:100])
+                else:
+                    try:
+                        result = json.loads(answer["candidates"][0]["content"]["parts"][0]["text"])
+                        row["json_valid"] = True
+                        errors = list(jsonschema.Draft202012Validator(SCHEMA).iter_errors(result))
+                        row["schema_valid"] = not errors
+                        row["schema_errors"] = "; ".join(e.message[:80] for e in errors[:3])
+                        row["n_observations"] = len(result.get("observations", []))
+                        row.update(measures(inc["image"], result))
+                    except ValueError:
+                        pass
+                rows.append(row)
+                name = args.model.replace("/", "_").replace(":", "_") + "_" + prompt.replace("/", "_").replace(".md", "")
+                (out / f"{name}_{inc['id']}_run{run}.json").write_text(json.dumps({"row": row, "incident_text": inc["text"], "result": result}, ensure_ascii=False, indent=1), encoding="utf-8")
+                print({k: row[k] for k in ("prompt", "incident", "run", "seconds", "json_valid", "schema_valid", "n_observations", "false_categories", "missing_required", "absence_observations", "place_words")}, flush=True)
     if rows:
-        fields = sorted({k for r in rows for k in r}, key=lambda k: list(rows[0]).index(k) if k in rows[0] else 99)
+        fields = list(rows[0])
         with open(out / "summary.csv", "w", newline="", encoding="utf-8") as f:
             w = csv.DictWriter(f, fieldnames=fields)
             w.writeheader()
             w.writerows(rows)
+        print()
+        table(rows, prompts)
     print("saved in", out)
 
 
