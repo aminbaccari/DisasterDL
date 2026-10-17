@@ -229,3 +229,113 @@ class TestWaiting(Base):
         self.assertIn("error", out)
         self.assertEqual(len(slept), 1)
         self.assertTrue(any(a["status"] == "waited" for a in out["x_llm"]["attempts"]))
+
+
+class TestVisionChainAndLocalProviders(Base):
+    IMG = {"mime": "image/png", "b64": "QQ=="}
+
+    def run_vision(self, answers, env, **kw):
+        queue = list(answers)
+        seen = []
+
+        def fake_post(url, headers, body, timeout):
+            seen.append((url, headers, body, timeout))
+            item = queue.pop(0)
+            if isinstance(item, Exception):
+                raise item
+            return item
+
+        with mock.patch.dict(os.environ, env), mock.patch.object(chain, "http_post", fake_post):
+            out = chain.complete("sys", "usr", image=self.IMG, task="vision", **kw)
+        return out, seen
+
+    def test_ollama_needs_no_key_and_uses_the_local_url(self):
+        env = {"VISION_CHAIN": "ollama:qwen3-vl:4b", "OLLAMA_BASE_URL": "http://localhost:11434/v1"}
+        out, seen = self.run_vision([openai_ok('{"v": 1}')], env)
+        url, headers, body, timeout = seen[0]
+        self.assertEqual(url, "http://localhost:11434/v1/chat/completions")
+        self.assertNotIn("Authorization", headers)
+        self.assertEqual(body["model"], "qwen3-vl:4b")  # the model name keeps its own colon
+        self.assertEqual(body["messages"][1]["content"][1]["image_url"]["url"], "data:image/png;base64,QQ==")
+        self.assertEqual((out["x_llm"]["provider"], out["x_llm"]["task"]), ("ollama", "vision"))
+
+    def test_ollama_gets_the_long_timeout_for_a_cold_start(self):
+        _, seen = self.run_vision([openai_ok('{"v": 1}')], {"VISION_CHAIN": "ollama:qwen3-vl:4b"})
+        self.assertEqual(seen[0][3], chain.TIMEOUT_IMAGE)
+
+    def test_hf_uses_the_router_and_the_token(self):
+        env = {"VISION_CHAIN": "hf:Qwen/Qwen3-VL-8B-Instruct", "HF_TOKEN": "hf_secret_value"}
+        out, seen = self.run_vision([openai_ok('{"v": 1}')], env)
+        self.assertEqual(seen[0][0], "https://router.huggingface.co/v1/chat/completions")
+        self.assertEqual(seen[0][1]["Authorization"], "Bearer hf_secret_value")
+        self.assertNotIn("hf_secret_value", json.dumps(out))
+
+    def test_hf_without_a_token_is_skipped(self):
+        env = {"VISION_CHAIN": "hf:Qwen/Qwen3-VL-8B-Instruct,gemini:g-1", "HF_TOKEN": ""}
+        out, _ = self.run_vision([gemini_ok('{"v": 1}')], env)
+        self.assertEqual(out["x_llm"]["attempts"][0]["reason"], "no key")
+        self.assertEqual(out["x_llm"]["provider"], "gemini")
+
+    def test_local_server_down_falls_back_to_the_next_vision_model(self):
+        import requests
+        env = {"VISION_CHAIN": "ollama:qwen3-vl:4b,gemini:g-1"}
+        out, _ = self.run_vision([requests.ConnectionError("refused"), gemini_ok('{"v": 1}')], env)
+        self.assertEqual(out["x_llm"]["attempts"][0]["reason"], "ConnectionError")
+        self.assertEqual(out["x_llm"]["provider"], "gemini")
+
+    def test_vision_chain_models_are_trusted_without_name_hints(self):
+        # "llama-3.3-70b-versatile" has no vision hint: in the text chain it is skipped for images, in VISION_CHAIN it is used
+        env = {"VISION_CHAIN": "groq:llama-3.3-70b-versatile"}
+        out, seen = self.run_vision([openai_ok('{"v": 1}')], env)
+        self.assertEqual(out["x_llm"]["provider"], "groq")
+        self.assertEqual(len(seen), 1)
+
+    def test_without_vision_chain_the_text_chain_is_used_with_hints(self):
+        env = {"VISION_CHAIN": "", "LLM_CHAIN": "groq:llama-3.3-70b-versatile,gemini:g-1"}
+        out, _ = self.run_vision([gemini_ok('{"v": 1}')], env)
+        self.assertEqual(out["x_llm"]["attempts"][0]["reason"], "no image support")
+        self.assertEqual(out["x_llm"]["provider"], "gemini")
+
+    def test_text_task_ignores_the_vision_chain(self):
+        seen = []
+
+        def fake_post(url, headers, body, timeout):
+            seen.append(url)
+            return gemini_ok('{"t": 1}')
+
+        env = {"VISION_CHAIN": "ollama:qwen3-vl:4b", "LLM_CHAIN": "gemini:g-1"}
+        with mock.patch.dict(os.environ, env), mock.patch.object(chain, "http_post", fake_post):
+            out = chain.complete("s", "u")
+        self.assertEqual(out["x_llm"]["provider"], "gemini")
+        self.assertEqual(out["x_llm"]["task"], "text")
+        self.assertTrue(seen[0].startswith("https://generativelanguage"))
+
+    def test_vision_failure_does_not_touch_the_text_chain_cooldowns(self):
+        import requests
+        env = {"VISION_CHAIN": "ollama:qwen3-vl:4b"}
+        self.run_vision([requests.ConnectionError("refused")], env)
+        self.assertTrue(chain.cooling("ollama", "qwen3-vl:4b"))
+        self.assertFalse(chain.cooling("gemini", "g-1"))
+
+    def test_status_lists_both_chains_without_secrets(self):
+        env = {"LLM_CHAIN": "gemini:g-1", "VISION_CHAIN": "ollama:qwen3-vl:4b,hf:Qwen/Qwen3-VL-8B-Instruct", "HF_TOKEN": "hf_secret_value"}
+        with mock.patch.dict(os.environ, env):
+            text = json.dumps({"t": chain.status(), "v": chain.status_vision()})
+        self.assertNotIn("hf_secret_value", text)
+        self.assertIn('"provider": "ollama"', text)
+        self.assertEqual(json.loads(text)["v"][0]["key"], True)  # a local server needs no key
+
+    def test_router_passes_the_task(self):
+        from fastapi import FastAPI
+        from fastapi.testclient import TestClient
+
+        from backend.llm_router import router
+        app = FastAPI()
+        app.include_router(router)
+        env = {"VISION_CHAIN": "ollama:qwen3-vl:4b"}
+        with mock.patch.dict(os.environ, env), mock.patch.object(chain, "http_post", lambda *a, **k: openai_ok('{"v": 1}')):
+            client = TestClient(app)
+            answer = client.post("/llm", json={"system": "s", "user": "u", "task": "vision", "image_b64": "QQ==", "image_mime": "image/png"}).json()
+            state = client.get("/llm/status").json()
+        self.assertEqual((answer["x_llm"]["provider"], answer["x_llm"]["task"]), ("ollama", "vision"))
+        self.assertEqual(state["vision_chain"][0]["model"], "qwen3-vl:4b")

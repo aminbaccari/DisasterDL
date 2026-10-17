@@ -413,7 +413,7 @@
         "url": "={{ $('Config').first().json.rag_url + '/llm' }}",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ system: $json.system, user: $json.user, json: true, retry: false, image_b64: $('Normalise input').first().json.image_b64, image_mime: $('Normalise input').first().json.image_mime }) }}",
+        "jsonBody": "={{ JSON.stringify({ system: $json.system, user: $json.user, json: true, retry: false, task: 'vision', image_b64: $('Normalise input').first().json.image_b64, image_mime: $('Normalise input').first().json.image_mime }) }}",
         "options": {
           "timeout": 600000
         }
@@ -481,7 +481,7 @@
         "url": "={{ $('Config').first().json.rag_url + '/llm' }}",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ system: $('Prompt vision v1').first().json.system, user: $('Prompt vision v1').first().json.user, json: true, retry: true, image_b64: $('Normalise input').first().json.image_b64, image_mime: $('Normalise input').first().json.image_mime }) }}",
+        "jsonBody": "={{ JSON.stringify({ system: $('Prompt vision v1').first().json.system, user: $('Prompt vision v1').first().json.user, json: true, retry: true, task: 'vision', image_b64: $('Normalise input').first().json.image_b64, image_mime: $('Normalise input').first().json.image_mime }) }}",
         "options": {
           "timeout": 600000
         }

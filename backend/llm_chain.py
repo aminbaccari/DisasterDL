@@ -14,6 +14,15 @@ The answer has the same shape as a Gemini generateContent answer (candidates[0].
 did not change, plus "x_llm" with the provider, model and every attempt (status, seconds, reason). Record x_llm in the evidence
 log: results from different models are not comparable.
 
+Vision: a request with task "vision" uses its own chain, VISION_CHAIN, so image calls do not compete with text calls for the few
+quotas of vision-capable cloud models. Typical value: a local model first, then a hosted one, then cloud models, for example
+    VISION_CHAIN=ollama:qwen3-vl:4b,hf:Qwen/Qwen3-VL-8B-Instruct,gemini:gemini-3.6-flash
+Every model of VISION_CHAIN is trusted to accept images (the chain is the list the team verified with scripts/llm_ping.py --image).
+Without VISION_CHAIN a vision request uses LLM_CHAIN, filtered by the model-name hints below. See docs/VISION_ARCHITECTURE.md.
+
+Providers: gemini, groq, openrouter (cloud, key in .env), hf (Hugging Face Inference Providers, HF_TOKEN) and ollama (a local server, no key,
+OLLAMA_BASE_URL, default http://localhost:11434/v1). hf and ollama use the same OpenAI-style request as groq and openrouter.
+
 Nothing here prints or stores API keys.
 """
 import base64
@@ -36,8 +45,13 @@ GEMINI_BASE = "https://generativelanguage.googleapis.com"  # GEMINI_BASE_URL in 
 OPENAI_STYLE = {
     "groq": ("https://api.groq.com/openai/v1/chat/completions", "GROQ_API_KEY"),
     "openrouter": ("https://openrouter.ai/api/v1/chat/completions", "OPENROUTER_API_KEY"),
+    "hf": (None, "HF_TOKEN"),        # URL from HF_BASE_URL, see _openai_url
+    "ollama": (None, None),          # URL from OLLAMA_BASE_URL, no key
 }
-KEY_VARS = {"gemini": "GEMINI_API_KEY", "groq": "GROQ_API_KEY", "openrouter": "OPENROUTER_API_KEY"}
+KEY_VARS = {"gemini": "GEMINI_API_KEY", "groq": "GROQ_API_KEY", "openrouter": "OPENROUTER_API_KEY", "hf": "HF_TOKEN", "ollama": None}
+HF_BASE = "https://router.huggingface.co/v1"
+OLLAMA_BASE = "http://localhost:11434/v1"
+LOCAL_PROVIDERS = {"ollama"}  # a local model may need a cold start (loading into memory), so it gets the longer timeout
 # Models known to accept an image. Gemini Flash models do. For Groq and OpenRouter the model name decides (checked with scripts/llm_ping.py --image).
 VISION_HINTS = ("gemini", "llama-4", "vision", "-vl", "gpt-4o", "pixtral", "qwen2.5-vl", "gemma-3", "gemma-4")
 
@@ -58,9 +72,10 @@ def http_post(url, headers, body, timeout):
     return requests.post(url, headers=headers, json=body, timeout=timeout)
 
 
-def parse_chain(text=None):
-    """'gemini:gemini-3.6-flash,groq:llama-3.3-70b-versatile' -> [('gemini', 'gemini-3.6-flash'), ...]. Model names may contain ':' (OpenRouter ':free')."""
-    text = os.getenv("LLM_CHAIN", "") if text is None else text
+def parse_chain(text=None, var="LLM_CHAIN"):
+    """'gemini:gemini-3.6-flash,groq:llama-3.3-70b-versatile' -> [('gemini', 'gemini-3.6-flash'), ...].
+    Model names may contain ':' (OpenRouter ':free', Ollama 'qwen3-vl:4b'): only the first colon separates the provider."""
+    text = os.getenv(var, "") if text is None else text
     chain = []
     for item in text.split(","):
         item = item.strip()
@@ -73,7 +88,14 @@ def parse_chain(text=None):
 
 
 def has_key(provider):
-    return bool(os.getenv(KEY_VARS[provider], "").strip())
+    """True when the provider can be called: its key is set, or it needs none (a local server is simply tried)."""
+    var = KEY_VARS[provider]
+    return True if var is None else bool(os.getenv(var, "").strip())
+
+
+def vision_chain():
+    """The chain for image calls, or [] when VISION_CHAIN is not set (then the text chain is used with the model-name hints)."""
+    return parse_chain(var="VISION_CHAIN")
 
 
 def accepts_image(provider, model):
@@ -97,10 +119,19 @@ def reset_cooldowns():
         _COOLDOWN.clear()
 
 
-def status():
-    """Chain state without secrets: for each model, key present, cooling down or not."""
+def _status_of(chain):
     now = time.time()
-    return [{"provider": p, "model": m, "key": has_key(p), "cooling_seconds": max(0, round(_COOLDOWN.get(f"{p}:{m}", 0) - now))} for p, m in parse_chain()]
+    return [{"provider": p, "model": m, "key": has_key(p), "cooling_seconds": max(0, round(_COOLDOWN.get(f"{p}:{m}", 0) - now))} for p, m in chain]
+
+
+def status():
+    """Text chain state without secrets: for each model, key present (or none needed), cooling down or not."""
+    return _status_of(parse_chain())
+
+
+def status_vision():
+    """The same for VISION_CHAIN (empty list when it is not set)."""
+    return _status_of(vision_chain())
 
 
 def _retry_seconds(response):
@@ -145,15 +176,26 @@ def _gemini_request(model, system, user, json_mode, image):
     return GEMINI_URL.format(base=os.getenv("GEMINI_BASE_URL", GEMINI_BASE).rstrip("/"), model=model), {"x-goog-api-key": os.getenv("GEMINI_API_KEY", ""), "Content-Type": "application/json"}, body
 
 
+def _openai_url(provider):
+    """Chat completions URL of an OpenAI-style provider. hf and ollama bases can be changed in .env (a Space, a remote Ollama)."""
+    fixed = OPENAI_STYLE[provider][0]
+    if fixed:
+        return fixed
+    base = os.getenv("HF_BASE_URL", HF_BASE) if provider == "hf" else os.getenv("OLLAMA_BASE_URL", OLLAMA_BASE)
+    return base.rstrip("/") + "/chat/completions"
+
+
 def _openai_request(provider, model, system, user, json_mode, image):
-    url, key_var = OPENAI_STYLE[provider]
+    url, key_var = _openai_url(provider), OPENAI_STYLE[provider][1]
     content = [{"type": "text", "text": user}]
     if image:
         content.append({"type": "image_url", "image_url": {"url": f"data:{image['mime']};base64,{image['b64']}"}})
     body = {"model": model, "messages": [{"role": "system", "content": system}, {"role": "user", "content": content if image else user}]}
     if json_mode:
         body["response_format"] = {"type": "json_object"}
-    headers = {"Authorization": "Bearer " + os.getenv(key_var, ""), "Content-Type": "application/json"}
+    headers = {"Content-Type": "application/json"}
+    if key_var:
+        headers["Authorization"] = "Bearer " + os.getenv(key_var, "")
     if provider == "openrouter":
         headers["X-Title"] = "DisasterAI"
     return url, headers, body
@@ -171,9 +213,10 @@ def clean_json_text(text):
     return re.sub(r"\s*```$", "", text).strip()
 
 
-def _complete_once(system, user, json_mode=True, image=None, chain=None, timeout=None, rotate=False):
+def _complete_once(system, user, json_mode=True, image=None, chain=None, timeout=None, rotate=False, trusted=False):
     """One pass over the chain. image = {"mime": "image/png", "b64": "..."} or None. rotate=True starts at the second usable model
     (n8n sets it on its retry, so a model that just gave an unusable answer is not asked again first).
+    trusted=True: every model of the chain is assumed to accept images (VISION_CHAIN), so the model-name check is skipped.
 
     Returns a Gemini-shaped dict, or {"error": {...}} when every model failed. Both carry "x_llm" with the attempts.
     """
@@ -187,7 +230,7 @@ def _complete_once(system, user, json_mode=True, image=None, chain=None, timeout
         if not has_key(provider):
             attempts.append({**tag, "status": "skipped", "reason": "no key"})
             continue
-        if image and not accepts_image(provider, model):
+        if image and not trusted and not accepts_image(provider, model):
             attempts.append({**tag, "status": "skipped", "reason": "no image support"})
             continue
         if cooling(provider, model):
@@ -201,7 +244,7 @@ def _complete_once(system, user, json_mode=True, image=None, chain=None, timeout
                               else _openai_request(provider, model, system, user, json_mode, image))
         t0 = time.time()
         try:
-            response = http_post(url, headers, body, timeout)
+            response = http_post(url, headers, body, max(timeout, TIMEOUT_IMAGE) if provider in LOCAL_PROVIDERS else timeout)
         except requests.RequestException as exc:
             cool_down(provider, model, COOLDOWN_SERVER)
             attempts.append({**tag, "status": "error", "seconds": round(time.time() - t0, 2), "reason": type(exc).__name__})
@@ -233,32 +276,39 @@ def _complete_once(system, user, json_mode=True, image=None, chain=None, timeout
             "x_llm": {"provider": None, "model": None, "seconds": round(time.time() - started, 2), "attempts": attempts}}
 
 
-def soonest_available(chain, image=None):
+def soonest_available(chain, image=None, trusted=False):
     """Seconds until the first model that has a key (and accepts the image) stops cooling down, or None when no model qualifies."""
     now, waits = time.time(), []
     for provider, model in chain:
-        if has_key(provider) and not (image and not accepts_image(provider, model)):
+        if has_key(provider) and not (image and not trusted and not accepts_image(provider, model)):
             waits.append(max(0.0, _COOLDOWN.get(f"{provider}:{model}", 0) - now))
     return min(waits) if waits else None
 
 
-def complete(system, user, json_mode=True, image=None, chain=None, timeout=None, rotate=False):
+def complete(system, user, json_mode=True, image=None, chain=None, timeout=None, rotate=False, task="text"):
     """Ask the chain; when every model is cooling down after a per-minute limit, wait for the first one and ask once more.
 
     2026-10-16: with the free tiers of Groq, OpenRouter and Gemini all limited at once, calls failed instantly and a whole
     pipeline run degraded in 0.2 s. Waiting up to MAX_WAIT seconds turns a per-minute limit into a delay. A daily quota
     (cooldown of hours) is never waited for. x_llm.waited_seconds records the wait.
     """
-    chain = parse_chain() if chain is None else chain
-    answer = _complete_once(system, user, json_mode, image, chain, timeout, rotate)
+    trusted = False
+    if chain is None:
+        if task == "vision" and vision_chain():
+            chain, trusted = vision_chain(), True
+        else:
+            chain = parse_chain()
+    answer = _complete_once(system, user, json_mode, image, chain, timeout, rotate, trusted)
+    answer["x_llm"]["task"] = task
     if "error" not in answer:
         return answer
-    wait = soonest_available(chain, image)
+    wait = soonest_available(chain, image, trusted)
     if wait is None or wait > MAX_WAIT:
         return answer
     sleep_for = wait + 0.5
     time.sleep(sleep_for)
-    second = _complete_once(system, user, json_mode, image, chain, timeout, False)
+    second = _complete_once(system, user, json_mode, image, chain, timeout, False, trusted)
+    second["x_llm"]["task"] = task
     second["x_llm"]["attempts"] = answer["x_llm"]["attempts"] + [{"status": "waited", "reason": f"all models cooling down, waited {sleep_for:.1f} s"}] + second["x_llm"]["attempts"]
     second["x_llm"]["waited_seconds"] = round(sleep_for, 1)
     return second

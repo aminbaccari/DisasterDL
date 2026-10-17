@@ -33,7 +33,7 @@ n8n owns the orchestration (branches, parallel paths, retries, error workflow). 
 ## Stack
 
 - Automation: n8n, self-hosted with Docker
-- Models: a fallback chain over Gemini, Groq and OpenRouter free tiers (`LLM_CHAIN` in `.env`, `backend/llm_chain.py`). Each response lists the model that answered every step (`models_used`).
+- Models: a fallback chain over Gemini, Groq and OpenRouter free tiers (`LLM_CHAIN` in `.env`, `backend/llm_chain.py`). Each response lists the model that answered every step (`models_used`). Image calls can use their own `VISION_CHAIN` (local Ollama, Hugging Face Inference Providers, then cloud models). The local and Hugging Face providers are coded and unit-tested but no vision model has been installed or run yet.
 - Embeddings: multilingual-e5-small via sentence-transformers (local)
 - Vector store: ChromaDB (local), section chunking (chosen after evaluation)
 - Service: Python FastAPI on port 8010
@@ -96,7 +96,7 @@ The response is JSON: `status` (ok, needs_more_information, degraded, flagged, r
 ## Known limits
 
 - Free tiers: daily and per-minute quotas stop long runs. A pipeline run is about 7 model calls.
-- The Vision step needs a vision-capable model. A separate vision model is proposed in `docs/VISION_ARCHITECTURE.md`.
+- The Vision step needs a vision-capable model. `VISION_CHAIN` is implemented, the local model (Ollama, `qwen3-vl:4b` suggested) is not installed yet, see `docs/VISION_ARCHITECTURE.md`.
 - Fire guidance is limited (FI-01 says what the knowledge base does not cover). Tunisian guidance is one news report of an ONPC communique.
 - French fire entries FI-21 to FI-26 are team translations, not reviewed by an outside reader. Four OCR-only flood pages were not re-verified on the last QA run.
 - The severity scale (low, moderate, high, critical, undetermined) is a working scale of this prototype, not an official standard.

@@ -7,7 +7,7 @@ Each item states the evidence (file or run), the effect, the proposed fix, an ef
 | # | Bottleneck | Effect | Fix | Effort |
 |---|-----------|--------|-----|--------|
 | 1 | Free-tier quotas of every cloud provider | Real runs stop after a few dozen calls a day | Separate vision model, smaller prompts, a local text fallback, a token budget in `/llm/status`, a paid tier for the demo | 0.5 to 2 days |
-| 2 | No vision-capable model with quota | The Vision step answered in only one logged run (the single image test run after the upload fix) | Dedicated vision chain with a local or HF-hosted VLM, see `docs/VISION_ARCHITECTURE.md` | 1 to 2 days |
+| 2 | No vision-capable model with quota | The Vision step answered in only one logged run (the single image test run after the upload fix) | Dedicated vision chain with a local or HF-hosted VLM, see `docs/VISION_ARCHITECTURE.md`. Code done 2026-10-17 (`VISION_CHAIN`, ollama and hf providers); the model install and a benchmark are open | 1 to 2 days |
 | 3 | Latency from waiting on rate limits | Runs of 100 to 1,558 s, model calls themselves take 0.4 to 7 s on Groq | Fewer and shorter calls, a local fallback, wait budget per run | 0.5 day |
 | 4 | Untested prompt drafts (incident v2, report v4, knowledge v2, risk v2) | Quality claims impossible, two known failures open | Re-run `scripts/before_after.py` and `scripts/report_ab.py` with fresh quotas | 0.5 day of runs |
 | 5 | Evaluation too small and too slow | 10 to 12 runs per batch, 3 matched pairs in the report test | Replay of recorded agent outputs, agent-level tests on fixed contexts, 2 providers per run | 1 day |

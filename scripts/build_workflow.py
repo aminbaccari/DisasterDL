@@ -384,7 +384,8 @@ class Builder:
 
     def _gemini_http(self, name, x, y, json_out=True, image=False, src="$json", retry=False):
         """POST /llm: the chain picks the model. The retry node sends retry: true so the model that just failed is not asked first again."""
-        img = (", image_b64: $('Normalise input').first().json.image_b64, image_mime: $('Normalise input').first().json.image_mime" if image else "")
+        # an image call is a vision task: /llm then uses VISION_CHAIN (a local or hosted vision model) when it is set
+        img = (", task: 'vision', image_b64: $('Normalise input').first().json.image_b64, image_mime: $('Normalise input').first().json.image_mime" if image else "")
         body = ("={{ JSON.stringify({ system: " + src + ".system, user: " + src + ".user, json: " + ("true" if json_out else "false") + ", retry: " + ("true" if retry else "false") + img + " }) }}")
         params = {"method": "POST", "url": "={{ $('Config').first().json.rag_url + '/llm' }}", "sendBody": True, "specifyBody": "json", "jsonBody": body, "options": {"timeout": 600000}}
         return self.add(name, "n8n-nodes-base.httpRequest", 4.2, params, x, y, onError="continueRegularOutput")

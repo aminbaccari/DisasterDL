@@ -1,6 +1,6 @@
 # Proposal: a separate vision model for the Vision agent (2026-10-17)
 
-Status: proposal for the team to decide. Nothing in this file is implemented. Model facts (size, licence, hosting) were read from the Hugging Face API and the Ollama library pages on 2026-10-17. No model was run, so quality claims below are expectations, not results.
+Status (2026-10-17): the team approved the local-first plan. Step 1 of the implementation plan is DONE (code and tests, nothing downloaded, no model run): `VISION_CHAIN`, the `task` field of `/llm`, the `ollama` and `hf` providers, `scripts/llm_ping.py --task vision`, 11 new unit tests with a fake HTTP layer. Steps 2 to 6 are open and need the downloads below to be approved. Model facts (size, licence, hosting) were read from the Hugging Face API and the Ollama library pages on 2026-10-17. No model was run, so quality claims below are expectations, not results.
 
 ## Why
 
@@ -64,7 +64,7 @@ Not suited: OCR and document models in the same listing (DeepSeek-OCR, chandra-o
 
 | Step | Work | Needs from you |
 |------|------|----------------|
-| 1 | `llm_chain.py`: providers `ollama` and `hf`, `VISION_CHAIN`, `task` field in `/llm` and in the workflow's Vision node. Unit tests with the fake HTTP layer. | nothing |
+| 1 | DONE 2026-10-17. `llm_chain.py`: providers `ollama` and `hf`, `VISION_CHAIN`, `task` field in `/llm` and in the workflow's Vision node, unit tests with the fake HTTP layer (95 backend tests pass). | nothing |
 | 2 | Install Ollama (about 1 GB download) or start the existing Docker image with GPU, `ollama pull qwen3-vl:4b` (3.3 GB) | your OK for the downloads |
 | 3 | `scripts/llm_ping.py --model ollama:qwen3-vl:4b --image --json` | nothing |
 | 4 | `scripts/vision_bench.py`: run each candidate on a set of images, score with ground-truth tags (smoke, flames, flood water, structural damage, people) and a manual look for invented objects. Needs about 12 images, with licences, instead of the 4 stand-ins. | someone to select and label the images |

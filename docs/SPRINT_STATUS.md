@@ -26,6 +26,7 @@ Checked against `docs/SPRINT_PLAN.md` (written 2026-10-16), the commits (23 on `
 | extra | Four CC BY test images | Done | `vision/test_images/SOURCES.md` | About 12 images for a vision benchmark |
 | extra | Incident v2 and report v4 drafts, before/after scripts | Written, tested partly | `scripts/before_after.py`, `scripts/report_ab.py`, partial results | Full re-run with fresh quotas |
 | extra | Bottlenecks list and vision proposal | Written 2026-10-17 | `docs/BOTTLENECKS.md`, `docs/VISION_ARCHITECTURE.md` | Team decisions |
+| extra | Vision chain code (`VISION_CHAIN`, `task`, ollama and hf providers) | Done 2026-10-17, offline tests only | 11 tests, 95 backend tests pass | Install Ollama and pull a model (needs approval), `scripts/vision_bench.py`, benchmark images |
 
 ## Acceptance criteria of the sprint plan
 
