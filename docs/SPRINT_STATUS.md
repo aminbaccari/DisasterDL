@@ -47,10 +47,18 @@ Checked against `docs/SPRINT_PLAN.md` (written 2026-10-16), the commits (23 on `
 | D2 | Location copied as a relative phrase (v1) | fire_01, 2 of 2 completed runs | incident v2 draft, untested |
 | D3 | Free text in English for a French incident | edge_01 | incident v2 draft, untested |
 | D4 | Report JSON missing fields from one model | 2 of 6 in batch C, 0 of 9 in the paired test | report v4 draft, untested |
-| D5 | Coverage `good` for fire although FI-01 | fire_01 batch A | `docs/BOTTLENECKS.md` item 6 |
-| D6 | Repair pass fires and its reason is lost | 3 of 10 runs | `docs/BOTTLENECKS.md` item 8 |
-| D7 | Misfiled injection text under `assessment.conflicts` | edge_03 run 1 | not fixed |
+| D5 | Coverage `good` for fire although FI-01 | fire_01 batch A | Validator rule added 2026-10-17 (3 unit tests, `backend/validate.py`); not run on a real report yet |
+| D6 | Repair pass fires and its reason is lost | 3 of 10 runs | `validation.first_violations` added to the repaired response in `scripts/build_workflow.py` 2026-10-17; static check only, not run in n8n |
+| D7 | Misfiled injection text under `assessment.conflicts` | edge_03 run 1 | not fixed: needs the real edge_03 output as a failing test first |
 | D8 | Early-exit report did not state image and retrieval status | edge_01 | fixed in the workflow (MOCK-checked only) |
+
+## Defect closed in the docs: failed Vision step reported as an unusable image (2026-10-17)
+
+Fixed earlier in code, not recorded as closed until now: the workflow sets `image_status: analysis_failed` and leaves `vision` null (`scripts/build_workflow.py`, Vision parse node), `/validate` check 9 `image_status` compares the report with the workflow status (`backend/validate.py`), regression test `TestImageStatus.test_failed_vision_step_must_not_be_reported_as_unusable`, MOCK mode `vision_fail`, and in the real before and after test image_status matched what happened in 3 of 3 runs. Not yet seen with the local vision model switched off.
+
+## Consolidated queue
+
+The ordered fix queue (phases 0 to 6, with proofs) is the plan file of 2026-10-17; copy it into `docs/NEXT_STEPS.md` when the team agrees.
 
 ## Next actions, in order
 
