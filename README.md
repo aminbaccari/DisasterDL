@@ -4,35 +4,56 @@ Multi-agent AI assistant for disaster assessment and response. Final project, Ad
 
 DisasterAI is a decision-support prototype. It does not replace emergency services, dispatch vehicles or make life-critical decisions.
 
+## Status (2026-10-17)
+
+Built and tested offline: the knowledge base (78 entries, English and French), retrieval, agent output schemas, the `/validate` guardrails, the model fallback chain, the n8n workflow generator. Run in a test n8n with MOCK agents (all six incidents, seven failure paths) and with real models for a few runs. **Not yet shown:** a clean batch of the six incidents with images on real models. Free-tier quotas ran out repeatedly, and the Vision step almost never ran. Prompt versions incident v2, report v4, knowledge v2 and risk v2 are drafts with partial evidence. The honest list is in `docs/EVIDENCE_LOG.md`, `docs/SPRINT_STATUS.md` and `docs/BOTTLENECKS.md`.
+
 ## Pipeline
 
-Incident (text + optional image) -> n8n webhook -> Incident Understanding Agent -> Vision Agent and RAG Agent (parallel) -> Risk Assessment Agent -> Report Agent -> final report.
+Incident (text and optional image) -> n8n webhook -> Incident Understanding Agent -> Vision Agent and RAG Agent (parallel) -> Merge -> Risk Assessment Agent -> Report Agent -> `/validate` (one repair pass) -> final report.
 
-Scope of version 1: forest fires, floods, structural or urban emergencies.
+Scope of version 1: forest fires, floods, structural or urban emergencies. Languages: English and French.
+
+```
+client --multipart--> n8n webhook
+                         |
+                  Incident Understanding --(unclear)--> "more information needed"
+                         |
+            +------------+-------------+
+            |                          |
+         Vision                  RAG queries -> /search -> Knowledge synthesis
+            |                          |
+            +-----------Merge----------+
+                         |
+                  Risk -> Report -> /validate -> (repair once) -> response
+```
+
+n8n owns the orchestration (branches, parallel paths, retries, error workflow). Every agent is a pair of nodes: a Set node holding the versioned prompt and an HTTP node calling `POST /llm`. Python stays small: one FastAPI service with `/search` (retrieval), `/validate` (guardrails) and `/llm` (model fallback chain).
 
 ## Stack
 
-- Automation: n8n (self-hosted with Docker)
-- LLM and vision: Gemini Flash, free tier (exact model set in .env)
-- Embeddings: multilingual-e5 via sentence-transformers (local)
-- Vector store: ChromaDB (local)
-- RAG service: Python FastAPI, called by n8n through an HTTP Request node
+- Automation: n8n, self-hosted with Docker
+- Models: a fallback chain over Gemini, Groq and OpenRouter free tiers (`LLM_CHAIN` in `.env`, `backend/llm_chain.py`). Each response lists the model that answered every step (`models_used`).
+- Embeddings: multilingual-e5-small via sentence-transformers (local)
+- Vector store: ChromaDB (local), section chunking (chosen after evaluation)
+- Service: Python FastAPI on port 8010
 - Language: Python, version control with Git
 
 ## Repository layout
 
-- prompts/ one folder per agent, one file per prompt version, plus CHANGELOG.md
-- rag/corpus/ source documents (en, fr) and rag/eval/ test queries and results
-- vision/test_images/ test images per disaster type
-- n8n/ exported workflow JSON
-- eval/incidents/ fixed end-to-end test incidents, eval/results/ logged outputs
-- docs/ diagrams, screenshots, evidence log, report drafts
-- scripts/ helper scripts, including check_env.py
+- `prompts/` one folder per agent, one file per prompt version, `CHANGELOG.md`
+- `rag/` retrieval service, corpus (`rag/corpus/en`, `fr`), evaluation queries; `rag/knowledge_base/` is the knowledge base build and QA tools
+- `backend/` agent output schemas, `/validate`, the model chain, the MOCK Gemini, tests
+- `n8n/workflows/` generated workflow JSON (never edit by hand)
+- `eval/incidents/` six fixed test incidents, `eval/results/` raw outputs of every run
+- `vision/test_images/` four CC BY test images with attribution
+- `scripts/` helper and test scripts
+- `docs/` plans, evidence log, status, proposals
 
 ## Setup
 
 1. Install Docker and Python 3.10 or newer.
-2. Copy .env.example to .env and fill in GEMINI_API_KEY (free key from Google AI Studio).
+2. Copy `.env.example` to `.env`. Fill in at least one provider key: `GEMINI_API_KEY` (Google AI Studio), `GROQ_API_KEY` (console.groq.com), `OPENROUTER_API_KEY` (openrouter.ai). Create the keys yourself and never commit `.env`. Set `LLM_CHAIN` to models you verified (below).
 3. Create a virtual environment and install dependencies:
 
    python -m venv .venv
@@ -44,44 +65,55 @@ Scope of version 1: forest fires, floods, structural or urban emergencies.
    docker compose up -d
 
    Then open http://localhost:5678 and create the owner account.
-5. Run the environment check:
+5. Run the environment check: `python scripts/check_env.py` (add `--skip-embeddings` to skip the first embedding model download).
+6. Check the models of the chain: `python scripts/llm_ping.py --list groq`, then `python scripts/llm_ping.py --json` (one call per model of `LLM_CHAIN`, never prints a key).
 
-   python scripts/check_env.py
+Notes from the development machine (Windows 11): if Python reports certificate errors, `pip install truststore` (the scripts use it when present); if importing sentence-transformers fails with a Keras 3 message, set `USE_TF=0` and `TRANSFORMERS_NO_TF=1`; with no internet set `HF_HUB_OFFLINE=1` after the first model download. Port 8000 was taken by another application, so the service uses 8010.
 
-   Add --skip-embeddings to skip the first-time embedding model download.
+## Run it
 
-## RAG commands
+1. Build the index (first run downloads the embedding model): `python -m rag.ingest --strategy both`
+2. Start the service for n8n: `uvicorn rag.service:app --host 0.0.0.0 --port 8010`. It serves `/search`, `/validate`, `/llm`, `/llm/status` and `/health`. n8n in Docker reaches it at `http://host.docker.internal:8010`.
+3. Generate and import the workflow: `python scripts/build_workflow.py`, then in n8n **Import from file** `n8n/workflows/disasterai.json` and `disasterai_error.json`. The default build uses the draft prompts incident v2 and report v4. For the tested prompts: `--prompt incident=incident_understanding/v1.md --prompt report=report/v3.md`.
+4. Send an incident:
 
-Run from the project root, after adding documents to rag/corpus/en and rag/corpus/fr and listing them in rag/corpus/SOURCES.md.
+   curl -X POST "http://localhost:5678/webhook/incident" -F "incident_text=Smoke is rising from the hills behind the village." -F "output_language=en" -F "image=@vision/test_images/fire_01.jpg;type=image/jpeg"
 
-- Build the index with both chunking strategies: python -m rag.ingest --strategy both
-- Evaluate retrieval: copy rag/eval/queries_template.csv to rag/eval/queries.csv, fill in 15 to 20 queries, then run python -m rag.evaluate --strategy both
-- Start the service for n8n: uvicorn rag.service:app --port 8010, then POST to /search with {"query": "...", "k": 4, "topic": "flood"}. n8n in Docker reaches it at http://host.docker.internal:8010
-- Run the unit tests: python -m unittest discover -s rag/tests -t .
+   The image part needs its own Content-Type (`;type=image/jpeg`), otherwise n8n delivers it as text and the Vision step is skipped (the workflow now says so in `degraded_steps`).
 
-The first ingest downloads the embedding model, so it needs internet access.
+The response is JSON: `status` (ok, needs_more_information, degraded, flagged, rejected), `report`, `report_markdown`, `validation`, `knowledge_coverage`, `degraded_steps`, `models_used`, `prompt_versions`.
 
-## Backend, guardrails and the n8n workflow
+## Tests
 
-- `backend/` holds the agent output schemas (`backend/schemas/*.schema.json` with examples), the `/validate` guardrails (`backend/validate.py`, mounted in the same FastAPI app as `/search`) and a MOCK Gemini for offline tests (`backend/mock_gemini.py`).
-- Backend tests: python -m unittest discover -s backend/tests -t .
-- Generate the n8n workflow from the prompt files: python scripts/build_workflow.py (options: --model, --pace-seconds, --gemini-base). Static check: python scripts/check_workflow.py. Result in n8n/workflows/. It was run in n8n only with a MOCK Gemini and a few real calls, see docs/EVIDENCE_LOG.md.
-- Offline replay of the six incidents (agents are MOCK, retrieval and /validate are real): python scripts/replay_mock.py
-- Failure paths in a running n8n with the MOCK Gemini: python scripts/failure_paths_mock.py --url <webhook url>
-- Single-prompt baseline: python scripts/baseline_single_prompt.py --dry-run (a real run needs a key and quota).
-- Sprint plan: docs/SPRINT_PLAN.md. What is untested and what comes next: docs/NEXT_STEPS.md.
+- Unit tests (no network, no model): `python -m unittest discover -s rag/tests -t .` and `python -m unittest discover -s backend/tests -t .` (21 and 84 tests on 2026-10-17)
+- Retrieval: `python -m rag.evaluate --queries rag/eval/queries_v2.csv --strategy both` (add `--use-topic-filter`)
+- Contracts and workflow: `python scripts/check_contracts.py`, `python scripts/check_workflow.py` (static, does not run n8n)
+- Offline replay with MOCK agents: `python scripts/replay_mock.py`; failure paths with a MOCK Gemini: `python scripts/failure_paths_mock.py --url <webhook>`
+- Real end-to-end, six incidents: `python scripts/run_incidents.py --url <webhook> --runs 2` then read each report with `python scripts/show_run.py <results folder> <incident id> <run>` and score `manual_checks`
+- Baseline, one prompt instead of the pipeline: `python scripts/baseline_single_prompt.py --runs 2`
+- Prompt before and after: `python scripts/before_after.py` (pipeline) and `python scripts/report_ab.py` (paired, one pinned model). Both need fresh quotas, see `docs/NEXT_STEPS.md`.
 
-## End-to-end tests
+## Known limits
 
-Once the n8n workflow exists, run the six fixed incidents in eval/incidents/ (see its README for the images you need to collect first):
+- Free tiers: daily and per-minute quotas stop long runs. A pipeline run is about 7 model calls.
+- The Vision step needs a vision-capable model. A separate vision model is proposed in `docs/VISION_ARCHITECTURE.md`.
+- Fire guidance is limited (FI-01 says what the knowledge base does not cover). Tunisian guidance is one news report of an ONPC communique.
+- French fire entries FI-21 to FI-26 are team translations, not reviewed by an outside reader. Four OCR-only flood pages were not re-verified on the last QA run.
+- The severity scale (low, moderate, high, critical, undetermined) is a working scale of this prototype, not an official standard.
 
-python scripts/run_incidents.py --url <n8n webhook url> --runs 2
+## Documents
 
-Raw outputs and a summary.csv are saved in eval/results/<timestamp>/.
+- `docs/EVIDENCE_LOG.md` what was run, results, failures, limitations (every number comes from here)
+- `docs/SPRINT_STATUS.md`, `docs/SPRINT_PLAN.md`, `docs/NEXT_STEPS.md` plan and status
+- `docs/BOTTLENECKS.md` bottlenecks and proposed fixes
+- `docs/VISION_ARCHITECTURE.md` proposal for a separate vision model
+- `docs/N8N_WORKFLOW_PLAN.md`, `docs/CONTRACT_MISMATCHES.md`, `docs/RAG_CORPUS_PLAN.md`
+- `prompts/README.md` data contract between agents, `prompts/CHANGELOG.md` prompt iterations
+- `vision/test_images/SOURCES.md`, `rag/corpus/SOURCES.md` licences and sources
 
 ## Evidence rules
 
-Every number in the report and slides must come from a run we logged. Use docs/EVIDENCE_LOG.md for prompt iterations, failures and test results as we build, not at the end.
+Every number in the report and slides must come from a run we logged. Results from the MOCK Gemini are labelled MOCK and say nothing about model quality. A prompt version is never edited after it has been tested: write the next version and a CHANGELOG entry with the failing input.
 
 ## Team
 
