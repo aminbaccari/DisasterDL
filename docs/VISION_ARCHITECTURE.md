@@ -110,3 +110,7 @@ docker run -d --name ollama-c --restart unless-stopped --gpus all -p 11434:11434
 
   The `ollama-ca` mount is only needed on a network whose TLS is re-signed by a local root (Avast on this machine), see the evidence log. A model is pulled with `docker exec ollama-c ollama pull qwen3-vl:4b-instruct`.
 - Run the benchmark with `python scripts/vision_bench.py --model ollama:qwen3-vl:4b-instruct --runs 2`.
+
+## Status of the narrow yes/no check (2026-10-17)
+
+Decision of the team: it stays a documented prototype and is NOT added to the n8n workflow. Files: `prompts/vision_questions/v1.md` and `v2.md`, `prompts/vision_check/v1.md` and `v2.md`, `scripts/vision_check_test.py`, results in `docs/EVIDENCE_LOG.md` and `eval/results/vision_check/`. It restores the fire_01 conflict (houses not visible, 3 of 3) but gave false conflicts on flood_01 (2 of 3 with the second version, "roads not visible" because the road is under water). Open if someone takes it up: a rule against questions about roads, streets or ground that the event can hide, tested on new images (about 8 more, with licences) so the result is not tuned to the same four.
