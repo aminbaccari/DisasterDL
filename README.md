@@ -47,6 +47,7 @@ n8n owns the orchestration (branches, parallel paths, retries, error workflow). 
 - `n8n/workflows/` generated workflow JSON (never edit by hand)
 - `eval/incidents/` six fixed test incidents, `eval/results/` raw outputs of every run
 - `vision/test_images/` four CC BY test images with attribution
+- `ui/` the Streamlit test console (client, rendering, saved runs, samples)
 - `scripts/` helper and test scripts
 - `docs/` plans, evidence log, status, proposals
 
@@ -84,6 +85,10 @@ Notes from the development machine (Windows 11): if Python reports certificate e
    The image part needs its own Content-Type (`;type=image/jpeg`), otherwise n8n delivers it as text and the Vision step is skipped (the workflow now says so in `degraded_steps`).
 
 The response is JSON: `status` (ok, needs_more_information, degraded, flagged, rejected), `report`, `report_markdown`, `validation`, `knowledge_coverage`, `degraded_steps`, `models_used`, `prompt_versions`.
+
+### Test console (UI)
+
+A Streamlit screen to send an incident to the n8n webhook and read the result: `streamlit run ui/app.py` (opens on http://localhost:8501). Pick the n8n instance in the sidebar (default `http://localhost:5678/webhook/incident`, the one `docker compose up -d` publishes), check the health lights (n8n, RAG service, model chains, local vision model, disk), choose a fixed incident or write your own, add a photo, press Run. The result shows a plain-language status, the report with the source of each statement and the passage behind each recommendation, the image next to the report, the real pipeline steps (model, seconds, fallbacks, degraded steps, first validation problems) and the raw JSON. Every run is saved in `eval/results/ui_runs/` and can be compared in the History tab. n8n answers only when the whole run ends, so the progress bar is a timer. To try the screen without spending model quota: `python scripts/replay_webhook.py` and pick "Replay of saved answers" (it replays saved real answers and is labelled MOCK; add `?mode=degraded`, `flagged`, `rejected`, `error500`... in a custom URL to see the failure paths). Tests: `backend/tests/test_ui.py` and `test_ui_app.py`.
 
 ## Tests
 

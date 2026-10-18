@@ -6,3 +6,4 @@ sentence-transformers
 pypdf
 requests
 python-dotenv
+streamlit>=1.50
