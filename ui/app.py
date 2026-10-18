@@ -222,6 +222,11 @@ def pipeline_tab(body):
             st.markdown(f"- `{check}`: {msg}")
     elif repaired:
         st.caption("The workflow did not record the reason for the repair (this answer has no first_violations).")
+    discarded = render.repair_discarded_problems(body.get("validation"))
+    if discarded:
+        st.warning("The repair pass was tried and thrown away, because its report failed more checks than the original. What the repaired report got wrong:")
+        for check, msg in discarded:
+            st.markdown(f"- `{check}`: {msg}")
     for check, msg in now:
         st.error(f"`{check}`: {msg}")
     st.markdown("##### Retrieved knowledge entries")

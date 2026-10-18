@@ -6,7 +6,7 @@
 Every answer is a saved output of an earlier real run (eval/results/vision_chain_e2e), or a copy of it with one field changed to show a failure path.
 It is NOT the workflow: tick "This n8n uses MOCK agents" in the console so the results are labelled. Query parameters of the URL:
     mode   saved (default: the saved fire_01 answer exactly as it was, its real status is "degraded") | ok (a copy made clean: status ok, no degraded steps)
-           | conflict | degraded | flagged | repaired | rejected | notjson | empty | error500 | notfound
+           | conflict | degraded | flagged | repaired | repair_discarded | rejected | notjson | empty | error500 | notfound
     delay  seconds to wait before answering (default 3)
 """
 import argparse
@@ -48,6 +48,13 @@ def answer(mode):
         body["status"] = "flagged"
         body["validation"] = {"status": "fail", "repaired": True, "violations": [{"check": "scope", "message": "the report tells people to enter a damaged building"}],
                               "first_violations": [{"check": "scope", "message": "the report tells people to enter a damaged building"}, {"check": "citations", "message": "entry FI-99 was not retrieved"}]}
+    elif mode == "repair_discarded":
+        body = copy.deepcopy(ok)
+        body["status"] = "flagged"
+        original = [{"check": "no_guidance", "message": "coverage is 'good' although FI-01 (fire scope note) was retrieved"}]
+        body["validation"] = {"status": "fail", "repaired": True, "repair_discarded": True, "violations": original, "first_violations": original,
+                              "repair_violations": [{"check": "schema", "message": f"(root): '{k}' is a required property"} for k in ("uncertainties", "information_needed", "disclaimer", "report_markdown")]}
+        body["degraded_steps"] = [{"step": "repair", "reason": "the repaired report failed 4 check(s) against 1 for the original, so the original report is returned"}]
     elif mode == "repaired":
         body = copy.deepcopy(ok)
         body["validation"] = {"status": "pass", "repaired": True, "violations": [], "first_violations": [{"check": "location", "message": "location 'the hills' is not a named place"}]}

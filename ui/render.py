@@ -28,8 +28,10 @@ def status_banner(body):
         return "success", "Report produced, all automatic checks passed", "Nothing was degraded."
     if status == "flagged":
         n = len(validation.get("violations") or [])
-        return "warning", f"Report produced, but {n} automatic check{'s' if n != 1 else ''} failed", \
-            "Read it with care: the guardrails found a problem that the repair pass did not remove." if validation.get("repaired") else "The guardrails found a problem."
+        title = f"Report produced, but {n} automatic check{'s' if n != 1 else ''} failed"
+        if validation.get("repair_discarded"):
+            return "warning", title, "An automatic repair was tried and made the report worse (it dropped required parts), so the original report is shown with its original problem."
+        return "warning", title, ("Read it with care: the guardrails found a problem that the repair pass did not remove." if validation.get("repaired") else "The guardrails found a problem.")
     if status == "degraded":
         steps = ", ".join(dict.fromkeys(d.get("step", "?") for d in degraded)) or "one step"
         return "warning", "Report produced, with degraded steps", f"Steps with a problem: {steps}. Details are in the Pipeline tab."
@@ -63,6 +65,14 @@ def slowest_step(rows):
 
 def degraded_lines(degraded_steps):
     return [f"{d.get('step', '?')}: {d.get('reason', '')}" for d in degraded_steps or []]
+
+
+def repair_discarded_problems(validation):
+    """The problems of a repaired report that the workflow threw away because it was worse than the original: [(check, message)]."""
+    v = validation or {}
+    if not v.get("repair_discarded"):
+        return []
+    return [(x.get("check", "?"), x.get("message", "")) for x in v.get("repair_violations") or []]
 
 
 def validation_view(validation):

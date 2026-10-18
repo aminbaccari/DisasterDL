@@ -48,7 +48,16 @@ class TestScreen(unittest.TestCase):
         return "\n".join(parts)
 
     def test_first_screen_has_no_error(self):
-        at = AppTest.from_file(str(ROOT / "ui" / "app.py"), default_timeout=60).run()
+        # the History tab renders the saved runs of the machine, which can include failed ones: test with an empty folder
+        import tempfile
+        from ui import history
+        with tempfile.TemporaryDirectory() as d:
+            old = history.RUNS_DIR
+            history.RUNS_DIR = Path(d)
+            try:
+                at = AppTest.from_file(str(ROOT / "ui" / "app.py"), default_timeout=60).run()
+            finally:
+                history.RUNS_DIR = old
         self.assertEqual(len(at.exception), 0)
         self.assertEqual(len(at.error), 0)
         self.assertTrue(at.button(key="run").disabled)

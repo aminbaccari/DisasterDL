@@ -243,6 +243,14 @@ if (r.err || bad) {
   if (kept.length !== k.relevant_guidance.length) degraded.push({ step: 'knowledge synthesis', reason: (k.relevant_guidance.length - kept.length) + ' guidance point(s) removed: the cited entry is not in the cited chunk' });
   k.relevant_guidance = kept;
   if (!kept.length) k.coverage = 'none';
+  // D5: FI-01 is the fire scope note (the base has nothing on flames already reaching a house). Coverage 'good' would overstate what it can support.
+  // Cap it here, before the report agent writes, so that /validate does not have to send a complete report through the repair pass for it.
+  const topic = $('Incident ready').first().json.rag_topic;
+  const hasScopeNote = merged.passages.some(p => (p.entry_ids || []).includes('FI-01'));
+  if (topic === 'fire' && hasScopeNote && k.coverage === 'good') {
+    k.coverage = 'partial';
+    k.gaps = [...(k.gaps || []), 'FI-01: the knowledge base has no guidance for flames that already reach a house'];
+  }
 }
 return [{ json: { knowledge: k, retrieval: merged.retrieval, degraded_b: degraded, _failed: !!(r.err || bad) } }];
 """
@@ -301,14 +309,30 @@ BUILD_RESPONSE = r"""
 // SOURCE is the Parse node whose report is returned, VALIDATION the node that validated it.
 const ctx = $('Assemble context').first().json;
 const risk = $('Risk ready').first().json;
-const parsed = $(SOURCE).first().json;
+let parsed = $(SOURCE).first().json;
 const v = VALIDATION ? $input.first().json : null;
-const validation = !v ? { status: 'not_run', violations: [], repaired: REPAIRED }
+let validation = !v ? { status: 'not_run', violations: [], repaired: REPAIRED }
   : (v.error ? { status: 'unavailable', violations: [{ check: 'validate', message: 'the /validate service did not answer: ' + String(v.error.message || '').slice(0, 150) }], repaired: REPAIRED }
   : { status: v.status, violations: v.violations || [], repaired: REPAIRED });
 // D6: when the repair pass ran, keep what the FIRST validation said, so the reason for the repair is not lost.
 if (REPAIRED) { try { validation.first_violations = $('Validate report').first().json.violations || []; } catch (e) { validation.first_violations = []; } }
-const degraded = [...ctx.degraded, ...(risk.degraded_c || []), ...(parsed.degraded_d || [])];
+const degraded = [...ctx.degraded, ...(risk.degraded_c || [])];
+// 2026-10-18 (real run, edge_03): the repair model fixed the one problem and dropped four required fields, and the broken report was returned.
+// The repair pass must never make the answer worse: when the repaired report fails more checks than the original, or breaks the schema where the original did not, keep the original.
+if (REPAIRED && validation.status !== 'pass') {
+  let first = null, original = null;
+  try { first = $('Validate report').first().json; original = $('Report ready').first().json; } catch (e) { first = null; }
+  if (first && !first.error && original && original.report) {
+    const was = first.violations || [], now = validation.violations || [];
+    const schemaBroke = now.some(x => x.check === 'schema') && !was.some(x => x.check === 'schema');
+    if (schemaBroke || now.length > was.length) {
+      degraded.push({ step: 'repair', reason: 'the repaired report failed ' + now.length + ' check(s) against ' + was.length + ' for the original, so the original report is returned' });
+      validation = { status: first.status, violations: was, repaired: true, repair_discarded: true, repair_violations: now, first_violations: was };
+      parsed = original;
+    }
+  }
+}
+degraded.push(...(parsed.degraded_d || []));
 if (!parsed.report) {
   return [{ json: { status: 'degraded', incident_type: ctx.incident.incident_type, severity: risk.risk.severity, report_markdown: '', report: null, risk: risk.risk,
     validation, degraded_steps: degraded, knowledge_coverage: ctx.knowledge.coverage, prompt_versions: PV } }];

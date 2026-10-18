@@ -1,0 +1,15 @@
+{
+ "saved_at": "20261018-151112-790",
+ "sample_id": "edge_01_vague",
+ "url": "http://localhost:5678/webhook/incident",
+ "profile": "Team n8n, port 5678",
+ "mock": false,
+ "language": "fr",
+ "text": "Il y a un problème grave près du port, venez vite.",
+ "image_file": null,
+ "kind": "unreachable",
+ "seconds": 2.1,
+ "http_status": null,
+ "message": "Could not connect to http://localhost:5678/webhook/incident.",
+ "response": null
+}

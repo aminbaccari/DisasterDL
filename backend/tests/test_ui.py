@@ -113,6 +113,16 @@ class TestRender(unittest.TestCase):
         self.assertEqual(render.status_banner({"status": "rejected", "error": "x"})[0], "error")
         self.assertEqual(render.status_banner({"status": "degraded"})[0], "warning")
 
+    def test_a_discarded_repair_is_explained(self):
+        body = {**OK_BODY, "status": "flagged", "validation": {"status": "fail", "repaired": True, "repair_discarded": True,
+                                                                "violations": [{"check": "no_guidance", "message": "m"}],
+                                                                "repair_violations": [{"check": "schema", "message": "'disclaimer' is a required property"}]}}
+        level, title, msg = render.status_banner(body)
+        self.assertEqual(level, "warning")
+        self.assertIn("worse", msg)
+        self.assertEqual(render.repair_discarded_problems(body["validation"]), [("schema", "'disclaimer' is a required property")])
+        self.assertEqual(render.repair_discarded_problems({"status": "pass"}), [])
+
     def test_failed_image_step_is_not_called_unusable(self):
         level, text, status = render.image_message({"image_status": "analysis_failed"}, True)
         self.assertEqual(level, "warning")
