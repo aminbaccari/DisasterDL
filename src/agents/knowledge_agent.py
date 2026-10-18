@@ -1,24 +1,29 @@
-"""Knowledge (RAG) agent: turns the incident into search queries and retrieves guidance.
+"""Knowledge (RAG) agent: retrieves documented guidance for an incident and summarises it, grounded.
 
 Tools: the retriever (dense search in Chroma filtered on the incident type, cross-encoder
-reranking) and, for reports in a language the corpus does not contain, the LLM (query rewrite
-into English, prompt ``rag_query_rewrite``) whose query is fused with the raw report. It never
-generates guidance itself: it returns the retrieved passages with their provenance, and an empty
-list when nothing relevant was found.
+reranking); the LLM for the grounded answer (prompt ``rag_answer``, every statement cites its
+passages, quotes are verified); and, for reports in a language the corpus does not contain, the
+LLM query rewrite (prompt ``rag_query_rewrite``) fused with the raw report. It returns the
+retrieved passages with their provenance plus the grounded answer; when nothing relevant was
+found, both are empty and the answer says so (no LLM call).
 
-Defaults come from the retrieval evaluation of 2026-10-17 (evaluation/results/retrieval_20261017_0003.md,
-keyword labels, 34 queries; provisional until the pooled human judgments are in):
-    - reranking: best configuration overall (MRR@10 0.726 vs 0.696, Hit@5 0.912 vs 0.824)
-    - threshold 0.785: best balanced threshold for that configuration (keeps 87% of relevant
-      hits, rejects 5/6 out-of-scope queries)
-    - rewrite + fusion only for languages absent from the corpus: it raised Arabic MRR@10
-      (0.675 -> 0.875) but lowered French (0.705 -> 0.500), see FAILURES.md PROMPT-01..03
+Defaults come from the final retrieval evaluation of 2026-10-17 (36 EN/FR queries, labels from the
+LLM judging panel; evaluation/results/retrieval_20261017_2028_lenient.md and _2039_strict.md):
+    - reranking: best of the pooled configurations under both label sets
+      (MRR@10 strict 0.868 vs 0.781 without, lenient 1.000 vs 0.906)
+    - threshold 0.785: best balanced threshold with lenient labels (keeps 83% of relevant hits,
+      rejects 5/6 out-of-scope queries); 0.830 with strict labels rejects all 6 but keeps 71%
+    - rewrite + fusion only for languages absent from the corpus (Arabic, not evaluated in the
+      final set). On the 8 French queries fusion did slightly better than reranking with strict
+      labels (MRR@10 0.938 vs 0.893), but combining both lowered French (0.750), and 8 queries
+      are too few to justify a per-language rule (see FAILURES.md PROMPT-01..03)
 """
 
 from pydantic import BaseModel, Field
 
 from src.llm import client
 from src.llm.prompt_loader import build_messages, load_prompt
+from src.rag.generate import generate_answer
 from src.rag.retriever import retrieve
 from src.schemas import IncidentInfo, KnowledgeResult
 from src.utils.logging_utils import get_logger
@@ -47,6 +52,7 @@ def run(
     threshold: float = DEFAULT_THRESHOLD,
     rewrite: bool | None = None,
     rerank: bool = True,
+    generate: bool = True,
 ) -> KnowledgeResult:
     """Retrieve response guidance for an incident.
 
@@ -56,6 +62,7 @@ def run(
         rewrite: Add an LLM-rewritten English query fused with the raw one. None (default)
             enables it only when the report language is not in ``CORPUS_LANGUAGES``.
         rerank: Rerank candidates with the cross-encoder.
+        generate: Add the grounded answer generated from the passages (RAG generation step).
     """
     report = "; ".join(incident.reported_observations) or str(incident.incident_type)
     if rewrite is None:
@@ -70,4 +77,10 @@ def run(
         report, disaster_type=incident.incident_type, threshold=threshold, extra_queries=extra, rerank=rerank
     )
     query_used = " || ".join([report, *extra])
-    return KnowledgeResult(query_used=query_used, chunks=chunks)
+    answer = None
+    if generate:
+        try:
+            answer = generate_answer(report, chunks, incident.incident_type)
+        except (client.LLMError, client.LLMOutputError) as exc:
+            logger.warning("Grounded answer generation failed (%s); returning passages only", exc)
+    return KnowledgeResult(query_used=query_used, chunks=chunks, answer=answer)

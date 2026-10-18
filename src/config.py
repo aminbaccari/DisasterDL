@@ -31,6 +31,17 @@ class Settings(BaseSettings):
     llm_temperature: float = 0.1
     llm_timeout_s: float = 180.0
 
+    # Offline relevance judges (retrieval evaluation only; never used by the live pipeline).
+    # Three model families independent from the system's models: OpenAI and Qwen on Groq,
+    # Meta Llama 3.1 8B (local Ollama, 4-bit) as tie-breaker. Groq key from .env (JUDGE_API_KEY).
+    judge_base_url: str = "https://api.groq.com/openai/v1"
+    judge_api_key: str = ""
+    judge1_model: str = "openai/gpt-oss-120b"
+    judge2_model: str = "qwen/qwen3.8-27b"
+    tiebreaker_base_url: str = "http://localhost:11434/v1"
+    tiebreaker_api_key: str = "ollama"
+    tiebreaker_model: str = "llama3.1:8b"
+
     # Embeddings and vector store
     embedding_model: str = "intfloat/multilingual-e5-base"
     embedding_batch_size: int = 32

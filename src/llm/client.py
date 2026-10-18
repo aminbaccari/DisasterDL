@@ -43,32 +43,67 @@ class LLMOutputError(ValueError):
         self.raw_output = raw_output
 
 
+_RETRY_STATUS = {429, 500, 502, 503, 504}
+_MAX_RETRIES = 6
+
+
+def _retry_delay(response: httpx.Response, attempt: int) -> float:
+    """Seconds to wait before retrying: the provider's Retry-After header, else exponential backoff."""
+    header = response.headers.get("retry-after")
+    try:
+        return min(float(header), 120.0) if header else min(2.0 ** attempt, 60.0)
+    except ValueError:
+        return min(2.0 ** attempt, 60.0)
+
+
 def chat(
     messages: list[Message],
     model: str | None = None,
     temperature: float | None = None,
     json_mode: bool = False,
+    base_url: str | None = None,
+    api_key: str | None = None,
+    extra: dict[str, object] | None = None,
 ) -> str:
-    """Send a chat completion request and return the assistant's text."""
+    """Send a chat completion request and return the assistant's text.
+
+    ``base_url`` / ``api_key`` override the configured provider for this call (used by the
+    offline relevance judges); ``extra`` adds provider-specific fields such as
+    ``reasoning_effort``. Rate-limit (429) and transient server errors are retried with the
+    provider's Retry-After delay or exponential backoff.
+    """
     settings = get_settings()
+    base_url = (base_url or settings.llm_base_url).rstrip("/")
     payload: dict[str, object] = {
         "model": model or settings.llm_model,
         "messages": messages,
-        "temperature": settings.llm_temperature if temperature is None else temperature,
+        **(extra or {}),
     }
+    if temperature is not None or "temperature" not in payload:
+        payload["temperature"] = settings.llm_temperature if temperature is None else temperature
     if json_mode:
         payload["response_format"] = {"type": "json_object"}
     start = time.perf_counter()
-    try:
-        response = httpx.post(
-            f"{settings.llm_base_url.rstrip('/')}/chat/completions",
-            json=payload,
-            headers={"Authorization": f"Bearer {settings.llm_api_key}"},
-            timeout=settings.llm_timeout_s,
-        )
-        response.raise_for_status()
-    except httpx.HTTPError as exc:
-        raise LLMError(f"LLM request to {settings.llm_base_url} failed: {exc}") from exc
+    for attempt in range(_MAX_RETRIES + 1):
+        try:
+            response = httpx.post(
+                f"{base_url}/chat/completions",
+                json=payload,
+                headers={"Authorization": f"Bearer {api_key or settings.llm_api_key}"},
+                timeout=settings.llm_timeout_s,
+            )
+        except httpx.HTTPError as exc:
+            raise LLMError(f"LLM request to {base_url} failed: {exc}") from exc
+        if response.status_code in _RETRY_STATUS and attempt < _MAX_RETRIES:
+            delay = _retry_delay(response, attempt)
+            logger.warning("LLM %s returned %d, retrying in %.0f s", payload["model"], response.status_code, delay)
+            time.sleep(delay)
+            continue
+        try:
+            response.raise_for_status()
+        except httpx.HTTPError as exc:
+            raise LLMError(f"LLM request to {base_url} failed: {exc}; {response.text[:300]}") from exc
+        break
     body = response.json()
     usage = body.get("usage", {})
     logger.info(
@@ -96,9 +131,13 @@ def chat_json(
     schema: type[T],
     model: str | None = None,
     temperature: float | None = None,
+    **provider: object,
 ) -> T:
-    """Chat and validate the reply against ``schema``, retrying once with the validation error."""
-    raw = chat(messages, model, temperature, json_mode=True)
+    """Chat and validate the reply against ``schema``, retrying once with the validation error.
+
+    ``provider`` (``base_url``, ``api_key``, ``extra``) is passed through to ``chat``.
+    """
+    raw = chat(messages, model, temperature, json_mode=True, **provider)
     try:
         return schema.model_validate(parse_json(raw))
     except (json.JSONDecodeError, ValidationError) as first_error:
@@ -115,7 +154,7 @@ def chat_json(
                 ),
             },
         ]
-        raw = chat(retry_messages, model, temperature, json_mode=True)
+        raw = chat(retry_messages, model, temperature, json_mode=True, **provider)
         try:
             return schema.model_validate(parse_json(raw))
         except (json.JSONDecodeError, ValidationError) as second_error:

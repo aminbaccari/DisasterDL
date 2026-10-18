@@ -1,0 +1,326 @@
+item_id,query_id,source_id,page,keyword_label,retrieved_by
+J001,STRUCT-Q08,STRUCT-02,10,1,fixed+filter structure+filter+cap2
+J002,FLOOD-Q09,FLOOD-05,53,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J003,STRUCT-Q01,STRUCT-04,51,0,fixed+filter
+J004,FLOOD-Q07,GEN-02,105,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3
+J005,STRUCT-Q02,STRUCT-04,24,0,fixed+filter structure+filter+fusion3
+J006,FLOOD-Q08,FLOOD-04,2,0,structure+filter
+J007,STRUCT-Q04,STRUCT-02,18,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+rerank
+J008,FIRE-Q06,FIRE-03,29,0,fixed+filter structure+filter+rerank
+J009,FIRE-Q09,GEN-02,116,0,fixed+filter structure+filter structure+filter+fusion3
+J010,FIRE-Q02,FIRE-02,13,0,fixed+filter
+J011,FIRE-Q04,GEN-03,30,0,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3
+J012,FIRE-Q10,FIRE-05,22,0,fixed+filter
+J013,FIRE-Q12,FIRE-06,2,1,fixed+filter
+J014,FIRE-Q02,GEN-02,119,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3
+J015,STRUCT-Q06,STRUCT-04,22,0,structure+filter+fusion3
+J016,STRUCT-Q07,GEN-03,73,0,fixed+filter
+J017,FIRE-Q10,GEN-03,30,0,structure+filter+rerank
+J018,FLOOD-Q09,FLOOD-05,51,1,fixed+filter structure+filter+rerank
+J019,FIRE-Q05,FIRE-04,25,0,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3
+J020,STRUCT-Q02,STRUCT-01,53,0,structure+filter+rerank
+J021,STRUCT-Q03,STRUCT-03,182,0,structure+filter structure+filter+cap2 structure+filter+rerank
+J022,AR-Q01,FLOOD-04,9,1,fixed+filter structure+filter structure+filter+cap2
+J023,AR-Q03,STRUCT-04,49,0,fixed+filter
+J024,FIRE-Q12,FIRE-06,1,0,fixed+filter
+J025,FIRE-Q08,GEN-02,52,0,fixed+filter
+J026,FIRE-Q05,FIRE-04,24,0,fixed+filter
+J027,STRUCT-Q07,GEN-03,74,0,fixed+filter
+J028,FIRE-Q08,GEN-02,124,0,structure+filter structure+filter+cap2 structure+filter+fusion3
+J029,FIRE-Q12,FIRE-07,40,0,structure+filter+fusion3
+J030,FIRE-Q01,FIRE-01,2,1,structure+filter structure+filter+cap2
+J031,FIRE-Q10,FIRE-06,4,0,structure+filter+rerank
+J032,STRUCT-Q07,GEN-03,133,0,fixed+filter
+J033,STRUCT-Q03,STRUCT-03,173,0,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J034,STRUCT-Q05,GEN-01,198,0,structure+filter+fusion3 structure+filter+rerank
+J035,AR-Q02,FIRE-02,8,1,fixed+filter
+J036,FLOOD-Q03,FLOOD-05,94,0,fixed+filter structure+filter structure+filter+fusion3 structure+filter+rerank
+J037,FIRE-Q02,GEN-02,118,0,fixed+filter
+J038,AR-Q02,FIRE-04,60,0,fixed+filter
+J039,STRUCT-Q06,STRUCT-01,11,1,fixed+filter
+J040,STRUCT-Q07,GEN-03,120,0,structure+filter structure+filter+cap2
+J041,STRUCT-Q05,GEN-01,206,0,structure+filter structure+filter+cap2
+J042,STRUCT-Q04,GEN-02,148,0,structure+filter+rerank
+J043,AR-Q01,GEN-02,104,1,structure+filter+rerank
+J044,AR-Q03,STRUCT-04,52,0,fixed+filter
+J045,FIRE-Q03,GEN-02,121,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3
+J046,STRUCT-Q02,STRUCT-04,23,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J047,FLOOD-Q04,GEN-02,116,0,structure+filter+cap2
+J048,FLOOD-Q05,FLOOD-04,5,0,fixed+filter
+J049,FIRE-Q03,GEN-02,122,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3
+J050,FIRE-Q02,FIRE-02,10,0,structure+filter+rerank
+J051,STRUCT-Q06,STRUCT-01,13,1,structure+filter+rerank
+J052,FIRE-Q06,FIRE-03,40,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J053,FIRE-Q01,GEN-02,122,1,structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J054,STRUCT-Q08,STRUCT-03,29,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J055,FIRE-Q07,GEN-01,162,0,structure+filter+rerank
+J056,FIRE-Q04,GEN-03,32,0,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3
+J057,STRUCT-Q01,STRUCT-04,52,0,fixed+filter
+J058,AR-Q02,GEN-03,117,0,structure+filter+rerank
+J059,AR-Q02,GEN-03,32,0,structure+filter structure+filter+cap2
+J060,STRUCT-Q01,STRUCT-04,49,0,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3
+J061,FLOOD-Q03,FLOOD-05,37,1,structure+filter structure+filter+cap2 structure+filter+fusion3
+J062,FLOOD-Q01,GEN-02,104,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3
+J063,STRUCT-Q09,STRUCT-04,21,0,structure+filter+fusion3
+J064,STRUCT-Q06,STRUCT-04,10,0,structure+filter structure+filter+cap2 structure+filter+fusion3
+J065,FLOOD-Q05,FLOOD-04,6,0,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J066,STRUCT-Q08,STRUCT-02,8,0,fixed+filter structure+filter+fusion3
+J067,STRUCT-Q01,STRUCT-03,207,0,structure+filter+fusion3
+J068,FLOOD-Q04,FLOOD-05,112,1,fixed+filter structure+filter structure+filter+fusion3
+J069,STRUCT-Q06,STRUCT-01,12,1,structure+filter+rerank
+J070,STRUCT-Q04,GEN-01,241,0,fixed+filter
+J071,STRUCT-Q04,STRUCT-03,183,0,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J072,AR-Q04,FLOOD-05,135,0,structure+filter
+J073,STRUCT-Q04,GEN-02,149,0,structure+filter+rerank
+J074,FIRE-Q09,FIRE-01,2,1,structure+filter+cap2
+J075,FLOOD-Q05,GEN-03,51,0,fixed+filter structure+filter+cap2
+J076,FLOOD-Q02,GEN-02,101,1,structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J077,AR-Q03,STRUCT-03,205,0,structure+filter+fusion3
+J078,FLOOD-Q06,GEN-03,33,0,fixed+filter structure+filter+rerank
+J079,FLOOD-Q07,GEN-02,109,0,structure+filter+rerank
+J080,FIRE-Q10,GEN-03,32,0,structure+filter+rerank
+J081,FLOOD-Q02,FLOOD-04,8,1,structure+filter+rerank
+J082,FIRE-Q01,GEN-02,123,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J083,FIRE-Q07,GEN-02,29,0,fixed+filter structure+filter+rerank
+J084,FLOOD-Q02,GEN-02,99,1,fixed+filter structure+filter+fusion3
+J085,FLOOD-Q08,FLOOD-04,1,0,structure+filter
+J086,STRUCT-Q03,STRUCT-03,172,0,fixed+filter
+J087,FIRE-Q07,GEN-01,171,0,fixed+filter structure+filter+fusion3
+J088,FLOOD-Q01,GEN-02,100,0,structure+filter+fusion3
+J089,FLOOD-Q02,FLOOD-05,70,0,structure+filter structure+filter+cap2
+J090,STRUCT-Q06,STRUCT-01,9,1,structure+filter structure+filter+cap2
+J091,FIRE-Q03,FIRE-02,13,0,structure+filter+rerank
+J092,AR-Q02,FIRE-02,9,0,fixed+filter structure+filter+rerank
+J093,FLOOD-Q02,GEN-02,104,1,structure+filter+rerank
+J094,AR-Q03,STRUCT-03,72,0,fixed+filter
+J095,FIRE-Q07,GEN-02,143,0,fixed+filter
+J096,FLOOD-Q03,FLOOD-05,34,0,structure+filter+rerank
+J097,FIRE-Q08,GEN-03,51,0,structure+filter+rerank
+J098,STRUCT-Q06,STRUCT-04,21,0,structure+filter+fusion3
+J099,STRUCT-Q09,GEN-01,204,0,fixed+filter
+J100,FIRE-Q11,FIRE-07,56,0,structure+filter+rerank
+J101,STRUCT-Q08,STRUCT-03,30,1,fixed+filter structure+filter+fusion3 structure+filter+rerank
+J102,FIRE-Q07,GEN-02,145,0,structure+filter structure+filter+cap2
+J103,FLOOD-Q01,GEN-02,101,0,structure+filter+fusion3
+J104,STRUCT-Q06,STRUCT-01,24,0,fixed+filter structure+filter+rerank
+J105,FIRE-Q04,FIRE-04,57,0,fixed+filter
+J106,FIRE-Q08,FLOOD-05,113,0,structure+filter structure+filter+cap2 structure+filter+fusion3
+J107,AR-Q04,FLOOD-05,35,1,fixed+filter structure+filter+fusion3
+J108,AR-Q04,FLOOD-05,37,1,structure+filter+fusion3 structure+filter+rerank
+J109,STRUCT-Q01,STRUCT-02,19,0,structure+filter structure+filter+cap2
+J110,FLOOD-Q06,GEN-03,38,0,structure+filter structure+filter+cap2
+J111,FLOOD-Q06,FLOOD-04,11,0,fixed+filter
+J112,FIRE-Q02,FIRE-02,2,0,structure+filter+rerank
+J113,AR-Q03,GEN-02,73,0,structure+filter+rerank
+J114,FLOOD-Q02,GEN-02,98,0,fixed+filter
+J115,FIRE-Q02,FIRE-02,9,1,fixed+filter structure+filter structure+filter+cap2
+J116,STRUCT-Q02,STRUCT-01,54,0,structure+filter+rerank
+J117,FIRE-Q11,FIRE-07,23,1,structure+filter+fusion3 structure+filter+rerank
+J118,FLOOD-Q06,GEN-01,176,0,structure+filter+fusion3
+J119,STRUCT-Q08,STRUCT-03,129,0,structure+filter+fusion3
+J120,FIRE-Q08,GEN-02,122,0,fixed+filter
+J121,FIRE-Q11,FIRE-07,24,1,structure+filter+fusion3 structure+filter+rerank
+J122,FIRE-Q12,FIRE-06,5,1,fixed+filter
+J123,FIRE-Q05,GEN-02,122,1,structure+filter+fusion3
+J124,FIRE-Q10,FIRE-05,23,1,fixed+filter
+J125,STRUCT-Q09,STRUCT-04,51,0,fixed+filter
+J126,FIRE-Q04,FIRE-04,58,1,fixed+filter structure+filter+rerank
+J127,AR-Q03,STRUCT-03,210,0,structure+filter structure+filter+cap2 structure+filter+fusion3
+J128,FLOOD-Q06,FLOOD-04,7,0,fixed+filter
+J129,AR-Q03,STRUCT-03,221,0,structure+filter structure+filter+cap2
+J130,STRUCT-Q02,STRUCT-01,50,1,fixed+filter structure+filter structure+filter+cap2
+J131,FIRE-Q10,FIRE-05,24,1,fixed+filter
+J132,AR-Q02,GEN-02,122,1,structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J133,STRUCT-Q09,GEN-01,205,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J134,STRUCT-Q08,STRUCT-03,69,0,structure+filter structure+filter+cap2
+J135,FIRE-Q10,GEN-02,30,0,structure+filter structure+filter+cap2 structure+filter+fusion3
+J136,STRUCT-Q03,STRUCT-03,174,0,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J137,FIRE-Q05,FIRE-04,29,0,structure+filter structure+filter+cap2 structure+filter+fusion3
+J138,FLOOD-Q06,GEN-02,37,0,structure+filter+rerank
+J139,FLOOD-Q08,FLOOD-04,12,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J140,FIRE-Q04,FIRE-04,59,1,structure+filter+rerank
+J141,FIRE-Q12,FIRE-05,7,1,structure+filter+fusion3
+J142,FIRE-Q02,FIRE-04,55,0,structure+filter+rerank
+J143,FLOOD-Q07,FLOOD-01,2,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J144,FIRE-Q03,FIRE-02,8,1,structure+filter+rerank
+J145,FIRE-Q02,GEN-02,120,1,structure+filter structure+filter+cap2 structure+filter+fusion3
+J146,STRUCT-Q01,GEN-01,132,0,structure+filter+rerank
+J147,FIRE-Q10,FIRE-06,5,0,structure+filter structure+filter+cap2
+J148,FIRE-Q07,GEN-02,144,0,fixed+filter structure+filter structure+filter+cap2 structure+filter+rerank
+J149,FIRE-Q09,GEN-02,123,0,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J150,STRUCT-Q06,STRUCT-04,17,0,fixed+filter
+J151,STRUCT-Q03,STRUCT-03,203,0,structure+filter+rerank
+J152,FIRE-Q01,FIRE-02,9,0,fixed+filter
+J153,FIRE-Q11,FIRE-07,96,0,fixed+filter
+J154,FLOOD-Q01,FLOOD-05,31,0,fixed+filter structure+filter+rerank
+J155,STRUCT-Q01,STRUCT-03,206,0,structure+filter+fusion3
+J156,AR-Q02,FIRE-04,59,1,fixed+filter
+J157,FIRE-Q12,FIRE-06,3,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+rerank
+J158,FLOOD-Q08,FLOOD-04,11,0,fixed+filter
+J159,FIRE-Q05,FIRE-04,28,0,structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J160,FLOOD-Q03,FLOOD-05,9,1,fixed+filter structure+filter+rerank
+J161,STRUCT-Q06,GEN-01,192,0,structure+filter structure+filter+cap2
+J162,FIRE-Q06,FIRE-03,42,0,fixed+filter
+J163,STRUCT-Q01,STRUCT-04,48,1,fixed+filter structure+filter structure+filter+cap2
+J164,STRUCT-Q03,STRUCT-03,29,1,fixed+filter structure+filter structure+filter+fusion3
+J165,FIRE-Q11,FIRE-07,29,0,fixed+filter
+J166,FIRE-Q09,GEN-02,115,0,fixed+filter
+J167,STRUCT-Q05,STRUCT-03,197,0,structure+filter+fusion3
+J168,FIRE-Q04,FIRE-03,44,0,structure+filter+fusion3
+J169,FLOOD-Q07,GEN-02,86,0,structure+filter structure+filter+cap2
+J170,FIRE-Q06,FIRE-03,8,1,structure+filter structure+filter+cap2 structure+filter+fusion3
+J171,FLOOD-Q07,GEN-02,81,0,structure+filter+rerank
+J172,FIRE-Q10,GEN-02,75,0,structure+filter+fusion3
+J173,FIRE-Q01,FIRE-01,1,0,structure+filter structure+filter+cap2
+J174,STRUCT-Q09,STRUCT-04,22,0,structure+filter+fusion3
+J175,FIRE-Q10,FIRE-06,6,0,structure+filter structure+filter+cap2
+J176,AR-Q03,STRUCT-03,208,0,structure+filter structure+filter+cap2 structure+filter+fusion3
+J177,FIRE-Q09,GEN-02,86,0,structure+filter+rerank
+J178,STRUCT-Q06,STRUCT-01,5,1,structure+filter+fusion3 structure+filter+rerank
+J179,AR-Q03,STRUCT-03,206,0,structure+filter+fusion3
+J180,STRUCT-Q08,STRUCT-03,130,0,structure+filter+fusion3
+J181,AR-Q01,FLOOD-04,8,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3
+J182,AR-Q02,GEN-03,31,0,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3
+J183,STRUCT-Q09,STRUCT-04,50,0,fixed+filter
+J184,FIRE-Q04,FIRE-04,55,0,structure+filter+rerank
+J185,STRUCT-Q04,STRUCT-03,79,0,structure+filter+fusion3
+J186,STRUCT-Q05,GEN-02,116,0,fixed+filter structure+filter structure+filter+cap2
+J187,FIRE-Q01,FIRE-02,4,1,fixed+filter structure+filter+fusion3 structure+filter+rerank
+J188,FLOOD-Q08,FLOOD-05,77,0,structure+filter+fusion3
+J189,FIRE-Q08,FLOOD-05,112,0,structure+filter structure+filter+cap2 structure+filter+fusion3
+J190,AR-Q01,FLOOD-04,10,1,fixed+filter
+J191,STRUCT-Q09,GEN-01,206,0,fixed+filter structure+filter structure+filter+cap2
+J192,STRUCT-Q05,GEN-01,263,0,fixed+filter structure+filter+rerank
+J193,FIRE-Q11,FIRE-07,57,0,structure+filter+rerank
+J194,STRUCT-Q09,STRUCT-04,49,0,fixed+filter
+J195,FIRE-Q10,FIRE-05,10,0,fixed+filter
+J196,STRUCT-Q01,STRUCT-03,205,0,structure+filter+fusion3
+J197,FLOOD-Q05,FLOOD-04,8,1,fixed+filter
+J198,AR-Q02,GEN-02,124,1,structure+filter+fusion3
+J199,STRUCT-Q09,STRUCT-01,20,1,structure+filter+rerank
+J200,STRUCT-Q02,STRUCT-01,51,0,fixed+filter structure+filter structure+filter+cap2
+J201,FIRE-Q05,FIRE-04,26,0,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J202,FIRE-Q04,FIRE-04,54,0,structure+filter structure+filter+cap2
+J203,AR-Q04,FLOOD-05,113,0,fixed+filter structure+filter structure+filter+cap2
+J204,AR-Q01,FLOOD-04,2,0,structure+filter
+J205,AR-Q01,FLOOD-04,7,1,fixed+filter
+J206,FLOOD-Q07,FLOOD-05,116,0,structure+filter+fusion3
+J207,FLOOD-Q07,GEN-02,104,1,fixed+filter
+J208,STRUCT-Q07,GEN-03,127,0,fixed+filter structure+filter structure+filter+rerank
+J209,FIRE-Q11,FIRE-07,9,1,structure+filter structure+filter+cap2
+J210,FLOOD-Q02,GEN-02,100,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J211,FIRE-Q11,FIRE-07,30,0,fixed+filter
+J212,STRUCT-Q07,GEN-01,192,1,structure+filter+fusion3
+J213,FLOOD-Q05,FLOOD-04,9,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3
+J214,STRUCT-Q01,STRUCT-01,36,1,fixed+filter
+J215,STRUCT-Q05,GEN-01,205,0,structure+filter structure+filter+cap2 structure+filter+rerank
+J216,STRUCT-Q07,GEN-03,132,0,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J217,FLOOD-Q08,FLOOD-04,6,0,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J218,FLOOD-Q08,GEN-03,29,0,structure+filter+cap2
+J219,STRUCT-Q05,GEN-01,201,0,fixed+filter
+J220,AR-Q01,FLOOD-04,3,0,structure+filter
+J221,STRUCT-Q09,STRUCT-04,24,1,structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J222,FIRE-Q08,GEN-02,53,0,fixed+filter
+J223,FIRE-Q11,FIRE-07,98,0,fixed+filter
+J224,FLOOD-Q06,FLOOD-04,10,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3
+J225,STRUCT-Q02,STRUCT-04,22,0,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J226,AR-Q03,STRUCT-03,74,0,fixed+filter structure+filter+fusion3
+J227,FLOOD-Q07,GEN-02,80,0,structure+filter+rerank
+J228,STRUCT-Q03,STRUCT-02,10,1,structure+filter+cap2
+J229,FIRE-Q10,FIRE-02,9,0,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3
+J230,FIRE-Q10,FIRE-05,21,1,fixed+filter
+J231,AR-Q03,STRUCT-03,75,0,fixed+filter structure+filter+fusion3
+J232,STRUCT-Q08,STRUCT-02,9,0,fixed+filter structure+filter+fusion3
+J233,FLOOD-Q09,FLOOD-05,52,1,fixed+filter structure+filter structure+filter+fusion3 structure+filter+rerank
+J234,FIRE-Q07,GEN-01,170,0,fixed+filter
+J235,AR-Q03,STRUCT-03,211,0,structure+filter structure+filter+cap2 structure+filter+fusion3
+J236,FIRE-Q08,GEN-02,54,0,fixed+filter
+J237,FLOOD-Q04,FLOOD-05,97,0,fixed+filter structure+filter+rerank
+J238,FLOOD-Q01,FLOOD-01,1,1,structure+filter structure+filter+cap2 structure+filter+rerank
+J239,STRUCT-Q06,STRUCT-01,23,0,fixed+filter
+J240,FIRE-Q02,FIRE-02,8,0,fixed+filter
+J241,STRUCT-Q06,STRUCT-04,18,0,fixed+filter
+J242,FIRE-Q07,GEN-01,184,1,structure+filter structure+filter+cap2 structure+filter+fusion3
+J243,FIRE-Q02,FIRE-03,50,0,structure+filter structure+filter+cap2 structure+filter+fusion3
+J244,STRUCT-Q05,STRUCT-03,183,0,structure+filter+fusion3
+J245,STRUCT-Q05,GEN-02,74,0,structure+filter structure+filter+cap2
+J246,STRUCT-Q07,GEN-01,206,1,structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J247,FIRE-Q11,FIRE-07,78,0,structure+filter structure+filter+fusion3
+J248,STRUCT-Q03,STRUCT-03,201,0,structure+filter+fusion3
+J249,FIRE-Q07,GEN-01,172,1,structure+filter+fusion3
+J250,FIRE-Q12,FIRE-07,83,0,structure+filter+cap2 structure+filter+rerank
+J251,AR-Q01,GEN-02,102,1,structure+filter+fusion3 structure+filter+rerank
+J252,STRUCT-Q02,STRUCT-04,21,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J253,FIRE-Q11,FIRE-07,59,0,structure+filter structure+filter+cap2 structure+filter+fusion3
+J254,FIRE-Q08,GEN-02,109,0,structure+filter+rerank
+J255,FLOOD-Q03,FLOOD-05,35,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3
+J256,FIRE-Q10,FIRE-05,12,0,fixed+filter
+J257,FIRE-Q12,FIRE-06,4,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J258,AR-Q04,FLOOD-05,36,1,fixed+filter structure+filter+fusion3 structure+filter+rerank
+J259,FLOOD-Q02,FLOOD-01,1,1,structure+filter structure+filter+cap2
+J260,FIRE-Q05,FIRE-04,23,0,fixed+filter
+J261,FLOOD-Q08,FLOOD-04,5,0,fixed+filter
+J262,FLOOD-Q05,FLOOD-04,7,1,structure+filter+rerank
+J263,STRUCT-Q04,STRUCT-02,11,1,structure+filter structure+filter+cap2
+J264,STRUCT-Q05,GEN-01,199,0,structure+filter+fusion3 structure+filter+rerank
+J265,FLOOD-Q01,FLOOD-05,93,0,structure+filter+fusion3
+J266,STRUCT-Q04,STRUCT-03,182,0,fixed+filter
+J267,FIRE-Q10,FIRE-02,8,0,fixed+filter
+J268,AR-Q02,GEN-02,123,1,structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J269,AR-Q01,GEN-02,105,1,structure+filter+cap2 structure+filter+rerank
+J270,FIRE-Q06,FIRE-03,44,0,structure+filter+fusion3
+J271,AR-Q03,STRUCT-03,207,0,structure+filter+fusion3
+J272,AR-Q03,STRUCT-03,73,0,fixed+filter structure+filter+fusion3
+J273,STRUCT-Q01,GEN-01,205,1,structure+filter+rerank
+J274,FLOOD-Q06,FLOOD-04,8,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J275,FIRE-Q03,FIRE-02,12,1,fixed+filter structure+filter+fusion3 structure+filter+rerank
+J276,FIRE-Q05,FIRE-04,17,0,fixed+filter structure+filter+rerank
+J277,FLOOD-Q03,FLOOD-05,36,1,fixed+filter
+J278,STRUCT-Q04,STRUCT-03,92,0,structure+filter+fusion3
+J279,STRUCT-Q01,STRUCT-01,37,0,fixed+filter structure+filter+fusion3 structure+filter+rerank
+J280,FIRE-Q05,FIRE-04,27,0,structure+filter+rerank
+J281,STRUCT-Q05,GEN-01,261,0,fixed+filter
+J282,FIRE-Q08,FLOOD-03,1,1,structure+filter+fusion3 structure+filter+rerank
+J283,STRUCT-Q09,STRUCT-04,23,0,structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J284,FIRE-Q10,FIRE-05,11,0,fixed+filter
+J285,FIRE-Q03,FIRE-02,11,0,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3
+J286,FLOOD-Q08,FLOOD-04,3,0,structure+filter
+J287,STRUCT-Q03,STRUCT-03,202,0,structure+filter+rerank
+J288,STRUCT-Q04,STRUCT-03,78,0,structure+filter+fusion3
+J289,FIRE-Q06,FIRE-03,41,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J290,STRUCT-Q05,GEN-01,262,0,fixed+filter
+J291,AR-Q03,STRUCT-03,209,0,structure+filter structure+filter+cap2 structure+filter+fusion3
+J292,AR-Q03,STRUCT-04,51,0,fixed+filter structure+filter structure+filter+cap2
+J293,STRUCT-Q03,STRUCT-03,181,0,structure+filter structure+filter+cap2 structure+filter+rerank
+J294,FLOOD-Q05,FLOOD-04,15,0,structure+filter
+J295,FIRE-Q09,GEN-02,124,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J296,AR-Q03,GEN-01,21,0,structure+filter+rerank
+J297,STRUCT-Q03,STRUCT-03,200,0,structure+filter+fusion3
+J298,AR-Q03,STRUCT-03,220,0,structure+filter structure+filter+cap2
+J299,FLOOD-Q01,FLOOD-01,2,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+rerank
+J300,FIRE-Q01,FIRE-02,8,1,fixed+filter structure+filter+fusion3 structure+filter+rerank
+J301,FLOOD-Q08,GEN-03,5,0,structure+filter+rerank
+J302,STRUCT-Q08,STRUCT-03,70,0,structure+filter structure+filter+cap2
+J303,FLOOD-Q05,FLOOD-05,76,0,structure+filter+fusion3
+J304,STRUCT-Q07,GEN-01,205,1,structure+filter+cap2
+J305,AR-Q03,STRUCT-04,50,0,fixed+filter structure+filter structure+filter+cap2
+J306,FLOOD-Q04,FLOOD-05,33,1,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3 structure+filter+rerank
+J307,AR-Q01,GEN-02,103,1,structure+filter+fusion3 structure+filter+rerank
+J308,FIRE-Q02,FIRE-03,21,0,structure+filter+fusion3
+J309,FIRE-Q11,FIRE-07,97,0,fixed+filter
+J310,FLOOD-Q06,GEN-01,175,0,structure+filter+fusion3
+J311,FLOOD-Q05,FLOOD-05,75,0,structure+filter+fusion3
+J312,FIRE-Q06,FIRE-03,30,0,fixed+filter structure+filter structure+filter+rerank
+J313,FIRE-Q02,FIRE-03,51,0,structure+filter structure+filter+cap2 structure+filter+fusion3
+J314,FIRE-Q02,FIRE-04,54,0,structure+filter+rerank
+J315,STRUCT-Q07,GEN-01,207,1,structure+filter+fusion3 structure+filter+rerank
+J316,AR-Q03,GEN-02,98,0,structure+filter+rerank
+J317,FIRE-Q05,GEN-02,123,1,structure+filter+fusion3
+J318,AR-Q01,FLOOD-04,1,0,structure+filter
+J319,FIRE-Q06,FIRE-03,45,0,structure+filter+fusion3
+J320,FIRE-Q08,GEN-02,123,0,fixed+filter structure+filter structure+filter+cap2 structure+filter+fusion3
+J321,FLOOD-Q05,GEN-03,124,0,structure+filter+rerank
+J322,FLOOD-Q07,FLOOD-05,115,0,structure+filter+fusion3
+J323,FLOOD-Q08,FLOOD-04,13,1,fixed+filter
+J324,FIRE-Q02,FIRE-03,20,0,structure+filter+fusion3
+J325,FIRE-Q07,GEN-01,183,0,structure+filter structure+filter+cap2 structure+filter+fusion3
