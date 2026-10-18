@@ -44,15 +44,19 @@ PLACES = re.compile(r"nabeul|tunis|tunisia|europ|ital(y|ian)|nepal|asia|africa|m
 
 def load_prompt(path):
     """path is a prompt file, or 'tta:<file>' for the three-view path with that prompt."""
-    bw.PROMPTS["vision"] = path.removeprefix("tta:")
+    bw.PROMPTS["vision"] = path.removeprefix("tta+high:").removeprefix("tta:")
     return bw.read_prompt("vision")
 
 
-def analyse_tta(image_bytes, mime, system, user, chain):
+def analyse_tta(image_bytes, mime, system, user, chain, policy="majority", answers_out=None):
     """The three-view path as n8n runs it, but in one process: three views, one call each, answers that fit the schema are merged.
 
-    Returns (merged answer or None, total seconds, number of views that answered, last error)."""
+    Returns (merged answer or None, total seconds, number of views that answered, last error). answers_out, a dict, receives the answers of the views so that
+    another merge policy can be applied to the SAME answers (paired conditions)."""
     answers, total, error = [], 0.0, ""
+    if answers_out is not None and "answers" in answers_out:   # the views of this image and run were already called by the sibling condition
+        answers, total, error = answers_out["answers"], answers_out["seconds"], answers_out["error"]
+        return (vision_tools.merge(answers, requested=3, policy=policy) if answers else None), round(total, 1), len(answers), error
     for view in vision_tools.make_variants(image_bytes, mime):
         llm_chain.reset_cooldowns()
         started = time.time()
@@ -72,7 +76,9 @@ def analyse_tta(image_bytes, mime, system, user, chain):
             error = "schema"
             continue
         answers.append({"name": view["name"], "result": parsed})
-    return (vision_tools.merge(answers, requested=3) if answers else None), round(total, 1), len(answers), error
+    if answers_out is not None:
+        answers_out.update({"answers": answers, "seconds": total, "error": error})
+    return (vision_tools.merge(answers, requested=3, policy=policy) if answers else None), round(total, 1), len(answers), error
 
 
 def measures(image_name, result):
@@ -93,7 +99,7 @@ def measures(image_name, result):
 
 def table_tta(rows, prompts):
     for prompt in prompts:
-        if not prompt.startswith("tta:"):
+        if not prompt.startswith(("tta:", "tta+high:")):
             continue
         r = [x for x in rows if x["prompt"] == prompt]
         ok = [x for x in r if x["json_valid"]]
@@ -152,6 +158,7 @@ def main():
     out = ROOT / "eval" / "results" / "vision_bench" / datetime.now().strftime("%Y%m%d-%H%M%S")
     out.mkdir(parents=True)
     rows = []
+    view_cache = {}
     incidents = [json.loads(p.read_text(encoding="utf-8")) for p in sorted((ROOT / "eval" / "incidents").glob("*.json"))]
     # images that belong to no incident file carry an invented report text in GROUND_TRUTH.json
     used = {i.get("image") for i in incidents}
@@ -170,8 +177,11 @@ def main():
                 user = re.sub(r"\{\{incident_text\}\}", lambda m: inc["text"], template)
                 llm_chain.reset_cooldowns()  # a timeout on one call (a sleeping PC, a model reload) must not turn every later call into 'cooling down'
                 views_ok = ""
-                if prompt.startswith("tta:"):
-                    tta_result, seconds, views_ok, tta_error = analyse_tta(image_path.read_bytes(), "image/jpeg", system, user, chain)
+                if prompt.startswith(("tta:", "tta+high:")):
+                    # tta: and tta+high: share the three model answers per image and run; only the merge policy differs
+                    shared = view_cache.setdefault((inc["id"], run), {})
+                    tta_result, seconds, views_ok, tta_error = analyse_tta(image_path.read_bytes(), "image/jpeg", system, user, chain,
+                                                                           policy="keep_high" if prompt.startswith("tta+high:") else "majority", answers_out=shared)
                     answer = {"error": {"message": tta_error or "no view answered"}, "x_llm": {"attempts": [{"reason": tta_error or "no view answered"}]}} if tta_result is None else \
                         {"candidates": [{"content": {"parts": [{"text": json.dumps(tta_result)}]}}]}
                 else:
@@ -197,7 +207,7 @@ def main():
                     except ValueError:
                         pass
                 rows.append(row)
-                name = args.model.replace("/", "_").replace(":", "_") + "_" + prompt.replace("/", "_").replace(":", "_").replace(".md", "")
+                name = args.model.replace("/", "_").replace(":", "_") + "_" + prompt.replace("/", "_").replace(":", "_").replace("+", "_").replace(".md", "")
                 (out / f"{name}_{inc['id']}_run{run}.json").write_text(json.dumps({"row": row, "incident_text": inc["text"], "result": result}, ensure_ascii=False, indent=1), encoding="utf-8")
                 print({k: row[k] for k in ("prompt", "incident", "run", "seconds", "json_valid", "schema_valid", "n_observations", "false_categories", "missing_required", "absence_observations", "place_words")}, flush=True)
     if rows:

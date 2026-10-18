@@ -124,5 +124,35 @@ class TestMeasures(unittest.TestCase):
         self.assertEqual(merged["reliability"]["variants_used"], 2)
 
 
+    def test_paired_conditions_share_the_three_model_calls(self):
+        import io
+        from PIL import Image
+        buf = io.BytesIO()
+        Image.new("RGB", (32, 32), (10, 20, 30)).save(buf, format="JPEG")
+        views = iter([("smoke", "high"), ("smoke", "high"), ("smoke", "high")])
+        calls = []
+
+        def fake(system, user, json_mode, image, chain, timeout, rotate, trusted=False):
+            calls.append(1)
+            cats = [{"category": "smoke", "description": "d", "confidence": "high"}]
+            if len(calls) == 2:      # the second view alone sees flames, with high confidence
+                cats.append({"category": "flames", "description": "f", "confidence": "high"})
+            text = json.dumps({"image_usable": True, "quality_issues": [], "scene_summary": "s", "observations": cats, "visible_text": [], "not_determinable": []})
+            return {"candidates": [{"content": {"parts": [{"text": text}]}}], "x_llm": {"attempts": []}}
+
+        original = vb.llm_chain._complete_once
+        vb.llm_chain._complete_once = fake
+        try:
+            shared = {}
+            maj, s1, ok1, e1 = vb.analyse_tta(buf.getvalue(), "image/jpeg", "sys", "user", [("ollama", "m")], policy="majority", answers_out=shared)
+            high, s2, ok2, e2 = vb.analyse_tta(buf.getvalue(), "image/jpeg", "sys", "user", [("ollama", "m")], policy="keep_high", answers_out=shared)
+        finally:
+            vb.llm_chain._complete_once = original
+        self.assertEqual(len(calls), 3)                                   # not six: the second condition reused the answers
+        self.assertEqual([o["category"] for o in maj["observations"]], ["smoke"])
+        self.assertEqual({o["category"] for o in high["observations"]}, {"smoke", "flames"})
+        self.assertEqual((s1, ok1), (s2, ok2))
+
+
 if __name__ == "__main__":
     unittest.main()

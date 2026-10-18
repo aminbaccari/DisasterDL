@@ -179,5 +179,62 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(self.client.post("/vision/merge", json={"answers": []}).status_code, 400)
 
 
+class TestKeepHighPolicy(unittest.TestCase):
+    """The variant of TTA_CRITERIA_HIGH.md: a one-view observation is kept when that view was sure."""
+
+    def three(self, a, b, c, policy):
+        return vt.merge([{"name": "original", "result": a}, {"name": "flip", "result": b}, {"name": "contrast", "result": c}], policy=policy)
+
+    def test_a_one_view_high_observation_is_kept_with_medium_confidence_and_listed(self):
+        m = self.three(answer([obs("smoke", "high")]), answer([obs("smoke", "high"), obs("flames", "high")]), answer([obs("smoke", "medium")]), "keep_high")
+        kept = {o["category"]: o["confidence"] for o in m["observations"]}
+        self.assertEqual(kept["flames"], "medium")
+        self.assertIn({"category": "flames", "support": 1}, m["reliability"]["unstable_categories"])
+        self.assertEqual(m["reliability"]["merge_policy"], "keep_high")
+
+    def test_a_one_view_medium_or_low_observation_is_still_dropped(self):
+        m = self.three(answer([obs("smoke")]), answer([obs("smoke"), obs("people", "medium")]), answer([obs("smoke"), obs("vehicles", "low")]), "keep_high")
+        self.assertEqual([o["category"] for o in m["observations"]], ["smoke"])
+        self.assertEqual({u["category"] for u in m["reliability"]["unstable_categories"]}, {"people", "vehicles"})
+
+    def test_majority_still_drops_the_same_one_view_high_observation(self):
+        m = self.three(answer([obs("smoke")]), answer([obs("smoke"), obs("flames", "high")]), answer([obs("smoke")]), "majority")
+        self.assertEqual([o["category"] for o in m["observations"]], ["smoke"])
+        self.assertEqual(m["reliability"]["merge_policy"], "majority")
+
+    def test_agreed_observations_and_the_agreement_score_do_not_depend_on_the_policy(self):
+        args = (answer([obs("smoke", "high"), obs("flames", "low")]), answer([obs("smoke", "medium")]), answer([obs("smoke", "high")]))
+        a, b = self.three(*args, "majority"), self.three(*args, "keep_high")
+        self.assertEqual(a["reliability"]["category_agreement_score"], b["reliability"]["category_agreement_score"])
+        self.assertEqual([o for o in a["observations"] if o["category"] == "smoke"], [o for o in b["observations"] if o["category"] == "smoke"])
+
+    def test_with_two_answers_a_one_view_high_observation_is_kept(self):
+        m = vt.merge([answer([obs("smoke")]), answer([obs("smoke"), obs("flames", "high")])], policy="keep_high")
+        self.assertEqual({o["category"] for o in m["observations"]}, {"smoke", "flames"})
+
+    def test_with_one_answer_nothing_changes(self):
+        m = vt.merge([answer([obs("smoke", "low")])], policy="keep_high")
+        self.assertEqual(m["observations"][0]["confidence"], "low")
+
+    def test_unknown_policy_is_refused(self):
+        with self.assertRaises(ValueError):
+            vt.merge([answer([])], policy="anything")
+
+    def test_merged_answer_with_the_policy_validates_against_the_schema(self):
+        m = self.three(answer([obs("smoke")]), answer([obs("smoke"), obs("flames", "high")]), answer([obs("smoke")]), "keep_high")
+        self.assertEqual(list(jsonschema.Draft202012Validator(SCHEMA).iter_errors(m)), [])
+
+    def test_endpoint_takes_the_policy(self):
+        app = FastAPI()
+        app.include_router(vt.router)
+        c = TestClient(app)
+        a = answer([obs("smoke")])
+        b = answer([obs("smoke"), obs("flames", "high")])
+        body = {"answers": [{"name": "original", "result": a}, {"name": "flip", "result": b}, {"name": "contrast", "result": a}], "requested": 3}
+        self.assertEqual(c.post("/vision/merge", json={**body, "policy": "keep_high"}).json()["merged"]["reliability"]["merge_policy"], "keep_high")
+        self.assertEqual(c.post("/vision/merge", json=body).json()["merged"]["reliability"]["merge_policy"], "majority")
+        self.assertEqual(c.post("/vision/merge", json={**body, "policy": "x"}).status_code, 400)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -138,6 +138,13 @@
               }
             }
           }
+        },
+        "merge_policy": {
+          "type": "string",
+          "enum": [
+            "majority",
+            "keep_high"
+          ]
         }
       }
     }

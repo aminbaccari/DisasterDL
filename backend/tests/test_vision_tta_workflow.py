@@ -194,5 +194,23 @@ class TestDecisions(unittest.TestCase):
         self.assertTrue(any("invalid category" in d["reason"] for d in out["degraded_a"]))
 
 
+class TestMergePolicyOption(unittest.TestCase):
+    def merge_body(self, wf):
+        return next(n for n in wf["nodes"] if n["name"] == "Merge views")["parameters"]["jsonBody"]
+
+    def test_the_default_policy_is_majority(self):
+        self.assertIn("policy: 'majority'", self.merge_body(TTA))
+
+    def test_keep_high_is_a_build_option_and_changes_nothing_else(self):
+        high = build("--vision-mode", "tta", "--tta-merge", "keep_high")
+        self.assertIn("policy: 'keep_high'", self.merge_body(high))
+        self.assertEqual(names(high), names(TTA))
+        self.assertEqual(len(high["nodes"]), len(TTA["nodes"]))
+
+    def test_the_default_build_is_not_affected_by_the_option(self):
+        self.assertEqual(len(build()["nodes"]), 78)
+        self.assertEqual(json.dumps(build("--tta-merge", "keep_high"), sort_keys=True), json.dumps(DEFAULT, sort_keys=True))
+
+
 if __name__ == "__main__":
     unittest.main()

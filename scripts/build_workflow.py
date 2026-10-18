@@ -514,7 +514,7 @@ def chain(b, label, prompt_name, parse_js, x, y, versions, ready_name, image=Fal
 VIEWS = ["original", "flip", "contrast"]
 
 
-def build_vision_tta(b, v, X, L):
+def build_vision_tta(b, v, X, L, merge_policy="majority"):
     """Three-view vision branch. n8n keeps every decision: the three calls, their retries, what a failure means. Python only makes the views and merges.
 
     Has image? -> Make views (/vision/variants) -> Views ok? -> Prompt vision -> 3 x [LLM, Parse, usable?, retry, ready] -> Wait for views
@@ -537,7 +537,7 @@ def build_vision_tta(b, v, X, L):
     b.code("Prepare merge", PREPARE_MERGE, 22 * X, -140, v)
     b.if_("Any view answered?", "={{ $json.any_answer }}", 23 * X, -140)
     b.code("Vision failed: no view answered", VISION_NO_VIEW, 24 * X, 40, v)
-    b.http_json("Merge views", "={{ $('Config').first().json.rag_url + '/vision/merge' }}", "={{ JSON.stringify({ answers: $json.answers, requested: $json.requested }) }}", 24 * X, -240, timeout=30000)
+    b.http_json("Merge views", "={{ $('Config').first().json.rag_url + '/vision/merge' }}", "={{ JSON.stringify({ answers: $json.answers, requested: $json.requested, policy: '" + merge_policy + "' }) }}", 24 * X, -240, timeout=30000)
     b.code("Vision ready", VISION_TTA_READY, 25 * X, -240, v)
     L("Wait for views", "Prepare merge"); L("Prepare merge", "Any view answered?"); L("Any view answered?", "Merge views", 0); L("Any view answered?", "Vision failed: no view answered", 1)
     L("Merge views", "Vision ready")
@@ -574,7 +574,7 @@ def build(args):
     b.if_("Has image?", "={{ $('Normalise input').first().json.has_image }}", 11 * X, 120)
     vision_failures = []
     if args.vision_mode == "tta":
-        vready, vision_failures = build_vision_tta(b, v, X, L)
+        vready, vision_failures = build_vision_tta(b, v, X, L, args.tta_merge)
         b.code("No image: vision skipped", NO_IMAGE, 12 * X, 200, v)
         L("Enough to assess?", "Has image?", 0); L("Has image?", "No image: vision skipped", 1)
     else:
@@ -681,6 +681,8 @@ def main():
     parser.add_argument("--vision-mode", choices=["single", "tta"], default="single",
                         help="single (default): one vision call per image. tta: three views of the image (original, mirrored, contrast), three calls, agreed observations kept. "
                              "tta needs the image-only vision prompt, so it defaults to vision/v2.md and risk_assessment/v3.md unless --prompt says otherwise.")
+    parser.add_argument("--tta-merge", choices=["majority", "keep_high"], default="majority",
+                        help="merge policy of the three-view path (only with --vision-mode tta): majority (default) or keep_high, which also keeps a one-view observation of high confidence")
     parser.add_argument("--out-dir", default=str(ROOT / "n8n" / "workflows"))
     args = parser.parse_args()
     if args.vision_mode == "tta":

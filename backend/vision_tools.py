@@ -11,6 +11,8 @@ Merge rules (written down so that they can be tested and argued with):
   * image_usable: at least half of the views say usable;
   * observations: one per category, kept when at least two views have that category (when there are two or more answers); a category seen by
     one view only goes to reliability.unstable_categories, not to the observations. With one answer nothing can be compared: everything is kept;
+    policy "keep_high" (a variant, rule in vision/test_images/TTA_CRITERIA_HIGH.md) also keeps a category seen by ONE view when that view's
+    confidence is high, capped at medium and listed as unstable;
   * confidence of a kept observation: the highest among the views that saw it; when only two of three views agree it is capped at "medium";
   * description: from the view named first in PREFER that saw the category (the mirrored view says "on the left" for what is on the right);
   * visible_text: kept when at least two views read it (all of it with one answer); quality_issues and not_determinable: union;
@@ -86,10 +88,15 @@ def _norm(text):
     return " ".join(str(text).lower().split())
 
 
-def merge(answers, requested=None):
+POLICIES = ("majority", "keep_high")
+
+
+def merge(answers, requested=None, policy="majority"):
     """answers: [{name, result}] (result = a validated vision answer) or plain results. Returns the merged answer with a reliability block.
 
-    Raises ValueError when there is no answer to merge."""
+    Raises ValueError when there is no answer to merge or the policy is unknown."""
+    if policy not in POLICIES:
+        raise ValueError(f"unknown merge policy {policy!r}")
     items = []
     for i, a in enumerate(answers or []):
         if isinstance(a, dict) and "result" in a:
@@ -127,11 +134,15 @@ def merge(answers, requested=None):
         holders = [best[c] for best in per_view if c in best]     # in PREFER order
         support = len(holders)
         supports[c] = support
-        if n >= 2 and support < 2:
-            unstable.append({"category": c, "support": support})
-            continue
         top = max(RANK.get(h.get("confidence"), 0) for h in holders)
-        if n >= 3 and support < n:
+        if n >= 2 and support < 2:
+            if policy == "keep_high" and top == RANK["high"]:
+                top = RANK["medium"]                              # kept, but never as sure as an agreed observation
+            else:
+                unstable.append({"category": c, "support": support})
+                continue
+            unstable.append({"category": c, "support": support})
+        elif n >= 3 and support < n:
             top = min(top, RANK["medium"])
             unstable.append({"category": c, "support": support})
         observations.append({"category": c, "description": holders[0].get("description", ""), "confidence": NAMES[top]})
@@ -150,7 +161,7 @@ def merge(answers, requested=None):
     merged = {"image_usable": usable, "quality_issues": quality, "scene_summary": results[0].get("scene_summary", ""),
               "observations": observations if usable else [], "visible_text": visible, "not_determinable": not_det,
               "reliability": {"variants_used": n, "variants_requested": requested or n, "usable_votes": f"{usable_votes}/{n}",
-                              "category_agreement_score": agreement, "unstable_categories": unstable}}
+                              "category_agreement_score": agreement, "unstable_categories": unstable, "merge_policy": policy}}
     return merged
 
 
@@ -163,6 +174,7 @@ class VariantsRequest(BaseModel):
 class MergeRequest(BaseModel):
     answers: list
     requested: int | None = None
+    policy: str = "majority"
 
 
 @router.post("/vision/variants")
@@ -179,6 +191,6 @@ def variants_endpoint(req: VariantsRequest):
 @router.post("/vision/merge")
 def merge_endpoint(req: MergeRequest):
     try:
-        return {"merged": merge(req.answers, req.requested)}
+        return {"merged": merge(req.answers, req.requested, req.policy)}
     except ValueError as exc:
         return JSONResponse(status_code=400, content={"error": str(exc)})
