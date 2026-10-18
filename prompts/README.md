@@ -1,18 +1,18 @@
 # Prompt library
 
-Status of all v1 prompts: drafts, not yet run. No failure or result is recorded here until we have a real output to paste.
+Status (2026-10-18): the workflow default is incident v3, vision v1, rag_query v1, knowledge v2 (`rag_query/v2_synthesis.md`), risk v2 and report v4. All of them are drafts with partial evidence. The full presentation (roles, techniques, before and after examples, failure cases) is in `docs/PROMPT_LIBRARY.md`; every prompt change is in `CHANGELOG.md`.
 
 ## Prompts and files
 
-| Agent | File | Output |
-|-------|------|--------|
-| Incident Understanding | incident_understanding/v1.md | JSON |
-| Vision | vision/v1.md | JSON |
-| RAG query writer | rag_query/v1.md | JSON |
-| RAG knowledge synthesis | rag_query/v1_synthesis.md | JSON |
-| Risk Assessment | risk_assessment/v1.md | JSON |
-| Report | report/v1.md | Markdown |
-| Report (partial-coverage wording) | report/v2.md, untested draft | Markdown |
+| Agent | Files | Default | Output |
+|-------|-------|---------|--------|
+| Incident Understanding | incident_understanding/v1.md, v2.md, v3.md | v3 | JSON |
+| Vision | vision/v1.md (sees the report), v2.md (image only) | v1 | JSON |
+| RAG query writer | rag_query/v1.md | v1 | JSON |
+| RAG knowledge synthesis | rag_query/v1_synthesis.md, v2_synthesis.md (citations with entry_id) | v2 | JSON |
+| Risk Assessment | risk_assessment/v1.md, v2.md, v3.md (v3 compares image and report, pairs with vision v2) | v2 | JSON |
+| Report | report/v1.md, v2.md (Markdown drafts), v3.md, v4.md (JSON with report_markdown) | v4 | JSON |
+| Vision questions and check (prototype, not in the workflow) | vision_questions/v1.md, v2.md; vision_check/v1.md, v2.md | none | JSON |
 
 The RAG agent has two prompts: one writes bilingual search queries, one selects and restates the retrieved passages with citations. The synthesis step is optional. A simple variant passes the raw chunks straight to the Risk agent. Comparing the two on the same test incidents is a good piece of evidence for the multi-agent section.
 

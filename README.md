@@ -123,6 +123,7 @@ A Streamlit screen to send an incident to the n8n webhook and read the result: `
 - `docs/BOTTLENECKS.md` bottlenecks and proposed fixes
 - `docs/VISION_ARCHITECTURE.md` the vision architecture: single call, local model, the three-view option and why it is off
 - `docs/N8N_WORKFLOW_PLAN.md`, `docs/CONTRACT_MISMATCHES.md`, `docs/RAG_CORPUS_PLAN.md`
+- `docs/PROMPT_LIBRARY.md` the prompt library: roles, techniques, before and after examples, failure cases
 - `prompts/README.md` data contract between agents, `prompts/CHANGELOG.md` prompt iterations
 - `vision/test_images/SOURCES.md`, `rag/corpus/SOURCES.md` licences and sources
 
