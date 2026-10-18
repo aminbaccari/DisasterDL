@@ -1,0 +1,59 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 1,
+  "seconds": 29.7,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 3,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "smoke",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 1.0,
+  "views_ok": 3
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A backyard with a garden, a shed, and a fence, under a hazy sky with a visible sun or moon, surrounded by trees and power lines.",
+  "observations": [
+   {
+    "category": "other",
+    "description": "Hazy or smoky sky with a visible sun or moon.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees and bushes in the background and foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": " wooden fence, power lines, and a metal shed.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "Cause of haze or smoke",
+   "Distance to trees in background",
+   "Time of day (dusk or dawn)",
+   "Scale of the property or yard"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 1.0,
+   "unstable_categories": []
+  }
+ }
+}

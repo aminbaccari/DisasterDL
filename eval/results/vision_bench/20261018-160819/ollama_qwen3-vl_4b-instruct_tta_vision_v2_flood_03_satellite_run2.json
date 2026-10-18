@@ -1,0 +1,60 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "flood_03_satellite",
+  "image": "flood_03_satellite.jpg",
+  "run": 2,
+  "seconds": 32.6,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 2,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "flood_water",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.778,
+  "views_ok": 3
+ },
+ "incident_text": "The river has overflowed and flooded the fields and part of the city.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A satellite view comparing two images of a river system with surrounding urban and agricultural areas, showing differences in cloud cover and land use between the two images.",
+  "observations": [
+   {
+    "category": "other",
+    "description": "Clouds covering parts of the urban area and riverbanks in the lower image.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Urban areas labeled as West Memphis, Memphis, Mud Island, and Treasure Island.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [
+   "West Memphis",
+   "Memphis",
+   "Mud Island",
+   "Treasure Island",
+   "2 km"
+  ],
+  "not_determinable": [],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.778,
+   "unstable_categories": [
+    {
+     "category": "vegetation",
+     "support": 1
+    }
+   ]
+  }
+ }
+}

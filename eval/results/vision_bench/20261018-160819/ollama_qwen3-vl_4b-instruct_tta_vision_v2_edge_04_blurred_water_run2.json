@@ -1,0 +1,52 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "edge_04_blurred_water",
+  "image": "edge_04_blurred_water.jpg",
+  "run": 2,
+  "seconds": 31.1,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 0,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": true,
+  "agreement": 0.333,
+  "views_ok": 3
+ },
+ "incident_text": "Flooding in the city centre. The whole square is under water.",
+ "result": {
+  "image_usable": false,
+  "quality_issues": [
+   "very blurry",
+   "out of focus",
+   "not a disaster scene",
+   "not a clear scene"
+  ],
+  "scene_summary": "A blurred night scene of a brightly lit building reflected in water, with light trails from moving vehicles.",
+  "observations": [],
+  "visible_text": [],
+  "not_determinable": [],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "1/3",
+   "category_agreement_score": 0.333,
+   "unstable_categories": [
+    {
+     "category": "infrastructure",
+     "support": 1
+    },
+    {
+     "category": "other",
+     "support": 1
+    }
+   ]
+  }
+ }
+}

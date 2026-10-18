@@ -1,0 +1,80 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "fire_04_house",
+  "image": "fire_04_house.jpg",
+  "run": 2,
+  "seconds": 71.9,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.833,
+  "views_ok": 3
+ },
+ "incident_text": "A house is on fire in our street. Flames are coming out of the roof and the front door.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A house is engulfed in flames, with fire spreading across the roof and through open doorways and windows. The structure shows signs of damage, with debris on the ground and surrounding vegetation visible.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Bright orange flames burning intensely across the roof and through open doorways and windows of the house.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Roof is partially collapsed and burnt; porch appears damaged; siding and framing showing signs of fire exposure.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "House with siding, windows, and a porch; chimney visible at a corner.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Debris scattered on the ground in front of the house; a small blue mark or graffiti on the siding.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Smoke is visible rising from the roof and windows of the burning house.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of fire",
+   "number of people",
+   "water depth",
+   "scale of damage",
+   "distance from viewer",
+   "scale or distance"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.833,
+   "unstable_categories": [
+    {
+     "category": "vegetation",
+     "support": 1
+    },
+    {
+     "category": "smoke",
+     "support": 2
+    }
+   ]
+  }
+ }
+}

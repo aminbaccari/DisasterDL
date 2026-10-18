@@ -1,0 +1,64 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "structural_02",
+  "image": "structural_02.jpg",
+  "run": 2,
+  "seconds": 10.4,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "A brick building partly collapsed after the earthquake. Bricks are lying across the street.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A severely damaged brick building with collapsed sections and rubble on the street, featuring a traffic light and construction cones. Modern buildings are visible in the background.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "The upper floors of a brick building are collapsed and exposed, with debris scattered on the ground.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A traffic light and a lamppost are present on the street corner.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "A white vehicle is parked in the distance on the street.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "A pile of bricks and rubble is on the street, with an orange traffic cone and a sign that says 'No S' visible.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees are visible in the distance behind buildings.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "A large, ornate building with a spire is in the background.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [
+   "No S"
+  ],
+  "not_determinable": []
+ }
+}

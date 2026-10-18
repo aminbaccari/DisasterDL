@@ -1,0 +1,297 @@
+{
+ "saved_at": "20261018-153745-824",
+ "sample_id": "fire_01",
+ "url": "http://localhost:5678/webhook/incident",
+ "profile": "Team n8n, port 5678",
+ "mock": false,
+ "language": "en",
+ "text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "image_file": "20261018-153745-824_fire_01.jpg",
+ "kind": "ok",
+ "seconds": 148.3,
+ "http_status": 200,
+ "message": "",
+ "response": {
+  "status": "ok",
+  "incident_type": "forest_fire",
+  "severity": "high",
+  "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-18T14:35:17.616Z\nIncident type: forest_fire | Location: Not stated | Severity (system assessment): high\n\n## Summary\nA forest fire is reported with smoke rising from hills behind the village and flames visible near the first houses, driven by a strong wind blowing toward the village. The image confirms a large hillside fire at night with smoke and flames, but does not show houses near the fire. Exact location, wind details, number of threatened houses, casualties, and firefighting resources remain unknown.\n\n## 1. What was reported\n- Smoke is rising from the hills behind the village\n- Flames are visible near the first houses\n- A strong wind is blowing toward the village\n\n## 2. What was observed in the image\n- Large plume of smoke, illuminated orange and red by fire, rising from the hillside (high confidence)\n- Bright orange and yellow flames visible on the hillside, with fire spreading across vegetation (high confidence)\n- Dark silhouette of vegetation on the hillside, visibly ablaze (high confidence)\n- Road structure with metal frame visible in foreground, with light trails indicating vehicle movement (medium confidence)\n- Dark body of water in the foreground, reflecting the fire's glow (medium confidence)\nInconsistency with report: Report mentions 'first houses' near the fire, but none are visible in the image.\n\n## 3. Relevant information from the knowledge base\nCoverage: good\n- If authorities order evacuation, leave immediately; otherwise, take shelter in a house cleared of vegetation and do not use a car as shelter. (FI-13, en/fire_kb.md::section::10)\n- Sign up for your community's warning system, know evacuation routes, plan several ways to leave, and gather emergency supplies such as N95 respirator masks. (FI-10, en/fire_kb.md::section::9)\n- Si vous êtes témoin d'un début d'incendie, donnez l'alerte aux services de secours et essayez de vous mettre à l'abri dans une habitation débroussaillée ; la voiture n'est pas un abri sûr. Restez informé et suivez les consignes des secours ou de la mairie. (FI-14, fr/fire_kb.md::section::2)\n- Pour se protéger dans son habitation avant l'arrivée du feu, rentrez le tuyau d'arrosage, bouchez les aérations et le bas des portes, et couvrez le nez et la bouche d'un linge humide. (FI-16, fr/fire_kb.md::section::4)\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: high\nBasis:\n- Flames are visible near the first houses (report)\n- A strong wind is blowing toward the village (report)\n- Flames are visible on the hillside with fire spreading across vegetation (image)\nRisks:\n- Fire spreading to residential structures due to strong wind (report)\n- Threat to people in the vicinity (report)\n- Reduced visibility and air quality due to smoke (image)\nPossibly affected:\n- Houses near the fire (report)\n- People in the village (report)\n- Vegetation on the hillside (image)\n- Road infrastructure (image)\nConflicts:\n- The report mentions 'first houses' near the fire, but the image does not show any houses near the fire.\n\n## 5. Missing information and uncertainties\nUncertainties:\n- The exact location of the fire is unknown.\n- Wind speed and direction details are not available.\n- The number of houses threatened is unknown.\n- It is unclear whether any people are injured or trapped.\n- The availability of firefighting resources is unknown.\n- The contact information of the reporter is missing.\n- The scale of the fire cannot be determined from the image.\n- The distance to the fire cannot be determined from the image.\n- The structural integrity of buildings cannot be determined from the image.\nInformation needed:\n- Exact location of the fire\n- Wind speed and direction details\n- Number of houses threatened\n- Whether any people are injured or trapped\n- Availability of firefighting resources\n- Contact information of the reporter\n\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+  "report": {
+   "language": "en",
+   "location": null,
+   "severity": "high",
+   "summary": "A forest fire is reported with smoke rising from hills behind the village and flames visible near the first houses, driven by a strong wind blowing toward the village. The image confirms a large hillside fire at night with smoke and flames, but does not show houses near the fire. Exact location, wind details, number of threatened houses, casualties, and firefighting resources remain unknown.",
+   "reported": [
+    {
+     "text": "Smoke is rising from the hills behind the village",
+     "source": "report"
+    },
+    {
+     "text": "Flames are visible near the first houses",
+     "source": "report"
+    },
+    {
+     "text": "A strong wind is blowing toward the village",
+     "source": "report"
+    }
+   ],
+   "image_status": "analysed",
+   "observed": [
+    {
+     "text": "Large plume of smoke, illuminated orange and red by fire, rising from the hillside",
+     "confidence": "high",
+     "source": "image"
+    },
+    {
+     "text": "Bright orange and yellow flames visible on the hillside, with fire spreading across vegetation",
+     "confidence": "high",
+     "source": "image"
+    },
+    {
+     "text": "Dark silhouette of vegetation on the hillside, visibly ablaze",
+     "confidence": "high",
+     "source": "image"
+    },
+    {
+     "text": "Road structure with metal frame visible in foreground, with light trails indicating vehicle movement",
+     "confidence": "medium",
+     "source": "image"
+    },
+    {
+     "text": "Dark body of water in the foreground, reflecting the fire's glow",
+     "confidence": "medium",
+     "source": "image"
+    }
+   ],
+   "knowledge": {
+    "coverage": "good",
+    "guidance": [
+     {
+      "text": "If authorities order evacuation, leave immediately; otherwise, take shelter in a house cleared of vegetation and do not use a car as shelter.",
+      "entry_id": "FI-13",
+      "chunk_id": "en/fire_kb.md::section::10",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "Sign up for your community's warning system, know evacuation routes, plan several ways to leave, and gather emergency supplies such as N95 respirator masks.",
+      "entry_id": "FI-10",
+      "chunk_id": "en/fire_kb.md::section::9",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "Si vous êtes témoin d'un début d'incendie, donnez l'alerte aux services de secours et essayez de vous mettre à l'abri dans une habitation débroussaillée ; la voiture n'est pas un abri sûr. Restez informé et suivez les consignes des secours ou de la mairie.",
+      "entry_id": "FI-14",
+      "chunk_id": "fr/fire_kb.md::section::2",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "Pour se protéger dans son habitation avant l'arrivée du feu, rentrez le tuyau d'arrosage, bouchez les aérations et le bas des portes, et couvrez le nez et la bouche d'un linge humide.",
+      "entry_id": "FI-16",
+      "chunk_id": "fr/fire_kb.md::section::4",
+      "source": "knowledge_base"
+     }
+    ],
+    "no_guidance_statement": "No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services."
+   },
+   "assessment": {
+    "basis": [
+     {
+      "text": "Flames are visible near the first houses",
+      "source": "report"
+     },
+     {
+      "text": "A strong wind is blowing toward the village",
+      "source": "report"
+     },
+     {
+      "text": "Flames are visible on the hillside with fire spreading across vegetation",
+      "source": "image"
+     }
+    ],
+    "risks": [
+     {
+      "text": "Fire spreading to residential structures due to strong wind",
+      "source": "report"
+     },
+     {
+      "text": "Threat to people in the vicinity",
+      "source": "report"
+     },
+     {
+      "text": "Reduced visibility and air quality due to smoke",
+      "source": "image"
+     }
+    ],
+    "possibly_affected": [
+     {
+      "text": "Houses near the fire",
+      "source": "report"
+     },
+     {
+      "text": "People in the village",
+      "source": "report"
+     },
+     {
+      "text": "Vegetation on the hillside",
+      "source": "image"
+     },
+     {
+      "text": "Road infrastructure",
+      "source": "image"
+     }
+    ],
+    "conflicts": [
+     "The report mentions 'first houses' near the fire, but the image does not show any houses near the fire."
+    ]
+   },
+   "recommendations": [
+    {
+     "text": "If authorities order evacuation, leave immediately; otherwise, take shelter in a house cleared of vegetation and do not use a car as shelter.",
+     "entry_id": "FI-13",
+     "chunk_id": "en/fire_kb.md::section::10",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Sign up for your community's warning system, know evacuation routes, plan several ways to leave, and gather emergency supplies such as N95 respirator masks.",
+     "entry_id": "FI-10",
+     "chunk_id": "en/fire_kb.md::section::9",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Si vous êtes témoin d'un début d'incendie, donnez l'alerte aux services de secours et essayez de vous mettre à l'abri dans une habitation débroussaillée ; la voiture n'est pas un abri sûr. Restez informé et suivez les consignes des secours ou de la mairie.",
+     "entry_id": "FI-14",
+     "chunk_id": "fr/fire_kb.md::section::2",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Pour se protéger dans son habitation avant l'arrivée du feu, rentrez le tuyau d'arrosage, bouchez les aérations et le bas des portes, et couvrez le nez et la bouche d'un linge humide.",
+     "entry_id": "FI-16",
+     "chunk_id": "fr/fire_kb.md::section::4",
+     "source": "knowledge_base"
+    }
+   ],
+   "uncertainties": [
+    "The exact location of the fire is unknown.",
+    "Wind speed and direction details are not available.",
+    "The number of houses threatened is unknown.",
+    "It is unclear whether any people are injured or trapped.",
+    "The availability of firefighting resources is unknown.",
+    "The contact information of the reporter is missing.",
+    "The scale of the fire cannot be determined from the image.",
+    "The distance to the fire cannot be determined from the image.",
+    "The structural integrity of buildings cannot be determined from the image."
+   ],
+   "information_needed": [
+    "Exact location of the fire",
+    "Wind speed and direction details",
+    "Number of houses threatened",
+    "Whether any people are injured or trapped",
+    "Availability of firefighting resources",
+    "Contact information of the reporter"
+   ],
+   "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+   "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-18T14:35:17.616Z\nIncident type: forest_fire | Location: Not stated | Severity (system assessment): high\n\n## Summary\nA forest fire is reported with smoke rising from hills behind the village and flames visible near the first houses, driven by a strong wind blowing toward the village. The image confirms a large hillside fire at night with smoke and flames, but does not show houses near the fire. Exact location, wind details, number of threatened houses, casualties, and firefighting resources remain unknown.\n\n## 1. What was reported\n- Smoke is rising from the hills behind the village\n- Flames are visible near the first houses\n- A strong wind is blowing toward the village\n\n## 2. What was observed in the image\n- Large plume of smoke, illuminated orange and red by fire, rising from the hillside (high confidence)\n- Bright orange and yellow flames visible on the hillside, with fire spreading across vegetation (high confidence)\n- Dark silhouette of vegetation on the hillside, visibly ablaze (high confidence)\n- Road structure with metal frame visible in foreground, with light trails indicating vehicle movement (medium confidence)\n- Dark body of water in the foreground, reflecting the fire's glow (medium confidence)\nInconsistency with report: Report mentions 'first houses' near the fire, but none are visible in the image.\n\n## 3. Relevant information from the knowledge base\nCoverage: good\n- If authorities order evacuation, leave immediately; otherwise, take shelter in a house cleared of vegetation and do not use a car as shelter. (FI-13, en/fire_kb.md::section::10)\n- Sign up for your community's warning system, know evacuation routes, plan several ways to leave, and gather emergency supplies such as N95 respirator masks. (FI-10, en/fire_kb.md::section::9)\n- Si vous êtes témoin d'un début d'incendie, donnez l'alerte aux services de secours et essayez de vous mettre à l'abri dans une habitation débroussaillée ; la voiture n'est pas un abri sûr. Restez informé et suivez les consignes des secours ou de la mairie. (FI-14, fr/fire_kb.md::section::2)\n- Pour se protéger dans son habitation avant l'arrivée du feu, rentrez le tuyau d'arrosage, bouchez les aérations et le bas des portes, et couvrez le nez et la bouche d'un linge humide. (FI-16, fr/fire_kb.md::section::4)\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: high\nBasis:\n- Flames are visible near the first houses (report)\n- A strong wind is blowing toward the village (report)\n- Flames are visible on the hillside with fire spreading across vegetation (image)\nRisks:\n- Fire spreading to residential structures due to strong wind (report)\n- Threat to people in the vicinity (report)\n- Reduced visibility and air quality due to smoke (image)\nPossibly affected:\n- Houses near the fire (report)\n- People in the village (report)\n- Vegetation on the hillside (image)\n- Road infrastructure (image)\nConflicts:\n- The report mentions 'first houses' near the fire, but the image does not show any houses near the fire.\n\n## 5. Missing information and uncertainties\nUncertainties:\n- The exact location of the fire is unknown.\n- Wind speed and direction details are not available.\n- The number of houses threatened is unknown.\n- It is unclear whether any people are injured or trapped.\n- The availability of firefighting resources is unknown.\n- The contact information of the reporter is missing.\n- The scale of the fire cannot be determined from the image.\n- The distance to the fire cannot be determined from the image.\n- The structural integrity of buildings cannot be determined from the image.\nInformation needed:\n- Exact location of the fire\n- Wind speed and direction details\n- Number of houses threatened\n- Whether any people are injured or trapped\n- Availability of firefighting resources\n- Contact information of the reporter\n\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+  },
+  "validation": {
+   "status": "pass",
+   "violations": [],
+   "repaired": true,
+   "first_violations": [
+    {
+     "check": "schema",
+     "message": "(root): 'uncertainties' is a required property"
+    },
+    {
+     "check": "schema",
+     "message": "(root): 'information_needed' is a required property"
+    },
+    {
+     "check": "schema",
+     "message": "(root): 'disclaimer' is a required property"
+    },
+    {
+     "check": "schema",
+     "message": "(root): 'report_markdown' is a required property"
+    }
+   ]
+  },
+  "degraded_steps": [],
+  "knowledge_coverage": "good",
+  "retrieved_entry_ids": [
+   "FI-26",
+   "FI-20",
+   "FI-11",
+   "FI-13",
+   "FI-10",
+   "FI-16",
+   "FI-17",
+   "FI-14"
+  ],
+  "models_used": [
+   {
+    "step": "incident",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "seconds": 2.58,
+    "failed_attempts": []
+   },
+   {
+    "step": "vision",
+    "provider": "ollama",
+    "model": "qwen3-vl:4b-instruct",
+    "seconds": 14.55,
+    "failed_attempts": []
+   },
+   {
+    "step": "RAG queries",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "seconds": 2.63,
+    "failed_attempts": []
+   },
+   {
+    "step": "knowledge",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "seconds": 3.81,
+    "failed_attempts": []
+   },
+   {
+    "step": "risk",
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "seconds": 3.01,
+    "failed_attempts": [
+     "groq:openai/gpt-oss-120b rate limit"
+    ]
+   },
+   {
+    "step": "report",
+    "provider": "groq",
+    "model": "openai/gpt-oss-20b",
+    "seconds": 3.88,
+    "failed_attempts": [
+     "groq:openai/gpt-oss-120b rate limit",
+     "groq:qwen/qwen3.8-27b rate limit"
+    ]
+   },
+   {
+    "step": "repaired report",
+    "provider": "openrouter",
+    "model": "nvidia/nemotron-3-super-120b-a12b:free",
+    "seconds": 117.13,
+    "failed_attempts": [
+     "groq:openai/gpt-oss-20b rate limit"
+    ]
+   }
+  ],
+  "prompt_versions": {
+   "incident": "v3",
+   "vision": "v1",
+   "rag_queries": "v1",
+   "knowledge": "v2",
+   "risk": "v2",
+   "report": "v4"
+  }
+ }
+}

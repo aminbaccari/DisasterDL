@@ -1,0 +1,84 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "fire_05_training",
+  "image": "fire_05_training.jpg",
+  "run": 1,
+  "seconds": 83.9,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.857,
+  "views_ok": 3
+ },
+ "incident_text": "A building is burning and firefighters are working on it.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "Firefighters are spraying water at a burning house on a grassy hill, with thick smoke rising and flames visible through a broken wall.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large plume of dark smoke rising from the house.",
+    "confidence": "high"
+   },
+   {
+    "category": "flames",
+    "description": "Visible orange flames erupting from the roof and side of the house.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Sections of the house's wall appear damaged or partially collapsed.",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "Three figures in firefighting gear on the left, operating a hose.",
+    "confidence": "medium"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees and grassy hillside surrounding the house.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A fence and utility pole are visible in the background.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of fire",
+   "scale or distance",
+   "water depth",
+   "structural integrity",
+   "number of people"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.857,
+   "unstable_categories": [
+    {
+     "category": "people",
+     "support": 2
+    },
+    {
+     "category": "vehicles",
+     "support": 1
+    }
+   ]
+  }
+ }
+}

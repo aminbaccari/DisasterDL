@@ -1,0 +1,57 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 2,
+  "seconds": 18.2,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A backyard scene at dusk with a hazy sky, a setting sun, and a wooden fence enclosing a garden with potted plants. Trees and utility poles are visible in the background.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Hazy, smoky atmosphere obscuring the sky and reducing visibility.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Green trees and shrubs in the background and foreground, with potted plants in the garden area.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Wooden fence, utility pole with wires, and a small metal shed.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A setting sun visible through the haze.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A blue barrel and a pile of firewood or debris near the fence.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": []
+ }
+}

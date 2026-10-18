@@ -1,0 +1,58 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 1,
+  "seconds": 12.4,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A residential backyard at dusk with a hazy sky, a setting sun, and visible smoke or haze. A utility pole and power lines are prominent, and there are garden beds, potted plants, a shed, and a fence.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Hazy, smoky atmosphere obscuring the sky and reducing visibility.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees, shrubs, and garden plants are visible throughout the scene.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Utility pole with power lines, a wooden fence, and a small metal shed.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A bright, round sun is visible through the haze; a blue barrel and a pile of wood are also visible.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of smoke",
+   "distance to sun",
+   "exact time of day",
+   "number of people",
+   "scale of property"
+  ]
+ }
+}

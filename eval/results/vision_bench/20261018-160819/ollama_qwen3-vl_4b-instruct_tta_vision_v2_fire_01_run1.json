@@ -1,0 +1,71 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 1,
+  "seconds": 29.6,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 1.0,
+  "views_ok": 3
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large fire burns at night on a hillside, casting an orange glow across the sky and reflecting on a body of water below. A road structure is visible in the foreground.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Bright orange and yellow flames visible on the hillside, illuminating the sky and water below.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Thick, dark smoke rising from the fire, illuminated by the flames.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A silhouetted road sign structure in the foreground.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "Long exposure light trails from vehicles in the foreground, indicating movement.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "structural integrity of hillside",
+   "scale or distance of fire",
+   "cause of fire",
+   "scale of fire",
+   "distance from viewer",
+   "location",
+   "presence of people",
+   "extent of fire",
+   "distance to fire"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 1.0,
+   "unstable_categories": []
+  }
+ }
+}

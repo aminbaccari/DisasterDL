@@ -1,0 +1,63 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 2,
+  "seconds": 50.1,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 3,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "smoke",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.733,
+  "views_ok": 3
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A backyard view with a hazy sky, a setting sun, and a mix of vegetation, structures, and power lines. A small shed, garden beds, a fence, and a pile of wood are visible.",
+  "observations": [
+   {
+    "category": "other",
+    "description": "hazy sky with a visible sun",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "trees and shrubs surrounding the yard",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "wooden fence and small shed",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.733,
+   "unstable_categories": [
+    {
+     "category": "vehicles",
+     "support": 1
+    },
+    {
+     "category": "smoke",
+     "support": 1
+    }
+   ]
+  }
+ }
+}

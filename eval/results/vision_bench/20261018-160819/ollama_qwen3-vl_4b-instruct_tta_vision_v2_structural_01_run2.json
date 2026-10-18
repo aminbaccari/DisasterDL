@@ -1,0 +1,70 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "structural_01",
+  "image": "structural_01.jpg",
+  "run": 2,
+  "seconds": 57.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 1.0,
+  "views_ok": 3
+ },
+ "incident_text": "Part of a five-storey apartment building has collapsed. Dust covers the street and neighbours say some residents may still be inside.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A collapsed multi-story building with rubble and debris scattered around, showing significant structural damage. Other buildings and vegetation are visible in the background.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "A building is completely collapsed with exposed interior and roof sections.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A tall dark pole stands near the rubble. Other buildings are visible in the background.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "A tree is visible in the background, along with some bushes and plants near the rubble.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A white sack and various pieces of wood and metal are scattered among the rubble.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "number of people",
+   "cause of damage",
+   "scale or distance of buildings",
+   "water depth or presence of flooding",
+   "extent of damage to surrounding structures",
+   "number of people present",
+   "water depth or presence of flood",
+   "scale or distance from camera",
+   "water depth",
+   "scale or distance of the scene"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 1.0,
+   "unstable_categories": []
+  }
+ }
+}

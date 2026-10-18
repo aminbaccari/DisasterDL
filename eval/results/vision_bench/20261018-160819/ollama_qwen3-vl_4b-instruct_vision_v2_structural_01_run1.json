@@ -1,0 +1,60 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "structural_01",
+  "image": "structural_01.jpg",
+  "run": 1,
+  "seconds": 10.2,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "Part of a five-storey apartment building has collapsed. Dust covers the street and neighbours say some residents may still be inside.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A destroyed multi-story building with collapsed walls and debris scattered on the ground, surrounded by other damaged structures and vegetation.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "A multi-story building with significant structural damage, collapsed sections, exposed interiors, and debris on the ground.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A tall, partially collapsed building with visible windows, balconies, and exposed beams.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "A green tree visible in the background and some vegetation among the debris.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Debris including broken bricks, wood, metal sheets, and a white sack in the foreground.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of damage",
+   "scale of destruction",
+   "distance to other buildings",
+   "water depth",
+   "number of people",
+   "structural integrity of surrounding buildings",
+   "exact time of incident"
+  ]
+ }
+}

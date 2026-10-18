@@ -1,0 +1,63 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 1,
+  "seconds": 11.2,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 1,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large wildfire burns at night on a hillside, illuminated by intense orange and yellow flames and smoke, with a dark body of water in the foreground.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Bright orange and yellow flames visible on the hillside, spreading across vegetation.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Thick, dark smoke billowing from the fire, illuminated by the flames.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Dense vegetation on the hillside being consumed by fire.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "A dark, reflective body of water in the foreground, with a silhouette of a road sign structure.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "Light streaks in the foreground suggest vehicle movement or long exposure photography, but no identifiable vehicles or people.",
+    "confidence": "low"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "structural integrity",
+   "scale or distance",
+   "cause of fire"
+  ]
+ }
+}

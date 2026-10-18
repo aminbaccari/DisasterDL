@@ -1,0 +1,54 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "control_01_night",
+  "image": "control_01_night.jpg",
+  "run": 1,
+  "seconds": 41.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 3,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": false,
+  "agreement": 1.0,
+  "views_ok": 3
+ },
+ "incident_text": "A big fire is burning on this street tonight.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A dark, narrow street at night, lined with multi-story brick buildings with illuminated windows and street lamps. Some windows have flower boxes with red flowers.",
+  "observations": [
+   {
+    "category": "infrastructure",
+    "description": "Wall-mounted street lamp illuminating a brick building facade",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Red flowering plants in window boxes",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Decorative metalwork on a door or entrance",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 1.0,
+   "unstable_categories": []
+  }
+ }
+}

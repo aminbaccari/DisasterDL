@@ -1,0 +1,57 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "control_01_night",
+  "image": "control_01_night.jpg",
+  "run": 1,
+  "seconds": 16.3,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 1,
+  "place_words": false,
+  "quality_flagged": false,
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "A big fire is burning on this street tonight.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A quiet, dark street at night with a row of illuminated brick buildings featuring windows, doors, and hanging flower boxes.",
+  "observations": [
+   {
+    "category": "infrastructure",
+    "description": "A row of multi-story brick buildings with white-framed windows and doors.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Street lamps mounted on the buildings, emitting light.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Hanging flower boxes with red flowers on the building facades.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Dark street with no visible pedestrians or vehicles.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A dark, narrow alleyway extending into the distance.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": []
+ }
+}

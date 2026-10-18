@@ -1,0 +1,71 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "fire_02",
+  "image": "fire_02.jpg",
+  "run": 2,
+  "seconds": 56.1,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 1.0,
+  "views_ok": 3
+ },
+ "incident_text": "Heavy smoke is rising behind a farm and a house stands close to the smoke. We think a wildfire is coming toward the house.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large, dark, and turbulent cloud formation dominates the sky above a rural landscape, with a house and trees visible in the foreground.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large, dark, swirling cloud mass, possibly smoke or storm cloud, filling the sky.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A single house with a pitched roof and porch is visible on the right side of the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Dark trees form a line across the horizon, with some scattered trees and bushes near the house.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A field of dry grass or crops in the foreground.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "Cause of smoke",
+   "Height of cloud",
+   "Distance to house",
+   "Scale of disaster",
+   "distance to smoke source",
+   "structural integrity of the house",
+   "scale of the smoke plume",
+   "number of people",
+   "extent of forest damage",
+   "scale of smoke plume",
+   "presence of fire"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 1.0,
+   "unstable_categories": []
+  }
+ }
+}

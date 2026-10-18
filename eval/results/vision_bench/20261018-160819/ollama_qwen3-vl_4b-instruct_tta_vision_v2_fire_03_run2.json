@@ -1,0 +1,73 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "fire_03",
+  "image": "fire_03.jpg",
+  "run": 2,
+  "seconds": 62.3,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 1.0,
+  "views_ok": 3
+ },
+ "incident_text": "A large smoke column over the fields, probably a grass fire. Nobody is nearby.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large plume of smoke rises from a distant field, with a wire fence and dry vegetation in the foreground.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large, billowing plume of smoke dominating the sky, originating from the horizon.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Dry, brown grass and shrubs in the foreground and midground.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Wire fence with posts running horizontally across the midground.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Distant treeline and small dark shapes that appear to be animals or objects.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of smoke",
+   "distance to smoke source",
+   "extent of fire or damage",
+   "number of animals or objects",
+   "wind direction or speed",
+   "location",
+   "distance to smoke",
+   "scale of smoke",
+   "number of people",
+   "fire size or scale",
+   "type of vegetation beyond fence",
+   "weather conditions",
+   "time of day"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 1.0,
+   "unstable_categories": []
+  }
+ }
+}

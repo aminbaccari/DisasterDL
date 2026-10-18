@@ -1,0 +1,73 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "flood_01",
+  "image": "flood_01.jpg",
+  "run": 2,
+  "seconds": 61.3,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 3,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": true,
+  "quality_flagged": "",
+  "agreement": 0.733,
+  "views_ok": 3
+ },
+ "incident_text": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A town square is flooded with brown water, submerging the lower floors of multi-story buildings. The scene appears to be an urban area with historic architecture under overcast skies.",
+  "observations": [
+   {
+    "category": "flood_water",
+    "description": "Brown, murky flood water covers the entire foreground and reaches the ground level of buildings.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Multi-story buildings with traditional European architecture, including arched doorways, windows, and balconies, are partially submerged.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A street lamp pole stands in the water, and a small white object is near the left building entrance.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [
+   "AZ"
+  ],
+  "not_determinable": [
+   "depth of water relative to building entrances",
+   "number of people",
+   "cause of flood",
+   "scale or distance of the scene",
+   "water depth",
+   "scale or distance",
+   "structural integrity of buildings"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.733,
+   "unstable_categories": [
+    {
+     "category": "vehicles",
+     "support": 1
+    },
+    {
+     "category": "structural_damage",
+     "support": 1
+    }
+   ]
+  }
+ }
+}

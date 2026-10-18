@@ -1,0 +1,78 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "structural_02",
+  "image": "structural_02.jpg",
+  "run": 1,
+  "seconds": 66.0,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.889,
+  "views_ok": 3
+ },
+ "incident_text": "A brick building partly collapsed after the earthquake. Bricks are lying across the street.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A damaged brick building with collapsed upper floors and debris on the street, next to traffic lights and a distant modern skyscraper.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "Severe damage to a multi-story brick building with exposed wooden beams and missing walls.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Streetlights, traffic signals, and a street corner with white pavement markings.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "Cars visible in the distance on the street.",
+    "confidence": "medium"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees visible in the background behind buildings.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "Debris including broken bricks, wooden planks, and a traffic cone on the street.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "Cause of structural damage",
+   "Time of incident",
+   "Scale of damage relative to street",
+   "Number of people present",
+   "extent of damage to other buildings",
+   "cause of damage",
+   "presence or number of people",
+   "distance to nearest intersection"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.889,
+   "unstable_categories": [
+    {
+     "category": "flood_water",
+     "support": 1
+    }
+   ]
+  }
+ }
+}

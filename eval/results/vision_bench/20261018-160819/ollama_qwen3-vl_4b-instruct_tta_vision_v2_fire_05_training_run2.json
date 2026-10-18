@@ -1,0 +1,79 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "fire_05_training",
+  "image": "fire_05_training.jpg",
+  "run": 2,
+  "seconds": 73.6,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.81,
+  "views_ok": 3
+ },
+ "incident_text": "A building is burning and firefighters are working on it.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "Firefighters are operating a hose to extinguish a large fire engulfing a wooden building, with thick black smoke billowing into the air.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large plume of thick black smoke rising from the building.",
+    "confidence": "high"
+   },
+   {
+    "category": "flames",
+    "description": "Visible orange flames on the right side of the building.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A wooden building with a darkened, damaged section and a white-painted section on fire.",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "Three firefighters in gear on a grassy slope, operating the hose.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees and grassy hillside surrounding the building.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "structural integrity",
+   "cause of fire",
+   "scale or distance"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.81,
+   "unstable_categories": [
+    {
+     "category": "vehicles",
+     "support": 1
+    },
+    {
+     "category": "other",
+     "support": 1
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 2,
+  "seconds": 52.9,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 1.0,
+  "views_ok": 3
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large wildfire is burning on a hillside at night, with intense orange and yellow flames and smoke illuminating the sky and reflecting on a body of water below.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Bright orange and yellow flames actively burning along the hillside.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Large plume of dark smoke and fire glow filling the upper portion of the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Reflection of fire light on a dark body of water in the foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Structure resembling a highway overpass or sign support in the foreground.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of fire",
+   "scale or distance of fire",
+   "number or identity of people",
+   "structural integrity of hillside or infrastructure",
+   "water depth or volume",
+   "scale of the fire",
+   "distance to the water",
+   "exact location",
+   "number of people",
+   "water depth",
+   "structural integrity of the hillside",
+   "structural integrity of hillside"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 1.0,
+   "unstable_categories": []
+  }
+ }
+}

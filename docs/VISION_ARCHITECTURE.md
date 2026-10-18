@@ -146,3 +146,6 @@ failure paths into the same merge: "Vision failed: no views" (tool or image prob
 
 ### Rule for adopting it, written before any run
 `vision/test_images/TTA_CRITERIA.md`: no worse than the single call on schema validity, false observations and missing required categories; at least as good a quality flag on the two low-quality images (the flag may also be raised by an agreement score below 0.5); median latency at most 3.5 times; reported as a benefit only if the quality flag is strictly better. It is never made the default by this rule.
+
+### Result of the rule (2026-10-18): stays off
+On 12 images with the local model the three-view path failed rule 3 (4 calls missing a required category against 2) and showed no gain on the quality flag, at 2.9 times the latency. It remains an option behind `--vision-mode tta`, documented and tested, not recommended; details in `docs/EVIDENCE_LOG.md`. n8n wiring was verified end to end once on the test container (separate workflow path `incident_tta`). A change that might make it worth another try: keep an observation seen by one view when its confidence is high, instead of the strict majority, with a new pre-registered rule (not done).

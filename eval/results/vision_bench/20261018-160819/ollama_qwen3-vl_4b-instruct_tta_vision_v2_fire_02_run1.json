@@ -1,0 +1,74 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "fire_02",
+  "image": "fire_02.jpg",
+  "run": 1,
+  "seconds": 58.2,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.917,
+  "views_ok": 3
+ },
+ "incident_text": "Heavy smoke is rising behind a farm and a house stands close to the smoke. We think a wildfire is coming toward the house.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large, dark cloud formation dominates the sky above a rural landscape with trees, fields, and houses.",
+  "observations": [
+   {
+    "category": "other",
+    "description": "Large, dark, turbulent cloud mass occupying the upper portion of the frame.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Dark line of coniferous trees and some deciduous trees visible along the horizon.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Residential houses visible on the right side of the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Large, dense plume of dark smoke rising from the left, with a lighter, less dense plume on the right.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of cloud formation",
+   "scale of cloud formation",
+   "cause of smoke",
+   "distance to structures",
+   "extent of fire or damage",
+   "number of people",
+   "distance to smoke source",
+   "size of smoke plume",
+   "structural integrity of buildings"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.917,
+   "unstable_categories": [
+    {
+     "category": "smoke",
+     "support": 2
+    }
+   ]
+  }
+ }
+}

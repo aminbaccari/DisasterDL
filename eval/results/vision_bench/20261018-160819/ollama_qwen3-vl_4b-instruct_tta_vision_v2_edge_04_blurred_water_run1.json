@@ -1,0 +1,43 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "edge_04_blurred_water",
+  "image": "edge_04_blurred_water.jpg",
+  "run": 1,
+  "seconds": 28.8,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 0,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": true,
+  "agreement": null,
+  "views_ok": 3
+ },
+ "incident_text": "Flooding in the city centre. The whole square is under water.",
+ "result": {
+  "image_usable": false,
+  "quality_issues": [
+   "out of focus",
+   "blurry",
+   "very blurry, out of focus, indistinct",
+   "Extremely blurry, out of focus, and lacking clear detail"
+  ],
+  "scene_summary": "",
+  "observations": [],
+  "visible_text": [],
+  "not_determinable": [],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "0/3",
+   "category_agreement_score": null,
+   "unstable_categories": []
+  }
+ }
+}

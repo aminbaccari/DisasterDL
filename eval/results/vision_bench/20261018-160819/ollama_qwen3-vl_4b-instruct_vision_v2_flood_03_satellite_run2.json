@@ -1,0 +1,69 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "flood_03_satellite",
+  "image": "flood_03_satellite.jpg",
+  "run": 2,
+  "seconds": 13.6,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "flood_water",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "The river has overflowed and flooded the fields and part of the city.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A composite satellite image showing two views of a river system with urban areas and islands, including West Memphis, Memphis, Mud Island, and Treasure Island. The top image is clear, while the bottom image shows cloud or smoke plumes over the urban areas.",
+  "observations": [
+   {
+    "category": "other",
+    "description": "Clouds or smoke plumes over urban areas in the lower image",
+    "confidence": "medium"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Urban grid patterns, roads, and river channels visible",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Labels for geographic locations: West Memphis, Memphis, Mud Island, Treasure Island",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Scale bar indicating 2 km in both images",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Rivers and their associated islands",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [
+   "West Memphis",
+   "Memphis",
+   "Mud Island",
+   "Treasure Island",
+   "2 km"
+  ],
+  "not_determinable": [
+   "cause of smoke or clouds",
+   "depth of water",
+   "scale of destruction",
+   "exact time or date of the images",
+   "number of buildings or structures"
+  ]
+ }
+}

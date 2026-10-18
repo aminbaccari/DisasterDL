@@ -1,0 +1,67 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "structural_01",
+  "image": "structural_01.jpg",
+  "run": 2,
+  "seconds": 21.1,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "Part of a five-storey apartment building has collapsed. Dust covers the street and neighbours say some residents may still be inside.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A ruined building with collapsed walls and debris lies in a damaged urban area, with surrounding structures and vegetation visible.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "A multi-story building is heavily damaged with collapsed sections and exposed interiors.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A tall pole stands near the wreckage, and a partially ruined structure is on the left.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "A tree is visible in the background among the ruins.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Debris includes broken wood, metal sheets, and household items scattered around the rubble.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A white sack sits on a concrete block in the foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Other buildings are visible in the background, showing moderate damage or intact structure.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "cause of damage",
+   "scale or distance"
+  ]
+ }
+}

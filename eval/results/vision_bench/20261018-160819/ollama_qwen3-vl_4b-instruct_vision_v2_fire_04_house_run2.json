@@ -1,0 +1,57 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_04_house",
+  "image": "fire_04_house.jpg",
+  "run": 2,
+  "seconds": 22.2,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "A house is on fire in our street. Flames are coming out of the roof and the front door.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A house is engulfed in flames, with fire spreading across the roof and through the front door and porch area. The structure shows significant damage, and the surrounding ground is covered in debris.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Bright orange flames visible through the front door and extending across the roof of the house.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Roof is partially collapsed and charred; porch columns and siding are damaged.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Smoke rising from the roof and windows as fire spreads.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Single-story house with siding and a porch, with a chimney visible.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Debris and overturned wooden panel lying on the ground near the house.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": []
+ }
+}

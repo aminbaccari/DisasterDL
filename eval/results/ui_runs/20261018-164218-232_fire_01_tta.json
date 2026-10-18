@@ -1,0 +1,343 @@
+{
+ "saved_at": "20261018-164218-232",
+ "sample_id": "fire_01_tta",
+ "url": "http://localhost:5680/webhook/incident_tta",
+ "profile": "Test n8n 5680, three-view workflow (incident_tta)",
+ "mock": false,
+ "language": "en",
+ "text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "image_file": "20261018-164218-232_fire_01_tta.jpg",
+ "kind": "ok",
+ "seconds": 175.2,
+ "http_status": 200,
+ "message": "",
+ "response": {
+  "status": "ok",
+  "incident_type": "forest_fire",
+  "severity": "high",
+  "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-18T15:39:27.314Z\nIncident type: forest_fire | Location: Not stated | Severity (system assessment): high\n\n## Summary\nSmoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village, increasing the threat. The image confirms intense flames and smoke plumes on the hillside.\n\n## 1. What was reported\n- Smoke is rising from the hills behind the village (reported)\n- Flames are visible near the first houses (reported)\n- A strong wind is blowing toward the village (reported)\n\n## 2. What was observed in the image\n- Bright, intense flames visible along the hillside. (confidence: high) (image)\n- Large plumes of smoke and glowing embers rising from the fire. (confidence: high) (image)\n- A road sign or support structure visible in the foreground. (confidence: medium) (image)\n- Bright red light trails in the foreground, likely from moving vehicles. (confidence: medium) (image)\n\n## 3. Relevant information from the knowledge base\n- Before the fire arrives, close ventilation and door bottoms to keep toxic smoke out, use a garden hose that can later extinguish embers, and cover nose and mouth with a wet cloth. (FI-16)\n- If a forest‑fire alert is issued, move to safety immediately, using N95 masks if needed and protecting important documents in a fire‑proof safe. (FI-21)\n- Create a fire‑resistant zone at least 30 feet around the house, free of leaves, debris and flammable material, and keep an outdoor water source with a hose that can reach all parts of the property. (FI-23)\n- If authorities order evacuation, leave the area right away; otherwise, take shelter in a house cleared of vegetation, not in a car, and follow the instructions of rescue services or the mayor. (FI-24)\n- People with heart or lung conditions, the elderly, smokers and children are most vulnerable to soot and toxic fumes from the fire. (FI-04)\n- Make the home safer from wildfire by using fire‑resistant building materials and ensuring an accessible water source for firefighting. (FI-11)\n- When a wildfire threatens, evacuate immediately if told by authorities; otherwise, shelter in a cleared house, giving priority to official instructions. (FI-13)\n- On seeing a fire start, alert emergency services, seek shelter in a cleared house, stay informed and follow the orders of rescue services or the municipality. (FI-14)\nCoverage: good.\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: high.\nBasis: Report: Flames are visible near the first houses, indicating a high threat to structures. (report); Report: A strong wind is blowing toward the village, increasing fire spread risk. (report); Image: Bright, intense flames visible along the hillside, confirming active wildfire. (image); Image: Large plumes of smoke rising from the fire, confirming ongoing combustion. (image).\nMain risks: Fire could spread from the hillside to the village houses (report); Rapid fire growth due to strong wind (report); Smoke inhalation for residents (image).\nPossibly affected: Village houses (report); Residents of the village (report); Road infrastructure near fire (image); Nearby vegetation and wildlife (image); Water body reflecting fire (potential water source) (image).\nConflicts: Report: Flames are visible near the first houses. Image: No houses are visible; only hillside flames observed.\n\n## 5. Missing information and uncertainties\n- Image cannot determine wind speed or direction.\n- Image cannot determine fire size, scale, or distance to village.\n- Exact location of fire is unknown.\n- Number of people in the village and any evacuation orders are not known.\n- Availability of firefighting resources is not known.\n- People at risk status is unknown.\n- Exact coordinates or location of the fire needed.\n- Current size and spread of the wildfire needed.\n- Distance of the fire front from village houses needed.\n- Wind speed and direction details needed.\n- Number of residents in the village and any evacuation orders needed.\n- Availability and status of firefighting resources needed.\n- Scale of fire and distance to viewer as image could not determine needed.\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+  "report": {
+   "language": "en",
+   "location": null,
+   "severity": "high",
+   "summary": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village, increasing the threat. The image confirms intense flames and smoke plumes on the hillside.",
+   "reported": [
+    {
+     "text": "Smoke is rising from the hills behind the village",
+     "source": "report"
+    },
+    {
+     "text": "Flames are visible near the first houses",
+     "source": "report"
+    },
+    {
+     "text": "A strong wind is blowing toward the village",
+     "source": "report"
+    }
+   ],
+   "image_status": "analysed",
+   "observed": [
+    {
+     "text": "Bright, intense flames visible along the hillside.",
+     "confidence": "high",
+     "source": "image"
+    },
+    {
+     "text": "Large plumes of smoke and glowing embers rising from the fire.",
+     "confidence": "high",
+     "source": "image"
+    },
+    {
+     "text": "A road sign or support structure visible in the foreground.",
+     "confidence": "medium",
+     "source": "image"
+    },
+    {
+     "text": "Bright red light trails in the foreground, likely from moving vehicles.",
+     "confidence": "medium",
+     "source": "image"
+    }
+   ],
+   "knowledge": {
+    "coverage": "good",
+    "guidance": [
+     {
+      "text": "Before the fire arrives, close ventilation and door bottoms to keep toxic smoke out, use a garden hose that can later extinguish embers, and cover nose and mouth with a wet cloth.",
+      "entry_id": "FI-16",
+      "chunk_id": "fr/fire_kb.md::section::4",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "If a forest‑fire alert is issued, move to safety immediately, using N95 masks if needed and protecting important documents in a fire‑proof safe.",
+      "entry_id": "FI-21",
+      "chunk_id": "fr/fire_kb.md::section::8",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "Create a fire‑resistant zone at least 30 feet around the house, free of leaves, debris and flammable material, and keep an outdoor water source with a hose that can reach all parts of the property.",
+      "entry_id": "FI-23",
+      "chunk_id": "fr/fire_kb.md::section::8",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "If authorities order evacuation, leave the area right away; otherwise, take shelter in a house cleared of vegetation, not in a car, and follow the instructions of rescue services or the mayor.",
+      "entry_id": "FI-24",
+      "chunk_id": "fr/fire_kb.md::section::8",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "People with heart or lung conditions, the elderly, smokers and children are most vulnerable to soot and toxic fumes from the fire.",
+      "entry_id": "FI-04",
+      "chunk_id": "en/fire_kb.md::section::4",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "Make the home safer from wildfire by using fire‑resistant building materials and ensuring an accessible water source for firefighting.",
+      "entry_id": "FI-11",
+      "chunk_id": "en/fire_kb.md::section::10",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "When a wildfire threatens, evacuate immediately if told by authorities; otherwise, shelter in a cleared house, giving priority to official instructions.",
+      "entry_id": "FI-13",
+      "chunk_id": "en/fire_kb.md::section::10",
+      "source": "knowledge_base"
+     },
+     {
+      "text": "On seeing a fire start, alert emergency services, seek shelter in a cleared house, stay informed and follow the orders of rescue services or the municipality.",
+      "entry_id": "FI-14",
+      "chunk_id": "fr/fire_kb.md::section::2",
+      "source": "knowledge_base"
+     }
+    ],
+    "no_guidance_statement": "No guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services."
+   },
+   "assessment": {
+    "basis": [
+     {
+      "text": "Report: Flames are visible near the first houses, indicating a high threat to structures.",
+      "source": "report"
+     },
+     {
+      "text": "Report: A strong wind is blowing toward the village, increasing fire spread risk.",
+      "source": "report"
+     },
+     {
+      "text": "Image: Bright, intense flames visible along the hillside, confirming active wildfire.",
+      "source": "image"
+     },
+     {
+      "text": "Image: Large plumes of smoke rising from the fire, confirming ongoing combustion.",
+      "source": "image"
+     }
+    ],
+    "risks": [
+     {
+      "text": "Fire could spread from the hillside to the village houses",
+      "source": "report"
+     },
+     {
+      "text": "Rapid fire growth due to strong wind",
+      "source": "report"
+     },
+     {
+      "text": "Smoke inhalation for residents",
+      "source": "image"
+     }
+    ],
+    "possibly_affected": [
+     {
+      "text": "Village houses",
+      "source": "report"
+     },
+     {
+      "text": "Residents of the village",
+      "source": "report"
+     },
+     {
+      "text": "Road infrastructure near fire",
+      "source": "image"
+     },
+     {
+      "text": "Nearby vegetation and wildlife",
+      "source": "image"
+     },
+     {
+      "text": "Water body reflecting fire (potential water source)",
+      "source": "image"
+     }
+    ],
+    "conflicts": [
+     "Report: Flames are visible near the first houses. Image: No houses are visible; only hillside flames observed."
+    ]
+   },
+   "recommendations": [
+    {
+     "text": "Before the fire arrives, close ventilation and door bottoms to keep toxic smoke out, use a garden hose that can later extinguish embers, and cover nose and mouth with a wet cloth.",
+     "entry_id": "FI-16",
+     "chunk_id": "fr/fire_kb.md::section::4",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "If a forest‑fire alert is issued, move to safety immediately, using N95 masks if needed and protecting important documents in a fire‑proof safe.",
+     "entry_id": "FI-21",
+     "chunk_id": "fr/fire_kb.md::section::8",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "Create a fire‑resistant zone at least 30 feet around the house, free of leaves, debris and flammable material, and keep an outdoor water source with a hose that can reach all parts of the property.",
+     "entry_id": "FI-23",
+     "chunk_id": "fr/fire_kb.md::section::8",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "If authorities order evacuation, leave the area right away; otherwise, take shelter in a house cleared of vegetation, not in a car, and follow the instructions of rescue services or the mayor.",
+     "entry_id": "FI-24",
+     "chunk_id": "fr/fire_kb.md::section::8",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "People with heart or lung conditions, the elderly, smokers and children are most vulnerable to soot and toxic fumes from the fire.",
+     "entry_id": "FI-04",
+     "chunk_id": "en/fire_kb.md::section::4",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "When a wildfire threatens, evacuate immediately if told by authorities; otherwise, shelter in a cleared house, giving priority to official instructions.",
+     "entry_id": "FI-13",
+     "chunk_id": "en/fire_kb.md::section::10",
+     "source": "knowledge_base"
+    },
+    {
+     "text": "On seeing a fire start, alert emergency services, seek shelter in a cleared house, stay informed and follow the orders of rescue services or the municipality.",
+     "entry_id": "FI-14",
+     "chunk_id": "fr/fire_kb.md::section::2",
+     "source": "knowledge_base"
+    }
+   ],
+   "uncertainties": [
+    "Image cannot determine wind speed or direction.",
+    "Image cannot determine fire size, scale, or distance to village.",
+    "Exact location of fire is unknown.",
+    "Number of people in the village and any evacuation orders are not known.",
+    "Availability of firefighting resources is not known.",
+    "People at risk status is unknown."
+   ],
+   "information_needed": [
+    "Exact coordinates or location of the fire",
+    "Current size and spread of the wildfire",
+    "Distance of the fire front from village houses",
+    "Wind speed and direction details",
+    "Number of residents in the village and any evacuation orders",
+    "Availability and status of firefighting resources",
+    "Scale of fire and distance to viewer as image could not determine"
+   ],
+   "disclaimer": "This report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype.",
+   "report_markdown": "# Preliminary incident assessment\nGenerated: 2026-10-18T15:39:27.314Z\nIncident type: forest_fire | Location: Not stated | Severity (system assessment): high\n\n## Summary\nSmoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village, increasing the threat. The image confirms intense flames and smoke plumes on the hillside.\n\n## 1. What was reported\n- Smoke is rising from the hills behind the village (reported)\n- Flames are visible near the first houses (reported)\n- A strong wind is blowing toward the village (reported)\n\n## 2. What was observed in the image\n- Bright, intense flames visible along the hillside. (confidence: high) (image)\n- Large plumes of smoke and glowing embers rising from the fire. (confidence: high) (image)\n- A road sign or support structure visible in the foreground. (confidence: medium) (image)\n- Bright red light trails in the foreground, likely from moving vehicles. (confidence: medium) (image)\n\n## 3. Relevant information from the knowledge base\n- Before the fire arrives, close ventilation and door bottoms to keep toxic smoke out, use a garden hose that can later extinguish embers, and cover nose and mouth with a wet cloth. (FI-16)\n- If a forest‑fire alert is issued, move to safety immediately, using N95 masks if needed and protecting important documents in a fire‑proof safe. (FI-21)\n- Create a fire‑resistant zone at least 30 feet around the house, free of leaves, debris and flammable material, and keep an outdoor water source with a hose that can reach all parts of the property. (FI-23)\n- If authorities order evacuation, leave the area right away; otherwise, take shelter in a house cleared of vegetation, not in a car, and follow the instructions of rescue services or the mayor. (FI-24)\n- People with heart or lung conditions, the elderly, smokers and children are most vulnerable to soot and toxic fumes from the fire. (FI-04)\n- Make the home safer from wildfire by using fire‑resistant building materials and ensuring an accessible water source for firefighting. (FI-11)\n- When a wildfire threatens, evacuate immediately if told by authorities; otherwise, shelter in a cleared house, giving priority to official instructions. (FI-13)\n- On seeing a fire start, alert emergency services, seek shelter in a cleared house, stay informed and follow the orders of rescue services or the municipality. (FI-14)\nCoverage: good.\nNo guidance available in the knowledge base for this point. Follow the instructions of the authorities and emergency services.\n\n## 4. System assessment\nSeverity: high.\nBasis: Report: Flames are visible near the first houses, indicating a high threat to structures. (report); Report: A strong wind is blowing toward the village, increasing fire spread risk. (report); Image: Bright, intense flames visible along the hillside, confirming active wildfire. (image); Image: Large plumes of smoke rising from the fire, confirming ongoing combustion. (image).\nMain risks: Fire could spread from the hillside to the village houses (report); Rapid fire growth due to strong wind (report); Smoke inhalation for residents (image).\nPossibly affected: Village houses (report); Residents of the village (report); Road infrastructure near fire (image); Nearby vegetation and wildlife (image); Water body reflecting fire (potential water source) (image).\nConflicts: Report: Flames are visible near the first houses. Image: No houses are visible; only hillside flames observed.\n\n## 5. Missing information and uncertainties\n- Image cannot determine wind speed or direction.\n- Image cannot determine fire size, scale, or distance to village.\n- Exact location of fire is unknown.\n- Number of people in the village and any evacuation orders are not known.\n- Availability of firefighting resources is not known.\n- People at risk status is unknown.\n- Exact coordinates or location of the fire needed.\n- Current size and spread of the wildfire needed.\n- Distance of the fire front from village houses needed.\n- Wind speed and direction details needed.\n- Number of residents in the village and any evacuation orders needed.\n- Availability and status of firefighting resources needed.\n- Scale of fire and distance to viewer as image could not determine needed.\n\n## About this report\nThis report is a decision-support output from an AI prototype. It does not replace emergency services and is not an official emergency decision. The severity scale is a working scale of this prototype."
+  },
+  "validation": {
+   "status": "pass",
+   "violations": [],
+   "repaired": true,
+   "first_violations": [
+    {
+     "check": "schema",
+     "message": "(root): 'uncertainties' is a required property"
+    },
+    {
+     "check": "schema",
+     "message": "(root): 'information_needed' is a required property"
+    },
+    {
+     "check": "schema",
+     "message": "(root): 'disclaimer' is a required property"
+    },
+    {
+     "check": "schema",
+     "message": "(root): 'report_markdown' is a required property"
+    }
+   ]
+  },
+  "degraded_steps": [],
+  "knowledge_coverage": "good",
+  "retrieved_entry_ids": [
+   "FI-16",
+   "FI-21",
+   "FI-23",
+   "FI-24",
+   "FI-04",
+   "FI-05",
+   "FI-06",
+   "FI-11",
+   "FI-13",
+   "FI-14",
+   "FI-19"
+  ],
+  "models_used": [
+   {
+    "step": "incident",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "seconds": 2.12,
+    "failed_attempts": []
+   },
+   {
+    "step": "vision",
+    "provider": "ollama",
+    "model": "qwen3-vl:4b-instruct",
+    "seconds": 34.53,
+    "failed_attempts": [],
+    "views_called": 3,
+    "views_ok": 3
+   },
+   {
+    "step": "RAG queries",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "seconds": 1.97,
+    "failed_attempts": []
+   },
+   {
+    "step": "knowledge",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "seconds": 6.01,
+    "failed_attempts": []
+   },
+   {
+    "step": "risk",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "seconds": 6.44,
+    "failed_attempts": []
+   },
+   {
+    "step": "report",
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "seconds": 5.39,
+    "failed_attempts": [
+     "groq:openai/gpt-oss-120b rate limit"
+    ]
+   },
+   {
+    "step": "repaired report",
+    "provider": "openrouter",
+    "model": "nvidia/nemotron-3-super-120b-a12b:free",
+    "seconds": 112.54,
+    "failed_attempts": [
+     "groq:qwen/qwen3.8-27b rate limit",
+     "groq:openai/gpt-oss-20b http 400"
+    ]
+   }
+  ],
+  "prompt_versions": {
+   "incident": "v3",
+   "vision": "v2",
+   "rag_queries": "v1",
+   "knowledge": "v2",
+   "risk": "v3",
+   "report": "v4"
+  }
+ }
+}

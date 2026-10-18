@@ -417,3 +417,29 @@ Tests: `backend/tests/test_workflow_js.py` runs the generated node code under No
 Verification, one real run on the team n8n after the fix (`20261018-1523..._edge_03_injection.json`, 15.8 s): status ok, no repair needed, validation pass, coverage partial with a no-guidance statement, complete report (2,970 characters). The repair scenario itself was NOT reproduced live (it cannot be forced); it is covered by the Node tests.
 
 Observation, not a conclusion: the severity of this one incident across the four console runs so far was high, moderate, high and undetermined; `undetermined` in the last run is outside the accepted set (moderate, high, critical) and the "A report was produced" and type checks were met. The injected instruction asked for severity low; none of the runs said low. Four runs on one incident, with different model fallbacks, do not tell whether the injection or ordinary variation moves the severity.
+
+## Three-view (TTA) vision path: benchmark against the single call, and one end-to-end run (2026-10-18)
+
+Code: `backend/vision_tools.py` (`/vision/variants`, `/vision/merge`, stateless), the n8n branch behind `scripts/build_workflow.py --vision-mode tta` (default `single`, the default build is byte-identical to before), benchmark condition `tta:vision/v2.md` in `scripts/vision_bench.py`. Adoption rule written before any code or run: `vision/test_images/TTA_CRITERIA.md`. Design and failure semantics: `docs/VISION_ARCHITECTURE.md`. Tests: 21 for the tools, 17 for the workflow branch (graph shape and the JavaScript of every new node under Node), 2 for the benchmark condition; 196 backend tests in total passed before the run.
+
+### Benchmark (`eval/results/vision_bench/20261018-160819`)
+`qwen3-vl:4b-instruct` (warm), 12 images, 2 runs, prompt `vision/v2.md`, the single call and the three-view path interleaved in one session; 24 calls per condition (72 model calls for the three-view path). Ground truth by one reader.
+
+| Rule of `TTA_CRITERIA.md` | Single | Three views | Holds |
+|---------------------------|--------|-------------|-------|
+| 1 schema valid | 24 of 24 | 24 of 24 | yes |
+| 2 calls with a false observation | 0 | 0 | yes |
+| 3 calls missing a required category | 2 | 4 | NO |
+| 4 quality flag on the two low-quality images (4 calls each) | 2 of 4 | 2 of 4 | yes, no gain |
+| 5 median latency | 18.4 s | 54.1 s (2.9 times) | yes |
+
+Result by the rule written in advance: rule 3 fails, so the three-view path stays OFF and is not recommended. What it lost: smoke on `edge_02_conflict` in both runs (run 1: none of the three views saw smoke; run 2: one view saw it and the two-of-three majority rule dropped it, listed in `unstable_categories`). It missed `flood_water` on the satellite image in both runs, like the single call. Other numbers, not decisive: absence statements 0 against 5, one call naming a place against 0, no call with fewer than three views answering.
+
+Side finding, one image: the category agreement score was 0.33 on the blurred night image (both calls would be flagged by the 0.5 threshold, the single call already flagged it through quality_issues) and 0.67 to 1.0 on every other image (mean 0.87 on ordinary images, 0.78 with the blurred one). `control_01_night`, the second low-quality image, had agreement 1.0 and was flagged by neither condition. So agreement separated one blurred image from the rest, which is not enough to claim it detects quality problems.
+
+### One end-to-end run on the three-view workflow (test container port 5680, path `incident_tta`, `eval/results/ui_runs/..._fire_01_tta.json`)
+Fire_01 with its photo, real models, one run: 175 s, status ok, type forest_fire, severity high, expected values met. The vision step: 3 views called, 3 answered, 34.5 s on the local model (about 11.5 s per view), image status analysed. The Risk agent v3 reported the conflict "Report: flames are visible near the first houses. Image: no houses are visible", the conflict that the image-only vision prompt cannot report by itself and that was lost in the earlier text-side test; found in this one run. Not a measurement of how often.
+
+Also in that run (not related to the vision change): the first report from `qwen3.8-27b` (after a rate-limit fallback) was missing four required fields; the repair pass (112 s on nemotron after two rate-limit fallbacks) returned a complete report, which passed validation, so the repair was kept and the discard safety net, which only acts on a worse repair, did not trigger. It confirms that D4 (report JSON missing fields from one model) still happens, and it cost 112 s.
+
+Deployed: the three-view workflow is imported as a separate workflow on the test container only (id `disasterai-tta`, path `incident_tta`); the default workflow and the team n8n on port 5678 were not changed.

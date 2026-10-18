@@ -1,0 +1,57 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_03",
+  "image": "fire_03.jpg",
+  "run": 1,
+  "seconds": 20.0,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "A large smoke column over the fields, probably a grass fire. Nobody is nearby.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A wide field under a sky filled with thick, orange-tinted smoke from a distant fire, with a fence in the foreground and scattered animals.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large plume of dense, orange-tinted smoke rising from the horizon.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Dry, brown grass covering a wide field, with some greener patches in the foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Fence line with vertical posts running horizontally across the mid-ground.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Several dark, small shapes that appear to be animals grazing in the field.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "Cause of smoke",
+   "Distance to smoke source",
+   "Exact number of animals",
+   "Height of smoke plume"
+  ]
+ }
+}

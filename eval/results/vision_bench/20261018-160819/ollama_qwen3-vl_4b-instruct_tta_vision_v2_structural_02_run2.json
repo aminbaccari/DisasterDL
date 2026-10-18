@@ -1,0 +1,63 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "structural_02",
+  "image": "structural_02.jpg",
+  "run": 2,
+  "seconds": 27.4,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 3,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.733,
+  "views_ok": 3
+ },
+ "incident_text": "A brick building partly collapsed after the earthquake. Bricks are lying across the street.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A heavily damaged brick building with collapsed sections and debris on the street, surrounded by traffic lights and street signs, with modern skyscrapers in the background.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "Significant damage to a multi-story brick building with exposed wooden framing and collapsed sections.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A pile of rubble and broken bricks on the street.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Street lights, traffic signals, and a traffic cone are visible on the street.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.733,
+   "unstable_categories": [
+    {
+     "category": "vehicles",
+     "support": 1
+    },
+    {
+     "category": "vegetation",
+     "support": 1
+    }
+   ]
+  }
+ }
+}

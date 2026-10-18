@@ -47,7 +47,7 @@ def _open(data):
     except ImageError:
         raise
     except (UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError) as exc:
-        raise ImageError(f"could not read the image: {str(exc)[:120]}")
+        raise ImageError("could not read the image: it is not a supported image file or it is damaged")  # the library's own message names internal objects
 
 
 def _encode(img, mime):

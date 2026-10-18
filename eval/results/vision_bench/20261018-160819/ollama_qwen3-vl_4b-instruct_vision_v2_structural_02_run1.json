@@ -1,0 +1,65 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "structural_02",
+  "image": "structural_02.jpg",
+  "run": 1,
+  "seconds": 29.3,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "A brick building partly collapsed after the earthquake. Bricks are lying across the street.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A multi-story brick building has suffered significant structural damage, with debris piled at its base and a large hole in the upper floors. The scene includes traffic lights, a traffic cone, and urban infrastructure, with modern buildings visible in the background.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "A brick building with visible destruction, including exposed wooden framing and a large hole in the upper floors.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Traffic lights, street poles, and a street corner with painted crosswalk lines.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Debris including bricks, wood, and a traffic cone on the ground.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A green tarp and an orange 'No S' sign lying among the debris.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "A tall, modern building with a distinctive spire in the background.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [
+   "No S"
+  ],
+  "not_determinable": [
+   "cause of damage",
+   "time of incident",
+   "weather conditions",
+   "presence of people or vehicles beyond the immediate scene",
+   "scale or depth of damage"
+  ]
+ }
+}

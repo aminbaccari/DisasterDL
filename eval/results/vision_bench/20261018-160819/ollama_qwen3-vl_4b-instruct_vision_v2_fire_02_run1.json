@@ -1,0 +1,58 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_02",
+  "image": "fire_02.jpg",
+  "run": 1,
+  "seconds": 16.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "Heavy smoke is rising behind a farm and a house stands close to the smoke. We think a wildfire is coming toward the house.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large plume of dark smoke and lighter-colored smoke or dust rises from the horizon, dominating the sky above a line of trees and some houses.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large, dense, dark grey smoke plume rising from the horizon, with lighter, more diffuse smoke or dust to the right.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Dark line of coniferous trees along the horizon, with some deciduous trees and bushes in the foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "One or more houses visible on the right side of the image, partially obscured by smoke and trees.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "Overcast sky with heavy, swirling clouds, suggesting storm or fire-related conditions.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of smoke",
+   "distance to smoke source",
+   "structural damage to buildings",
+   "presence of people",
+   "extent of fire or smoke plume"
+  ]
+ }
+}

@@ -1,0 +1,62 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_04_house",
+  "image": "fire_04_house.jpg",
+  "run": 1,
+  "seconds": 27.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "A house is on fire in our street. Flames are coming out of the roof and the front door.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A house is engulfed in flames, with fire burning through the roof and visible from the front porch and windows.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Large, intense orange flames consuming the roof and interior of the house.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Smoke rising from the burning roof and upper levels of the house.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Roof is partially collapsed and charred; porch and walls showing fire damage.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Single-story house with siding, porch, and windows.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees visible in the background behind the house.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Debris and fallen siding on the ground near the house.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": []
+ }
+}
