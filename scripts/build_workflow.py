@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 # agent -> prompt file, relative to prompts/. Changing a version means changing this table and rebuilding.
 PROMPTS = {
-    "incident": "incident_understanding/v2.md",
+    "incident": "incident_understanding/v3.md",
     "vision": "vision/v1.md",
     "rag_queries": "rag_query/v1.md",
     "knowledge": "rag_query/v2_synthesis.md",
@@ -462,7 +462,7 @@ def build(args):
     b.if_("Topic searchable?", "={{ $('Incident ready').first().json.rag_topic !== 'general' }}", 17 * X, 700)
     b.code("Split queries", SPLIT_QUERIES, 18 * X, 640, v)
     b.http_json("RAG search", "={{ $('Config').first().json.rag_url + '/search' }}",
-                "={{ JSON.stringify({ query: $json.query, k: 4, topic: $json.topic, strategy: 'section' }) }}", 19 * X, 640)
+                "={{ JSON.stringify({ query: $json.query, k: 4, topic: $json.topic, strategy: 'section', balance_languages: true }) }}", 19 * X, 640)
     b.code("Merge passages", MERGE_PASSAGES, 20 * X, 640, v)
     b.if_("Any passages?", "={{ $json.passages.length > 0 }}", 21 * X, 640)
     b.prompt("knowledge", 22 * X, 580)

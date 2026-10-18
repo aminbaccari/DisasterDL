@@ -41,10 +41,36 @@ def get_collection(strategy):
     return _client().get_collection(collection_name(strategy))
 
 
-def search(query_embedding, strategy, k=5, topic=None):
+def balance_by_language(candidates, k):
+    """Pick k results from candidates (sorted by score, best first) so that each language present keeps at least k // 2 slots.
+
+    D12 (2026-10-17): after French translations were added, a French query ranked French entries first even when the answer
+    existed only in an English entry, and pushed it out of the top 5. The reserved slots keep the best entries of the other
+    language in the list; the result is still sorted by score, and for k = 1 nothing changes."""
+    if k < 2:
+        return candidates[:k]
+    reserve = k // 2
+    chosen = []
+    for lang in sorted({c["language"] for c in candidates}):
+        chosen += [c for c in candidates if c["language"] == lang][:reserve]
+    for c in candidates:
+        if len(chosen) >= k:
+            break
+        if c not in chosen:
+            chosen.append(c)
+    return sorted(chosen, key=lambda c: -c["score"])[:k]
+
+
+def search(query_embedding, strategy, k=5, topic=None, balance_languages=False):
     collection = get_collection(strategy)
     where = {"topic": topic} if topic else None
-    res = collection.query(query_embeddings=[query_embedding], n_results=k, where=where)
+    n = k
+    if balance_languages:
+        try:
+            n = min(k * 4, collection.count())
+        except Exception:
+            n = k * 4
+    res = collection.query(query_embeddings=[query_embedding], n_results=max(n, 1), where=where)
     results = []
     for i, chunk_id in enumerate(res["ids"][0]):
         meta = res["metadatas"][0][i]
@@ -61,4 +87,6 @@ def search(query_embedding, strategy, k=5, topic=None):
             }
         )
         results[-1]["entry_ids"] = entry_ids(results[-1])
+    if balance_languages:
+        results = balance_by_language(results, k)
     return results

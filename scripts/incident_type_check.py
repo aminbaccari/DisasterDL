@@ -92,15 +92,18 @@ def main():
                 system, template = loaded[prompt]
                 user = re.sub(r"\{\{incident_text\}\}", lambda m: case["text"], template)
                 answer = llm_chain.complete(system, user, json_mode=True, chain=chain)
-                found, conf = "error", ""
-                if "error" not in answer:
+                found, conf, reason = "error", "", ""
+                if "error" in answer:
+                    att = (answer.get("x_llm") or {}).get("attempts") or []
+                    reason = (att[-1].get("reason") or att[-1].get("status", "")) if att else str(answer["error"].get("message", ""))[:80]
+                else:
                     try:
                         j = json.loads(answer["candidates"][0]["content"]["parts"][0]["text"])
                         found, conf = j.get("incident_type", "missing"), j.get("type_confidence", "")
                     except ValueError:
                         found = "not_json"
                 rows.append({"prompt": prompt, "case": case["id"], "group": case["group"], "run": run, "found_type": found, "confidence": conf,
-                             "correct": found in case["ok"], "allowed": "|".join(sorted(case["ok"]))})
+                             "correct": found in case["ok"], "allowed": "|".join(sorted(case["ok"])), "error_reason": reason})
                 time.sleep(args.pace_seconds)
         print("run", run, "done", flush=True)
     with open(out / "summary.csv", "w", newline="", encoding="utf-8") as f:

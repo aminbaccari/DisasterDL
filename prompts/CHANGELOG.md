@@ -86,3 +86,10 @@ Template:
 - Change made to the prompts: prompts/vision_questions/v2.md (one concrete thing per question, "near" claims split, abstract words such as blocked, rising, spreading banned) and prompts/vision_check/v2.md (a question about a state or trend gets "unclear").
 - Result after the change: fire_01 house conflict found 3 of 3 (both versions), edge_02 3 of 3, flood_01 false alarms 3 of 3 with v1 and 2 of 3 with v2 (now "Are roads visible in the image?" answered no because the road is under water). Not fixed. v2 was written after reading the v1 answers on the same images, so it is not an independent result.
 - Technique involved: constraint, closed questions.
+
+## incident v2 to v3 (2026-10-17, draft, partly tested, now the workflow default)
+- Test input that failed: held-out reports h07 "We live next to a pine forest. What should we do to protect our house before the fire season?" and h08 (French, flood preparation), and n01 "A car crashed into a shop window on the main street and the driver is injured." (model gpt-oss-120b, `eval/results/incident_type_check/20261017-230810`).
+- What went wrong (actual output): h07 and h08 typed `unclear` or `other` in 4 of 4 answered runs, so rag_topic was `general` and the knowledge base was not searched; n01 typed `structural_emergency` in 2 of 2 runs.
+- Change made to the prompt: `prompts/incident_understanding/v3.md`, type definitions include the time after the event and preparing for it; a broken window or a vehicle hitting a building without reported structural damage is not structural; rule 8 on aftermath and preparation.
+- Result after the change (gpt-oss-20b, 2 runs, v2 and v3 interleaved, errors excluded, `eval/results/incident_type_check/20261017-233924`): fresh preparation and aftermath positives h09 to h12 8 of 8 against 3 of 6; h01 to h06 12 of 12 both; all ten negatives 12 of 12 not typed as a disaster against 9 of 12; the six fixed incidents 6 of 6 both. Small counts: 14 of 56 v3 calls and 18 of 56 v2 calls excluded as rate-limit errors.
+- Technique involved: constraint (type definitions with boundary cases).

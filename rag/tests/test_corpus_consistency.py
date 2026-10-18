@@ -51,7 +51,7 @@ class TestCorpus(unittest.TestCase):
     def test_evaluation_files_only_name_existing_entries(self):
         known = set(entry_ids("en")) | set(entry_ids("fr"))
         wanted = {}
-        for name in ("queries_v2.csv", "queries_v3.csv"):
+        for name in ("queries_v2.csv", "queries_v3.csv", "queries_v4.csv"):
             with open(ROOT / "rag" / "eval" / name, encoding="utf-8") as f:
                 for row in csv.DictReader(f):
                     for i in (row["expected_entry_id"] or "").split("|"):

@@ -39,8 +39,11 @@ TOPIC_OF = {"forest_fire": "fire", "flood": "flood", "structural_emergency": "st
 PLACE = re.compile(r"nabeul|tunis|sfax|sousse|gabès|gabes|monastir|bizerte|kairouan", re.I)
 
 
+BALANCE = False
+
+
 def search(query, topic, k):
-    return store.search(embedder.embed_queries([query])[0], "section", k=k, topic=topic)
+    return store.search(embedder.embed_queries([query])[0], "section", k=k, topic=topic, balance_languages=BALANCE)
 
 
 def merged_agent(queries, topic):
@@ -59,25 +62,35 @@ def needs_met(case, passages):
     return met, sorted(ids)
 
 
-def call_json(system, user, chain):
-    answer = llm_chain.complete(system, user, json_mode=True, chain=chain)
-    if "error" in answer:
-        return None, "error"
-    try:
-        return json.loads(answer["candidates"][0]["content"]["parts"][0]["text"]), ""
-    except ValueError:
-        return None, "not JSON"
+def call_json(system, user, chain, tries=5, wait=30):
+    """One pinned model on a free tier hits per-minute and daily limits; wait and ask again, and say why in the end."""
+    reason = ""
+    for attempt in range(tries):
+        answer = llm_chain.complete(system, user, json_mode=True, chain=chain)
+        if "error" not in answer:
+            try:
+                return json.loads(answer["candidates"][0]["content"]["parts"][0]["text"]), ""
+            except ValueError:
+                reason = "not JSON"
+        else:
+            att = (answer.get("x_llm") or {}).get("attempts") or []
+            reason = (att[-1].get("reason") or att[-1].get("status", "error")) if att else "error"
+        time.sleep(wait)
+    return None, reason
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--chain", required=True, help="one provider:model for the incident and query agents")
     parser.add_argument("--runs", type=int, default=3)
+    parser.add_argument("--balance-languages", action="store_true", help="keep at least k // 2 results per language (D12), as the workflow now does")
     parser.add_argument("--incident-prompt", default="incident_understanding/v2.md", help="the workflow default")
     parser.add_argument("--query-prompt", default="rag_query/v1.md")
     parser.add_argument("--pace-seconds", type=int, default=2)
     parser.add_argument("--cases", default=str(ROOT / "rag" / "eval" / "incident_cases_v1.json"))
     args = parser.parse_args()
+    global BALANCE
+    BALANCE = args.balance_languages
     chain = llm_chain.parse_chain(args.chain)
     if len(chain) != 1:
         sys.exit("--chain must be one provider:model")

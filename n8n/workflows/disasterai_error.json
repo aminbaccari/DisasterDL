@@ -14,7 +14,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const PV = {\"incident\": \"v2\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v4\"};\nconst RETRIED = false;\n\n// Global error workflow: keep a readable line per failed execution (visible in the Executions tab of this workflow).\nconst e = $input.first().json;\nreturn [{ json: { when: new Date().toISOString(), workflow: e.workflow && e.workflow.name, execution_id: e.execution && e.execution.id,\n  failed_node: e.execution && e.execution.lastNodeExecuted, message: e.execution && e.execution.error && e.execution.error.message } }];\n"
+        "jsCode": "const PV = {\"incident\": \"v3\", \"vision\": \"v1\", \"rag_queries\": \"v1\", \"knowledge\": \"v2\", \"risk\": \"v2\", \"report\": \"v4\"};\nconst RETRIED = false;\n\n// Global error workflow: keep a readable line per failed execution (visible in the Executions tab of this workflow).\nconst e = $input.first().json;\nreturn [{ json: { when: new Date().toISOString(), workflow: e.workflow && e.workflow.name, execution_id: e.execution && e.execution.id,\n  failed_node: e.execution && e.execution.lastNodeExecuted, message: e.execution && e.execution.error && e.execution.error.message } }];\n"
       },
       "id": "2d36f1c9-b88f-5c4f-b560-f32a6330b7ae",
       "name": "Log failure",

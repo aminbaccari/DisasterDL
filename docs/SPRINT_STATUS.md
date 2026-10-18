@@ -45,8 +45,9 @@ Checked against `docs/SPRINT_PLAN.md` (written 2026-10-16), the commits (23 on `
 |----|--------|----------|---------------|
 | D1 | Vision step missing in nearly all image runs | `eval/results/real_chain*` | Fixed for the local path 2026-10-17 (vision step answered in 2 of 2 image runs), `docs/VISION_ARCHITECTURE.md` |
 | D9 | Vision model echoes the report text (false observations) | edge_02, structural_01, 3 of 10 | proposed vision v2 (image only) |
-| D11 | Post-fire questions get no knowledge search: incident typed `other`, topic general, no retrieval | c03 in `eval/results/rag_query_vs_direct/20261017-224627` | not fixed: incident prompt or routing rule needed |
-| D12 | French translations crowd out English-only entries for French queries | f12 (propane tank) rank 2 to miss; s03, s04 rank 1 to 4 | not fixed: translate more entries or cap one result per language |
+| D11 | Preparation and some aftermath reports typed `other` or `unclear`, so no knowledge search | h07, h08, c03, c04 | incident v3 draft 2026-10-17, held-out check passed on small counts (v3 fresh positives 8 of 8, negatives 12 of 12), not yet run in n8n |
+| D12 | French translations crowd out English-only entries for French queries | f12 (propane tank) rank 2 to miss; s03, s04 rank 1 to 4 | language balance in `/search` 2026-10-17: held-out hit@5 0.42 to 0.84; recovered answers sit at ranks 4 and 5; workflow sends `balance_languages: true`, not run in n8n |
+| D13 | v2 typed a car through a shop window as `structural_emergency` (2 of 2 runs, n01) and a burglary as structural once (n07) | `eval/results/incident_type_check/20261017-233924` | incident v3 draft, 0 of 3 answered runs on n07 to n10 |
 | D10 | Repair pass slow: the retry rotation sends it to OpenRouter nemotron (100+ s) | `eval/results/vision_chain_e2e` | `docs/BOTTLENECKS.md` item 3 |
 | D2 | Location copied as a relative phrase (v1) | fire_01, 2 of 2 completed runs | incident v2 draft, untested |
 | D3 | Free text in English for a French incident | edge_01 | incident v2 draft, untested |

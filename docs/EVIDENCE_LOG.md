@@ -317,3 +317,45 @@ Per case, agent (mean of 3 runs) against the direct query built from the facts: 
 Two cases (c03: fire already out, embers; c04: preparing a house before summer) got no search topic because the incident agent typed them `other` and `unclear`, so no condition retrieved anything for them (0 of 2 and 0 of 2 needs in every condition). c04 is not an incident, so it is a flaw of my case design; c03 is a real gap: after-the-fire questions are not routed to the knowledge base that has entries on them (FI-19, FI-20, FI-26).
 
 Reading: on this sample the agent does not beat the direct query. 90% of the needs against 90% to 95% at 10 usable cases, a ceiling effect, with 12 cases it cannot show a difference of one or two needs. The agent costs one extra model call per run (about 1.4 s on Groq in earlier logs) and three searches. No evidence here justifies keeping or dropping it; a larger set with harder cases is needed. Limits: one model, invented cases and needs from one reader, the incident prompt is an untested draft, direct queries ran once (they are deterministic), the agent 3 times.
+
+
+## D12 and D11 fixes, held-out tests first (2026-10-17 and 18)
+
+Order kept so that the fixes are not tuned to what was seen: held-out sets committed first (`rag/eval/queries_v4.csv`, `rag/eval/incident_types_heldout_v1.json`, commit 26fb76f), baselines run, then the fixes. Gap in the pre-registration: the pass criteria of D12 were written (`rag/eval/QUERIES_V4_CRITERIA.md`) after the v4 baseline and before any run with the fix, not before the baseline. The D11 criteria were revised once, before v3 existed, after the v2 baseline showed that two of its cases were not what I had assumed (see below).
+
+### D12: French translations crowd out English-only entries (fix: language balance in retrieval)
+
+Change: `rag/store.py` `balance_by_language` keeps at least k // 2 results per language among the candidates (4 times k are fetched), the list stays sorted by score; option `balance_languages` in `/search` (default off), `--balance-languages` in `rag/evaluate.py`; the workflow's search body now sends `balance_languages: true` (k = 4 per query, so 2 per language per query, merged best 8). 6 unit tests (`rag/tests/test_language_balance.py`). Section chunking, topic filter, k = 5:
+
+| Set | Without | With balance |
+|-----|---------|--------------|
+| v4, 19 queries (held-out): hit@5 | 0.42 (8 of 19) | 0.84 (16 of 19) |
+| v4 group A, 12 French queries with an English-only answer | 1 of 12 | 9 of 12 |
+| v4 controls C (4 French with translation) and E (3 English) | 4 of 4 and 3 of 3 | 4 of 4 and 3 of 3 |
+| v3, 24 queries (seen): hit@5 | 0.88 | 0.92 |
+| v2, 18 queries (seen), strict ids: hit@5 | 0.78 | 0.94 |
+
+All pre-registered criteria hold (A improves by at least 2, controls lose none). Limits: hit@1 and hit@3 do not change (v4 0.37 and 0.42 both ways); the recovered answers sit at ranks 4 and 5, in the slots reserved for the other language, so the gain is that the passage reaches the 8 passages given to the knowledge agent, not that it ranks first. Three A queries still miss (a01 on bacteria in floodwater, a09 on the neighbouring undamaged building, a11 on a leaning building after a replica); the one A query that hit before the fix, a07, was already at rank 2. The v3 and v2 results were seen before the fix, so they show no loss, not an improvement proof. The two controls f10 and f11 of v3 (English-only FL-25, FL-26) were not addressed here beyond what the balance does.
+
+### D11: preparation reports typed `unclear` (fix: incident prompt v3)
+
+`prompts/incident_understanding/v3.md` (v2 untouched): type definitions now include the time after the event and preparing for it, and say that a broken window or a vehicle hitting a building is not structural; a rule 8 tells to give aftermath and preparation reports the disaster's type with severity from stated facts only. Workflow default now `incident_understanding/v3.md` (still an untested draft; v2 had no tested status either).
+
+What the baseline of v2 showed (`eval/results/incident_type_check/20261017-230810`, gpt-oss-120b, 3 runs, a third of the calls of run 3 lost to quota and wrongly counted as errors by my first version of the script, corrected afterwards): v2 types aftermath reports correctly (h01 to h06 12 of 12 answered runs), types preparation reports `unclear` (h07, h08: 0 of 4) and types a car through a shop window as `structural_emergency` (n01: 2 of 2). So D11 as I first stated it ("post-fire questions get no knowledge search") was only partly right: the c03 case typed `other` was an occasional failure, the systematic failure is preparation. The criteria were revised before v3 existed and four fresh positives (h09 to h12) and four fresh negatives (n07 to n10) were added.
+
+Result, v2 against v3 interleaved on one pinned model (`groq:openai/gpt-oss-20b`, 2 runs per case, `eval/results/incident_type_check/20261017-233924`; the 120b model had spent its daily quota, so this is not the model of the baseline). Calls that errored on rate limits are excluded: 18 of 56 for v2, 14 of 56 for v3.
+
+| Group | v2 | v3 |
+|-------|----|----|
+| fresh positives h09 to h12 (answered runs) | 3 of 6 | 8 of 8 |
+| aftermath h01 to h06 | 12 of 12 | 12 of 12 |
+| seen preparation cases h07, h08 | 0 of 2 | 4 of 4 |
+| negatives n01 to n10 not typed as a disaster | 9 of 12 | 12 of 12 |
+| fresh negatives n07 to n10 | 3 of 4 | 3 of 3 |
+| six fixed incidents keep their type | 6 of 6 | 6 of 6 |
+
+All four revised criteria hold, so v3 became the workflow default. Limits: small counts after the exclusions (for example the fresh negatives have 3 answered v3 runs out of 8 possible), one model, 2 runs, two of the cases (h07, h08, n01) were used to write v3 so only the fresh ones count as generalisation, and the prompt is still not tested inside the workflow.
+
+### Not finished: the 12-case re-run
+
+The re-run of `rag_query_vs_direct.py` (v2 without balance against v3 with balance, same model) was started three times and is rate-limit bound: gpt-oss-120b and gpt-oss-20b both reported their daily quota exhausted during it (every call "cooling down"), which cost two partial runs. The partial output `eval/results/rag_query_vs_direct/20261017-235800` (config A, 20b, 10 of 12 cases) is kept and not used; two empty or 4-case output folders of failed runs were deleted. A run on `gemini:gemini-3.6-flash` was started last (see below if it finished).

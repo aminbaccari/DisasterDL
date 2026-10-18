@@ -42,6 +42,7 @@ class SearchRequest(BaseModel):
     k: int = 4
     topic: str | None = None  # fire, flood, structural, general. Optional filter.
     strategy: str | None = None
+    balance_languages: bool = False  # keep at least k // 2 results per language in the list (D12)
 
 
 @app.get("/health")
@@ -62,7 +63,7 @@ def search(req: SearchRequest):
 
     topic = req.topic if req.topic in chunking.TOPICS else None
     try:
-        results = store.search(embedder.embed_queries([query])[0], strategy, k=req.k, topic=topic)
+        results = store.search(embedder.embed_queries([query])[0], strategy, k=req.k, topic=topic, balance_languages=req.balance_languages)
     except Exception as exc:
         raise HTTPException(
             status_code=503,

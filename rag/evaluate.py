@@ -33,13 +33,13 @@ def load_queries(path):
     return usable, len(rows) - len(usable)
 
 
-def evaluate(strategy, rows, ks, use_topic_filter):
+def evaluate(strategy, rows, ks, use_topic_filter, balance_languages=False):
     top = max(ks)
     ranks, details = [], []
     for row in rows:
         topic = row.get("disaster_type") if use_topic_filter else None
         topic = topic if topic in ("fire", "flood", "structural", "general") else None
-        results = store.search(embedder.embed_queries([row["query"]])[0], strategy, k=top, topic=topic)
+        results = store.search(embedder.embed_queries([row["query"]])[0], strategy, k=top, topic=topic, balance_languages=balance_languages)
         entry_ids = [x.strip() for x in (row.get("expected_entry_id") or "").split("|") if x.strip()]
         rank = metrics.first_hit_rank(
             results,
@@ -72,6 +72,7 @@ def main():
     parser.add_argument("--strategy", choices=["fixed", "section", "both"], default="both")
     parser.add_argument("--ks", type=int, nargs="+", default=[1, 3, 5])
     parser.add_argument("--use-topic-filter", action="store_true", help="filter by disaster_type column")
+    parser.add_argument("--balance-languages", action="store_true", help="keep at least k // 2 results per language (D12)")
     args = parser.parse_args()
 
     rows, skipped = load_queries(args.queries)
@@ -82,14 +83,14 @@ def main():
 
     stamp = datetime.now().strftime("%Y%m%d-%H%M")
     for strategy in (["fixed", "section"] if args.strategy == "both" else [args.strategy]):
-        ranks, details = evaluate(strategy, rows, args.ks, args.use_topic_filter)
+        ranks, details = evaluate(strategy, rows, args.ks, args.use_topic_filter, args.balance_languages)
         print(f"Strategy {strategy} (topic filter: {args.use_topic_filter})")
         print_summary("all", ranks, args.ks)
         for lang in sorted({d["language"] for d in details if d["language"]}):
             lang_ranks = [r for r, d in zip(ranks, details) if d["language"] == lang]
             print_summary(lang, lang_ranks, args.ks)
 
-        label = Path(args.queries).stem + ("_topic" if args.use_topic_filter else "")
+        label = Path(args.queries).stem + ("_topic" if args.use_topic_filter else "") + ("_balanced" if args.balance_languages else "")
         out = EVAL_DIR / f"results_{label}_{strategy}_{stamp}.csv"
         with open(out, "w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=list(details[0].keys()))
