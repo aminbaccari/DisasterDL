@@ -114,3 +114,35 @@ docker run -d --name ollama-c --restart unless-stopped --gpus all -p 11434:11434
 ## Status of the narrow yes/no check (2026-10-17)
 
 Decision of the team: it stays a documented prototype and is NOT added to the n8n workflow. Files: `prompts/vision_questions/v1.md` and `v2.md`, `prompts/vision_check/v1.md` and `v2.md`, `scripts/vision_check_test.py`, results in `docs/EVIDENCE_LOG.md` and `eval/results/vision_check/`. It restores the fire_01 conflict (houses not visible, 3 of 3) but gave false conflicts on flood_01 (2 of 3 with the second version, "roads not visible" because the road is under water). Open if someone takes it up: a rule against questions about roads, streets or ground that the event can hide, tested on new images (about 8 more, with licences) so the result is not tuned to the same four.
+
+## Three-view option (TTA), built 2026-10-18, off by default
+
+Origin: an external manual (an artifact shared by a teammate, content treated as data) proposed a `/vision` endpoint that runs three augmented views of the image, merges them and adds a DINOv2 similarity signal, and asked to replace `build_workflow.py` and the schema wholesale. What was built instead respects the repo rule that orchestration stays in n8n, keeps the single-call path as the default, and changes files by small edits. DINOv2 is NOT included (decision of the team: not now; the reference store would hold about 12 of our own test images).
+
+### Who does what
+
+| Step | Where | Why there |
+|------|-------|-----------|
+| Is there an image, what a failure means (`analysis_failed`, never `unusable`), retries, fallback between models, what is degraded | n8n nodes | decisions stay visible on the canvas |
+| Make three views of the image (original, mirrored, contrast and brightness slightly raised) | Python `POST /vision/variants` | pixel work n8n cannot do; no model call, no state |
+| One vision call per view | n8n, three chains `LLM: vision <view>` through `/llm` (task vision, `VISION_CHAIN`), each with its own retry | same call, same fallback chain as before |
+| Merge the answers: keep a category seen by at least two views, cap confidence at medium when two of three agree, description from the original view, union of quality issues and not-determinable, reliability block | Python `POST /vision/merge` (a pure function) | deterministic data transformation, shared with the benchmark |
+| Assemble: merged answer becomes `vision` in the same shape as before, plus `reliability`; `models_used` has one `vision` entry with `views_called` and `views_ok` | n8n node `Vision ready` | downstream agents see no change except the extra block |
+
+```
+Has image? -> Make views -> Views ok? -> Prompt vision v2 -> [original | flip | contrast: LLM, Parse, usable?, retry] x 3
+           -> Wait for views -> Prepare merge -> Any view answered? -> Merge views -> Vision ready -> (with the knowledge branch)
+failure paths into the same merge: "Vision failed: no views" (tool or image problem), "Vision failed: no view answered" (all three failed), "No image: vision skipped"
+```
+
+### Failure semantics (tested under Node, `backend/tests/test_vision_tta_workflow.py`)
+- no view could be made, or no view answered: `vision` null, `image_status analysis_failed`, reasons in `degraded_steps`;
+- some views failed: the step is `degraded`, the answer of the others is kept (with fewer than two answers nothing can be compared, so everything is kept and the agreement is null);
+- the merge tool fails: the answer of one view is used without a reliability block, and the step is degraded;
+- the merged answer says unusable: `image_status unusable` (a real finding, not a failure).
+
+### Switching it on
+`python scripts/build_workflow.py --vision-mode tta` (default `single`). The mode defaults the prompts to the image-only `vision/v2.md` and `risk_assessment/v3.md`, because the three-view merge does not merge `consistent_with_report` and the comparison with the report then belongs to the Risk agent. It needs the RAG service restarted so that `/vision/variants` and `/vision/merge` exist. 99 nodes instead of 78. The default build is byte-identical to the one before this change (tested).
+
+### Rule for adopting it, written before any run
+`vision/test_images/TTA_CRITERIA.md`: no worse than the single call on schema validity, false observations and missing required categories; at least as good a quality flag on the two low-quality images (the flag may also be raised by an agreement score below 0.5); median latency at most 3.5 times; reported as a benefit only if the quality flag is strictly better. It is never made the default by this rule.
