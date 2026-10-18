@@ -1,23 +1,143 @@
 {
-  "note": "Written by the assistant after looking at the four images on 2026-10-17, one reader. A team member should check it. 'required' = categories a good description must contain. 'absent' = categories whose presence in an answer is a false observation for this image (nothing of that kind is in the picture). Categories not listed are not scored. Used by scripts/vision_bench.py.",
+  "note": "Written by the assistant after looking at the four images on 2026-10-17, one reader. A team member should check it. 'required' = categories a good description must contain. 'absent' = categories whose presence in an answer is a false observation for this image (nothing of that kind is in the picture). Categories not listed are not scored. Used by scripts/vision_bench.py. Second batch added 2026-10-17 (same reader). Images without an incident file carry a short invented 'report_text' (used only by prompts that take a report); 'low_quality' marks images where a good answer flags a quality problem.",
   "fire_01.jpg": {
-    "required": ["flames", "smoke"],
-    "absent": ["flood_water", "structural_damage", "people"],
+    "required": [
+      "flames",
+      "smoke"
+    ],
+    "absent": [
+      "flood_water",
+      "structural_damage",
+      "people"
+    ],
     "comment": "Night shot of a hillside fire above dark water (a lake or the sea, not a flood), a gantry or sign structure and light trails in the foreground. No house is visible."
   },
   "flood_01.jpg": {
-    "required": ["flood_water"],
-    "absent": ["flames", "smoke", "structural_damage", "people"],
+    "required": [
+      "flood_water"
+    ],
+    "absent": [
+      "flames",
+      "smoke",
+      "structural_damage",
+      "people"
+    ],
     "comment": "Brown water in a town square up to the ground floors of intact buildings, traffic signs, no people visible."
   },
   "structural_01.jpg": {
-    "required": ["structural_damage"],
-    "absent": ["flood_water", "flames"],
+    "required": [
+      "structural_damage"
+    ],
+    "absent": [
+      "flood_water",
+      "flames"
+    ],
     "comment": "Partly collapsed house with rubble and timber in front, cropped to remove people. Whether dust is visible in the air is unclear to me, so it is not scored."
   },
   "edge_02_conflict.jpg": {
-    "required": ["smoke"],
-    "absent": ["flood_water", "flames", "structural_damage"],
+    "required": [
+      "smoke"
+    ],
+    "absent": [
+      "flood_water",
+      "flames",
+      "structural_damage"
+    ],
     "comment": "Backyard with fence, shed, trees, a pole with wires and a hazy orange sun. No water on the ground, no road. Haze is from smoke (the photo is titled forest fire smoke)."
+  },
+  "fire_02.jpg": {
+    "required": [
+      "smoke"
+    ],
+    "absent": [
+      "flood_water",
+      "structural_damage"
+    ],
+    "report_text": "Heavy smoke is rising behind a farm and a house stands close to the smoke. We think a wildfire is coming toward the house.",
+    "comment": "Smoke columns over fields, one house at the bottom right. No flames are visible, so flames are not required and not scored."
+  },
+  "fire_03.jpg": {
+    "required": [
+      "smoke"
+    ],
+    "absent": [
+      "flood_water",
+      "structural_damage",
+      "people"
+    ],
+    "report_text": "A large smoke column over the fields, probably a grass fire. Nobody is nearby.",
+    "comment": "Smoke only, over a field with a fence. No flames visible."
+  },
+  "fire_04_house.jpg": {
+    "required": [
+      "flames",
+      "smoke"
+    ],
+    "absent": [
+      "flood_water"
+    ],
+    "report_text": "A house is on fire in our street. Flames are coming out of the roof and the front door.",
+    "comment": "Structure fire. Structural damage is plausible (burning roof) so it is not scored."
+  },
+  "fire_05_training.jpg": {
+    "required": [
+      "flames",
+      "smoke"
+    ],
+    "absent": [
+      "flood_water"
+    ],
+    "report_text": "A building is burning and firefighters are working on it.",
+    "comment": "House fire with firefighters far away. The title says training burn; the picture alone cannot show that."
+  },
+  "edge_04_blurred_water.jpg": {
+    "required": [],
+    "absent": [
+      "flames",
+      "smoke",
+      "structural_damage",
+      "people"
+    ],
+    "low_quality": true,
+    "report_text": "Flooding in the city centre. The whole square is under water.",
+    "comment": "Blurred night photo of a lit building and its reflection in still water. It is not a flood: a good answer flags the blur and the dark, and does not confirm the report. Water as such is visible, so flood_water is not scored."
+  },
+  "flood_03_satellite.jpg": {
+    "required": [
+      "flood_water"
+    ],
+    "absent": [
+      "flames",
+      "structural_damage",
+      "vehicles",
+      "people"
+    ],
+    "report_text": "The river has overflowed and flooded the fields and part of the city.",
+    "comment": "Two satellite panels. White clouds in the lower panel are not smoke. Place names are printed in the image."
+  },
+  "structural_02.jpg": {
+    "required": [
+      "structural_damage"
+    ],
+    "absent": [
+      "flood_water",
+      "flames",
+      "smoke"
+    ],
+    "report_text": "A brick building partly collapsed after the earthquake. Bricks are lying across the street.",
+    "comment": "Damaged upper corner, boarded openings, pile of bricks. People in the far background, if any, are not scored."
+  },
+  "control_01_night.jpg": {
+    "required": [],
+    "absent": [
+      "flames",
+      "smoke",
+      "flood_water",
+      "structural_damage",
+      "people"
+    ],
+    "low_quality": true,
+    "report_text": "A big fire is burning on this street tonight.",
+    "comment": "Calm night street, lamps lit, no disaster, low light. A good answer does not confirm the report."
   }
 }

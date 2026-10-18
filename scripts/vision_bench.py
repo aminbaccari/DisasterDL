@@ -12,6 +12,7 @@ Measures, all computed from the answers:
   missing_required           'required' categories with no observation
   absence_observations       observations that only say something is not there ("No people are visible")
   place_words                the answer names a place or region (Nabeul, Tunisia, Europe, Italy, Nepal ...), which the prompt forbids
+  quality_flagged            for images marked low_quality (blurred, dark): the answer sets image_usable false or lists quality_issues
   latency                    seconds per call, the first call after loading a model is cold
 The ground truth was written by one reader (see that file). Whether an observation is TRUE beyond these tags needs a person looking at the image.
 
@@ -55,17 +56,20 @@ def measures(image_name, result):
         "missing_required": ",".join(c for c in truth.get("required", []) if c not in observed),
         "absence_observations": sum(1 for o in result.get("observations", []) if isinstance(o, dict) and ABSENCE.search(o.get("description", ""))),
         "place_words": bool(PLACES.search(json.dumps(result, ensure_ascii=False))),
+        # only for images marked low_quality in GROUND_TRUTH.json: did the answer flag a problem (image_usable false or quality_issues listed)?
+        "quality_flagged": (result.get("image_usable") is False or bool(result.get("quality_issues"))) if truth.get("low_quality") else "",
     }
 
 
 def table(rows, prompts):
-    print("prompt         calls  json  schema  false_obs(calls)  missing_req(calls)  absence_obs(total)  place_words(calls)  median_s")
+    print("prompt         calls  json  schema  false_obs(calls)  missing_req(calls)  absence_obs(total)  place_words(calls)  quality_flagged  median_s")
     for prompt in prompts:
         r = [x for x in rows if x["prompt"] == prompt]
         ok = [x for x in r if x["json_valid"]]
         secs = sorted(x["seconds"] for x in r)
         print(f"{prompt:<14} {len(r):<6} {len(ok):<5} {sum(bool(x['schema_valid']) for x in r):<7} {sum(1 for x in ok if x['false_categories']):<17} "
-              f"{sum(1 for x in ok if x['missing_required']):<19} {sum(x['absence_observations'] for x in ok):<19} {sum(1 for x in ok if x['place_words']):<19} {secs[len(secs) // 2]}")
+              f"{sum(1 for x in ok if x['missing_required']):<19} {sum(x['absence_observations'] for x in ok):<19} {sum(1 for x in ok if x['place_words']):<19} "
+              f"{sum(1 for x in ok if x.get('quality_flagged') in (True, 'True'))}/{sum(1 for x in ok if x.get('quality_flagged') not in ('', None)):<14} {secs[len(secs) // 2]}")
 
 
 def rescore(folder):
@@ -105,6 +109,9 @@ def main():
     out.mkdir(parents=True)
     rows = []
     incidents = [json.loads(p.read_text(encoding="utf-8")) for p in sorted((ROOT / "eval" / "incidents").glob("*.json"))]
+    # images that belong to no incident file carry an invented report text in GROUND_TRUTH.json
+    used = {i.get("image") for i in incidents}
+    incidents += [{"id": name.rsplit(".", 1)[0], "image": name, "text": t["report_text"]} for name, t in TRUTH.items() if name.endswith(".jpg") and name not in used and t.get("report_text")]
     for run in range(1, args.runs + 1):
         for inc in incidents:
             if not inc.get("image") or (args.only and inc["id"] not in args.only):
@@ -122,7 +129,7 @@ def main():
                 seconds = round(time.time() - started, 1)
                 row = {"model": args.model, "prompt": prompt, "incident": inc["id"], "image": inc["image"], "run": run, "seconds": seconds,
                        "answered": "error" not in answer, "json_valid": False, "schema_valid": False, "n_observations": "", "schema_errors": "",
-                       "false_categories": "", "missing_required": "", "absence_observations": "", "place_words": ""}
+                       "false_categories": "", "missing_required": "", "absence_observations": "", "place_words": "", "quality_flagged": ""}
                 result = None
                 if "error" in answer:
                     att = answer["x_llm"]["attempts"]

@@ -55,5 +55,28 @@ class TestMeasures(unittest.TestCase):
         self.assertNotIn("{{incident_text}}", t2)
 
 
+    def test_every_image_in_the_folder_has_a_ground_truth_entry(self):
+        truth = json.loads((ROOT / "vision" / "test_images" / "GROUND_TRUTH.json").read_text(encoding="utf-8"))
+        for path in sorted((ROOT / "vision" / "test_images").glob("*.jpg")):
+            self.assertIn(path.name, truth, path.name)
+
+    def test_images_without_an_incident_file_have_a_report_text(self):
+        truth = json.loads((ROOT / "vision" / "test_images" / "GROUND_TRUTH.json").read_text(encoding="utf-8"))
+        used = {json.loads(p.read_text(encoding="utf-8")).get("image") for p in (ROOT / "eval" / "incidents").glob("*.json")}
+        for name, t in truth.items():
+            if name.endswith(".jpg") and name not in used:
+                self.assertTrue(t.get("report_text"), name)
+
+    def test_every_image_is_credited_in_sources(self):
+        sources = (ROOT / "vision" / "test_images" / "SOURCES.md").read_text(encoding="utf-8")
+        for path in sorted((ROOT / "vision" / "test_images").glob("*.jpg")):
+            self.assertIn(path.name, sources, path.name)
+
+    def test_quality_flag_is_only_scored_for_low_quality_images(self):
+        self.assertEqual(vb.measures("fire_01.jpg", {"observations": [], "image_usable": False})["quality_flagged"], "")
+        self.assertTrue(vb.measures("edge_04_blurred_water.jpg", {"observations": [], "image_usable": True, "quality_issues": ["blurred"]})["quality_flagged"])
+        self.assertFalse(vb.measures("control_01_night.jpg", {"observations": [], "image_usable": True, "quality_issues": []})["quality_flagged"])
+
+
 if __name__ == "__main__":
     unittest.main()
