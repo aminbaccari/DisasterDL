@@ -187,6 +187,66 @@ if (why) {
 return [{ json: { vision: r.value, vision_status: r.value.image_usable ? 'analysed' : 'unusable', degraded_a: [], _failed: false } }];
 """
 
+# ---------- three-view (TTA) vision path: only used with --vision-mode tta ----------
+# One Parse node per view. Same checks as PARSE_VISION; the answer says which view it is, and a failure names the view.
+PARSE_VISION_VIEW = PARSE_VISION.replace("{ json: { vision:", "{ json: { view: 'VIEWNAME', vision:").replace("reason: why", "reason: 'view VIEWNAME: ' + why")
+
+VIEWS_FAILED = r"""
+// /vision/variants could not make the views (not a readable image, tool down). Nothing was analysed: this is not an unusable image.
+const r = $input.first().json;
+const why = (r && r.error && (r.error.message || r.error)) || (r && r.message) || 'the image tool returned no views';
+return [{ json: { vision: null, vision_status: 'analysis_failed', degraded_a: [{ step: 'vision', reason: 'could not prepare the views of the image: ' + String(why).slice(0, 200) }], _failed: true } }];
+"""
+
+PREPARE_MERGE = r"""
+// The three views are in. Keep the answers that passed the checks of their Parse node, remember the views that failed.
+const items = $input.all().map(i => i.json);
+const answers = items.filter(x => x.vision && !x._failed).map(x => ({ name: x.view, result: x.vision }));
+const failed = items.filter(x => !x.vision || x._failed).map(x => ({ view: x.view, reasons: (x.degraded_a || []).map(d => d.reason) }));
+return [{ json: { answers, failed, requested: 3, any_answer: answers.length > 0 } }];
+"""
+
+VISION_NO_VIEW = r"""
+// Not one of the views gave an answer that passed the checks. The step failed: vision stays null and the status says why.
+const p = $input.first().json;
+const reasons = (p.failed || []).flatMap(f => f.reasons).join(' | ').slice(0, 400);
+return [{ json: { vision: null, vision_status: 'analysis_failed', degraded_a: [{ step: 'vision', reason: 'none of the 3 views gave a usable answer: ' + reasons }], _failed: true } }];
+"""
+
+VISION_TTA_READY = r"""
+// The merged answer (from /vision/merge) becomes THE vision answer, in the same shape as the single-call path.
+const prep = $('Prepare merge').first().json;
+const r = $input.first().json;
+const CATS = ['smoke', 'flames', 'flood_water', 'structural_damage', 'infrastructure', 'vehicles', 'people', 'vegetation', 'other'];
+function problem(o) {
+  if (!o || typeof o !== 'object' || Array.isArray(o)) return 'the merged answer is not an object';
+  if (typeof o.image_usable !== 'boolean') return 'image_usable is not a boolean';
+  if (!Array.isArray(o.observations) || !Array.isArray(o.not_determinable)) return 'observations or not_determinable is not a list';
+  if (o.observations.some(x => !CATS.includes(x.category) || !['high', 'medium', 'low'].includes(x.confidence))) return 'an observation has an invalid category or confidence';
+  return null;
+}
+const degraded = [];
+const failed = prep.failed || [];
+if (failed.length) degraded.push({ step: 'vision', reason: failed.length + ' of ' + prep.requested + ' views failed: ' + failed.flatMap(f => f.reasons).join(' | ').slice(0, 300) });
+let vision = null;
+const m = r && r.merged;
+const why = m ? problem(m) : String((r && r.error && (r.error.message || r.error)) || 'no answer from the merge tool').slice(0, 150);
+if (m && !why) vision = m;
+else {
+  // The merge tool failed: do not lose the image. Use the answer of one view (already checked by its Parse node), without a reliability block.
+  vision = prep.answers[0].result;
+  degraded.push({ step: 'vision', reason: 'the merge tool failed (' + why + '): the answer of one view is used, without agreement check' });
+}
+const llm = [];
+for (const n of ['Vision original ready', 'Vision flip ready', 'Vision contrast ready']) {
+  try { const node = $(n); if (node.isExecuted) { const l = node.first().json._llm; if (l) llm.push(l); } } catch (e) { /* view not run */ }
+}
+const first = llm.find(l => l.provider) || {};
+const _llm = { step: 'vision', provider: first.provider || null, model: first.model || null, seconds: Math.round(llm.reduce((a, l) => a + (l.seconds || 0), 0) * 100) / 100,
+  failed_attempts: llm.flatMap(l => l.failed_attempts || []), views_called: prep.requested, views_ok: prep.answers.length };
+return [{ json: { vision, vision_status: vision.image_usable ? 'analysed' : 'unusable', degraded_a: degraded, _failed: false, _llm } }];
+"""
+
 PARSE_QUERIES = READ_MODEL + r"""
 const inc = $('Incident ready').first().json;
 const r = readModel($input.first().json);
@@ -411,7 +471,12 @@ class Builder:
     def _gemini_http(self, name, x, y, json_out=True, image=False, src="$json", retry=False):
         """POST /llm: the chain picks the model. The retry node sends retry: true so the model that just failed is not asked first again."""
         # an image call is a vision task: /llm then uses VISION_CHAIN (a local or hosted vision model) when it is set
-        img = (", task: 'vision', image_b64: $('Normalise input').first().json.image_b64, image_mime: $('Normalise input').first().json.image_mime" if image else "")
+        if image is True:
+            img = ", task: 'vision', image_b64: $('Normalise input').first().json.image_b64, image_mime: $('Normalise input').first().json.image_mime"
+        elif image:  # a JavaScript expression for an object with image_b64 and image_mime: one view of the three-view path
+            img = f", task: 'vision', image_b64: {image}.image_b64, image_mime: {image}.image_mime"
+        else:
+            img = ""
         body = ("={{ JSON.stringify({ system: " + src + ".system, user: " + src + ".user, json: " + ("true" if json_out else "false") + ", retry: " + ("true" if retry else "false") + img + " }) }}")
         params = {"method": "POST", "url": "={{ $('Config').first().json.rag_url + '/llm' }}", "sendBody": True, "specifyBody": "json", "jsonBody": body, "options": {"timeout": 600000}}
         return self.add(name, "n8n-nodes-base.httpRequest", 4.2, params, x, y, onError="continueRegularOutput")
@@ -446,6 +511,39 @@ def chain(b, label, prompt_name, parse_js, x, y, versions, ready_name, image=Fal
     return entry, ready
 
 
+VIEWS = ["original", "flip", "contrast"]
+
+
+def build_vision_tta(b, v, X, L):
+    """Three-view vision branch. n8n keeps every decision: the three calls, their retries, what a failure means. Python only makes the views and merges.
+
+    Has image? -> Make views (/vision/variants) -> Views ok? -> Prompt vision -> 3 x [LLM, Parse, usable?, retry, ready] -> Wait for views
+    -> Prepare merge -> Any view answered? -> Merge views (/vision/merge) -> Vision ready.   Returns (ready node, nodes that replace it on failure).
+    """
+    b.http_json("Make views", "={{ $('Config').first().json.rag_url + '/vision/variants' }}",
+                "={{ JSON.stringify({ image_b64: $('Normalise input').first().json.image_b64, image_mime: $('Normalise input').first().json.image_mime }) }}", 12 * X, 40, timeout=60000)
+    b.if_("Views ok?", "={{ Array.isArray($json.variants) && $json.variants.length === 3 }}", 13 * X, 40)
+    b.code("Vision failed: no views", VIEWS_FAILED, 14 * X, 220, v)
+    prompt_name = "Prompt vision " + v["vision"]
+    b.prompt("vision", 14 * X, -140)
+    L("Has image?", "Make views", 0); L("Make views", "Views ok?"); L("Views ok?", prompt_name, 0); L("Views ok?", "Vision failed: no views", 1)
+    b.add("Wait for views", "n8n-nodes-base.merge", 3.2, {"numberInputs": len(VIEWS), "options": {}}, 21 * X, -140)
+    for i, name in enumerate(VIEWS):
+        y = -520 + i * 300
+        parse = PARSE_VISION_VIEW.replace("VIEWNAME", name)
+        first, ready = chain(b, "vision " + name, prompt_name, parse, 15 * X, y, v, f"Vision {name} ready", image=f"$('Make views').first().json.variants[{i}]")
+        L(prompt_name, first)
+        L(ready, "Wait for views", 0, i)
+    b.code("Prepare merge", PREPARE_MERGE, 22 * X, -140, v)
+    b.if_("Any view answered?", "={{ $json.any_answer }}", 23 * X, -140)
+    b.code("Vision failed: no view answered", VISION_NO_VIEW, 24 * X, 40, v)
+    b.http_json("Merge views", "={{ $('Config').first().json.rag_url + '/vision/merge' }}", "={{ JSON.stringify({ answers: $json.answers, requested: $json.requested }) }}", 24 * X, -240, timeout=30000)
+    b.code("Vision ready", VISION_TTA_READY, 25 * X, -240, v)
+    L("Wait for views", "Prepare merge"); L("Prepare merge", "Any view answered?"); L("Any view answered?", "Merge views", 0); L("Any view answered?", "Vision failed: no view answered", 1)
+    L("Merge views", "Vision ready")
+    return "Vision ready", ["Vision failed: no views", "Vision failed: no view answered"]
+
+
 def build(args):
     v = VERSIONS
     b = Builder()
@@ -474,11 +572,17 @@ def build(args):
 
     # 3a. vision branch
     b.if_("Has image?", "={{ $('Normalise input').first().json.has_image }}", 11 * X, 120)
-    b.prompt("vision", 12 * X, 40)
-    vfirst, vready = chain(b, "vision", "Prompt vision " + v["vision"], PARSE_VISION, 13 * X, 40, v, "Vision ready", image=True)
-    b.code("No image: vision skipped", NO_IMAGE, 12 * X, 200, v)
-    L("Enough to assess?", "Has image?", 0); L("Has image?", "Prompt vision " + v["vision"], 0); L("Has image?", "No image: vision skipped", 1)
-    L("Prompt vision " + v["vision"], vfirst)
+    vision_failures = []
+    if args.vision_mode == "tta":
+        vready, vision_failures = build_vision_tta(b, v, X, L)
+        b.code("No image: vision skipped", NO_IMAGE, 12 * X, 200, v)
+        L("Enough to assess?", "Has image?", 0); L("Has image?", "No image: vision skipped", 1)
+    else:
+        b.prompt("vision", 12 * X, 40)
+        vfirst, vready = chain(b, "vision", "Prompt vision " + v["vision"], PARSE_VISION, 13 * X, 40, v, "Vision ready", image=True)
+        b.code("No image: vision skipped", NO_IMAGE, 12 * X, 200, v)
+        L("Enough to assess?", "Has image?", 0); L("Has image?", "Prompt vision " + v["vision"], 0); L("Has image?", "No image: vision skipped", 1)
+        L("Prompt vision " + v["vision"], vfirst)
 
     # 3b. knowledge branch
     b.prompt("rag_queries", 11 * X, 700)
@@ -501,6 +605,8 @@ def build(args):
     b.add("Wait for both branches", "n8n-nodes-base.merge", 3.2, {"mode": "combine", "combineBy": "combineByPosition", "options": {}}, 29 * X, 300)
     b.code("Assemble context", ASSEMBLE, 30 * X, 300, v)
     L(vready, "Wait for both branches", 0, 0); L("No image: vision skipped", "Wait for both branches", 0, 0)
+    for failure in vision_failures:  # three-view path: the nodes that say the vision step failed
+        L(failure, "Wait for both branches", 0, 0)
     L(kready, "Wait for both branches", 0, 1); L("Knowledge: none", "Wait for both branches", 0, 1)
     L("Wait for both branches", "Assemble context")
     b.prompt("risk", 31 * X, 300)
@@ -572,8 +678,15 @@ def main():
                         help="use another prompt file for one agent, for before and after tests, for example --prompt incident=incident_understanding/v1.md --prompt report=report/v3.md")
     parser.add_argument("--pace-seconds", type=int, default=0,
                         help="wait this long before every model call. Default 0: the chain already moves to the next model on a rate limit.")
+    parser.add_argument("--vision-mode", choices=["single", "tta"], default="single",
+                        help="single (default): one vision call per image. tta: three views of the image (original, mirrored, contrast), three calls, agreed observations kept. "
+                             "tta needs the image-only vision prompt, so it defaults to vision/v2.md and risk_assessment/v3.md unless --prompt says otherwise.")
     parser.add_argument("--out-dir", default=str(ROOT / "n8n" / "workflows"))
     args = parser.parse_args()
+    if args.vision_mode == "tta":
+        for agent, path in (("vision", "vision/v2.md"), ("risk", "risk_assessment/v3.md")):
+            PROMPTS[agent] = path
+            VERSIONS[agent] = re.search(r"v\d+", Path(path).stem).group(0)
     out = Path(args.out_dir)
     out.mkdir(parents=True, exist_ok=True)
     Builder.pace_seconds = args.pace_seconds

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "disasterai/vision.schema.json",
   "title": "Vision Agent output",
-  "description": "Source tag: every observation comes from the image, so the implicit tag is 'image'. Contract from prompts/vision/v1.md and v2.md. consistent_with_report and inconsistencies are written by v1 only: v2 does not see the report, the comparison is done by the Risk agent (risk v3). When there is no image n8n sets vision to null and does not call the agent.",
+  "description": "Source tag: every observation comes from the image, so the implicit tag is 'image'. Contract from prompts/vision/v1.md and v2.md. consistent_with_report and inconsistencies are written by v1 only: v2 does not see the report, the comparison is done by the Risk agent (risk v3). When there is no image n8n sets vision to null and does not call the agent. reliability is written only by the three-view path (/vision/merge).",
   "type": "object",
   "required": [
     "image_usable",
@@ -87,6 +87,58 @@
       "type": "array",
       "items": {
         "type": "string"
+      }
+    },
+    "reliability": {
+      "type": "object",
+      "description": "Written by /vision/merge for the three-view path only: how far the views agreed.",
+      "required": [
+        "variants_used",
+        "variants_requested",
+        "usable_votes",
+        "category_agreement_score",
+        "unstable_categories"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "variants_used": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "variants_requested": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "usable_votes": {
+          "type": "string"
+        },
+        "category_agreement_score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "unstable_categories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "category",
+              "support"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "category": {
+                "type": "string"
+              },
+              "support": {
+                "type": "integer"
+              }
+            }
+          }
+        }
       }
     }
   }

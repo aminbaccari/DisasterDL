@@ -78,5 +78,51 @@ class TestMeasures(unittest.TestCase):
         self.assertFalse(vb.measures("control_01_night.jpg", {"observations": [], "image_usable": True, "quality_issues": []})["quality_flagged"])
 
 
+    def test_three_view_condition_merges_three_calls(self):
+        import io
+        from PIL import Image
+        buf = io.BytesIO()
+        Image.new("RGB", (32, 32), (10, 20, 30)).save(buf, format="JPEG")
+        good = json.dumps({"image_usable": True, "quality_issues": [], "scene_summary": "s", "observations": [{"category": "smoke", "description": "d", "confidence": "high"}],
+                           "visible_text": [], "not_determinable": []})
+        calls = []
+
+        def fake(system, user, json_mode, image, chain, timeout, rotate, trusted=False):
+            calls.append(image)
+            return {"candidates": [{"content": {"parts": [{"text": good}]}}], "x_llm": {"attempts": []}}
+
+        original = vb.llm_chain._complete_once
+        vb.llm_chain._complete_once = fake
+        try:
+            merged, seconds, views_ok, error = vb.analyse_tta(buf.getvalue(), "image/jpeg", "sys", "user", [("ollama", "m")])
+        finally:
+            vb.llm_chain._complete_once = original
+        self.assertEqual((len(calls), views_ok, error), (3, 3, ""))
+        self.assertEqual(merged["reliability"]["category_agreement_score"], 1.0)
+
+    def test_three_view_condition_survives_a_failed_view(self):
+        import io
+        from PIL import Image
+        buf = io.BytesIO()
+        Image.new("RGB", (32, 32), (10, 20, 30)).save(buf, format="JPEG")
+        good = json.dumps({"image_usable": True, "quality_issues": [], "scene_summary": "s", "observations": [], "visible_text": [], "not_determinable": []})
+        state = {"n": 0}
+
+        def fake(system, user, json_mode, image, chain, timeout, rotate, trusted=False):
+            state["n"] += 1
+            if state["n"] == 2:
+                return {"error": {"message": "x"}, "x_llm": {"attempts": [{"reason": "ReadTimeout"}]}}
+            return {"candidates": [{"content": {"parts": [{"text": good}]}}], "x_llm": {"attempts": []}}
+
+        original = vb.llm_chain._complete_once
+        vb.llm_chain._complete_once = fake
+        try:
+            merged, seconds, views_ok, error = vb.analyse_tta(buf.getvalue(), "image/jpeg", "sys", "user", [("ollama", "m")])
+        finally:
+            vb.llm_chain._complete_once = original
+        self.assertEqual((views_ok, error), (2, "ReadTimeout"))
+        self.assertEqual(merged["reliability"]["variants_used"], 2)
+
+
 if __name__ == "__main__":
     unittest.main()

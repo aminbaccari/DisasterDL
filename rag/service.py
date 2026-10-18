@@ -18,6 +18,7 @@ load_dotenv()  # LLM_CHAIN and the provider keys are read from .env by backend/l
 
 from backend.llm_router import router as llm_router  # noqa: E402
 from backend.validate import router as validate_router  # noqa: E402
+from backend.vision_tools import router as vision_router  # noqa: E402
 from rag import chunking, embedder, store
 
 # Set DEFAULT_STRATEGY in .env after the chunking evaluation decides which is better.
@@ -35,6 +36,7 @@ app = FastAPI(title="DisasterAI RAG service", lifespan=lifespan)
 # One process and one port for n8n: /search (retrieval), /validate (guardrails on the report), /llm (fallback chain of models).
 app.include_router(validate_router)
 app.include_router(llm_router)
+app.include_router(vision_router)  # /vision/variants and /vision/merge: stateless tools for the three-view vision path, orchestrated by n8n
 
 
 class SearchRequest(BaseModel):
