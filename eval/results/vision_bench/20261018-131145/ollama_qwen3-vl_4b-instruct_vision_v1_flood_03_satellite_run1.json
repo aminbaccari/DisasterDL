@@ -1,0 +1,64 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "flood_03_satellite",
+  "image": "flood_03_satellite.jpg",
+  "run": 1,
+  "seconds": 11.9,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "The river has overflowed and flooded the fields and part of the city.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "Satellite imagery shows a wide river with significantly expanded floodwaters inundating adjacent agricultural fields and parts of urban areas including Memphis and West Memphis.",
+  "observations": [
+   {
+    "category": "flood_water",
+    "description": "Large area of water has overflowed the riverbanks, covering land that was previously dry, including fields and urban infrastructure.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Urban areas labeled as Memphis, West Memphis, Mud Island, and Treasure Island are partially surrounded by or submerged in floodwater.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Alternating patches of agricultural fields (dark and light brown) and urban green spaces are visible, with floodwater covering some fields.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A 2 km scale bar is visible in the bottom-left corner of both images for spatial reference.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [
+   "West Memphis",
+   "Memphis",
+   "Mud Island",
+   "Treasure Island",
+   "2 km"
+  ],
+  "consistent_with_report": "yes",
+  "inconsistencies": [],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "structural integrity",
+   "cause of flood",
+   "scale or distance of flood extent"
+  ]
+ }
+}

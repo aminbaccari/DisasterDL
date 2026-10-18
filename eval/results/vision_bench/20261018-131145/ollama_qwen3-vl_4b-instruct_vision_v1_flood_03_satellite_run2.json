@@ -1,0 +1,58 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "flood_03_satellite",
+  "image": "flood_03_satellite.jpg",
+  "run": 2,
+  "seconds": 35.9,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "The river has overflowed and flooded the fields and part of the city.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "Satellite imagery shows a river overflowing its banks, flooding adjacent agricultural land and urban areas, with visible labels for Memphis, West Memphis, Mud Island, and Treasure Island.",
+  "observations": [
+   {
+    "category": "flood_water",
+    "description": "River channel is wider and higher than normal, with water spreading into adjacent fields and urban areas.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Roads and urban grid patterns are visible, including areas labeled 'Memphis' and 'West Memphis'.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Agricultural fields and green patches of vegetation are visible, with some areas submerged.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Two images show a pre- and post-event view, with water extent increased in the lower image.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [
+   "West Memphis",
+   "Memphis",
+   "Mud Island",
+   "Treasure Island",
+   "2 km"
+  ],
+  "consistent_with_report": "yes",
+  "inconsistencies": [],
+  "not_determinable": []
+ }
+}

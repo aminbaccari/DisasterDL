@@ -1,0 +1,70 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "structural_02",
+  "image": "structural_02.jpg",
+  "run": 2,
+  "seconds": 11.3,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 2,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "A brick building partly collapsed after the earthquake. Bricks are lying across the street.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A brick building with visible structural damage and collapsed sections lies at a street corner, with debris including bricks and wood scattered across the pavement. In the background are other buildings and a traffic light.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "The brick building shows significant damage, with parts of the roof and upper floors collapsed inward and bricks protruding into the street.",
+    "confidence": "high"
+   },
+   {
+    "category": "flood_water",
+    "description": "No visible water or flooding.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A traffic light pole and traffic signals are visible. A street awning is torn and hanging.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "A red vehicle is visible in the distance on the street.",
+    "confidence": "medium"
+   },
+   {
+    "category": "people",
+    "description": "No people are visible in the immediate foreground or midground; distant figures might be present but are indistinct.",
+    "confidence": "low"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees are visible in the background behind buildings.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [
+   "NO S"
+  ],
+  "consistent_with_report": "yes",
+  "inconsistencies": [],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "structural integrity",
+   "cause of fire",
+   "scale or distance"
+  ]
+ }
+}

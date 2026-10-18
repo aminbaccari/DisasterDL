@@ -124,6 +124,7 @@ def main():
             for prompt in prompts:
                 system, template = loaded[prompt]
                 user = re.sub(r"\{\{incident_text\}\}", lambda m: inc["text"], template)
+                llm_chain.reset_cooldowns()  # a timeout on one call (a sleeping PC, a model reload) must not turn every later call into 'cooling down'
                 started = time.time()
                 answer = llm_chain._complete_once(system, user, True, image, chain, llm_chain.TIMEOUT_LOCAL, False, trusted=True)
                 seconds = round(time.time() - started, 1)

@@ -1,0 +1,67 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "structural_02",
+  "image": "structural_02.jpg",
+  "run": 2,
+  "seconds": 12.3,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "A brick building partly collapsed after the earthquake. Bricks are lying across the street.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A damaged brick building with collapsed sections and debris at its base, surrounded by traffic cones and temporary barriers. In the background, other buildings and a distant skyscraper are visible.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "A multi-story brick building with significant damage to its upper floors, exposed beams, and collapsed sections.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A street lamp and traffic signal pole in the foreground, with a green awning partially torn off.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A pile of rubble and bricks at the base of the damaged building.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "A red vehicle is visible in the distance on the right side of the street.",
+    "confidence": "medium"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees and greenery are visible in the distant background.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "A 'No S' sign is visible on the ground among the debris.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [
+   "No S"
+  ],
+  "not_determinable": [
+   "cause of damage",
+   "number of people",
+   "distance to other buildings",
+   "extent of damage to surrounding infrastructure"
+  ]
+ }
+}

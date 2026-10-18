@@ -1,0 +1,79 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "fire_03",
+  "image": "fire_03.jpg",
+  "run": 2,
+  "seconds": 23.3,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 8,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 4,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "A large smoke column over the fields, probably a grass fire. Nobody is nearby.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large, smoky plume rises from a field of dry grass under a pale sky, with a fence and some dark shapes in the foreground.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large, dense, orange-brown smoke column rising from a field, obscuring part of the horizon.",
+    "confidence": "high"
+   },
+   {
+    "category": "flood_water",
+    "description": "Not visible.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Not visible.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A simple wire fence with posts is visible in the foreground, stretching horizontally across the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "Not visible.",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "No people visible in the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Dry, yellowish grass covers the field. Some green vegetation is visible in the foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Dark, indistinct shapes are visible in the distance, possibly livestock near the fence line.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "yes",
+  "inconsistencies": [],
+  "not_determinable": [
+   "Cause of smoke",
+   "Scale of fire",
+   "Distance to smoke source",
+   "Number of animals or people nearby",
+   "Structural integrity of any buildings or structures",
+   "Exact location"
+  ]
+ }
+}

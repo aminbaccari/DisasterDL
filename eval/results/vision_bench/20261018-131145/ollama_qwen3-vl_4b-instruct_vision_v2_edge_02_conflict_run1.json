@@ -1,0 +1,55 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 1,
+  "seconds": 35.0,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A backyard scene at dusk or dawn with a hazy sky and a visible sun, featuring a shed, garden plots, a fence, and trees.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Hazy, smoky atmosphere obscuring the sky and sun",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Wooden fence, power lines, utility pole, shed with metal siding",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees, bushes, garden plants, and flowers in pots",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Orange plastic mesh barrier, blue barrel, gravel path, woodpile, garden tools",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "Sun visible through haze, appearing as a bright orange disc",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": []
+ }
+}

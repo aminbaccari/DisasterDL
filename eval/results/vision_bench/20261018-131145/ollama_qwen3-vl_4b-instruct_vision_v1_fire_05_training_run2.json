@@ -1,0 +1,74 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "fire_05_training",
+  "image": "fire_05_training.jpg",
+  "run": 2,
+  "seconds": 17.2,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 7,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 1,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "A building is burning and firefighters are working on it.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A house is engulfed in flames and thick black smoke, with firefighters operating from a grassy slope below. Trees surround the structure.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large plume of thick, dark smoke rising from the building.",
+    "confidence": "high"
+   },
+   {
+    "category": "flames",
+    "description": "Bright orange flames visible through broken windows and on the side of the building.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Roof and walls appear damaged; some panels are missing or charred.",
+    "confidence": "medium"
+   },
+   {
+    "category": "people",
+    "description": "Three figures in firefighter gear visible on the slope, operating a hose.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "No vehicles visible in the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A fence is visible in the lower-left portion of the image.",
+    "confidence": "medium"
+   },
+   {
+    "category": "vegetation",
+    "description": "Green grass and trees surrounding the building.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "yes",
+  "inconsistencies": [],
+  "not_determinable": [
+   "Water depth from hose",
+   "Number of firefighters",
+   "Structural integrity of building beyond visible damage",
+   "Scale or distance of building",
+   "Cause of fire",
+   "Presence of civilians"
+  ]
+ }
+}

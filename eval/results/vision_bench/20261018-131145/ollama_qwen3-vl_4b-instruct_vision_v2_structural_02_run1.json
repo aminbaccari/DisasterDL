@@ -1,0 +1,55 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "structural_02",
+  "image": "structural_02.jpg",
+  "run": 1,
+  "seconds": 10.3,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "A brick building partly collapsed after the earthquake. Bricks are lying across the street.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A heavily damaged multi-story brick building with collapsed sections and debris piled on the street corner, with other buildings and traffic visible in the background.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "Large portion of a brick building is collapsed, exposing wooden framing and interior structure.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Street corner with traffic lights, street signs, and a lamppost, with debris including broken bricks and wood planks.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "Cars are visible in the distance on the street.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "A single orange traffic cone is visible near the debris pile.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A green tarp is lying on the ground near the debris.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": []
+ }
+}

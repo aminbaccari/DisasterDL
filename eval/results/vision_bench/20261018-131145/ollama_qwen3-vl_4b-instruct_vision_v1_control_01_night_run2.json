@@ -1,0 +1,83 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "control_01_night",
+  "image": "control_01_night.jpg",
+  "run": 2,
+  "seconds": 15.7,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 8,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 6,
+  "place_words": false,
+  "quality_flagged": false
+ },
+ "incident_text": "A big fire is burning on this street tonight.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A quiet, dimly lit street at night with brick buildings, illuminated windows, and street lamps. No signs of fire or active disaster are visible.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "No smoke is visible in the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "flames",
+    "description": "No flames are visible in the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "flood_water",
+    "description": "No water is visible on the street or in the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Buildings appear intact with no visible damage.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Street lamps are lit; some buildings have window boxes with flowers. A sign is partially visible on the right side of the image, but its text is unreadable.",
+    "confidence": "medium"
+   },
+   {
+    "category": "vehicles",
+    "description": "No vehicles are clearly visible in the image.",
+    "confidence": "low"
+   },
+   {
+    "category": "people",
+    "description": "No people are visible in the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Flowering plants in window boxes are visible on the buildings.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [
+   "Sign partially visible on right side (text unreadable)"
+  ],
+  "consistent_with_report": "no",
+  "inconsistencies": [
+   "Report claims a big fire is burning on the street, but no smoke or flames are visible in the image."
+  ],
+  "not_determinable": [
+   "Cause of fire",
+   "Scale or distance",
+   "Number of people",
+   "Structural integrity of buildings",
+   "Water depth",
+   "Presence of vehicles"
+  ]
+ }
+}

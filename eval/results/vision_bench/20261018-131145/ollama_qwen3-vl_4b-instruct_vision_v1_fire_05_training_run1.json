@@ -1,0 +1,68 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "fire_05_training",
+  "image": "fire_05_training.jpg",
+  "run": 1,
+  "seconds": 11.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 1,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "A building is burning and firefighters are working on it.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A house is on fire with large black smoke billowing from it, and firefighters are operating a hose from a grassy slope below.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large plume of dark, thick smoke rising from the building.",
+    "confidence": "high"
+   },
+   {
+    "category": "flames",
+    "description": "Bright orange flames visible through the windows and roof of the building.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Roof and walls of the building appear damaged and partially collapsed.",
+    "confidence": "medium"
+   },
+   {
+    "category": "people",
+    "description": "Three figures in firefighter gear are visible on the grassy slope, operating a hose.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "No visible vehicles in the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees and shrubs are visible surrounding the building and slope.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "yes",
+  "inconsistencies": [],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "structural integrity",
+   "cause of fire",
+   "scale or distance"
+  ]
+ }
+}

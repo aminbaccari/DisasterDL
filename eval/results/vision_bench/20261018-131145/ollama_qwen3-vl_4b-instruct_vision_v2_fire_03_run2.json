@@ -1,0 +1,54 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_03",
+  "image": "fire_03.jpg",
+  "run": 2,
+  "seconds": 8.6,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "A large smoke column over the fields, probably a grass fire. Nobody is nearby.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large plume of smoke rises from a field in the distance, with a fence and grassy field in the foreground.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large, dense smoke plume rising from a distant area.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Dry grass field in the foreground and background.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Fence posts and wire visible in the mid-ground.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Several small, dark shapes appear to be animals in the field.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of smoke",
+   "distance to smoke source",
+   "scale of fire or smoke"
+  ]
+ }
+}

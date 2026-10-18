@@ -1,0 +1,61 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 1,
+  "seconds": 12.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large wildfire is burning on a hillside at night, illuminating the sky with bright orange and yellow flames and thick smoke. The fire appears to be near a body of water, with a road or structure visible in the foreground.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Intense orange and yellow flames visible across the hillside, with fire spreading and glowing intensely.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Large plume of dark, orange-tinted smoke rising from the fire, filling a significant portion of the sky.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Dark, silhouetted vegetation or forest on the hillside where the fire is burning.",
+    "confidence": "medium"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Silhouetted road structure or guardrail in the foreground, with red light trails indicating vehicle movement.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "A dark body of water reflecting the fire's glow, with a distant, illuminated horizon.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "Cause of fire",
+   "Scale or distance to fire",
+   "Number of people or vehicles",
+   "Structural integrity of infrastructure",
+   "Water depth or water condition"
+  ]
+ }
+}

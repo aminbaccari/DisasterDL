@@ -1,0 +1,67 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "flood_01",
+  "image": "flood_01.jpg",
+  "run": 1,
+  "seconds": 13.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 2,
+  "place_words": true,
+  "quality_flagged": ""
+ },
+ "incident_text": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A street in a residential area is flooded with brown water, submerging the lower levels of multi-story buildings. No people are visible in the image.",
+  "observations": [
+   {
+    "category": "flood_water",
+    "description": "Muddy brown water covers the entire street, reaching the base of buildings and submerging ground-level entrances.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Buildings show no obvious structural damage; facades are intact, though lower floors are submerged.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Road signs and street lamps are present but partially submerged. A \"Stop\" sign is visible on the right.",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "No people are visible in the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A white bag or object is floating in the water on the left.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [
+   "Stop",
+   "AZ"
+  ],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "Report mentions Nabeul, but image shows European-style architecture and street signs, not consistent with Nabeul (Tunisia)."
+  ],
+  "not_determinable": [
+   "cause of flood",
+   "number of people",
+   "distance from camera to buildings",
+   "structural integrity of buildings beyond water level"
+  ]
+ }
+}

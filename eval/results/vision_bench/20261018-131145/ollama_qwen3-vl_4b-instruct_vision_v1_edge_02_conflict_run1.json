@@ -1,0 +1,65 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 1,
+  "seconds": 20.1,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "smoke",
+  "absence_observations": 1,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A residential backyard with a garden, a shed, and a fence, viewed against a hazy sky with a low, smoky sun. A grassy field and trees are visible in the background.",
+  "observations": [
+   {
+    "category": "other",
+    "description": "A low, orange sun visible through hazy sky.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees and shrubs in the foreground and background, including a garden with potted plants.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Utility poles and wires; a metal shed; a wooden fence; a blue barrel; a pile of wood and debris.",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "No people visible in the scene.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A playground structure (slide and swing set) in the distance.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "no",
+  "inconsistencies": [
+   "Report mentions flooding on the main road, but no water is visible in the image."
+  ],
+  "not_determinable": [
+   "Water depth or presence of flooding",
+   "Number of people",
+   "Structural integrity of buildings",
+   "Cause of fire or smoke",
+   "Scale or distance of the road or flood"
+  ]
+ }
+}

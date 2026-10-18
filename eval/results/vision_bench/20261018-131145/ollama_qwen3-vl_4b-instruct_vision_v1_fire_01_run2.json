@@ -1,0 +1,66 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 2,
+  "seconds": 22.3,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large fire is burning on a hillside at night, with smoke and flames visible against a dark sky. The fire's glow illuminates the surrounding area, including a body of water in the foreground and a structure in the lower right.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Bright orange and yellow flames are visible along the ridge of the hill, with multiple fire points.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Thick, dark smoke is rising from the fire and spreading across the sky, with the fire's glow illuminating it.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "The fire appears to be consuming vegetation on a hillside, with darkened areas suggesting burned or smoldering material.",
+    "confidence": "medium"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A dark, silhouetted structure, possibly a highway overpass or signpost, is visible in the foreground on the right.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "A body of water is visible in the foreground, reflecting the orange glow of the fire.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "The report mentions 'flames are visible near the first houses' but no houses are visible in the image. The fire is on a hillside, not near any buildings."
+  ],
+  "not_determinable": [
+   "Wind direction",
+   "Presence or absence of people",
+   "Structural integrity of buildings or infrastructure",
+   "Scale of the fire",
+   "Number of fire points",
+   "Distance from the camera to the fire"
+  ]
+ }
+}

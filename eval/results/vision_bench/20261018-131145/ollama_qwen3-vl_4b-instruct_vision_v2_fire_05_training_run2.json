@@ -1,0 +1,65 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_05_training",
+  "image": "fire_05_training.jpg",
+  "run": 2,
+  "seconds": 12.3,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "A building is burning and firefighters are working on it.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "消防员正在向一座正在燃烧的建筑物喷水，浓烟滚滚，火焰从屋顶和侧面冒出。",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "大量浓烟从建筑物中冒出，弥漫天空。",
+    "confidence": "high"
+   },
+   {
+    "category": "flames",
+    "description": "明亮的橙色火焰从建筑物的屋顶和侧面冒出。",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "一座木质结构的建筑，部分已燃烧。",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "消防员操作水炮，但车辆未在画面中显示。",
+    "confidence": "low"
+   },
+   {
+    "category": "people",
+    "description": "三名穿着消防服的人员在斜坡上操作水炮。",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "建筑物周围有绿色草坡和树木。",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "建筑物的完整结构和损坏程度",
+   "火势的规模或蔓延速度",
+   "消防员的具体操作或装备细节",
+   "事件发生的时间或日期"
+  ]
+ }
+}

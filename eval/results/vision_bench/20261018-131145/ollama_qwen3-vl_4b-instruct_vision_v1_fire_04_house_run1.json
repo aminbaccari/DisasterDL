@@ -1,0 +1,74 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "fire_04_house",
+  "image": "fire_04_house.jpg",
+  "run": 1,
+  "seconds": 22.2,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 7,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 2,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "A house is on fire in our street. Flames are coming out of the roof and the front door.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A house is engulfed in fire, with flames visibly coming from the roof and front door, and smoke rising. The house has light-colored siding and a porch.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Large, bright orange flames are visible bursting from the roof and through the front door, with fire also evident inside the porch area.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Smoke is visible rising from the roof and around the fire area, particularly near the porch.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Roof is partially consumed by fire, with visible charred sections and sagging. Porch and door area have significant fire damage.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "House has a porch with columns and an attached side structure. A white door is visible on the right, partially damaged. A chimney is visible in the background.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees and green foliage are visible in the background, suggesting a residential or suburban setting.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "No vehicles are visible in the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "No people are visible in the image.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "yes",
+  "inconsistencies": [],
+  "not_determinable": [
+   "Number of people",
+   "Cause of fire",
+   "Scale of damage",
+   "Distance from camera",
+   "Water depth (if any)",
+   "Structural integrity of remaining parts"
+  ]
+ }
+}

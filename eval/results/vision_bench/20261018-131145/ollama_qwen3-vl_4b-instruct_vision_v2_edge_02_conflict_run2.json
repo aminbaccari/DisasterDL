@@ -1,0 +1,60 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 2,
+  "seconds": 12.6,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A backyard with a garden, fence, and shed under a hazy sky with a visible sun, surrounded by trees and power lines.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Hazy sky indicating smoke or haze from a distant fire.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees and leafy plants visible in the background and foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Metal shed, wooden fence, utility pole with power lines.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A blue barrel and a pile of logs or wood debris near the fence.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A bright orange sun or light source visible through the haze.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Potted plants and flowers arranged on a raised platform near the fence.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": []
+ }
+}

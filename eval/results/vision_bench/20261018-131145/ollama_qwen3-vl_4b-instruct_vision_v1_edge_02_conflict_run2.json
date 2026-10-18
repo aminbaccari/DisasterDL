@@ -1,0 +1,60 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 2,
+  "seconds": 18.7,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "flood_water",
+  "missing_required": "smoke",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A backyard or garden area with a gravel path, surrounded by greenery, a shed, and a fence. A hazy sky with a visible sun and power lines. In the background, a field and trees are visible, with a faint orange structure or equipment.",
+  "observations": [
+   {
+    "category": "flood_water",
+    "description": "A low-lying area in the background with grassy terrain and some visible water, consistent with flooding in a field or open area.",
+    "confidence": "medium"
+   },
+   {
+    "category": "vegetation",
+    "description": "Dense green trees and bushes in the foreground and background, along with potted plants and a garden bed in the foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A small metal shed with blue railings, a wooden fence, power lines with poles, and a small water barrel in the yard.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "An orange structure or equipment visible in the background field, and a small swing set is visible in the distance.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "Report mentions 'main road' with 'water rising quickly', but image shows a backyard with minimal flooding in a field, not a road."
+  ],
+  "not_determinable": [
+   "Cause of flooding",
+   "Speed at which water is rising",
+   "Scale of flooding in terms of road width or flood extent",
+   "Presence or absence of people",
+   "Structural integrity of buildings or infrastructure"
+  ]
+ }
+}

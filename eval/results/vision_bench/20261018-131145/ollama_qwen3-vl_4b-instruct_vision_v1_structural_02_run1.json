@@ -1,0 +1,75 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "structural_02",
+  "image": "structural_02.jpg",
+  "run": 1,
+  "seconds": 13.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 7,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 2,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "A brick building partly collapsed after the earthquake. Bricks are lying across the street.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A multi-story brick building with significant structural damage and collapsed sections, with debris including broken bricks and wooden planks scattered across the street. A traffic light and orange cone are visible in the foreground, and a distinctive skyscraper is in the background.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "The brick building has collapsed sections, exposed wooden frames in windows, and missing upper floors.",
+    "confidence": "high"
+   },
+   {
+    "category": "flood_water",
+    "description": "No visible water present.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Traffic lights, street signs, and a traffic cone are visible on the street.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees visible in the background.",
+    "confidence": "medium"
+   },
+   {
+    "category": "vehicles",
+    "description": "Cars are visible on the street in the distance, including a red vehicle.",
+    "confidence": "medium"
+   },
+   {
+    "category": "people",
+    "description": "No people visible in the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Debris includes bricks, wooden planks, and a green awning.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [
+   "No &"
+  ],
+  "consistent_with_report": "yes",
+  "inconsistencies": [],
+  "not_determinable": [
+   "cause of the damage",
+   "number of people",
+   "scale of damage",
+   "distance to the camera",
+   "date of the incident"
+  ]
+ }
+}

@@ -1,0 +1,63 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 2,
+  "seconds": 29.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large wildfire burns on a hillside at night, casting an orange glow over the landscape and illuminating dark smoke. A body of water is visible in the foreground, and a structure, possibly a road sign or bridge support, is silhouetted against the firelight.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large, dark smoke plume illuminated by orange firelight.",
+    "confidence": "high"
+   },
+   {
+    "category": "flames",
+    "description": "Bright, glowing flames visible along the ridge and illuminating the smoke.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Dark silhouettes of trees or brush on the hillside, likely engulfed by fire.",
+    "confidence": "medium"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Silhouetted metal structure, resembling a road sign or bridge support, in the foreground.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "Bright streaks of light in the foreground, likely from moving vehicles, indicating a road or highway.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "structural integrity of hillside",
+   "scale of fire",
+   "distance to viewer",
+   "cause of fire",
+   "exact type of infrastructure"
+  ]
+ }
+}

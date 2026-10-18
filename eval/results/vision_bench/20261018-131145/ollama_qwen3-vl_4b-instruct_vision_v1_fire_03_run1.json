@@ -1,0 +1,80 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "fire_03",
+  "image": "fire_03.jpg",
+  "run": 1,
+  "seconds": 18.8,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 8,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 4,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "A large smoke column over the fields, probably a grass fire. Nobody is nearby.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large plume of smoke rises from a field, with a fence and some dark figures in the foreground, under a hazy sky.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "A large, dense, orange-tinged smoke column rising from the field, visible against the sky.",
+    "confidence": "high"
+   },
+   {
+    "category": "flood_water",
+    "description": "None present.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "None visible.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A wire fence with posts is visible in the mid-ground.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "None visible.",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "No discernible human figures are visible in the field or near the smoke.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Dry, golden-brown grass covers the field, with some green patches in the foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Several small, dark, indistinct shapes are visible in the distance, possibly animals.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "yes",
+  "inconsistencies": [],
+  "not_determinable": [
+   "cause of fire",
+   "scale or distance of the fire",
+   "number of people",
+   "water depth",
+   "structural integrity of any buildings or structures",
+   "height or volume of smoke",
+   "exact location"
+  ]
+ }
+}

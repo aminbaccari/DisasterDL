@@ -1,0 +1,55 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "control_01_night",
+  "image": "control_01_night.jpg",
+  "run": 2,
+  "seconds": 12.6,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 1,
+  "place_words": false,
+  "quality_flagged": false
+ },
+ "incident_text": "A big fire is burning on this street tonight.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A quiet, dimly lit street at night lined with traditional brick buildings featuring white window frames and illuminated windows, with street lamps casting light on the pavement.",
+  "observations": [
+   {
+    "category": "infrastructure",
+    "description": "Street lamps mounted on brick walls",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Brick buildings with white-framed windows",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Buildings with window boxes containing red flowers",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Vegetation visible in window boxes and as a small bush beside a building",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Dark street with no visible vehicles or people",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": []
+ }
+}

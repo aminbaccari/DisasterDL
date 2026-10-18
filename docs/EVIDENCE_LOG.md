@@ -359,3 +359,20 @@ All four revised criteria hold, so v3 became the workflow default. Limits: small
 ### Not finished: the 12-case re-run
 
 The re-run of `rag_query_vs_direct.py` (v2 without balance against v3 with balance, same model) was started three times and is rate-limit bound: gpt-oss-120b and gpt-oss-20b both reported their daily quota exhausted during it (every call "cooling down"), which cost two partial runs. The partial output `eval/results/rag_query_vs_direct/20261017-235800` (config A, 20b, 10 of 12 cases) is kept and not used; two empty or 4-case output folders of failed runs were deleted. A fourth run on `gemini:gemini-3.6-flash` was stopped by hand after 2 of 12 cases in about 19 minutes (rate limits; the full A and B would have taken about 3 hours); its first two cases gave the same needs met as the original run (c01 2 of 2, c02 1 of 2 in every condition), which is not a result. NOT DONE, so nothing is claimed about the effect of incident v3 plus language balance on the 12 cases. To resume on a day with quota: `python scripts/rag_query_vs_direct.py --chain groq:openai/gpt-oss-120b --runs 3 --incident-prompt incident_understanding/v3.md --balance-languages`, compared with `eval/results/rag_query_vs_direct/20261017-224627` (same model, v2 prompt, no balance).
+
+## qwen3-vl:4b-instruct on 12 images, prompts v1 and v2 (2026-10-18, finished after the 17 October benchmarks, logged late)
+
+`scripts/vision_bench.py --model ollama:qwen3-vl:4b-instruct --runs 2 --prompt vision/v1.md --prompt vision/v2.md`, the four first images plus the eight of 2026-10-17, warm model, `eval/results/vision_bench/20261018-131145` (48 calls, none lost). Ground truth by one reader. The decision rule for a second model (`vision/test_images/BENCH_CRITERIA.md`) was written before; gemma3:4b was pulled but NOT benchmarked (two earlier attempts were invalidated when the PC went to sleep, the benchmark now resets the model cooldown before each call), so no model was compared and nothing was decided.
+
+| Measure (24 calls per prompt) | v1 (with the report) | v2 (image only) |
+|-------------------------------|----------------------|-----------------|
+| JSON valid | 24 | 24 |
+| schema valid | 23 | 24 |
+| calls with a false observation | 2 (edge_02 flood_water, fire_02 structural_damage) | 0 |
+| calls with a missing required category | 3 | 2 |
+| absence statements ("No people are visible") | 40 | 4 |
+| calls naming a place | 2 | 1 |
+| low-quality images flagged (edge_04, control_01; 4 calls each prompt) | 2 of 4 | 2 of 4 |
+| median latency | 16.7 s | 12.3 s |
+
+Reading: on 12 images v2 again has fewer false observations and absence statements than v1, as on the first four images; neither prompt flags the blur or the darkness reliably (2 of 4 calls), which matters for the low-quality case. Small counts, one reader, one model.

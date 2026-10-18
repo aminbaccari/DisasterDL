@@ -1,0 +1,64 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "fire_02",
+  "image": "fire_02.jpg",
+  "run": 1,
+  "seconds": 16.7,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 2,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "Heavy smoke is rising behind a farm and a house stands close to the smoke. We think a wildfire is coming toward the house.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large, dark plume of smoke dominates the sky, with a house visible on the right side of the image, set against a line of trees and open field.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "A large, dense, dark grey smoke plume rising from behind a line of trees on the left, with lighter smoke visible closer to the house on the right.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "A single house is visible on the right side of the image, with no visible damage or signs of fire on its exterior.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "A line of dark trees runs horizontally across the lower part of the image, with some scattered individual trees.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A house with a gabled roof and visible windows, situated near a line of trees and open field.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "The ground appears to be a field, possibly agricultural, with no visible vehicles or people.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "The report mentions smoke rising behind a farm, but the image shows smoke rising from a line of trees on the left, not a farm structure. The house is on the right, not directly behind the smoke as described."
+  ],
+  "not_determinable": [
+   "The cause of the smoke (wildfire or otherwise)",
+   "The proximity of the smoke to the house (distance)",
+   "Whether the house is at risk or if it is already damaged",
+   "The scale of the fire or extent of the smoke plume"
+  ]
+ }
+}

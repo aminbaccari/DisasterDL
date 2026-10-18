@@ -1,0 +1,70 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "structural_01",
+  "image": "structural_01.jpg",
+  "run": 2,
+  "seconds": 22.4,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": false,
+  "n_observations": 6,
+  "schema_errors": "'dust' is not one of ['smoke', 'flames', 'flood_water', 'structural_damage', 'in",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 2,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "Part of a five-storey apartment building has collapsed. Dust covers the street and neighbours say some residents may still be inside.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A multi-storey building is partially collapsed, with debris scattered across a street. Dust is visible in the air, and nearby structures show signs of damage.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "A multi-storey building is heavily damaged with partial collapse, showing exposed interior structures and shattered walls.",
+    "confidence": "high"
+   },
+   {
+    "category": "flood_water",
+    "description": "No visible water; ground is dry and covered in debris.",
+    "confidence": "high"
+   },
+   {
+    "category": "dust",
+    "description": "A haze of dust is visible in the air, especially around the collapsed building.",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "No visible people in the immediate foreground or mid-ground; distant figures appear to be observing the scene.",
+    "confidence": "medium"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A tilted pole, broken roof, and scattered debris including wood, metal, and bricks.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees are visible in the background; some appear undamaged.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "Report mentions 'some residents may still be inside'—no visible people inside the rubble, making this unconfirmed by image."
+  ],
+  "not_determinable": [
+   "Number of storeys beyond the visible collapse",
+   "Exact cause of collapse",
+   "Structural integrity of remaining sections",
+   "Scale of debris in terms of volume",
+   "Distance to building from camera"
+  ]
+ }
+}

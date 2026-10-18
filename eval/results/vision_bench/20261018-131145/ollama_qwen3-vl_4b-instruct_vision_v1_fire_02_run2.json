@@ -1,0 +1,67 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "fire_02",
+  "image": "fire_02.jpg",
+  "run": 2,
+  "seconds": 13.7,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "structural_damage",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "Heavy smoke is rising behind a farm and a house stands close to the smoke. We think a wildfire is coming toward the house.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large plume of dark smoke rises from a forested area, with a house visible in the foreground to the right. The smoke appears to be moving from left to right across the image.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large, dense, dark grey smoke plume rising from the forested area on the left, with lighter, more diffuse smoke on the right.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "A single house is visible in the foreground on the right, appearing undamaged but surrounded by smoke.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Dark, dense forest line on the left, with some trees visible in the foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "House with a gabled roof and porch, surrounded by trees and field.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Dark, heavy clouds dominate the sky, suggesting smoke and possibly weather.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "Report says smoke is behind a farm and a house stands close to the smoke, but image shows smoke rising from forested area and house is far from the smoke source."
+  ],
+  "not_determinable": [
+   "Cause of fire",
+   "Scale of the fire",
+   "Distance from smoke to house",
+   "Presence of people",
+   "Structural integrity of the house or farm",
+   "Speed or direction of smoke movement",
+   "Water depth or presence of water"
+  ]
+ }
+}

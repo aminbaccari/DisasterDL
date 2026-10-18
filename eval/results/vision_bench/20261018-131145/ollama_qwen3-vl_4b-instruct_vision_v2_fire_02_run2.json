@@ -1,0 +1,54 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_02",
+  "image": "fire_02.jpg",
+  "run": 2,
+  "seconds": 38.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "Heavy smoke is rising behind a farm and a house stands close to the smoke. We think a wildfire is coming toward the house.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large, dark, turbulent cloud formation dominates the sky above a line of trees and some buildings, with smoke or ash plumes rising from the ground on the right.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large plumes of dark and light-colored smoke or ash rising from the ground on the right side of the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "A dense line of dark trees and some scattered trees in the foreground and midground.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A few buildings, including what appears to be a house with a porch, visible on the right side of the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Large, ominous cloud formation covering most of the sky, suggesting a severe weather system or fire-related event.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of smoke",
+   "distance to buildings",
+   "scale of clouds or smoke"
+  ]
+ }
+}

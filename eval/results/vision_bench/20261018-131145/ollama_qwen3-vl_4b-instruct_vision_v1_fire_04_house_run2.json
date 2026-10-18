@@ -1,0 +1,73 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "fire_04_house",
+  "image": "fire_04_house.jpg",
+  "run": 2,
+  "seconds": 12.2,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 7,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "smoke",
+  "absence_observations": 2,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "A house is on fire in our street. Flames are coming out of the roof and the front door.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A house is engulfed in flames, with fire visibly spreading across the roof and through the front door and porch area.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Large flames are visible through the front door and roof, with fire consuming the roof and interior structure.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "The roof is partially collapsed or buckling under fire, and the front door is open and burning.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "The house has a porch and siding, with an adjacent structure or extension visible to the right.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "No vehicles are visible in the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "No people are visible in the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees are visible in the background, and some grass is visible in the foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A chimney is visible on the roofline, and some debris is on the ground around the house.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "yes",
+  "inconsistencies": [],
+  "not_determinable": [
+   "Number of people",
+   "Structural integrity of the house",
+   "Cause of fire",
+   "Scale or distance from camera",
+   "Water depth if any"
+  ]
+ }
+}

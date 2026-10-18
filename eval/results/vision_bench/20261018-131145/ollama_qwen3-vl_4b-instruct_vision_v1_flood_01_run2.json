@@ -1,0 +1,76 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "flood_01",
+  "image": "flood_01.jpg",
+  "run": 2,
+  "seconds": 38.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 3,
+  "place_words": true,
+  "quality_flagged": ""
+ },
+ "incident_text": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A street in a town is flooded with brown water, submerging the lower floors of multi-story buildings and blocking access to storefronts.",
+  "observations": [
+   {
+    "category": "flood_water",
+    "description": "Brown, murky water covers the street, reaching up to the bases of buildings and submerging storefronts.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Multi-story buildings with European architectural style line the flooded street. Some have balconies and arched doorways.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "No visible vehicles in the floodwater.",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "No visible people in the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "No visible vegetation in the immediate scene.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Road signs are visible on the right: a red circular 'stop' sign and a blue arrow pointing left. A yellow sign above a doorway reads 'LAVANDERIE' in Italian, and a sign above a window reads 'PIAZZA DELLA LIBERTÀ' (Piazza della Libertà) in Italian.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [
+   "LAVANDERIE",
+   "PIAZZA DELLA LIBERTÀ",
+   "STOP",
+   "ARROW (blue, left-pointing)",
+   "CROSS (red, stop sign)"
+  ],
+  "consistent_with_report": "no",
+  "inconsistencies": [
+   "Report mentions 'Nabeul', but the image shows a European-style town with signs in Italian (e.g., 'Piazza della Libertà') — suggesting a location in Italy, not Tunisia."
+  ],
+  "not_determinable": [
+   "Water depth",
+   "Number of buildings",
+   "Structural integrity of buildings",
+   "Cause of flooding",
+   "Scale or distance of the scene"
+  ]
+ }
+}

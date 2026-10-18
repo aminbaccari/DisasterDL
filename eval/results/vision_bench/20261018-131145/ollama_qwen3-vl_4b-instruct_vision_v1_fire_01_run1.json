@@ -1,0 +1,61 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 1,
+  "seconds": 43.4,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large wildfire is burning on a hillside at night, with bright orange flames and thick smoke billowing towards the foreground. The sky is dark, and the fire's glow illuminates the distant hills and water.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Bright orange flames visible along the hillside, with some flames appearing close to the foreground horizon.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Dark, thick smoke rising from the fire and drifting toward the left side of the image, illuminated by flame light.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A silhouetted highway structure (signpost or support frame) is visible in the lower right foreground.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "A dark body of water in the foreground, reflecting the fire's glow.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "partly",
+  "inconsistencies": [
+   "Report mentions 'flames are visible near the first houses' — no houses are visible in the image.",
+   "Report mentions 'a strong wind is blowing toward the village' — no visual evidence of wind direction or a village presence."
+  ],
+  "not_determinable": [
+   "Presence of people",
+   "Structural integrity of structures",
+   "Cause of fire",
+   "Scale or distance of the fire",
+   "Distance to the village"
+  ]
+ }
+}

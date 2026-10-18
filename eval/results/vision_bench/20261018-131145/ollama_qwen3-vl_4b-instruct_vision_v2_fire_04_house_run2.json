@@ -1,0 +1,60 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_04_house",
+  "image": "fire_04_house.jpg",
+  "run": 2,
+  "seconds": 11.0,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": ""
+ },
+ "incident_text": "A house is on fire in our street. Flames are coming out of the roof and the front door.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A house is engulfed in flames, with fire visible through windows and under the roof, and smoke rising. The structure shows signs of damage with debris on the ground.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Large fire consuming the roof and interior of the house, visible through open doorways and windows.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Smoke rising from the roof and upper sections of the house.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Roof is partially collapsed and charred; doorways are open and burning; siding is warped.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "House with siding, windows, and porch columns; some parts appear to be under construction or partially destroyed.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Debris on the ground near the house's foundation, including wooden planks and rocks.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of fire",
+   "number of people",
+   "water depth",
+   "scale or distance"
+  ]
+ }
+}

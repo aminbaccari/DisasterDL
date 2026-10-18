@@ -1,0 +1,73 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v1.md",
+  "incident": "control_01_night",
+  "image": "control_01_night.jpg",
+  "run": 1,
+  "seconds": 12.4,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 7,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 5,
+  "place_words": false,
+  "quality_flagged": false
+ },
+ "incident_text": "A big fire is burning on this street tonight.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A quiet street at night with illuminated buildings and streetlights, no visible signs of fire or disaster.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "No flames visible.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "No smoke visible.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Buildings appear intact with no visible damage.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Streetlights and building windows are illuminated, suggesting normal nighttime conditions.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "No vehicles visible in the frame.",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "No people visible.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Flowers are visible in window boxes on the buildings.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "consistent_with_report": "no",
+  "inconsistencies": [
+   "Report describes a fire, but no evidence of fire is visible in the image."
+  ],
+  "not_determinable": [
+   "Cause of fire",
+   "Scale of incident",
+   "Time of occurrence"
+  ]
+ }
+}
