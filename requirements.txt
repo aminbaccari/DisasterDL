@@ -12,3 +12,9 @@ pillow
 imagehash
 langdetect
 pytest
+# Vision Agent dependencies
+transformers
+accelerate
+einops
+torchvision
+torch

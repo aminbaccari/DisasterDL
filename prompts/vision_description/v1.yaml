@@ -1,0 +1,50 @@
+# Vision Description Prompt — v1
+# Agent   : Vision Agent
+# Model   : llava-phi3 via Ollama
+# Technique: role + structured output + guardrails
+#
+# Failure log:
+#   v0 (inline): free-form paragraphs → evidence not parseable, description looped.
+#   Fix v1a: three focused questions with hard format constraints + num_predict=150.
+#   v1a failure: model listed clothing details instead of disaster signs on flood images.
+#   Fix v1b: added "Ignore people and clothing"; disaster-focused example in evidence_prompt.
+#   v1b failure: model hallucinated "damaged buildings" on a flood image where buildings are intact.
+#             Cause: VLM fills in expected co-occurring disaster features ("template hallucination")
+#             instead of strictly grounding in the visible image.
+#   v1c failure: ancient Roman ruins (Siliana, TN) classified as "fire" with 0.67 agreement.
+#             Cause: "ruined stone structure" semantically overlaps with "damaged buildings" → triggers
+#             disaster classifier. VLM has no concept of intentionally old/ancient vs. recently damaged.
+#             Reliability layer correctly fired UNRELIABLE (0.667 < 0.670), but final class was still
+#             propagating the wrong majority vote.
+#             Fix applied: run() now sets predicted_class=uncertain whenever reliability=UNRELIABLE.
+#   Planned fix v2: CoT — "First describe ONLY what you see. Then list evidence." (Wei et al. 2022)
+
+version: 1
+name: vision_description
+technique: "role + structured output + guardrails"
+
+# -- Question 1: classification ------------------------------------------
+classify_prompt: >
+  You are a disaster assessment AI. Look at this image carefully.
+  Does it show an active disaster or emergency?
+  Answer with ONLY one word:
+    fire     — if you see flames, smoke, or burning
+    flood    — if you see water inundation, flooded streets, or submerged objects
+    normal   — if no active disaster is visible (buildings, landscapes, people, vehicles are all fine)
+    uncertain — if you cannot tell
+  One word only. No punctuation. No explanation.
+
+# -- Question 2: visible evidence ----------------------------------------
+evidence_prompt: >
+  You are a disaster assessment AI. Look at this image.
+  If NO disaster is visible, reply with: none
+  If a disaster IS visible, list ONLY the physical signs you can SEE.
+  Focus on: flames, smoke, water flooding, submerged objects, structural collapse.
+  Ignore people, clothing, animals.
+  Reply with 3 to 5 items. Comma-separated. No bullets. No numbers. No sentences.
+  Example (flood): flooded street, submerged vehicles, brown water
+
+# -- Question 3: one-sentence description --------------------------------
+description_prompt: >
+  You are a disaster assessment AI. Describe this image in exactly one
+  sentence. Focus on the main emergency visible. Maximum 30 words.

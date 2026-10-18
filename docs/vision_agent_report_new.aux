@@ -1,0 +1,38 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}System Architecture}{1}{section.2}\protected@file@percent }
+\newlabel{sec:architecture}{{2}{1}{System Architecture}{section.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Component Design}{1}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Vision-Language Model: Cloud-First with Local Fallback}{1}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Rationale.}{1}{subsection.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Vision Agent pipeline. White nodes: the semantic (language) branch. Gray nodes: the non-linguistic visual-similarity branch. The dashed arrow denotes a shadow-mode signal: it is logged alongside the reliability verdict but, in the default configuration, does not alter it.}}{2}{figure.caption.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:arch}{{1}{2}{Vision Agent pipeline. White nodes: the semantic (language) branch. Gray nodes: the non-linguistic visual-similarity branch. The dashed arrow denotes a shadow-mode signal: it is logged alongside the reliability verdict but, in the default configuration, does not alter it}{figure.caption.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Output quality and deployment cost, same input image, two VLM backends.}}{2}{table.caption.2}\protected@file@percent }
+\newlabel{tab:quality}{{1}{2}{Output quality and deployment cost, same input image, two VLM backends}{table.caption.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Query design.}{2}{table.caption.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Five-Way Classification Taxonomy}{2}{subsection.3.2}\protected@file@percent }
+\newlabel{sec:taxonomy}{{3.2}{2}{Five-Way Classification Taxonomy}{subsection.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Test-Time Augmentation}{2}{subsection.3.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Classification taxonomy. The boundary between \emph  {normal} and \emph  {irrelevant} is established purely through the natural-language class definitions given to the model; no separate rule-based gate exists ahead of the language model call.}}{3}{table.caption.3}\protected@file@percent }
+\newlabel{tab:taxonomy}{{2}{3}{Classification taxonomy. The boundary between \emph {normal} and \emph {irrelevant} is established purely through the natural-language class definitions given to the model; no separate rule-based gate exists ahead of the language model call}{table.caption.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}DINOv2 Visual Similarity}{3}{subsection.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Visual Consistency Module and Reliability Layer}{3}{subsection.3.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experimental Results}{3}{section.4}\protected@file@percent }
+\newlabel{sec:results}{{4}{3}{Experimental Results}{section.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Fire.}{3}{table.caption.4}\protected@file@percent }
+\bibcite{bai2023qwenvl}{1}
+\bibcite{shanmugam2021tta}{2}
+\bibcite{brown2020fewshot}{3}
+\bibcite{oquab2023dinov2}{4}
+\bibcite{wei2022cot}{5}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Results of three controlled runs, one per class, using the cloud vision-language model (Qwen via Groq). TTA agreement is reported as (agreeing variants)/(total variants).}}{4}{table.caption.4}\protected@file@percent }
+\newlabel{tab:results}{{3}{4}{Results of three controlled runs, one per class, using the cloud vision-language model (Qwen via Groq). TTA agreement is reported as (agreeing variants)/(total variants)}{table.caption.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Flood.}{4}{table.caption.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Normal.}{4}{table.caption.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Scope of this evaluation.}{4}{table.caption.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Discussion and Limitations}{4}{section.5}\protected@file@percent }
+\gdef \@abspage@last{4}

@@ -1,0 +1,65 @@
+﻿python : Groq rate limited; retrying in 22.0s
+Au caractère Ligne:1 : 374
++ ... s\activate; python test_real.py "data\Flood\flood_image0001.jpg" > ev ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Groq rate limited; retrying in 22.0s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Groq rate limited; retrying in 20.0s
+
+==============================================================
+IMAGE: data\Flood\flood_image0001.jpg
+VLM provider: groq (qwen/qwen3.8-27b)
+==============================================================
+
+Loading weights:   0%|          | 0/223 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 223/223 [00:00<00:00, 3242.80it/s]
+
+STEP 1 — Test-Time Augmentation (3 variants)
+--------------------------------------------------------------
+  Variant : original
+  Class   : flood
+  Evidence: muddy brown water covering the entire ground, trees partially submerged with only canopies visible, buildings with only roofs above the waterline, flooded road or railway track visible through the water
+  Desc    : Aerial view of a landscape completely submerged in muddy brown floodwater, with only tree tops and building roofs visible.
+
+  Variant : resized
+  Class   : flood
+  Evidence: extensive muddy brown water covering the ground, submerged trees with only canopies visible, buildings partially submerged with only roofs visible, floodwater surrounding a long elevated structure
+  Desc    : Aerial view of a landscape completely submerged in muddy brown floodwater, with only treetops and building roofs visible.
+
+  Variant : flipped
+  Class   : flood
+  Evidence: muddy brown water covering the landscape, submerged trees with only tops visible, flooded roads and pathways, buildings partially surrounded by water
+  Desc    : Aerial view of a vast area covered in muddy brown floodwater submerging trees, roads, and buildings.
+
+STEP 2 — Visual Consistency Module
+--------------------------------------------------------------
+  Majority class  : flood
+  Agreement score : 1.00  (threshold: 0.67)
+  All agree       : True
+  Disagreements   : none
+
+STEP 3 — Reliability Layer
+--------------------------------------------------------------
+  Status : RELIABLE
+  Notes  : none — prediction is stable
+
+STEP 4 — DINOv2 Visual Similarity
+--------------------------------------------------------------
+  Embedding dim   : 384
+  Mode            : shadow (logging only)
+  Mean top-5 sim  : 0.7842
+  Nearest neighbors:
+    1. 0.8302  image_3117.png
+    2. 0.7750  image_2274.png
+    3. 0.7747  flood_image0296.jpg
+    4. 0.7727  flood_image0046.jpg
+    5. 0.7686  flood_image0014.jpg
+
+FINAL OUTPUT
+--------------------------------------------------------------
+  predicted_class : flood
+  description     : Aerial view of a landscape completely submerged in muddy brown floodwater, with only tree tops and building roofs visible.
+  visible_evidence: muddy brown water covering the entire ground, trees partially submerged with only canopies visible, buildings with only roofs above the waterline, flooded road or railway track visible through the water, extensive muddy brown water covering the ground, submerged trees with only canopies visible, buildings partially submerged with only roofs visible, floodwater surrounding a long elevated structure, muddy brown water covering the landscape, submerged trees with only tops visible, flooded roads and pathways, buildings partially surrounded by water
+  reliability     : reliable
+

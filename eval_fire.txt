@@ -1,0 +1,64 @@
+﻿python : Groq rate limited; retrying in 21.0s
+Au caractère Ligne:1 : 374
++ ... s\activate; python test_real.py "data\Fire\fire_image0001.jpg" 2>&1 | ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Groq rate limited; retrying in 21.0s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+==============================================================
+IMAGE: data\Fire\fire_image0001.jpg
+VLM provider: groq (qwen/qwen3.8-27b)
+==============================================================
+
+Loading weights:   0%|          | 0/223 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 223/223 [00:00<00:00, 2339.21it/s]
+
+STEP 1 — Test-Time Augmentation (3 variants)
+--------------------------------------------------------------
+  Variant : original
+  Class   : fire
+  Evidence: active flames along a ridge, thick dark smoke plume, glowing embers and fire front, burning vegetation on a slope
+  Desc    : Intense orange flames burn along a ridge line, generating a massive plume of thick, dark smoke.
+
+  Variant : resized
+  Class   : fire
+  Evidence: active flames along a ridge, thick dark smoke plume, glowing embers and fire front
+  Desc    : Intense orange flames burn along a ridge line, generating a massive plume of thick, dark smoke.
+
+  Variant : flipped
+  Class   : fire
+  Evidence: active flames on ridge, thick dark smoke plume, glowing embers, burning vegetation line
+  Desc    : Intense orange flames burn along a ridge line, generating a massive plume of thick, dark smoke.
+
+STEP 2 — Visual Consistency Module
+--------------------------------------------------------------
+  Majority class  : fire
+  Agreement score : 1.00  (threshold: 0.67)
+  All agree       : True
+  Disagreements   : none
+
+STEP 3 — Reliability Layer
+--------------------------------------------------------------
+  Status : RELIABLE
+  Notes  : none — prediction is stable
+
+STEP 4 — DINOv2 Visual Similarity
+--------------------------------------------------------------
+  Embedding dim   : 384
+  Mode            : shadow (logging only)
+  Mean top-5 sim  : 0.8594
+  Nearest neighbors:
+    1. 0.8632  image_12821.png
+    2. 0.8620  fire_image0003.jpg
+    3. 0.8599  image_12100.png
+    4. 0.8589  image_10126.png
+    5. 0.8532  image_10934.png
+
+FINAL OUTPUT
+--------------------------------------------------------------
+  predicted_class : fire
+  description     : Intense orange flames burn along a ridge line, generating a massive plume of thick, dark smoke.
+  visible_evidence: active flames along a ridge, thick dark smoke plume, glowing embers and fire front, burning vegetation on a slope, active flames on ridge, glowing embers, burning vegetation line
+  reliability     : reliable
+

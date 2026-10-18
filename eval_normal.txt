@@ -1,0 +1,66 @@
+﻿python : Groq rate limited; retrying in 2.0s
+Au caractère Ligne:1 : 374
++ ... s\activate; python test_real.py "data\Normal\image_5990.png" > eval_n ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Groq rate limited; retrying in 2.0s:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Groq rate limited; retrying in 21.0s
+Groq rate limited; retrying in 20.0s
+
+==============================================================
+IMAGE: data\Normal\image_5990.png
+VLM provider: groq (qwen/qwen3.8-27b)
+==============================================================
+
+Loading weights:   0%|          | 0/223 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 223/223 [00:00<00:00, 2868.92it/s]
+
+STEP 1 — Test-Time Augmentation (3 variants)
+--------------------------------------------------------------
+  Variant : original
+  Class   : normal
+  Evidence: 
+  Desc    : A high-rise building with horizontal window bands is shown against a sunset sky, with a cityscape visible in the background.
+
+  Variant : resized
+  Class   : normal
+  Evidence: 
+  Desc    : A high-rise building with horizontal window bands is shown against a sunset sky, with a cityscape visible in the background.
+
+  Variant : flipped
+  Class   : normal
+  Evidence: 
+  Desc    : A high-angle view of a city skyline at sunset featuring a prominent multi-story building with horizontal window bands.
+
+STEP 2 — Visual Consistency Module
+--------------------------------------------------------------
+  Majority class  : normal
+  Agreement score : 1.00  (threshold: 0.67)
+  All agree       : True
+  Disagreements   : none
+
+STEP 3 — Reliability Layer
+--------------------------------------------------------------
+  Status : RELIABLE
+  Notes  : none — prediction is stable
+
+STEP 4 — DINOv2 Visual Similarity
+--------------------------------------------------------------
+  Embedding dim   : 384
+  Mode            : shadow (logging only)
+  Mean top-5 sim  : 0.8868
+  Nearest neighbors:
+    1. 0.9577  normal_image0013.jpg
+    2. 0.9524  normal_image0011.jpg
+    3. 0.9518  normal_image0009.jpg
+    4. 0.8010  image_8890.png
+    5. 0.7710  normal_image4089.jpg
+
+FINAL OUTPUT
+--------------------------------------------------------------
+  predicted_class : normal
+  description     : A high-rise building with horizontal window bands is shown against a sunset sky, with a cityscape visible in the background.
+  visible_evidence: 
+  reliability     : reliable
+
