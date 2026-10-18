@@ -18,8 +18,9 @@ Experiments (each is a configuration of the same retriever; collections that do 
 
 Relevance labels come from two places:
     1. ``relevant`` column of the test set: pages found by keyword search in the documents.
-    2. ``retrieval_judgments.csv``: pooled human judgments. The union of the top-5 pages
-       retrieved by all configurations is judged relevant (1) or not (0) by a reviewer; a
+    2. ``retrieval_judgments.csv``: pooled LLM-panel judgments. The union of the top pages
+       retrieved by the main configurations is judged relevant (1) or not (0) by the LLM panel
+       (src/rag/judging.py); a
        judgment overrides the keyword label, a blank keeps it. Pooling the results of every
        configuration (TREC-style) avoids favouring the strategy the labels were built from.
 
@@ -357,14 +358,14 @@ def make_pool(
     return path
 
 
-def run(rewrite_version: int | None = None) -> Path:
+def run(rewrite_version: int | None = None, judgments: Path = JUDGMENTS, tag: str = "") -> Path:
     """Run every available configuration, write CSV + Markdown reports, return the Markdown path.
 
     With ``rewrite_version``, the rewrite and fusion configurations (prompt ``rag_query_rewrite``
     v<N>) are added.
     """
     queries = load_testset()
-    n_judged = apply_judgments(queries, load_judgments())
+    n_judged = apply_judgments(queries, load_judgments(judgments))
     configs = _available_configs(rewrite_version)
     rewrites_by_version = {rewrite_version: rewrite_queries(queries, rewrite_version)} if rewrite_version else {}
     rewrites = rewrites_by_version.get(rewrite_version, {})
@@ -378,7 +379,7 @@ def run(rewrite_version: int | None = None) -> Path:
         logger.info("%s: %s", name, summarise(rows))
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-    stamp = datetime.now().strftime("%Y%m%d_%H%M")
+    stamp = datetime.now().strftime("%Y%m%d_%H%M") + (f"_{tag}" if tag else "")
     csv_path = RESULTS_DIR / f"retrieval_{stamp}.csv"
     with csv_path.open("w", encoding="utf-8", newline="") as f:
         flat = [r for rows in all_rows.values() for r in rows]
@@ -413,7 +414,7 @@ def _report(
         f"# Retrieval evaluation ({datetime.now():%Y-%m-%d %H:%M})",
         "",
         f"- Test set: {len(queries)} queries ({n_pos} positive, {len(queries) - n_pos} out-of-scope)",
-        f"- Labels: keyword page labels + {n_judged} pooled human judgments"
+        f"- Labels: keyword page labels + {n_judged} pooled LLM-panel judgments (evaluation/judging/agreement.md)"
         + ("" if n_judged else " (none yet: run `--make-pool` and fill `retrieval_judgments.csv`)"),
         f"- Embedding model: `{settings.embedding_model}`; chunk size {settings.chunk_size}, "
         f"overlap {settings.chunk_overlap}; per-query results in `{csv_path.name}`",
@@ -499,12 +500,14 @@ def main() -> None:
     parser.add_argument("--rewrite", type=int, metavar="N", help="also evaluate LLM-rewritten queries (prompt v<N>)")
     parser.add_argument("--pool-configs", help="comma-separated configurations to pool (default: main ones)")
     parser.add_argument("--pool-depth", type=int, default=POOL_DEPTH, help="top-n results pooled per configuration")
+    parser.add_argument("--judgments", type=Path, default=JUDGMENTS, help="judgment file (default: lenient labels)")
+    parser.add_argument("--tag", default="", help="suffix added to the report file names")
     args = parser.parse_args()
     if args.make_pool:
         names = args.pool_configs.split(",") if args.pool_configs else None
         print(f"Judging sheet written to {make_pool(rewrite_version=args.rewrite, config_names=names, depth=args.pool_depth)}")
     else:
-        print(run(args.rewrite).read_text(encoding="utf-8"))
+        print(run(args.rewrite, args.judgments, args.tag).read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

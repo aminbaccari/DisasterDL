@@ -11,3 +11,4 @@ chroma/
 chroma_db/
 outputs/*
 !outputs/.gitkeep
+.vscode/

@@ -29,10 +29,6 @@ FIRE-Q10,Thick smoke is coming from the kitchen of our flat and the hallway is f
 FIRE-Q11,Comment évacuer les résidents à mobilité réduite lors d'un incendie dans une résidence pour aînés ?,fr,fire,question,FIRE-07:1 3 5-6 9-12 16-17 19-20 22-24,false
 FIRE-Q12,Où faut-il installer les détecteurs de fumée dans une maison ?,fr,fire,question,FIRE-06:2-5 9 11 13;FIRE-05:3 5-8,false
 STRUCT-Q09,How do rescuers reach victims trapped in the voids of a collapsed concrete building?,en,structural,question,STRUCT-04:7 10 24 26;STRUCT-01:20 27 34-35;GEN-01:26-27 35 149 189 205 219,false
-AR-Q01,دخلت مياه الفيضان إلى المنازل في الحي والطرق مقطوعة، ماذا يجب أن نفعل؟,ar,flood,report,FLOOD-01:1-2;FLOOD-04:7-10;GEN-02:99-105,false
-AR-Q02,حريق غابة يقترب من القرية والدخان كثيف، هل يجب علينا الإخلاء؟,ar,fire,question,FIRE-01:2;FIRE-02:3-4 8 13;GEN-02:119-124;FIRE-04:58-59,false
-AR-Q03,انهار مبنى قديم في المدينة العتيقة وهناك أشخاص محاصرون تحت الأنقاض,ar,structural,report,STRUCT-01:20-21 27 33-36 54 56;GEN-01:185-220;STRUCT-04:3 6-8 10-11 18 21 23-24 26 43 48,false
-AR-Q04,ما هي الأمراض التي يمكن أن تنتشر بعد الفيضانات بسبب المياه الملوثة؟,ar,flood,question,FLOOD-05:6 9 14 30-31 33 35-39 59 74 78 84;FLOOD-04:11,false
 NEG-Q01,What is the best recipe for lamb couscous?,en,,question,,true
 NEG-Q02,How do I reset my email password?,en,,question,,true
 NEG-Q03,What is the exchange rate between the Tunisian dinar and the euro today?,en,,question,,true

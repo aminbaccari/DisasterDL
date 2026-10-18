@@ -107,6 +107,43 @@ class RetrievedChunk(BaseModel):
     score: float = Field(description="Retrieval relevance score assigned by the retriever.")
 
 
+class GuidanceItem(BaseModel):
+    """One statement of documented guidance, grounded in the retrieved passages."""
+
+    statement: str = Field(description="Guidance relevant to the incident, as stated by the documents.")
+    citations: list[str] = Field(
+        default_factory=list,
+        description="Passages supporting the statement, as 'SOURCE-ID p.N' (e.g. 'FLOOD-01 p.2').",
+    )
+    quote: str = Field(default="", description="Sentence copied verbatim from a cited passage.")
+    quote_verified: bool = Field(
+        default=False, description="True when the quote was found verbatim in a cited passage."
+    )
+
+
+class GroundedAnswer(BaseModel):
+    """Generated summary of what the retrieved documents say about the incident (retrieved guidance only)."""
+
+    answer: str = Field(description="Short summary of the documented guidance relevant to the incident.")
+    guidance: list[GuidanceItem] = Field(
+        default_factory=list,
+        description="Grounded guidance statements whose quote was verified in a cited passage; "
+        "empty when the documents do not cover the incident.",
+    )
+    unverified_guidance: list[GuidanceItem] = Field(
+        default_factory=list,
+        description="Statements whose quote was not found in the cited passages: kept for transparency, "
+        "not passed on as evidence (43% of them were judged unsupported in the evaluation, vs 2% of verified ones).",
+    )
+    not_covered: list[str] = Field(
+        default_factory=list,
+        description="Aspects of the incident the retrieved documents do not address.",
+    )
+    invalid_citations: int = Field(
+        default=0, description="Citations to passages that were not provided (removed from the output)."
+    )
+
+
 class KnowledgeResult(BaseModel):
     """Output of the knowledge (RAG) agent."""
 
@@ -114,6 +151,10 @@ class KnowledgeResult(BaseModel):
     chunks: list[RetrievedChunk] = Field(
         default_factory=list,
         description="Retrieved passages; an empty list means nothing relevant was found.",
+    )
+    answer: GroundedAnswer | None = Field(
+        default=None,
+        description="Grounded answer generated from the passages; None when generation was not requested.",
     )
 
 
