@@ -168,5 +168,24 @@ class TestHistory(unittest.TestCase):
             self.assertEqual(history.list_runs(Path(d) / "none"), [])
 
 
+class TestHealth(unittest.TestCase):
+    def test_ollama_address_is_not_rewritten_but_the_others_are(self):
+        seen = {}
+        original = client._get
+
+        def fake(url, timeout=2, rewrite=True):
+            seen[url] = rewrite
+            return (200, {"models": [{"name": "m"}], "chain": [], "vision_chain": []}) if "api/tags" in url else (200, {})
+
+        client._get = fake
+        try:
+            rows = client.check_services("http://localhost:5680/webhook/incident", "http://localhost:8010", "http://localhost:11434")
+        finally:
+            client._get = original
+        self.assertFalse(seen["http://localhost:11434/api/tags"])  # two Ollama servers can share this port; ask the configured address
+        self.assertTrue(seen["http://localhost:5680/healthz"])
+        self.assertEqual([r for r in rows if "Ollama" in r[0]][0][1], "ok")
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -119,9 +119,11 @@ def _loopback(url):
     return url.replace("://localhost", "://127.0.0.1")
 
 
-def _get(url, timeout=2):
+def _get(url, timeout=2, rewrite=True):
+    """rewrite=False keeps the address as configured. Needed for Ollama: on this machine the Windows Ollama app (no models) listens on 127.0.0.1:11434
+    and the Docker container with the models answers on localhost:11434, so rewriting localhost would ask the wrong server."""
     try:
-        r = requests.get(_loopback(url), timeout=timeout)
+        r = requests.get(_loopback(url) if rewrite else url, timeout=timeout)
         return r.status_code, (r.json() if "json" in r.headers.get("content-type", "") else r.text)
     except (requests.exceptions.RequestException, ValueError):
         return None, None
@@ -137,7 +139,7 @@ def check_services(webhook_url, rag_url=RAG_URL, ollama_url=OLLAMA_URL):
         f_n8n = pool.submit(_get, n8n_base(webhook_url) + "/healthz")
         f_rag = pool.submit(_get, rag_url + "/health")
         f_llm = pool.submit(_get, rag_url + "/llm/status")
-        f_oll = pool.submit(_get, ollama_url + "/api/tags")
+        f_oll = pool.submit(_get, ollama_url + "/api/tags", 2, False)
         code, _ = f_n8n.result()
         rows = [("n8n", "ok" if code == 200 else "down", "answers" if code == 200 else "no answer at " + n8n_base(webhook_url))]
         code, _ = f_rag.result()

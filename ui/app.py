@@ -275,6 +275,7 @@ def run_tab(cfg):
                 st.error(p)
         go = st.button("Run the workflow", type="primary", disabled=bool(problems), key="run", help="Sends the incident to n8n and waits for the full report.")
         st.caption("Please do not change the form while a run is in progress.")
+        progress = st.empty()  # the progress bar lives here, next to the Run button where the eyes are, not in the result column
 
     with right:
         st.subheader("2. Read the result")
@@ -283,7 +284,7 @@ def run_tab(cfg):
             typical = render.typical_seconds(past)
             with ThreadPoolExecutor(max_workers=1) as pool:
                 future = pool.submit(client.post_incident, cfg["url"], text, cfg["language"], image, cfg["timeout"])
-                bar = st.progress(0.0, text="Sending…")
+                bar = progress.progress(0.0, text="Sending…")
                 started = time.time()
                 while not future.done():
                     elapsed = time.time() - started
