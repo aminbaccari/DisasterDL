@@ -14,8 +14,8 @@
 | 2. Chunking | `src/rag/chunkers.py`: fixed-size and structure-aware, 400 tokens |
 | 3. Embedding and indexing | `src/rag/embeddings.py`, `src/rag/ingest.py`: multilingual-e5-base, ChromaDB |
 | 4. Retrieval | `src/rag/retriever.py`, `reranker.py`: filter, threshold, reranking, fusion |
-| 5. Prompt construction | `prompts/rag_answer/v3.yaml` + `src/rag/generate.py`: numbered passages with source, page and section |
-| 6. Generation | `src/rag/generate.py`: gemma3:4b, citations mapped to sources, quotes verified |
+| 5. Prompt construction | `prompts/rag_answer/v4.yaml` + `src/rag/generate.py`: numbered passages with source, page and section |
+| 6. Generation | `src/rag/generate.py`: gemma3:4b with built-in safeguards (scope gate, scope decision, refusal retry, citation and quote checks) |
 | 7. Evaluation | Retrieval: `evaluate.py` + `judging.py`. Generation: `evaluate_generation.py` |
 
 **What we built.**
@@ -39,18 +39,19 @@
 
 So the first retrieved passage is directly relevant for 80% of queries, and a relevant passage is always in the top 10.
 
-**Generation result** (same 36 queries, judged claim by claim by two models independent from the generator):
+**Generation result** (same 36 queries, prompt `rag_answer` v4, judged claim by claim by two models independent from the generator):
 
 | Metric | Value |
 |---|---|
-| Citations pointing to a provided passage | **100%** (200/200) |
-| Quotes found verbatim in the cited passage | 85% (135/158) |
-| Faithfulness: statements both judges call "supported" | **80%** (112/140) |
-| Statements judged unsupported by at least one judge | 7.9%, and 2% among statements with a verified quote |
-| Answer relevance (0–2) | 1.85–1.89 |
-| Out-of-scope queries correctly refused | 4/6 |
+| Out-of-scope queries correctly refused | **6/6** |
+| Relevant queries answered with guidance | 29/30 (no false refusal; 1 retrieval miss) |
+| Citations pointing to a provided passage | **100%** (180/180) |
+| Statements passed on after the quote check | 141 of 174 |
+| Of those: both judges "supported" / at least one "unsupported" | **84.4% / 1.4%** |
+| Answer relevance (0–2) | 1.83 (gpt-oss) / 1.62 (Qwen) |
+| Latency per answer (median) | 78 s |
 
-**Is it satisfying?** Yes, for a prototype and for the course requirements, with honest caveats: a small test set, labels from LLMs rather than humans, weaker fire queries, 2 out-of-scope questions answered anyway, and slow generation on the laptop (about 70 s). The full assessment is in section 10.
+**Is it satisfying?** Yes, for a prototype and for the course requirements, with honest caveats: a small test set, labels from LLMs rather than humans, weaker fire queries, and slow generation on the laptop (about 80 s). The full assessment is in section 10.
 
 ---
 
@@ -235,7 +236,8 @@ Prompts are versioned YAML files (`prompts/<name>/v<N>.yaml`) that record their 
 |---|---|---|---|
 | v1 | Grounding rules, numbered passages, citation tags, verbatim quote, abstention path, JSON | **False abstention** on "Heavy flooding in Nabeul, roads blocked, water entering ground-floor homes", although the 5 passages were flood-safety guidance | Its `not_covered` list explained it: "the specific details of the flooding in Nabeul". The model read "relevant" as "about this exact event" |
 | v2 | States that documents are general guidance and relevance means "applies to this type of situation"; abstain only if every passage is about another hazard; no tags inside statements; one example | Nabeul answered (6 statements, 5/6 quotes verified), but **over-correction**: "best recipe for lamb couscous" got food-hygiene advice | Making abstention harder made the model treat any passage as applicable |
-| v3 | v2 + a **scope check first**: if the input does not describe an emergency or disaster situation, return no guidance | Nabeul 6/6 quotes verified; couscous refused ("outside the scope of the knowledge base"). Still answers 2 of 6 out-of-scope questions (locust swarms, income tax) | The scope check passes for near-domain questions (GEN-03) |
+| v3 | v2 + a **scope check first**: if the input does not describe an emergency or disaster situation, return no guidance | Nabeul 6/6 quotes verified; couscous refused ("outside the scope of the knowledge base"). Still answers 2 of 6 out-of-scope questions (locust swarms, income tax), refuses 1 French wildfire report, 7.9% of statements unsupported | The scope check passes for near-domain questions (GEN-03); descriptive passages read as not applicable (GEN-05); general knowledge attached to the nearest citation (GEN-04) |
+| **v4** | Scope as an explicit `in_scope` field enforced in code, limited to fire, flood and building emergencies; **hazard match** (passages must concern the incident's hazard); "how the hazard behaves" counts as guidance; **quote first** (copy the sentence, then rephrase only it) | Out-of-scope refused **6/6**; **no false refusal**; statements passed on: 1.4% unsupported (v3: 1.7%) with more of them kept (141 vs 119) | Trade-off: more statements and quote attempts lower raw faithfulness (74.7% vs 80.0%) and one judge rates answers less relevant (1.62 vs 1.89); see GEN-08 |
 
 **Generation judge** (`generation_judge` v1, offline evaluation only): claim-level faithfulness and answer relevance (section 8.3).
 
@@ -385,74 +387,104 @@ Two lessons for the report:
 - **Retrieval alone hands the agents raw passages.** Steps 5 and 6 turn them into a short, cited summary of what the documents say about the incident: "retrieved guidance".
 - **The schema keeps this separate from reported facts (incident agent) and AI inference (risk agent).**
 - **The knowledge agent returns both the passages and the grounded answer** (`KnowledgeResult.answer`).
+- **The system has no verifier agent,** so the generation step has to check itself (8.2).
 
 ### 8.2 How it works (`src/rag/generate.py`)
 1. **Prompt construction (step 5).**
    - The retrieved passages (top 5 after reranking) are numbered `[S1]…[S5]`. Each is labelled with its citation, document title and section, e.g. `[S1] FLOOD-01 p.2, Be Prepared for a Flood, section: HOW TO STAY SAFE > Survive DURING`.
    - Each passage is capped at 1,800 characters, so the prompt, five passages and the answer fit gemma's 4,096-token context. A typical prompt is about 1,700 tokens.
-   - They are inserted with the incident into `prompts/rag_answer/v3.yaml`.
-2. **Generation (step 6).**
-   - gemma3:4b (local Ollama) returns JSON with an `answer` (at most 3 sentences), up to 6 `guidance` statements (each with source tags and a verbatim `quote`) and a `not_covered` list.
-   - The output is validated with Pydantic, with one retry on invalid JSON.
-3. **Post-processing,** which makes the answer checkable:
-   - Tags are mapped back to real citations (`FLOOD-01 p.2`).
-   - Citations to passages that were not provided are removed and counted. A statement citing no provided passage is dropped.
-   - Every quote is checked against the cited passages (`quote_verified`).
-   - **Statements with an unverified quote are set aside** in `unverified_guidance` and not passed on as evidence. This rule comes from the evaluation (8.4): 43% of those statements were judged unsupported, against 2% of verified ones.
-   - If retrieval returned nothing, no LLM call is made, and the answer says the knowledge base does not cover the incident.
+   - They are inserted with the incident into `prompts/rag_answer/v4.yaml`.
+2. **Generation (step 6).** gemma3:4b (local Ollama) returns JSON:
+   - `in_scope` (its scope decision);
+   - an `answer` (at most 3 sentences);
+   - up to 6 `guidance` items, each with a verbatim `quote` first, then a `statement` rephrasing only that quote, and its source tags;
+   - a `not_covered` list.
+
+   The output is validated with Pydantic, with one retry on invalid JSON.
+3. **Built-in safeguards, in order:**
+
+| Safeguard | When | What it does |
+|---|---|---|
+| Empty retrieval | Before generation | No passage above the threshold: no LLM call; answer "not covered" |
+| **Scope gate** | Before generation | Incident without a hazard type (other/unknown) and no passage ≥ 0.83: no LLM call; answer "outside the scope" |
+| **Scope decision** | After generation | The model's `in_scope: false` is enforced in code: no guidance is passed on |
+| **Refusal retry** | After generation | Typed incident, a passage ≥ 0.82, but no guidance: retry once with feedback |
+| Citation check | After generation | Tags mapped to `SOURCE-ID p.N`; citations to passages not provided removed; statements citing nothing provided dropped |
+| **Quote check** (the runtime filter) | After generation | The quote must appear verbatim in a cited passage; otherwise the statement goes to `unverified_guidance` and is not passed on |
+| Entailment check (NLI) | Optional, **off by default** | A multilingual NLI model checks that the quote or passage entails the statement. Measured as not worth it (8.4) |
 
 ### 8.3 How we evaluated generation (`src/rag/evaluate_generation.py`)
-- **Pipeline under test:** the final retrieval configuration, then `rag_answer` v3, on all 36 test queries. Answers are cached, so judging can resume after an interruption.
+- **Pipeline under test:** the final retrieval configuration, then `rag_answer` v3 and v4, on all 36 test queries.
+  - Answers are generated with every statement kept and the scope gate recorded but not applied, so each safeguard's effect can be measured separately.
+  - Results are cached per prompt version, so judging can resume after an interruption.
 - **Automatic metrics** (no model involved):
+  - abstention: out-of-scope queries must get no guidance (with the model's own decision, and with the gate), and relevant ones should get some;
   - JSON validity;
-  - abstention (out-of-scope queries must get no guidance, relevant ones should get some);
   - citation validity;
   - quote grounding;
+  - retries;
   - latency.
 - **Judged metrics**, by two models from families independent from the generator (Gemma). These are the same two models as for retrieval: `gpt-oss-120b` (OpenAI) and `qwen3.8-27b` (Alibaba), with prompt `generation_judge` v1.
-  - **Faithfulness, claim by claim:** each statement is judged against *its own cited passages*: supported, partial (only part of it, or an added detail) or unsupported.
+  - **Faithfulness, claim by claim:** each statement is judged against *its own cited passages*: supported, partial (only part of it, or an added detail) or unsupported. Reported for all statements, and separately for those kept or set aside by the quote check.
   - **Answer relevance:** 0 to 2.
   - **Agreement:** Cohen's κ between the two judges.
 
-### 8.4 Results (`evaluation/results/generation_20261018_1036.md`)
-| Automatic metric | Value |
-|---|---|
-| Valid JSON answers | 36/36 |
-| Relevant queries answered with guidance | 28/30 (1 had no passage above the threshold, 1 false abstention) |
-| Out-of-scope queries correctly answered with no guidance | 4/6 |
-| Statements per answer (mean) | 5.6 |
-| Citation validity | **100%** (200/200) |
-| Quote grounding | 85.4% (135/158) |
-| Latency per answer (median / max) | 70 s / 97 s |
+### 8.4 Results
+Reports: `evaluation/results/generation_v4_20261018_1608.md` (v4) and the v3 report in the same folder.
 
-| Judge | Statements judged | Supported | Partial | Unsupported | Faithfulness | Mean relevance |
-|---|---|---|---|---|---|---|
-| gpt-oss-120b | 140 | 123 | 9 | 8 | 87.9% | 1.85 |
-| qwen3.8-27b | 146 | 119 | 19 | 8 | 81.5% | 1.89 |
+| Metric | v3 | **v4 (default)** |
+|---|---|---|
+| Out-of-scope queries refused, model's own decision | 4/6 | **6/6** |
+| Out-of-scope queries refused, model + scope gate | – | 6/6 |
+| Relevant queries answered with guidance | 28/30 | **29/30** |
+| False refusals (passages retrieved, no guidance) | 1 | **0** |
+| Refusal retries triggered | – | 0 |
+| Statements per answered query | 5.6 | 6.0 |
+| Citation validity | 100% (200/200) | 100% (180/180) |
+| Quote grounding | 85.4% | 81.0% |
+| **All statements:** both judges "supported" / any "unsupported" | 80.0% / 7.9% | 74.7% / 9.8% |
+| **Statements passed on (quote verified):** count | 119 | **141** |
+| **Statements passed on:** both judges "supported" / any "unsupported" | 87.4% / **1.7%** | 84.4% / **1.4%** |
+| Statements set aside: any "unsupported" | 43% | 45% |
+| Mean relevance (gpt-oss / Qwen) | 1.85 / 1.89 | 1.83 / 1.62 |
+| Judge agreement, κ supported vs not | 0.57 | 0.55 |
+| Latency per answer (median) | 70 s | 78 s |
 
-- **Agreement between the judges:** 85.7% on the 140 statements judged by both; Cohen's κ 0.45 (three verdicts), 0.57 (supported vs not).
-- **Consensus faithfulness** (both judges "supported"): **80.0% (112/140)**.
-- **Flagged:** 11 statements (7.9%) were judged unsupported by at least one judge.
+**Reading the results**
+- **v4 fixes both abstention failures with the prompt alone.**
+  - **Income tax and locusts** are now refused by the model's explicit scope decision.
+  - **The French wind-driven wildfire report** gets 6 statements.
+  - **The two code safeguards did no work in the end.** The refusal retry was never triggered. The scope gate would have stopped the same two questions, but its 0.83 threshold was calibrated on these same 6 questions, so it's reported as a safety net, not as evidence.
+- **The quote check is what makes the output trustworthy.**
+  - **Both versions:** of the statements set aside, 43–45% are unsupported; of those passed on, only 1.4–1.7%.
+  - **v4:** it passes on more statements (141 vs 119) at the same low unsupported rate.
+- **What v4 costs** (GEN-08):
+  - **Faithfulness:** raw faithfulness is lower, because quote-first generation makes more statements and more quote attempts that fail verbatim matching. The filter absorbs most of this.
+  - **Relevance:** Qwen rates 7 answers less relevant, mostly fire queries where hazard-behaviour statements replace actions. gpt-oss is unchanged.
+  - **Latency:** 8 s longer.
 
-**The quote check predicts faithfulness:**
+**NLI entailment check: a measured negative result** (GEN-07). Applied to the 140 judged v3 statements, on top of the quote check:
 
-| Statements | Count | Both judges "supported" | At least one "unsupported" |
+| Statements passed on | Count | Both judges "supported" | Any "unsupported" |
 |---|---|---|---|
-| Quote verified | 119 | **87%** | **2%** |
-| Quote not verified | 21 | 38% | 43% |
+| Quote check only | 119 | 87.4% | 1.7% (2) |
+| Quote check + NLI (threshold 0.5) | 87 | 89.7% | 1.1% (1) |
+| Removed by NLI on top | 32 | 81% (correct ones lost) | 1 |
 
-This is why unverified statements are now set aside. Of the 11 flagged statements, 9 are removed, and 8 correct ones are removed too. That trade is acceptable when the output feeds a risk assessment.
+- **What it costs:** removing 32 statements, mostly correct ones, to catch a single unsupported one, plus about 60–70 s per answer on CPU.
+- **Why:** faithful paraphrases (summaries of two sentences, English rephrasings of French text) are classed as "neutral".
+- **So:** a heavier model-based check isn't automatically better than a simple deterministic one. The NLI check stays available, but off.
 
-**Typical errors**
-- **General knowledge with the nearest citation** (GEN-04). Examples: "Use an N95 mask", or "Turn on lights to help people find you if trapped", cited to a FEMA page that doesn't say it; a 2002 Dresden hospital figure attributed to the wrong page.
-- **Out-of-scope questions answered anyway** (GEN-03): "locust swarms" got drought-farming advice; "income tax return online" got the INSARAG online coordination system (relevance 0/0).
-- **A false abstention on a French wildfire report** (GEN-05).
-- **A retrieval miss passed on** (FIRE-Q08, burn scar): no passage reached the threshold, so the answer correctly says "not covered", but the documents do contain the guidance.
+**Remaining errors**
+- **2 unsupported statements still passed on (1.4%).**
+  - **A heatwave-monitoring statement in a flood answer:** a passage about another hazard slipped through the hazard-match rule.
+  - **One statement attributed to the wrong passage.**
+- **A retrieval miss** (FIRE-Q08, burn scar): no passage reached the threshold, so the answer correctly says "not covered", but the documents do contain the guidance.
 
 ### 8.5 Assessment of the generation step
-- **Grounding is strong:** every citation points to a real passage, and after the quote filter, the remaining statements are almost never unsupported (2%).
-- **Abstention is the weak side.** One relevant query was refused, and 2 of 6 out-of-scope queries received guidance. The verifier agent should treat answers to off-topic inputs as a risk.
-- **Latency** (about 70 s with gemma3:4b split between CPU and GPU) is fine offline but slow for a live demo. Options: 3 passages instead of 5, fewer statements, or a hosted model for the demo (GEN-06).
+- **Scope and refusals now behave as intended:** 6/6 out-of-scope questions refused and no false refusal on the test set.
+- **Grounding is strong:** every citation points to a real passage, and of the statements passed on, about 1.4% are unsupported according to at least one of two independent judges.
+- **Latency** (about 80 s with gemma3:4b split between CPU and GPU) is fine offline but slow for a live demo. Options: 3 passages instead of 5, fewer statements, or a hosted model for the demo (GEN-06).
 
 ---
 
@@ -472,6 +504,8 @@ All entries, with cause, attempted fix and outcome, are in `evaluation/FAILURES.
 | ENV-01 | sentence-transformers blocked by Windows security policy | Re-implemented with transformers |
 | GEN-01 | Grounded answer v1 refused a clearly covered flood incident | v2: relevance = applies to this type of situation |
 | GEN-02 | v2 answered an out-of-scope cooking question | v3: scope check first |
+| GEN-03 | v3 still answered 2 of 6 out-of-scope questions (locusts, income tax) | v4: explicit in_scope field enforced in code; 6/6 refused |
+| GEN-05 | v3 refused a French wildfire report | v4: hazard behaviour counts as guidance; no false refusal |
 
 ### Mitigated
 | ID | Problem | Mitigation |
@@ -481,7 +515,8 @@ All entries, with cause, attempted fix and outcome, are in `evaluation/FAILURES.
 | RAG-11 | Large general documents crowd out short targeted sheets | Reranking (and an optional per-document cap) |
 | JUDGE-01 | Even gpt-oss-120b invents quotes (10%) | Automatic quote check discards those votes |
 | ENV-05 | Groq free tier: 200,000 tokens/day per model; Mistral free account with zero quota | Second Groq key; local tie-breaker |
-| GEN-04 | 7.9% of generated statements not supported by their cited passage | Statements with an unverified quote set aside (2% unsupported remain) |
+| GEN-04 | 7.9–9.8% of generated statements not supported by their cited passage | Statements with an unverified quote set aside (1.4% unsupported remain with v4) |
+| GEN-08 | v4 trade-offs: lower raw faithfulness, one judge rates relevance lower, +8 s | Accepted: same unsupported rate after the filter, scope and refusal failures fixed |
 
 ### Open
 | ID | Problem | Impact |
@@ -491,14 +526,13 @@ All entries, with cause, attempted fix and outcome, are in `evaluation/FAILURES.
 | RAG-12 | Reranker slightly weaker on fire queries | Two fire queries still fail |
 | RAG-14 | Hindi in a legacy font in the NDRF SOP extracts as gibberish | Low: the English part of those pages is intact |
 | PROMPT-03 | The query rewrite still invents facts (3/40) | Low: only used through fusion |
-| GEN-03 | 2 of 6 out-of-scope questions still get guidance (locusts, income tax) | Off-topic answers reach the agents; the verifier must catch them |
-| GEN-05 | False abstention on one French wildfire report | One relevant query without guidance |
 | GEN-06 | Generation takes about 70 s per answer on the laptop | Slow for a live demo |
 
 ### Prompt-engineering failures, kept as evidence for the prompt library
 - **PROMPT-01 to PROMPT-03:** the query rewrite iterations (section 5).
 - **PROMPT-04:** choosing judges. Small models default to 0 or invent quotes.
-- **GEN-01 to GEN-03:** the grounded-answer iterations v1 → v3 (section 5).
+- **GEN-01 to GEN-03, GEN-05, GEN-08:** the grounded-answer iterations v1 → v4 (section 5).
+- **GEN-07:** the NLI entailment check, a measured negative result (section 8.4).
 
 ---
 
@@ -507,19 +541,19 @@ All entries, with cause, attempted fix and outcome, are in `evaluation/FAILURES.
 ### 10.1 Status
 The RAG component is **complete, with all seven steps, and evaluated end to end**.
 - **Indexing:** the pipeline is reproducible with one command.
-- **Retrieval and generation:** both are integrated in the knowledge agent (best retrieval configuration, `rag_answer` v3, verified statements only).
-- **Evaluation:** retrieval with independent relevance labels (κ = 0.75); generation with automatic grounding checks and claim-level faithfulness from two independent judges (consensus 80%). Every result file is kept in `evaluation/results/`.
-- **Tests:** 50 automated tests cover extraction, chunking, ingestion, retrieval post-processing, metrics, judging, generation and the knowledge agent.
+- **Retrieval and generation:** both are integrated in the knowledge agent (best retrieval configuration, `rag_answer` v4 with the built-in safeguards, verified statements only).
+- **Evaluation:** retrieval with independent relevance labels (κ = 0.75); generation with automatic checks and claim-level faithfulness from two independent judges, for v3 and v4. Every result file is kept in `evaluation/results/`.
+- **Tests:** 53 automated tests cover extraction, chunking, ingestion, retrieval post-processing, metrics, judging, generation safeguards and the knowledge agent.
 
 ### 10.2 Verdict
 **Yes, the result is satisfying for this project, both as a working component and for the grading criteria.**
 
 **Why**
 - **Retrieval quality is high for a prototype.** For 80% of test queries, the first passage is directly relevant; a relevant passage is in the top 5 for 93% and in the top 10 for 100%. Hazard-specific failures are limited to two fire queries.
-- **Generation is grounded and checkable:**
+- **Generation is grounded, checkable and refuses what it should:**
   - every citation points to a provided passage;
-  - 80% of statements are supported according to both independent judges;
-  - with the quote filter, only about 2% of the statements passed on are unsupported.
+  - of the statements passed on, 84% are supported according to both independent judges and 1.4% are judged unsupported by at least one;
+  - 6/6 out-of-scope questions are refused, with no false refusal.
 - **Every choice is justified, and most are measured:**
   - corpus selection, with exclusions explained;
   - chunk size tied to the model's limit;
@@ -528,7 +562,7 @@ The RAG component is **complete, with all seven steps, and evaluated end to end*
   - each retrieval setting tested on and off.
 - **The chunking comparison was done**, which the brief values, and reported honestly as a null result.
 - **The evaluation goes beyond "a short evaluation":** pooled graded labels from a blinded, multi-family LLM panel with κ = 0.75, two label definitions, and per-hazard and per-language breakdowns.
-- **Failures are documented** with cause and fix (30 entries), which the brief explicitly rewards.
+- **Failures are documented** with cause and fix (32 entries), which the brief explicitly rewards. They include a measured negative result (NLI check).
 
 **Honest limits (to state in the report)**
 1. **Small test set:** 30 relevant queries, so small differences, about 3 points or less, aren't meaningful.
@@ -538,9 +572,10 @@ The RAG component is **complete, with all seven steps, and evaluated end to end*
 5. **Lenient labels saturate,** so they can't rank the best configurations; strict labels are the primary measure.
 6. **Fire queries are the weak spot** under reranking; French has only 8 queries; Arabic isn't supported.
 7. **Generation limits:**
-   - 2 of 6 out-of-scope questions still receive guidance;
-   - generation takes about 70 s per answer on the laptop;
-   - the two generation judges agree only moderately (κ 0.45–0.57), so faithfulness is best read as a range (81.5–87.9% per judge, 80% consensus).
+   - generation takes about 80 s per answer on the laptop;
+   - the two generation judges agree only moderately (κ about 0.55), so faithfulness is best read per judge as well as by consensus;
+   - the 6 out-of-scope questions were also used to calibrate the scope gate, so 6/6 refusals shows the prompt works on these cases, not that it generalises;
+   - one judge rates v4's answers less relevant (1.62 vs 1.89).
 8. **The downstream agents aren't evaluated yet.** Whether the risk assessment and report use the grounded answer faithfully will be evaluated once those agents exist.
 
 ---
@@ -558,8 +593,8 @@ Ordered by value for effort:
 | Strengthen the rewrite guardrail (v4: only words from the report, or a check step) | Removes invented facts from fusion queries | 1 h |
 | A stronger multilingual reranker (e.g. `bge-reranker-v2-m3`) | Possibly better on fire and French queries; slower on CPU | 1 h + a re-run |
 | Fix the Arabic extraction (ligature repair) or use Arabic documents with a clean text layer | Arabic support | Unknown |
-| Grounded-answer prompt v4: the hazard in the passages must match the incident's hazard | Fixes the 2 out-of-scope answers (locusts, income tax) | 1 h + re-run |
-| Faster generation for the demo: 3 passages, fewer statements, or a hosted model | Brings 70 s down to about 20–30 s | 30 min |
+| Faster generation for the demo: 3 passages, fewer statements, or a hosted model | Brings about 80 s down to about 20–30 s | 30 min |
+| More out-of-scope and near-domain test questions (not used for calibration) | Shows whether the scope decision generalises | 1 h + a run |
 | Human spot-check of 20 generated statements | Human-vs-judge agreement for faithfulness | 15 min |
 | Faithfulness evaluation of the risk and report agents | Extends the evaluation to the full pipeline | Part of the next phase |
 
@@ -587,9 +622,9 @@ Ordered by value for effort:
 .venv/Scripts/python -m src.rag.evaluate --rewrite 3 --tag lenient
 
 # generation evaluation (answers with gemma3:4b, then the two Groq judges)
-.venv/Scripts/python -m src.rag.evaluate_generation generate
-.venv/Scripts/python -m src.rag.evaluate_generation judge
-.venv/Scripts/python -m src.rag.evaluate_generation report
+.venv/Scripts/python -m src.rag.evaluate_generation generate --version 4
+.venv/Scripts/python -m src.rag.evaluate_generation judge --version 4
+.venv/Scripts/python -m src.rag.evaluate_generation report --version 4
 
 # try a query
 .venv/Scripts/python -m src.rag.retriever "water is entering houses" --type flood -k 5 --rerank
@@ -605,6 +640,10 @@ Ordered by value for effort:
 - **Why claim-level faithfulness?** A whole answer can be mostly right and contain one invented claim; judging each statement against its own citations finds it.
 - **Why verify quotes automatically?** It's a cheap, deterministic grounding check, and it predicts the judges' verdicts (2% unsupported when verified, 43% when not), so it can filter statements at runtime without any judge.
 - **Why can a grounded generator still be unfaithful?** The model fills gaps from its training ("use an N95 mask") and attaches the nearest citation; grounding instructions reduce but don't eliminate this.
+- **How does the RAG work without a verifier agent?** It checks itself:
+  - before generation: a scope gate;
+  - after generation: an explicit scope decision enforced in code, a refusal retry, citation checks, and the quote check that decides what is passed on.
+- **Why not an NLI (entailment) check?** We measured it: it removed 32 statements, 81% of them correct, to catch one unsupported statement, and added about 60–70 s per answer.
 - **Why three model families, and not Claude?** Independence from the system's author, different blind spots, κ as a reliability measure, and a tie-breaker instead of human adjudication.
 - **Why not fine-tune (LoRA) a judge?** There were no human labels to train on, and training on another model's labels would copy its bias.
 - **Why the quote check?** Even strong judges invent evidence (10%); a verbatim requirement makes every judgment checkable.

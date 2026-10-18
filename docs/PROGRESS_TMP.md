@@ -20,8 +20,8 @@
 | **Relevance labels by an LLM judging panel** (gpt-oss-120b, Qwen3.8-27B, Llama 3.1 8B tie-breaker) | **Done** |
 | **Final retrieval evaluation**, 15 configurations, lenient and strict labels | **Done** |
 | LLM client (local Ollama `gemma3:4b`; Groq for the offline judges), versioned prompt loader | Done |
-| Knowledge agent (retrieval + reranking + **grounded answer generation**, prompt `rag_answer` v3) | Done |
-| **Generation evaluation** (36 queries: citation validity 100%, quote grounding 85%, faithfulness 80% consensus of two judges) | **Done**, see `docs/RAG.md` section 8 |
+| Knowledge agent (retrieval + reranking + **grounded answer generation** with built-in safeguards, prompt `rag_answer` v4) | Done |
+| **Generation evaluation** (36 queries, prompt v4: out-of-scope refused 6/6, no false refusal, citations 100% valid, statements passed on 1.4% unsupported per two independent judges) | **Done**, see `docs/RAG.md` section 8 |
 | Other agents (incident, vision, risk, verifier, report), FastAPI, n8n workflow | **Not started** |
 
 Tests: 47 passing (`.venv/Scripts/python -m pytest`), all offline.

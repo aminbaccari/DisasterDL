@@ -119,6 +119,11 @@ class GuidanceItem(BaseModel):
     quote_verified: bool = Field(
         default=False, description="True when the quote was found verbatim in a cited passage."
     )
+    entailment: float | None = Field(
+        default=None,
+        description="Highest probability (NLI model) that the quote or a cited passage entails the statement; "
+        "None when the check was not run.",
+    )
 
 
 class GroundedAnswer(BaseModel):
@@ -132,8 +137,18 @@ class GroundedAnswer(BaseModel):
     )
     unverified_guidance: list[GuidanceItem] = Field(
         default_factory=list,
-        description="Statements whose quote was not found in the cited passages: kept for transparency, "
-        "not passed on as evidence (43% of them were judged unsupported in the evaluation, vs 2% of verified ones).",
+        description="Statements that failed a check (quote not found in the cited passages, or statement "
+        "not entailed by its evidence): kept for transparency, not passed on as evidence.",
+    )
+    in_scope: bool = Field(
+        default=True, description="False when the request is outside the scope of the knowledge base."
+    )
+    abstained_by_gate: bool = Field(
+        default=False,
+        description="True when the scope gate stopped generation (untyped incident, no passage above the stricter threshold).",
+    )
+    retried: bool = Field(
+        default=False, description="True when generation was retried because strong passages produced no guidance."
     )
     not_covered: list[str] = Field(
         default_factory=list,
