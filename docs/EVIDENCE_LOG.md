@@ -443,3 +443,24 @@ Fire_01 with its photo, real models, one run: 175 s, status ok, type forest_fire
 Also in that run (not related to the vision change): the first report from `qwen3.8-27b` (after a rate-limit fallback) was missing four required fields; the repair pass (112 s on nemotron after two rate-limit fallbacks) returned a complete report, which passed validation, so the repair was kept and the discard safety net, which only acts on a worse repair, did not trigger. It confirms that D4 (report JSON missing fields from one model) still happens, and it cost 112 s.
 
 Deployed: the three-view workflow is imported as a separate workflow on the test container only (id `disasterai-tta`, path `incident_tta`); the default workflow and the team n8n on port 5678 were not changed.
+
+## Keep-high merge variant against the single call, 3 runs (2026-10-18)
+
+Rule written before the variant existed: `vision/test_images/TTA_CRITERIA_HIGH.md`. Run: `scripts/vision_bench.py --runs 3 --prompt vision/v2.md --prompt tta:vision/v2.md --prompt tta+high:vision/v2.md`, `qwen3-vl:4b-instruct` warm, 12 images, 3 runs, `eval/results/vision_bench/20261018-172710`. The two three-view conditions (`tta`, plain majority, and `tta+high`, which also keeps a one-view observation when that view was sure) share the same three model answers per image and run, so they differ only in the merge. 36 calls per condition. Ground truth by one reader; the images are a development set for this idea (stated in the rule).
+
+| Measure (36 calls) | single v2 | three views, majority | three views, keep high |
+|--------------------|-----------|-----------------------|------------------------|
+| schema valid | 36 | 36 | 36 |
+| calls with a false observation | 0 | 0 | 0 |
+| calls missing a required category | 4 | 3 | 3 |
+| absence statements | 5 | 1 | 4 |
+| calls naming a place | 1 | 1 | 1 |
+| quality flag on the two low-quality images (6 calls) | 3 of 6 | 3 of 6 | 3 of 6 |
+| median latency | 17.2 s | 46.8 s (2.7 times) | 46.8 s |
+| calls where fewer than three views answered | - | 3 | 3 |
+
+Rule applied literally for keep_high: 1 schema holds, 2 false observations holds (0 and 0), 3 missing required holds (3 against 4), 4 quality flag holds (equal), 5 latency holds (2.7 times against a limit of 3.5). The "benefit" clause (missing required strictly lower with rule 2 holding) is met on paper: 3 against 4.
+
+Why I do not count that as a benefit: (a) the whole difference is one call; the rule's own limits say that a difference of one call is not a difference; (b) plain majority gets exactly the same 3, so the keep-high policy itself adds nothing here, and it keeps more absence statements (4 against 1); (c) it reverses the first benchmark, where the three-view path missed more than the single call (4 against 2, on 24 calls): the missing smoke on `edge_02_conflict` that sank the first benchmark did not recur (majority and keep-high had smoke in all 3 runs here, the single call missed it once), so the first result was mostly run-to-run variation of the model. Pooled over both benchmarks the single call missed a required category in 6 of 60 calls and the three-view path in 7 of 60. The one miss that never changes is `flood_water` on the satellite image (3 of 3 in every condition).
+
+Conclusion: no evidence of a benefit for 2.7 times the latency and three times the model calls; the three-view option, with either merge policy, stays off and documented. The quality-flag question is also unchanged: the blurred image is flagged in every condition, the dark street in none, and the mean agreement was 0.89 on ordinary images against 0.83 on the low-quality ones, a weaker separation than the 0.33 seen on the blurred image alone in the first benchmark. No further merge variants are tried on these images (rule). A real test of the idea would need new images, which would have to be approved and downloaded separately.

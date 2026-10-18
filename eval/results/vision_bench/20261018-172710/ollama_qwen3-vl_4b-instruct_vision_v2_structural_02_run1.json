@@ -1,0 +1,64 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "structural_02",
+  "image": "structural_02.jpg",
+  "run": 1,
+  "seconds": 23.6,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "A brick building partly collapsed after the earthquake. Bricks are lying across the street.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A severely damaged multi-story brick building with collapsed sections and debris on the street, surrounded by construction barriers and traffic signals, with other buildings and a distant skyscraper in the background.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "Significant damage to a brick building, including collapsed sections, exposed interior framing, and shattered windows.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Traffic light poles and street signs are visible near the damaged building.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "Several vehicles are parked or visible on the street in the background.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "A pile of brick rubble and construction debris is on the street, with an orange traffic cone and a green tarp visible.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees are visible in the background behind other buildings.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "A sign with text \"NO S\" is partially visible on the ground near the debris.",
+    "confidence": "low"
+   }
+  ],
+  "visible_text": [
+   "NO S"
+  ],
+  "not_determinable": []
+ }
+}

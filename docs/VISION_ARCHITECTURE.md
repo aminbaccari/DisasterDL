@@ -149,3 +149,6 @@ failure paths into the same merge: "Vision failed: no views" (tool or image prob
 
 ### Result of the rule (2026-10-18): stays off
 On 12 images with the local model the three-view path failed rule 3 (4 calls missing a required category against 2) and showed no gain on the quality flag, at 2.9 times the latency. It remains an option behind `--vision-mode tta`, documented and tested, not recommended; details in `docs/EVIDENCE_LOG.md`. n8n wiring was verified end to end once on the test container (separate workflow path `incident_tta`). A change that might make it worth another try: keep an observation seen by one view when its confidence is high, instead of the strict majority, with a new pre-registered rule (not done).
+
+### Second benchmark, keep-high merge (2026-10-18): still no evidence of a benefit
+Same flag, new merge policy (`--tta-merge keep_high`), rule `vision/test_images/TTA_CRITERIA_HIGH.md`, 3 runs. Both merges pass the five points of the rule, but the only difference from the single call is one call out of 36, shared by the plain majority merge; the first benchmark's loss did not recur (it was model variation), so over both benchmarks the single call and the three-view path are level (6 and 7 misses in 60 calls). Latency 2.7 times. The option stays off with either policy. Details in `docs/EVIDENCE_LOG.md`.

@@ -1,0 +1,57 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "control_01_night",
+  "image": "control_01_night.jpg",
+  "run": 1,
+  "seconds": 18.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 1,
+  "place_words": false,
+  "quality_flagged": false,
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "A big fire is burning on this street tonight.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A narrow street at night, lined with dark brick buildings featuring white-framed windows and illuminated by street lamps and interior lights.",
+  "observations": [
+   {
+    "category": "infrastructure",
+    "description": "Row of dark brick buildings with white-framed windows and doors.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Street lamps mounted on the buildings, emitting bright light.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Flower boxes with red flowers mounted on building facades.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Dark, empty street with no visible activity.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Windows on upper floors are lit from within.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": []
+ }
+}

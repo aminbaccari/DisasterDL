@@ -1,0 +1,75 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta+high:vision/v2.md",
+  "incident": "flood_01",
+  "image": "flood_01.jpg",
+  "run": 3,
+  "seconds": 32.4,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 1,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.833,
+  "views_ok": 3
+ },
+ "incident_text": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A town square is flooded with muddy water, submerging the ground floors of several buildings.",
+  "observations": [
+   {
+    "category": "flood_water",
+    "description": "Muddy brown water covers the entire street and reaches the bases of buildings.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Multi-story buildings with commercial ground floors and storefronts are partially submerged.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A street lamp pole is standing in the water, submerged to its base.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "No vehicles visible in the image.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [
+   "ATZ",
+   "STOP",
+   "AZ"
+  ],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "structural integrity",
+   "cause of flood",
+   "scale or distance"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.833,
+   "unstable_categories": [
+    {
+     "category": "vehicles",
+     "support": 1
+    }
+   ],
+   "merge_policy": "keep_high"
+  }
+ }
+}

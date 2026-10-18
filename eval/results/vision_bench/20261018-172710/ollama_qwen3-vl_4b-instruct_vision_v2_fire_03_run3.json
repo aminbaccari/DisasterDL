@@ -1,0 +1,57 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_03",
+  "image": "fire_03.jpg",
+  "run": 3,
+  "seconds": 19.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "A large smoke column over the fields, probably a grass fire. Nobody is nearby.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large plume of smoke rises from a distant field, with a fence and some vegetation in the foreground. The sky is partially cloudy with a hazy appearance.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "A large, dense plume of smoke rising from the horizon over a field.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Dry, yellowish grass in the foreground and background, with a few scattered trees in the distance.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A wire fence with posts running horizontally across the middle ground.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "Several dark shapes consistent with cattle grazing in the field.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of smoke",
+   "distance to smoke source",
+   "scale of the fire",
+   "exact number of animals"
+  ]
+ }
+}

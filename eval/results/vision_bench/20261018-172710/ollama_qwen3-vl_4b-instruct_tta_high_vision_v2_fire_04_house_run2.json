@@ -1,0 +1,80 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta+high:vision/v2.md",
+  "incident": "fire_04_house",
+  "image": "fire_04_house.jpg",
+  "run": 2,
+  "seconds": 33.4,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.889,
+  "views_ok": 3
+ },
+ "incident_text": "A house is on fire in our street. Flames are coming out of the roof and the front door.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A house is engulfed in flames, with fire visible through windows and bursting from the roof, suggesting an active fire incident.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Large flames visible through an open doorway and spreading across the roof",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Smoke billowing from the roof and windows",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Roof is partially collapsed and burning; porch and window frames are damaged",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "House with siding and a porch, including a chimney",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A blue mark or graffiti visible on the siding",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees visible in the background behind the house.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "cause of fire",
+   "scale or distance"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.889,
+   "unstable_categories": [
+    {
+     "category": "vegetation",
+     "support": 1
+    }
+   ],
+   "merge_policy": "keep_high"
+  }
+ }
+}

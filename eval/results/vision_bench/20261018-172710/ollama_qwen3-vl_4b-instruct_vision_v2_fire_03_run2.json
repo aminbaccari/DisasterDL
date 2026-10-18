@@ -1,0 +1,58 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_03",
+  "image": "fire_03.jpg",
+  "run": 2,
+  "seconds": 19.1,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "A large smoke column over the fields, probably a grass fire. Nobody is nearby.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large plume of smoke rises from a distant field over a flat, open landscape with a fence in the foreground.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "A large, dense plume of smoke dominates the sky, originating from the horizon.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "A wide, flat field of dry, golden-brown grass covers the landscape.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A wire fence with metal posts is visible in the mid-ground.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Small dark shapes, possibly animals, are visible in the distant field.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of smoke",
+   "distance to source",
+   "extent of fire or damage",
+   "number of animals",
+   "weather conditions"
+  ]
+ }
+}

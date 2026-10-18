@@ -1,0 +1,75 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 3,
+  "seconds": 32.7,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.867,
+  "views_ok": 3
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large wildfire is burning on a hillside at night, illuminated by intense orange and yellow flames and smoke against a dark sky. The fire's glow reflects on a body of water in the foreground.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Bright orange and yellow flames actively burning along the hillside.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Dark, billowing smoke rising from the fire, illuminated by firelight.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A dark, silhouetted highway sign structure in the foreground.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "Red light trails in the bottom right, indicating vehicle movement.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "number of people",
+   "water depth",
+   "cause of fire",
+   "scale or distance of fire",
+   "structural integrity of buildings or trees",
+   "scale of fire",
+   "distance to viewer",
+   "structural integrity of hillside",
+   "scale or distance"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.867,
+   "unstable_categories": [
+    {
+     "category": "vegetation",
+     "support": 1
+    }
+   ],
+   "merge_policy": "majority"
+  }
+ }
+}

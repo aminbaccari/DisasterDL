@@ -1,0 +1,69 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "structural_02",
+  "image": "structural_02.jpg",
+  "run": 3,
+  "seconds": 13.1,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "A brick building partly collapsed after the earthquake. Bricks are lying across the street.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A damaged multi-story brick building with significant structural collapse and debris on the street, surrounded by traffic infrastructure and adjacent to other commercial buildings.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "Severe damage to a multi-story brick building, with exposed beams, missing walls, and a collapsed upper floor.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Street corner with traffic signals, street signs, and a traffic light pole with debris around its base.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "Cars visible in the background on the street, including a red vehicle and others parked or moving.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "Piles of broken bricks and rubble, an orange traffic cone, and a green tarp on the ground.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees visible in the background behind commercial buildings.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "A tall, modern building visible in the distance.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of damage",
+   "extent of damage",
+   "number of people",
+   "building age",
+   "distance to camera",
+   "time of day"
+  ]
+ }
+}

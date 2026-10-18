@@ -1,0 +1,59 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 3,
+  "seconds": 12.3,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large wildfire is burning at night on a hillside, casting an orange glow across the sky and water below. A road structure is visible in the foreground.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Bright orange and yellow flames are visible on the hillside.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Large plumes of dark, glowing orange smoke rise from the fire.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A road sign structure is silhouetted in the foreground.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "Long exposure red light trails are visible at the bottom right, suggesting vehicle movement.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "distance to fire",
+   "water depth",
+   "presence of people",
+   "structural integrity of hillside",
+   "cause of fire",
+   "exact scale of fire"
+  ]
+ }
+}

@@ -1,0 +1,70 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "fire_02",
+  "image": "fire_02.jpg",
+  "run": 1,
+  "seconds": 60.0,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 1.0,
+  "views_ok": 3
+ },
+ "incident_text": "Heavy smoke is rising behind a farm and a house stands close to the smoke. We think a wildfire is coming toward the house.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A rural landscape under a massive, dark cloud formation, with a house and trees visible in the foreground and smoke rising from the horizon.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large plume of dark, billowing smoke rising from the horizon, obscuring the sky and landscape.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A house with a gabled roof and porch is visible on the right side of the image, surrounded by trees.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "A line of dark evergreen trees is visible along the left side of the horizon, with other trees scattered in the foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "The sky is filled with heavy, grey storm clouds, with darker smoke plumes dominating the center and right portions of the frame.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "distance to smoke source",
+   "cause of smoke",
+   "structural integrity of the house",
+   "extent of the storm system",
+   "distance to smoke",
+   "structural damage to the house",
+   "wind direction",
+   "extent of fire",
+   "distance to nearest house"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 1.0,
+   "unstable_categories": [],
+   "merge_policy": "majority"
+  }
+ }
+}

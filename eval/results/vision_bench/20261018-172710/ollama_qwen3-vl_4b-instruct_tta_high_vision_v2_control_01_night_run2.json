@@ -1,0 +1,55 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta+high:vision/v2.md",
+  "incident": "control_01_night",
+  "image": "control_01_night.jpg",
+  "run": 2,
+  "seconds": 26.7,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 3,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": false,
+  "agreement": 1.0,
+  "views_ok": 3
+ },
+ "incident_text": "A big fire is burning on this street tonight.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A dark, narrow street at night illuminated by street lamps and windows of historic brick buildings.",
+  "observations": [
+   {
+    "category": "infrastructure",
+    "description": "Street lamps mounted on brick facades.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Flowering plants in window boxes.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Street pavement and curb.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 1.0,
+   "unstable_categories": [],
+   "merge_policy": "keep_high"
+  }
+ }
+}

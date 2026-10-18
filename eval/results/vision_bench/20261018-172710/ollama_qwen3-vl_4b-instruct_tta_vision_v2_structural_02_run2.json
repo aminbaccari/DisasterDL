@@ -1,0 +1,71 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "structural_02",
+  "image": "structural_02.jpg",
+  "run": 2,
+  "seconds": 319.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": null,
+  "views_ok": 1
+ },
+ "incident_text": "A brick building partly collapsed after the earthquake. Bricks are lying across the street.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A damaged brick building with significant structural damage and rubble on the street corner, with traffic lights and other buildings in the background.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "A multi-story brick building with collapsed sections, exposed wooden framing, and missing walls.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A traffic light pole and a traffic light are visible at the corner of the street.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A pile of bricks and debris on the street with an orange traffic cone.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "A red vehicle is parked on the street in the background.",
+    "confidence": "medium"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees are visible in the background, behind other buildings.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [
+   "NO"
+  ],
+  "not_determinable": [
+   "Cause of damage",
+   "Time of incident",
+   "Weather conditions"
+  ],
+  "reliability": {
+   "variants_used": 1,
+   "variants_requested": 3,
+   "usable_votes": "1/1",
+   "category_agreement_score": null,
+   "unstable_categories": [],
+   "merge_policy": "majority"
+  }
+ }
+}

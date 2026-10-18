@@ -1,0 +1,68 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_05_training",
+  "image": "fire_05_training.jpg",
+  "run": 2,
+  "seconds": 12.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "A building is burning and firefighters are working on it.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "Firefighters are battling a large fire engulfing a house, with thick black smoke billowing into the sky.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large plume of dark, thick smoke rising from the burning building",
+    "confidence": "high"
+   },
+   {
+    "category": "flames",
+    "description": "Bright orange flames visible through the windows and roof of the structure",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "Three firefighters in gear standing on a slope, operating a hose",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Signs of fire damage to the house's exterior, including blackened wood and broken windows",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A fence and a power line pole visible in the background",
+    "confidence": "medium"
+   },
+   {
+    "category": "vegetation",
+    "description": "Green grassy hillside and trees surrounding the scene",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of fire",
+   "water depth from hose",
+   "distance to fire from firefighters",
+   "scale of house",
+   "number of firefighters in total"
+  ]
+ }
+}

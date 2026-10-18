@@ -1,0 +1,63 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 1,
+  "seconds": 20.2,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large fire is burning at night on a hillside, illuminated by bright orange and yellow flames and smoke against a dark sky. The fire's glow reflects on a body of water in the foreground.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Bright orange and yellow flames engulfing the hillside.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Large plume of smoke billowing from the fire, illuminated by the flames.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Dark water in the foreground reflecting the fire's glow.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Silhouette of a road sign structure in the foreground.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "Light streaks in the bottom right, likely from vehicle headlights or taillights.",
+    "confidence": "low"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "fire origin",
+   "distance to water",
+   "type of vegetation",
+   "scale of fire",
+   "number of people"
+  ]
+ }
+}

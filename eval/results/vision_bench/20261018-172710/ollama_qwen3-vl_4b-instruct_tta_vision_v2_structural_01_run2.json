@@ -1,0 +1,66 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "structural_01",
+  "image": "structural_01.jpg",
+  "run": 2,
+  "seconds": 52.3,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 1.0,
+  "views_ok": 3
+ },
+ "incident_text": "Part of a five-storey apartment building has collapsed. Dust covers the street and neighbours say some residents may still be inside.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A scene of extensive structural damage to buildings, with rubble and debris scattered across the ground. Partially intact buildings are visible in the foreground and background, with a tree and distant hills in the background.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "A multi-story building is heavily collapsed with exposed interiors and debris. Adjacent structure has collapsed roof and damaged walls.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A tall pole stands near the rubble pile. Other buildings are visible in the background, some intact, some damaged.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "A green tree is visible behind the rubble pile. Some bushes and greenery are scattered around the debris.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A large white sack is sitting on a concrete base near the left edge, near a partially intact building with green paint.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "scale or distance",
+   "cause of damage",
+   "cause of destruction"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 1.0,
+   "unstable_categories": [],
+   "merge_policy": "majority"
+  }
+ }
+}

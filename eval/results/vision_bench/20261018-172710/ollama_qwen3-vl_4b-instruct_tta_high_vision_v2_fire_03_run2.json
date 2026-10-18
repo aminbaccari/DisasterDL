@@ -1,0 +1,71 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta+high:vision/v2.md",
+  "incident": "fire_03",
+  "image": "fire_03.jpg",
+  "run": 2,
+  "seconds": 36.2,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 1.0,
+  "views_ok": 3
+ },
+ "incident_text": "A large smoke column over the fields, probably a grass fire. Nobody is nearby.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large plume of smoke rises from a distant field, with a fence and grassland in the foreground. The sky is hazy and filled with smoke, suggesting a fire or large-scale combustion event.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large, dense plume of smoke rising from the horizon, obscuring the view of the horizon line.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Dry, golden-brown grassland in the foreground and midground, with some green patches.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Fence line with posts and wires running horizontally across the midground.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Small, dark silhouettes of animals (likely cattle) scattered in the midground field.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of smoke",
+   "distance to fire",
+   "scale of the fire",
+   "number of animals",
+   "structural integrity of buildings",
+   "distance to smoke source",
+   "scale of fire or smoke",
+   "number of animals or structures",
+   "distance to fire source",
+   "scale of fire"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 1.0,
+   "unstable_categories": [],
+   "merge_policy": "keep_high"
+  }
+ }
+}

@@ -1,0 +1,52 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 1,
+  "seconds": 16.8,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A backyard or garden area with trees, a fence, and a shed, viewed under a hazy, smoky sky with a visible sun.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Hazy, smoky atmosphere throughout the sky, obscuring the sun and landscape.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees, bushes, and potted flowers in the foreground and background.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Utility pole, power lines, fence, shed, and a small garden area.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A bright, orange sun visible through the haze, positioned in the sky.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": []
+ }
+}

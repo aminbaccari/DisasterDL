@@ -1,0 +1,65 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "flood_03_satellite",
+  "image": "flood_03_satellite.jpg",
+  "run": 2,
+  "seconds": 29.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 2,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "flood_water",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.667,
+  "views_ok": 3
+ },
+ "incident_text": "The river has overflowed and flooded the fields and part of the city.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A composite satellite image showing two views of a river system with surrounding urban and rural areas, including labeled regions like West Memphis, Memphis, Mud Island, and Treasure Island.",
+  "observations": [
+   {
+    "category": "other",
+    "description": "Plumes of smoke visible over the urban area and river, particularly in the lower panel.",
+    "confidence": "medium"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Urban development including suburbs and towns around the river, with labeled areas such as West Memphis, Memphis, Mud Island, and Treasure Island.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [
+   "West Memphis",
+   "Memphis",
+   "Mud Island",
+   "Treasure Island",
+   "2 km"
+  ],
+  "not_determinable": [],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.667,
+   "unstable_categories": [
+    {
+     "category": "other",
+     "support": 2
+    },
+    {
+     "category": "infrastructure",
+     "support": 2
+    }
+   ],
+   "merge_policy": "majority"
+  }
+ }
+}

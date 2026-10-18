@@ -1,0 +1,67 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta+high:vision/v2.md",
+  "incident": "flood_01",
+  "image": "flood_01.jpg",
+  "run": 1,
+  "seconds": 57.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 2,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": true,
+  "quality_flagged": "",
+  "agreement": 0.667,
+  "views_ok": 3
+ },
+ "incident_text": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A street is flooded with brown water, submerging the lower portions of multi-story buildings. The scene appears to be an urban area with European-style architecture under overcast skies.",
+  "observations": [
+   {
+    "category": "flood_water",
+    "description": "Brown, murky floodwater covers the entire street, reaching up to the bases of buildings.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Several multi-story buildings with varied facades line the flooded street. One building has a sign reading 'AZ' and another has a sign reading 'PROTEZIONE CIVILE'.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [
+   "AZ"
+  ],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "structural integrity",
+   "cause of flood",
+   "scale or distance"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.667,
+   "unstable_categories": [
+    {
+     "category": "vegetation",
+     "support": 1
+    },
+    {
+     "category": "other",
+     "support": 1
+    }
+   ],
+   "merge_policy": "keep_high"
+  }
+ }
+}

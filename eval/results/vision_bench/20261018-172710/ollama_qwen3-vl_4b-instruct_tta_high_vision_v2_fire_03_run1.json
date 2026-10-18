@@ -1,0 +1,70 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta+high:vision/v2.md",
+  "incident": "fire_03",
+  "image": "fire_03.jpg",
+  "run": 1,
+  "seconds": 83.7,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 3,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.833,
+  "views_ok": 3
+ },
+ "incident_text": "A large smoke column over the fields, probably a grass fire. Nobody is nearby.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large plume of smoke rises from a field in the distance, with a wire fence and some vegetation in the foreground under a hazy sky.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large, dense plume of smoke rising from the horizon over a field.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Open field with dry grass and some low-lying shrubs or grasses in the foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Wire fence with metal posts running horizontally across the mid-ground.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of smoke",
+   "distance to smoke source",
+   "number of animals",
+   "scale of the fire",
+   "presence of fire",
+   "structural integrity of distant trees or buildings",
+   "cause of fire",
+   "scale or distance of fire",
+   "structural integrity of distant trees or structures"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.833,
+   "unstable_categories": [
+    {
+     "category": "other",
+     "support": 1
+    }
+   ],
+   "merge_policy": "keep_high"
+  }
+ }
+}

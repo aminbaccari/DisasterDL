@@ -1,0 +1,67 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "structural_01",
+  "image": "structural_01.jpg",
+  "run": 1,
+  "seconds": 34.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "Part of a five-storey apartment building has collapsed. Dust covers the street and neighbours say some residents may still be inside.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A scene of widespread structural damage showing collapsed buildings with debris scattered on the ground, surrounded by other damaged structures and vegetation.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "A building is completely collapsed, with its upper floors and walls reduced to piles of rubble and broken materials.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A tall pole stands upright near the collapsed structure, and other buildings are visible in the background, some showing signs of damage.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "A green tree is visible behind the rubble, and some bushes and plants are growing around the debris.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A large white sack is visible near the foreground, resting on a concrete base.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A metal grate lies on the ground among the rubble.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A red-painted object (possibly a sign or panel) is partially visible on the damaged building.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "number of people",
+   "cause of damage",
+   "water depth",
+   "scale or distance"
+  ]
+ }
+}

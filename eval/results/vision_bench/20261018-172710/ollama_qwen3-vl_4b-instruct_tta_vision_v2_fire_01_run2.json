@@ -1,0 +1,76 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 2,
+  "seconds": 64.0,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.917,
+  "views_ok": 3
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large wildfire illuminates a hillside at night, casting an orange glow over the dark sky and reflecting on a body of water in the foreground.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Bright yellow and orange flames visible on a hillside at night.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Large plume of dark smoke billowing from the fire, illuminated by the flames.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Reflected glow from the fire on the water surface.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Dark silhouette of a road sign or overhead structure in the foreground.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "structural integrity",
+   "cause of fire",
+   "scale or distance",
+   "scale of the fire",
+   "distance to the fire",
+   "nature of the hillside",
+   "presence of people",
+   "cause of the fire"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.917,
+   "unstable_categories": [
+    {
+     "category": "infrastructure",
+     "support": 2
+    }
+   ],
+   "merge_policy": "majority"
+  }
+ }
+}

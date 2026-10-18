@@ -1,0 +1,62 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_04_house",
+  "image": "fire_04_house.jpg",
+  "run": 1,
+  "seconds": 30.6,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "A house is on fire in our street. Flames are coming out of the roof and the front door.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A house is engulfed in fire, with flames visibly consuming the roof and interior, and smoke rising from the structure.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Large, bright orange flames are visible consuming the roof and interior of the house.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Smoke is visible rising from the burning house, particularly near the roofline.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "The roof is partially collapsed and burning, with visible charred sections.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A single-story house with siding and a porch is on fire.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A white window with a hexagonal frame is visible on the left side of the house.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "number of people",
+   "cause of fire",
+   "water depth",
+   "scale or distance"
+  ]
+ }
+}

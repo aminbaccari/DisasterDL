@@ -1,0 +1,91 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "fire_05_training",
+  "image": "fire_05_training.jpg",
+  "run": 2,
+  "seconds": 36.1,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.857,
+  "views_ok": 3
+ },
+ "incident_text": "A building is burning and firefighters are working on it.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "Firefighters are combating a large fire at a wooden structure, with thick black smoke rising against an overcast sky.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Heavy black smoke billowing from the building",
+    "confidence": "high"
+   },
+   {
+    "category": "flames",
+    "description": "Visible orange flames on the right side of the building",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Partially collapsed or charred sections of the building's roof and walls",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A power line and utility pole visible in the background",
+    "confidence": "high"
+   },
+   {
+    "category": "people",
+    "description": "Three figures in firefighter gear on a grassy slope, one operating a hose",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees and grassy hillside surrounding the building",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "structural integrity",
+   "cause of fire",
+   "scale or distance",
+   "building type",
+   "distance from viewer to building",
+   "exact cause of fire",
+   "scale of fire",
+   "number of people on site beyond three",
+   "water depth in firefighting hose"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.857,
+   "unstable_categories": [
+    {
+     "category": "vegetation",
+     "support": 2
+    },
+    {
+     "category": "vehicles",
+     "support": 1
+    }
+   ],
+   "merge_policy": "majority"
+  }
+ }
+}

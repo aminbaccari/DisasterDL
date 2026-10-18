@@ -1,0 +1,72 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "fire_02",
+  "image": "fire_02.jpg",
+  "run": 2,
+  "seconds": 45.3,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 1.0,
+  "views_ok": 3
+ },
+ "incident_text": "Heavy smoke is rising behind a farm and a house stands close to the smoke. We think a wildfire is coming toward the house.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large, dark, stormy cloud formation looms over a rural landscape with trees and houses in the foreground.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large plume of dark, dense smoke rising from the horizon, partially obscuring the sky.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Dark green forest line in the midground, with some scattered trees in the foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Residential houses visible on the right side of the image, partially surrounded by trees.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "The sky is filled with heavy, grey clouds, suggesting an impending storm or恶劣天气.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of smoke",
+   "scale of the smoke plume",
+   "distance to houses",
+   "extent of damage",
+   "Distance to smoke plume",
+   "Scale of fire or smoke",
+   "Structural integrity of house",
+   "Presence of people",
+   "distance to smoke source",
+   "scale of fire or smoke plume",
+   "weather conditions"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 1.0,
+   "unstable_categories": [],
+   "merge_policy": "majority"
+  }
+ }
+}

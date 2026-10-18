@@ -1,0 +1,72 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta+high:vision/v2.md",
+  "incident": "structural_01",
+  "image": "structural_01.jpg",
+  "run": 3,
+  "seconds": 33.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 1.0,
+  "views_ok": 3
+ },
+ "incident_text": "Part of a five-storey apartment building has collapsed. Dust covers the street and neighbours say some residents may still be inside.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A collapsed multi-story building with debris scattered around, showing significant structural damage. Nearby structures and vegetation are visible in the background.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "A multi-story building is completely collapsed, with debris covering the ground and partially collapsing walls.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A standing utility pole is visible near the debris.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "A tree is visible in the background, along with some bushes and other plants.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Various pieces of wood, metal, and rubble are piled up around the collapsed structure.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "number of people",
+   "cause of damage",
+   "distance to other buildings",
+   "exact scale of damage",
+   "water depth",
+   "cause of fire",
+   "scale or distance",
+   "cause of structural damage",
+   "scale of the building",
+   "number of people present",
+   "water depth or presence of flood_water"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 1.0,
+   "unstable_categories": [],
+   "merge_policy": "keep_high"
+  }
+ }
+}

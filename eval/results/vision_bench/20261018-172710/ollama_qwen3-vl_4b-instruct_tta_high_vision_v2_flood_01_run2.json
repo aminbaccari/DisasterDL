@@ -1,0 +1,80 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta+high:vision/v2.md",
+  "incident": "flood_01",
+  "image": "flood_01.jpg",
+  "run": 2,
+  "seconds": 65.7,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 5,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 2,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.733,
+  "views_ok": 3
+ },
+ "incident_text": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A street is flooded with brown water, submerging the lower levels of multi-story buildings.",
+  "observations": [
+   {
+    "category": "flood_water",
+    "description": "Broad, muddy brown floodwater covering the street and reaching the bases of buildings.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Multi-story buildings with storefronts and upper-floor windows, showing structural damage or wear.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A street lamp pole is visible, standing in the floodwater.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "No vehicles visible.",
+    "confidence": "medium"
+   },
+   {
+    "category": "vegetation",
+    "description": "No vegetation visible.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "structural integrity",
+   "cause of flood",
+   "scale or distance"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.733,
+   "unstable_categories": [
+    {
+     "category": "vehicles",
+     "support": 1
+    },
+    {
+     "category": "vegetation",
+     "support": 1
+    }
+   ],
+   "merge_policy": "keep_high"
+  }
+ }
+}

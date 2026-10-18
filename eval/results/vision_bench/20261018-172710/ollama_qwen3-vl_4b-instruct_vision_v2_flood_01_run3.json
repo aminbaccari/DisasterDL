@@ -1,0 +1,57 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "flood_01",
+  "image": "flood_01.jpg",
+  "run": 3,
+  "seconds": 12.1,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": true,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "De fortes inondations touchent un quartier résidentiel de Nabeul. Plusieurs routes sont bloquées et l'eau continue de monter.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A flooded urban square with buildings partially submerged in muddy water under an overcast sky.",
+  "observations": [
+   {
+    "category": "flood_water",
+    "description": "A large area of murky, brown water covers the entire square, reaching up to the bases of buildings.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Multi-story buildings with traditional European architecture, including arched doorways, windows, and balconies, are partially submerged.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A traffic signpost with a stop sign and a blue directional arrow is visible on the right side of the frame.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A small white object, possibly a bag or container, is floating in the water on the left.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [
+   "P.Z.",
+   "P.Z.",
+   "STOP",
+   "P.Z."
+  ],
+  "not_determinable": []
+ }
+}

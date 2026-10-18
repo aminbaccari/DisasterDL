@@ -1,0 +1,66 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta+high:vision/v2.md",
+  "incident": "flood_03_satellite",
+  "image": "flood_03_satellite.jpg",
+  "run": 3,
+  "seconds": 97.0,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 3,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "flood_water",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.833,
+  "views_ok": 2
+ },
+ "incident_text": "The river has overflowed and flooded the fields and part of the city.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "An aerial view comparing two states of a river system with surrounding urban areas, including Memphis, West Memphis, Mud Island, and Treasure Island, with visible cloud formations and riverbanks.",
+  "observations": [
+   {
+    "category": "other",
+    "description": "Clouds or smoke plumes over the urban area and river",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Urban grid including roads and buildings",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Green patches and agricultural fields surrounding urban areas",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [
+   "West Memphis",
+   "Memphis",
+   "Mud Island",
+   "Treasure Island",
+   "2 km"
+  ],
+  "not_determinable": [],
+  "reliability": {
+   "variants_used": 2,
+   "variants_requested": 3,
+   "usable_votes": "2/2",
+   "category_agreement_score": 0.833,
+   "unstable_categories": [
+    {
+     "category": "vegetation",
+     "support": 1
+    }
+   ],
+   "merge_policy": "keep_high"
+  }
+ }
+}

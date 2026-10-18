@@ -1,0 +1,74 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta+high:vision/v2.md",
+  "incident": "structural_02",
+  "image": "structural_02.jpg",
+  "run": 1,
+  "seconds": 88.6,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.8,
+  "views_ok": 3
+ },
+ "incident_text": "A brick building partly collapsed after the earthquake. Bricks are lying across the street.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A multi-story brick building with significant structural damage and debris on the street corner, with traffic lights and a street sign visible. In the background, modern buildings stand under a partly cloudy sky.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "A brick building with collapsed upper floors, exposed wooden beams, and broken windows.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A traffic light pole with a signal, a street sign with \"No S\" visible, and a green awning that is torn.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A pile of bricks and debris on the sidewalk, an orange traffic cone, and a green tarp.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees visible in the distance behind the buildings.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "extent of damage to other buildings",
+   "cause of structural failure",
+   "presence of people",
+   "time of day"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.8,
+   "unstable_categories": [
+    {
+     "category": "vegetation",
+     "support": 2
+    },
+    {
+     "category": "vehicles",
+     "support": 1
+    }
+   ],
+   "merge_policy": "keep_high"
+  }
+ }
+}

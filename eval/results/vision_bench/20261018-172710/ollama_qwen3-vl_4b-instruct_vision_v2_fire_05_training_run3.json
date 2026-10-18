@@ -1,0 +1,69 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_05_training",
+  "image": "fire_05_training.jpg",
+  "run": 3,
+  "seconds": 12.7,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "A building is burning and firefighters are working on it.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "Firefighters are operating a hose to extinguish a large fire engulfing a building, with thick smoke billowing from the structure.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large plume of dark smoke rising from the building.",
+    "confidence": "high"
+   },
+   {
+    "category": "flames",
+    "description": "Visible orange flames on the right side of the building.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Building appears partially damaged with charred sections and exposed wood beams.",
+    "confidence": "medium"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A fence is visible in the foreground on the left.",
+    "confidence": "medium"
+   },
+   {
+    "category": "people",
+    "description": "Three firefighters in gear are visible on the left, operating a hose.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees and green grass cover the hillside where the building is situated.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "scale or distance",
+   "cause of fire",
+   "structural integrity",
+   "building type"
+  ]
+ }
+}

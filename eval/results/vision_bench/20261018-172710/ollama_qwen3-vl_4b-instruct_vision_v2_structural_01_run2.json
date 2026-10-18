@@ -1,0 +1,58 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "structural_01",
+  "image": "structural_01.jpg",
+  "run": 2,
+  "seconds": 18.9,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "Part of a five-storey apartment building has collapsed. Dust covers the street and neighbours say some residents may still be inside.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A scene of widespread structural damage from a disaster, showing collapsed buildings with debris scattered across the ground, with some intact buildings and vegetation visible in the background.",
+  "observations": [
+   {
+    "category": "structural_damage",
+    "description": "A large building is completely坍塌, with walls, roofs, and floors collapsed into a pile of rubble.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A tall pole stands upright near the collapsed building, and a portion of another building's facade is visible on the left.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "A green tree is visible in the background, surrounded by damaged structures.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A large white sack is resting on a concrete structure in the foreground.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of damage",
+   "scale of the disaster",
+   "exact number of people affected",
+   "distance from camera to structures",
+   "water depth or presence of flood water"
+  ]
+ }
+}

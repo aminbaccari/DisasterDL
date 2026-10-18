@@ -1,0 +1,71 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 2,
+  "seconds": 54.8,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.917,
+  "views_ok": 3
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A backyard scene at dusk or dawn with the sun low in a hazy sky, surrounded by trees, a shed, and garden furniture. A utility pole and power lines are visible.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Hazy, smoky sky obscuring the sun and horizon.",
+    "confidence": "medium"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees and bushes in the background and foreground.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Metal shed and wooden fence with potted plants.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A blue barrel and a green garden hose coiled near a pile of wood.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "water depth",
+   "number of people",
+   "structural integrity",
+   "cause of fire",
+   "scale or distance"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.917,
+   "unstable_categories": [
+    {
+     "category": "smoke",
+     "support": 2
+    }
+   ],
+   "merge_policy": "majority"
+  }
+ }
+}

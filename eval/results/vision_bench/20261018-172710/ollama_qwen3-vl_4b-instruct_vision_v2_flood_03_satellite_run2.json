@@ -1,0 +1,72 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "flood_03_satellite",
+  "image": "flood_03_satellite.jpg",
+  "run": 2,
+  "seconds": 15.1,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "flood_water",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "The river has overflowed and flooded the fields and part of the city.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A satellite image comparing two views of a river system with urban areas, showing changes in the landscape, particularly around a large river bend with islands and surrounding towns.",
+  "observations": [
+   {
+    "category": "other",
+    "description": "Clouds or smoke plumes visible in the lower image over West Memphis and the riverbanks.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Urban areas including West Memphis, Memphis, Mud Island, and Treasure Island with labeled regions.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Roads and linear features connecting urban areas to the river and surrounding lands.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A large river system with visible bends and islands, including Mud Island and Treasure Island.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Areas of green vegetation surrounding urban regions and islands, indicating natural land cover.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "The top image shows clear, dry riverbanks; the bottom image shows the same areas with smoke or cloud cover.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [
+   "West Memphis",
+   "Memphis",
+   "Mud Island",
+   "Treasure Island",
+   "2 km"
+  ],
+  "not_determinable": [
+   "Scale of the river's discharge or flood depth",
+   "Exact cause of smoke or cloud cover",
+   "Number of structures in urban areas"
+  ]
+ }
+}

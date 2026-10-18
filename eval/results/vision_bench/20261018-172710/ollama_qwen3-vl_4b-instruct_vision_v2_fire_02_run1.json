@@ -1,0 +1,57 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_02",
+  "image": "fire_02.jpg",
+  "run": 1,
+  "seconds": 25.2,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "Heavy smoke is rising behind a farm and a house stands close to the smoke. We think a wildfire is coming toward the house.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large, dark cloud formation dominates the sky above a line of trees and some buildings, with plumes of smoke or dust visible on the right side.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Large, dark and grey plumes of smoke or dust rising from the ground on the right side of the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "A dense line of dark trees in the foreground, with some lighter green trees and bushes in the mid-ground to the right.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A residential house with a light-colored roof and siding is visible on the right side, partially obscured by trees and smoke.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A large, ominous cloud mass in the sky, dark grey and swirling, suggesting a storm or fire-related event.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "cause of smoke",
+   "distance to structures",
+   "weather conditions",
+   "scale of event"
+  ]
+ }
+}

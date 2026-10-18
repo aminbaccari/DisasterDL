@@ -1,0 +1,55 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "control_01_night",
+  "image": "control_01_night.jpg",
+  "run": 1,
+  "seconds": 55.6,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 3,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": false,
+  "agreement": 1.0,
+  "views_ok": 3
+ },
+ "incident_text": "A big fire is burning on this street tonight.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A quiet, dimly lit street at night with a row of traditional brick buildings featuring white-framed windows and external lighting.",
+  "observations": [
+   {
+    "category": "infrastructure",
+    "description": "A row of multi-story brick buildings with white-framed windows, lit by exterior wall-mounted lamps.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Red flowering plants in window boxes on the upper floors of the buildings.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A paved street with a curb in front of the buildings.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 1.0,
+   "unstable_categories": [],
+   "merge_policy": "majority"
+  }
+ }
+}

@@ -1,0 +1,78 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "fire_01",
+  "image": "fire_01.jpg",
+  "run": 1,
+  "seconds": 57.2,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.917,
+  "views_ok": 3
+ },
+ "incident_text": "Smoke is rising from the hills behind the village and flames are visible near the first houses. A strong wind is blowing toward the village.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A large fire burns on a hillside at night, casting a bright orange glow across the sky and water below. A highway structure is visible in the foreground.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Multiple bright orange and yellow flames visible on a hillside.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Thick, dark smoke rising from the flames, illuminated by the fire's glow.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Silhouetted highway overhead structure in the foreground.",
+    "confidence": "medium"
+   },
+   {
+    "category": "other",
+    "description": "Long exposure red light trails from vehicle movement in the foreground.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "fire cause",
+   "distance to fire",
+   "water depth",
+   "structural integrity of hillside",
+   "number of people",
+   "structural integrity",
+   "cause of fire",
+   "scale or distance",
+   "scale of the fire",
+   "distance from viewer",
+   "weather conditions",
+   "presence of people"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.917,
+   "unstable_categories": [
+    {
+     "category": "infrastructure",
+     "support": 2
+    }
+   ],
+   "merge_policy": "majority"
+  }
+ }
+}

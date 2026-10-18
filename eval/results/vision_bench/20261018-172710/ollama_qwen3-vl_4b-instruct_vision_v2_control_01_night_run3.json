@@ -1,0 +1,62 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "control_01_night",
+  "image": "control_01_night.jpg",
+  "run": 3,
+  "seconds": 9.4,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 2,
+  "place_words": false,
+  "quality_flagged": false,
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "A big fire is burning on this street tonight.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A quiet, dark street lined with traditional brick buildings at night, illuminated by street lamps and lights from windows.",
+  "observations": [
+   {
+    "category": "infrastructure",
+    "description": "A row of multi-story brick buildings with white-framed windows and doors.",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "No vehicles visible in the image.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Flowering plants in window boxes on the buildings.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Traditional street lamps mounted on the buildings.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Lights shining from inside the windows of the buildings.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "Dark street with no visible pedestrians or vehicles.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": []
+ }
+}

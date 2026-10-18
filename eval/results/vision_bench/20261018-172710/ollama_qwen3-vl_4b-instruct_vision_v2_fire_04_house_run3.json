@@ -1,0 +1,58 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "fire_04_house",
+  "image": "fire_04_house.jpg",
+  "run": 3,
+  "seconds": 11.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "A house is on fire in our street. Flames are coming out of the roof and the front door.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A house is engulfed in fire, with flames visible through windows and roaring from the roof and porch area.",
+  "observations": [
+   {
+    "category": "flames",
+    "description": "Large flames consuming the roof and interior of the house, visible through windows and doorways.",
+    "confidence": "high"
+   },
+   {
+    "category": "smoke",
+    "description": "Smoke rising from the roof and windows as the fire burns.",
+    "confidence": "high"
+   },
+   {
+    "category": "structural_damage",
+    "description": "Roof appears damaged and partially collapsed; porch structure and siding are damaged by fire.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "House with siding, windows, and a porch; a chimney is visible on the roof.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [
+   "fire origin",
+   "number of people",
+   "water depth",
+   "scale of damage to roof",
+   "distance from camera"
+  ]
+ }
+}

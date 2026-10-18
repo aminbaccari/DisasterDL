@@ -1,0 +1,60 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 3,
+  "seconds": 31.2,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 4,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 1.0,
+  "views_ok": 3
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A backyard scene at dusk or dawn with a hazy sky and a low, orange sun. There are power lines, trees, a shed, a fence, and potted plants in the foreground.",
+  "observations": [
+   {
+    "category": "smoke",
+    "description": "Hazy, smoky sky dominating the upper portion of the image, obscuring the sun and reducing visibility.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Utility pole with power lines, a corrugated metal shed, and a wooden fence in the yard.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees and bushes lining the yard; potted flowering plants on the right fence.",
+    "confidence": "high"
+   },
+   {
+    "category": "other",
+    "description": "A blue barrel, a green garden hose, and a pile of wooden debris or pallets near the fence.",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": [],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 1.0,
+   "unstable_categories": [],
+   "merge_policy": "majority"
+  }
+ }
+}

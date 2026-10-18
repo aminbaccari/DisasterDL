@@ -1,0 +1,62 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "vision/v2.md",
+  "incident": "edge_02_conflict",
+  "image": "edge_02_conflict.jpg",
+  "run": 2,
+  "seconds": 22.5,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 6,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "smoke",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": "",
+  "views_ok": ""
+ },
+ "incident_text": "Flooding on the main road, water is rising quickly.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "A backyard scene with a hazy sky and a setting sun, featuring trees, a shed, a fence, and potted plants, with utility poles and power lines visible.",
+  "observations": [
+   {
+    "category": "other",
+    "description": "Hazy sky with a visible sun, suggesting smoke or haze from a fire or other cause",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Trees and bushes in the background and foreground",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "A metal-sided shed and a wooden fence",
+    "confidence": "high"
+   },
+   {
+    "category": "vehicles",
+    "description": "A boat or similar object is partially visible behind the fence",
+    "confidence": "medium"
+   },
+   {
+    "category": "vegetation",
+    "description": "Potted flowers and plants on a wooden fence",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Utility poles with power lines",
+    "confidence": "high"
+   }
+  ],
+  "visible_text": [],
+  "not_determinable": []
+ }
+}

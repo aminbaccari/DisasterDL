@@ -1,0 +1,76 @@
+{
+ "row": {
+  "model": "ollama:qwen3-vl:4b-instruct",
+  "prompt": "tta:vision/v2.md",
+  "incident": "flood_03_satellite",
+  "image": "flood_03_satellite.jpg",
+  "run": 1,
+  "seconds": 52.8,
+  "answered": true,
+  "json_valid": true,
+  "schema_valid": true,
+  "n_observations": 3,
+  "schema_errors": "",
+  "false_categories": "",
+  "missing_required": "flood_water",
+  "absence_observations": 0,
+  "place_words": false,
+  "quality_flagged": "",
+  "agreement": 0.889,
+  "views_ok": 3
+ },
+ "incident_text": "The river has overflowed and flooded the fields and part of the city.",
+ "result": {
+  "image_usable": true,
+  "quality_issues": [],
+  "scene_summary": "Two satellite images show a river system with islands and surrounding urban areas, with the lower image displaying smoke plumes over the region.",
+  "observations": [
+   {
+    "category": "other",
+    "description": "Smoke plumes visible in the lower image over West Memphis and surrounding areas.",
+    "confidence": "high"
+   },
+   {
+    "category": "infrastructure",
+    "description": "Urban areas labeled as West Memphis, Memphis, Mud Island, and Treasure Island.",
+    "confidence": "high"
+   },
+   {
+    "category": "vegetation",
+    "description": "Patches of green vegetation visible in the urban and rural areas.",
+    "confidence": "medium"
+   }
+  ],
+  "visible_text": [
+   "West Memphis",
+   "Memphis",
+   "Mud Island",
+   "Treasure Island",
+   "2 km"
+  ],
+  "not_determinable": [
+   "extent of smoke or haze",
+   "type of vegetation",
+   "cause of dark patches",
+   "number of structures",
+   "cause of change between images",
+   "extent of damage",
+   "water depth",
+   "number of people",
+   "structural integrity"
+  ],
+  "reliability": {
+   "variants_used": 3,
+   "variants_requested": 3,
+   "usable_votes": "3/3",
+   "category_agreement_score": 0.889,
+   "unstable_categories": [
+    {
+     "category": "vegetation",
+     "support": 2
+    }
+   ],
+   "merge_policy": "majority"
+  }
+ }
+}
