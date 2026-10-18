@@ -9,7 +9,7 @@ Checked against `docs/SPRINT_PLAN.md` (written 2026-10-16), the commits (23 on `
 | 0 | `docs/SPRINT_PLAN.md` | Done | file, commit f56b979 | Update its task list with the added work (chain, vision proposal) |
 | 1 | Blind retrieval queries (`rag/eval/queries_v2.csv`) | Done | committed before it was run | none |
 | 1 | Third query set (`rag/eval/queries_v3.csv`, 24 queries) and French structural and flood entries | Done 2026-10-17 | committed before the entries and the run; hit@5 0.83 to 0.88 with the filter, see `docs/EVIDENCE_LOG.md` | French reader for FL-27..33 and ST-27..32; French versions of FL-25, FL-26, FL-24 (control queries still miss) |
-| 1 | RAG-query agent against a direct query | Done 2026-10-17, no difference shown | `scripts/rag_query_vs_direct.py`, 12 cases, 90% against 90 to 95% of needs met | Larger harder case set; fix D11 |
+| 1 | RAG-query agent against a direct query | Done 2026-10-17, no difference shown; re-run with incident v3 and language balance NOT completed (quotas) | `scripts/rag_query_vs_direct.py`, 12 cases, 90% against 90 to 95% of needs met | Larger harder case set; fix D11 |
 | 1 | Entry-id matching in `rag/metrics.py`, `rag/evaluate.py`, tests | Done | 6 tests in `rag/tests/` | none |
 | 1 | Retrieval evaluation, fixed against section, k = 1, 3, 5 | Done | section hit@1 0.78, MRR 0.81, fixed 0.44 and 0.59 (18 queries) | Misses v08, v12, v13, v16 analysed, not fixed |
 | 2 | Agent contracts (6 schemas, examples, mismatch list) | Done | `backend/schemas/`, `docs/CONTRACT_MISMATCHES.md` | none |
